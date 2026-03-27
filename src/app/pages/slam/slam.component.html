@@ -62,14 +62,20 @@
           rows="3">
         </textarea>
 
-        <div *ngIf="fotoPreview" class="photo-preview-bubble foto-preview">
-          <img [src]="fotoPreview" alt="Foto adjunta" class="img-in-bubble">
-        </div>
+     <div *ngIf="fotoPreview" class="photo-preview-bubble">
+  <img [src]="fotoPreview" alt="Foto adjunta" class="img-in-bubble">
+</div>
 
-        <div *ngIf="preguntaActual === 0" class="foto-box">
-          <label class="label-file">Sube tu foto ❤️</label>
-          <input type="file" (change)="onFotoSeleccionada($event)" />
-        </div>
+<div *ngIf="preguntaActual === 0" class="foto-box">
+  <label for="fotoInput" class="label-file">Sube tu foto ❤️</label>
+  <input
+    type="file"
+    id="fotoInput"
+    (change)="onFotoSeleccionada($event)"
+    accept="image/*"
+    style="display: none;"
+  />
+</div>
 
       </div>
     </div>

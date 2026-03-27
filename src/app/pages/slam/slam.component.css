@@ -1,250 +1,110 @@
-/* ==========================================================
-   --- 1. CONFIGURACIÓN DE PÁGINA Y HEADER ---
-   ========================================================== */
-:host {
-  display: block;
-  background-color: transparent !important;
-}
-
-.header-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  background: transparent !important;
-}
-
-.bienvenida-contenedor {
-  text-align: center;
-  animation: fadeInDown 0.8s ease-out;
-}
-
-.bienvenida-contenedor h1 {
-  font-size: 2.2rem;
-  color: #5a3e47;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  margin-bottom: 5px;
-}
-
-.bienvenida-contenedor h1 span {
-  color: #ff69b4;
-  font-weight: 800;
-  text-transform: capitalize;
-  text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2);
-}
-
-.bienvenida-contenedor h1 span::after {
-  content: ' 💕';
-  font-size: 1.2rem;
-}
-
-.divisor {
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(to right, transparent, #ccc, transparent);
-  margin-bottom: 20px;
-}
-
-/* ==========================================================
-   --- 2. SELECTOR DE IDIOMAS (Arriba a la derecha) ---
-   ========================================================== */
-.lang-selector-container {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-}
-
-.lang-titulo-label {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: #ff69b4;
-  font-weight: bold;
-}
-
-.slam-combobox {
-  appearance: none;
-  padding: 8px 35px 8px 15px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #a84a6c;
-  background: #fff0f5 url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff69b4%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.3c0%203%201.1%205.8%203.1%208.2l131.6%20130.6a17.6%2017.6%200%200%200%2025.8%200L293.1%2091.2c2-2.4%203.1-5.2%203.1-8.3%200-4.8-1.8-9.3-5.4-13.5z%22%2F%3E%3C%2F%3E%3C%2Fsvg%22') no-repeat right 12px center / 12px auto;
-  border: 2px solid #ffb6c1;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.slam-combobox:hover {
-  background-color: #ffe4e1;
-  border-color: #ff69b4;
-  transform: translateY(-2px);
-}
-
-/* ==========================================================
-   --- 3. CONTENEDOR DEL CHAT (Burbujas) ---
-   ========================================================== */
+/* --- CONTENEDOR PRINCIPAL (Ajustado para Laptop) --- */
 .slam-container {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 30px;
+  max-width: 500px; /* Más estrecho para que sea elegante */
+  margin: 10px auto;
+  padding: 15px 25px;
   background: rgba(255, 255, 255, 0.9);
-  border-radius: 30px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  backdrop-filter: blur(8px);
 }
 
+/* --- QUITAR EL ICONO ROTO "SLAM BOT" --- */
+.avatar-mini, .bubble-bot img[alt="Slam Bot"] {
+  display: none !important;
+}
+
+/* --- BURBUJAS DE CHAT --- */
 .chat-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 15px;
 }
 
 .bubble {
   display: flex;
   align-items: flex-end;
-  gap: 15px;
   max-width: 90%;
-  animation: slideIn 0.4s ease-out;
+  animation: slideIn 0.3s ease-out;
 }
 
-.bubble-bot { align-self: flex-start; }
-.bubble-user { align-self: flex-end; width: 100%; flex-direction: row-reverse; }
-
-.message-content {
+.bubble-bot .message-content {
   background: #FF1493;
   color: white;
-  padding: 18px 25px;
-  border-radius: 25px 25px 25px 5px;
-  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.2);
+  padding: 12px 18px;
+  border-radius: 18px 18px 18px 5px;
+  font-size: 1rem;
 }
 
-.user-response-area {
+.bubble-user .user-response-area {
   background: white;
-  padding: 20px;
-  border-radius: 25px 25px 5px 25px;
-  border: 2px solid #f0f0f0;
+  padding: 15px;
+  border-radius: 18px 18px 5px 18px;
+  border: 1.5px solid #f0f0f0;
   width: 100%;
 }
 
-.chat-input {
-  width: 100%;
-  border: none;
-  outline: none;
-  resize: none;
-  font-size: 1.1rem;
-  background: transparent;
-}
-
-/* ==========================================================
-   --- 4. FOTOS Y CARGA DE ARCHIVOS ---
-   ========================================================== */
+/* --- FOTO CENTRADA Y RESPONSIVA --- */
 .photo-preview-bubble {
-  margin: 15px auto;
-  border-radius: 20px;
-  overflow: hidden;
-  border: 4px solid #fff1f6;
+  margin: 10px auto;
   display: flex;
   justify-content: center;
-  max-width: 300px;
-  background: #fafafa;
+  max-width: 200px; /* Tamaño ideal para laptop */
+  border-radius: 12px;
+  overflow: hidden;
+  border: 3px solid #fff1f6;
 }
 
 .img-in-bubble {
-  display: block;
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  max-height: 250px;
-  border-radius: 15px;
+  display: block;
 }
 
-/* Ocultar icono roto si no hay imagen */
-.img-in-bubble[src=""], .img-in-bubble:not([src]) { display: none; }
-
-.foto-box { text-align: center; margin-top: 15px; }
-.foto-box input[type="file"] { display: none; }
-
+/* --- BOTÓN ROSA DE SUBIR FOTO --- */
 .label-file {
   display: inline-block;
   background-color: #ffecf2;
   color: #FF1493;
-  padding: 12px 24px;
-  border-radius: 30px;
+  padding: 8px 20px;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: bold;
-  border: 2px solid transparent;
-  transition: 0.3s;
+  font-size: 0.85rem;
+  border: 1px solid #ffb6c1;
+  transition: 0.2s;
 }
 
 .label-file:hover {
-  background-color: #FFB6C1;
+  background-color: #FF1493;
   color: white;
-  transform: translateY(-2px);
 }
 
-/* ==========================================================
-   --- 5. BOTONES Y PROGRESO ---
-   ========================================================== */
+/* --- BOTONES DE NAVEGACIÓN --- */
 .chat-controls {
   display: flex;
   justify-content: space-between;
-  gap: 15px;
-  margin-top: 25px;
+  gap: 8px;
+  margin-top: 15px;
 }
 
 .btn-chat {
-  padding: 12px 20px;
-  border-radius: 30px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
   border: none;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
 }
 
-.btn-primary { background: #FF1493; color: white; flex: 2; box-shadow: 0 4px 12px rgba(255, 20, 147, 0.2); }
-.btn-secondary { background: #C0C0C0; color: white; flex: 1; }
-.btn-tertiary { background: #ffecf2; color: #FF1493; flex: 1; }
+.btn-primary { background: #FF1493; color: white; flex: 2; }
+.btn-secondary { background: #E0E0E0; color: #444; flex: 1; }
+.btn-tertiary { background: #fff1f6; color: #FF1493; flex: 1; }
 
-.btn-chat:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+/* Ocultar cualquier imagen rota por error */
+img[src=""], img:not([src]) { display: none !important; }
 
-.progress-bar {
-  margin-top: 30px;
-  background: #f0f0f0;
-  border-radius: 10px;
-  height: 10px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  background: #FF1493;
-  height: 100%;
-  transition: width 0.5s ease-in-out;
-}
-
-/* ==========================================================
-   --- 6. ANIMACIONES ---
-   ========================================================== */
 @keyframes slideIn {
-  from { opacity: 0; transform: translateY(15px); }
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeInDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Media Query para móvil */
-@media (max-width: 768px) {
-  .header-flex { flex-direction: column; padding-top: 60px; }
-  .lang-selector-container { position: static; transform: none; margin-top: 20px; align-items: center; }
 }

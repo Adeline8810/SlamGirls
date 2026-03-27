@@ -39,7 +39,105 @@
     <p>Traduciendo al {{ idiomaSeleccionado }}...</p>
   </div>
 
-  <h1 *ngIf="!cargando" class="slam-title">
+  <h1 *ngIf="!cargando" class="slam-title"><app-menubar></app-menubar>
+
+<ngx-particles
+  [id]="'tsparticles'"
+  [options]="particlesOptions"
+  [particlesInit]="particlesInit">
+</ngx-particles>
+
+<div class="header-flex">
+  <div class="bienvenida-contenedor">
+    <h1>Hola, <span>{{nombreUsuario}}</span> ✨</h1>
+    <p>Cuéntanos un poco más sobre ti en este Slam.</p>
+  </div>
+
+  <div class="lang-selector-container">
+    <span class="lang-titulo-label">Selecciona tu idioma</span>
+    <label for="langCombo" class="lang-label">
+      <i class="fas fa-globe-americas"></i>
+    </label>
+    <select id="langCombo" [(ngModel)]="idiomaSeleccionado" (change)="obtenerTraduccionActual()" class="slam-combobox">
+      <option value="es">🇪🇸 Español</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="fr">🇫🇷 Francés</option>
+      <option value="uk">🇺🇦 Ucraniano</option>
+      <option value="en">🇺🇸 Inglés</option>
+      <option value="fa">🇮🇷 Persa (Farsi)</option>
+    </select>
+  </div>
+</div>
+
+<hr class="divisor">
+
+<div class="slam-container" *ngIf="!completado && preguntas.length > 0">
+
+  <div class="chat-wrapper">
+
+    <div class="bubble bubble-bot">
+      <div class="avatar-mini">
+        <img src="assets/img/slam-bot-icon.png" alt="Slam Bot"> </div>
+      <div class="message-content">
+        <div *ngIf="cargando" class="cargando-container">
+          <span class="reloj-icon">⏳</span>
+          <p>Traduciendo al {{ idiomaSeleccionado }}...</p>
+        </div>
+
+        <p *ngIf="!cargando" class="question-text">
+          {{ idiomaSeleccionado === 'es'
+             ? preguntas[preguntaActual]?.texto
+             : (preguntasTraducidas[idiomaSeleccionado]?.[preguntas[preguntaActual]?.id] || '...')
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div class="bubble bubble-user">
+      <div class="user-response-area">
+
+        <textarea
+          [(ngModel)]="respuestaActual"
+          placeholder="Escribe tu respuesta aquí..."
+          class="chat-input resposta-box"
+          rows="3">
+        </textarea>
+
+        <div *ngIf="fotoPreview" class="photo-preview-bubble foto-preview">
+          <img [src]="fotoPreview" alt="Foto adjunta" class="img-in-bubble">
+        </div>
+
+        <div *ngIf="preguntaActual === 0" class="foto-box">
+          <label class="label-file">Sube tu foto ❤️</label>
+          <input type="file" (change)="onFotoSeleccionada($event)" />
+        </div>
+
+      </div>
+    </div>
+
+  </div> <div class="chat-controls botones">
+    <button (click)="anterior()" [disabled]="preguntaActual===0" class="btn-chat btn-prev btn-secondary">
+      <i class="fas fa-arrow-left"></i> ⬅️ Atrás
+    </button>
+    <button (click)="pasar()" class="btn-chat btn-tertiary">
+      Pasar
+    </button>
+    <button (click)="siguiente()" class="btn-chat btn-next btn-primary">
+      {{ preguntaActual === preguntas.length-1 ? 'Guardar todo 🎉' : 'Siguiente ➡️' }}
+    </button>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="(preguntaActual + 1) * 10"></div>
+    <span>Pregunta {{ preguntaActual + 1 }} / {{ preguntas.length }}</span>
+  </div>
+
+</div>
+
+<div *ngIf="completado" class="mensaje-final">
+  <h2>🎉 ¡Gracias por llenar el Slam! 💖</h2>
+  <p>Tus respuestas fueron guardadas.</p>
+</div>
     {{ idiomaSeleccionado === 'es'
        ? preguntas[preguntaActual]?.texto
        : (preguntasTraducidas[idiomaSeleccionado]?.[preguntas[preguntaActual]?.id] || '...')
@@ -64,7 +162,13 @@
     <button (click)="siguiente()" class="btn-primary">{{ preguntaActual === preguntas.length-1 ? 'Guardar todo' : 'Continuar ➡️' }}</button>
   </div>
 
-  <p class="contador">{{ preguntaActual + 1 }} / {{ preguntas.length }}</p>
+
+
+  <div class="progress-bar">
+    <div class="progress-fill" [style.width.%]="(preguntaActual + 1) * 10"></div>
+    <span>Pregunta {{ preguntaActual + 1 }} / {{ preguntas.length }}</span>
+  </div>
+
 </div>
 
 <div *ngIf="completado" class="mensaje-final">

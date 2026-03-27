@@ -513,3 +513,271 @@ button { padding:10px 16px; border-radius:24px; border:none; cursor:pointer; }
 .slam-container, .header-flex {
   background: transparent !important; /* Quita cualquier color de fondo aquí */
 }
+
+/* --- FOTO DENTRO DEL CHAT --- */
+.photo-preview-bubble {
+  margin-top: 15px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid #ffecf2;
+  display: flex; /* Asegura que el contenedor centre su contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+}
+
+.img-in-bubble {
+  max-width: 100%;
+  max-height: 200px; /* Limita la altura para que no ocupe toda la pantalla */
+  display: block;
+}
+
+/* --- ESTILO DEL BOTÓN DE CARGA DE ARCHIVO --- */
+/* Estilizamos el contenedor label para que actúe como botón */
+.label-file {
+  display: inline-block;
+  background-color: #ffecf2; /* Rosa claro */
+  color: #FF1493; /* Texto en rosa fuerte */
+  padding: 10px 20px;
+  border-radius: 25px; /* Bordes redondeados */
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+  border: 1px solid #ffb6c1; /* Borde rosa suave */
+}
+
+.label-file:hover {
+  background-color: #ffb6c1; /* Un tono más fuerte al pasar el ratón */
+  color: white;
+}
+
+/* Ocultamos el input de archivo real (que se ve horrible) */
+.foto-box input[type="file"] {
+  display: none;
+}
+.bubble-bot .avatar-mini a {
+  display: none;
+}
+
+/* Asegurar que la imagen rota no se vea al pasar de pregunta */
+.img-in-bubble[src=""] {
+  display: none;
+}
+
+/* ==========================================================
+   --- ESTILOS GENERALES DEL SLAM (Maquetación) ---
+   ========================================================== */
+.slam-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 30px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+}
+
+/* ==========================================================
+   --- ÁREA DE CHAT (Burbujas) ---
+   ========================================================== */
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.bubble {
+  display: flex;
+  align-items: flex-end;
+  gap: 15px;
+  max-width: 90%;
+  animation: slideIn 0.4s ease-out;
+}
+
+/* --- Burbuja Bot (Pregunta - Rosa) --- */
+.bubble-bot {
+  align-self: flex-start;
+}
+
+/* ✅ ARREGLO 1: Centrar la foto en el contenedor */
+/* ✅ ARREGLO 2: Quitar icono/enlace roto "Slam Bot" */
+.bubble-bot .avatar-mini {
+  display: none !important; /* Ocultamos el avatar bot roto */
+}
+
+.bubble-bot .message-content {
+  background: #FF1493; /* Rosa fuerte */
+  color: white;
+  padding: 18px 25px;
+  border-radius: 25px 25px 25px 5px;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.2);
+}
+
+/* --- Burbuja Usuario (Respuesta - Blanca) --- */
+.bubble-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  width: 100%;
+}
+
+.bubble-user .user-response-area {
+  background: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 25px 25px 5px 25px;
+  border: 2px solid #f0f0f0;
+  width: 100%;
+}
+
+/* ==========================================================
+   --- INPUTS Y TEXTO ---
+   ========================================================== */
+.chat-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 1.1rem;
+  background: transparent;
+  margin-bottom: 15px;
+}
+
+.question-text {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================
+   --- ✅ ARREGLO 3: Foto Centrada y sin Icono Roto ---
+   ========================================================== */
+.photo-preview-bubble {
+  margin-top: 15px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 4px solid #fff1f6; /* Borde rosa muy suave */
+  display: flex;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
+  background-color: #fafafa;
+  max-width: 300px;        /* Limitamos ancho para que no sea gigante */
+  margin-left: auto;       /* Centrado auto si el contenedor es ancho */
+  margin-right: auto;
+}
+
+.img-in-bubble {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 300px;
+  border-radius: 16px;
+}
+
+/* ✅ ARREGLO 4: Ocultar icono de imagen rota al pasar de pregunta */
+.img-in-bubble[src=""],
+.img-in-bubble:not([src]) {
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================
+   --- ✅ ARREGLO 5: Botón de Carga Rosa Claro y Redondo ---
+   ========================================================== */
+.foto-box {
+  margin-top: 20px;
+  text-align: center; /* Centramos el botón */
+}
+
+/* Ocultamos el input feo por defecto */
+.foto-box input[type="file"] {
+  display: none;
+}
+
+/* Estilizamos el label para que parezca el botón */
+.label-file {
+  display: inline-block;
+  background-color: #ffecf2; /* Rosa claro suave */
+  color: #FF1493;            /* Texto Rosa fuerte */
+  padding: 12px 24px;
+  border-radius: 30px;      /* Muy redondeado */
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  box-shadow: 0 3px 10px rgba(255, 182, 193, 0.3);
+}
+
+.label-file:hover {
+  background-color: #FFB6C1; /* Rosa un poco más oscuro al hover */
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 182, 193, 0.5);
+}
+
+/* ==========================================================
+   --- BOTONES DE NAVEGACIÓN (Inferiores) ---
+   ========================================================== */
+.chat-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-chat {
+  padding: 15px 25px;
+  border-radius: 30px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.btn-primary {
+  background: #FF1493;
+  color: white;
+  flex: 2;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.3);
+}
+.btn-secondary { background: #C0C0C0; color: #333; flex: 1; }
+.btn-tertiary { background: #ffecf2; color: #FF1493; flex: 1; }
+
+.btn-chat:hover:not(:disabled) {
+  transform: translateY(-3px);
+  filter: brightness(1.05);
+}
+
+/* ==========================================================
+   --- BARRA DE PROGRESO Y OTROS ---
+   ========================================================== */
+.progress-bar {
+  margin-top: 40px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  height: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #FF1493;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.header-flex { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+.bienvenida-contenedor h1 span { color: #FF1493; font-weight: bold; }
+.reloj-icon { font-size: 2rem; margin-bottom: 10px; display: block;}

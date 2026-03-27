@@ -129,3 +129,99 @@
 /* Ocultar iconos rotos */
 img[src=""], img:not([src]) { display: none !important; }
 .avatar-mini { display: none !important; }
+
+/* --- CABECERA --- */
+.header-centrado { text-align: center; margin: 15px auto; }
+.bienvenida-contenedor h1 { font-size: 1.8rem; margin: 0; }
+.bienvenida-contenedor h1 span { color: #FF1493; }
+
+/* --- COMBO IDIOMA --- */
+.lang-selector-container { display: flex; flex-direction: column; align-items: center; margin-top: 10px; }
+.slam-combobox {
+  padding: 5px 15px;
+  border-radius: 20px;
+  border: 2px solid #ff4a68;
+  background: #fff0f5;
+  color: #a8003a;
+  font-weight: bold;
+}
+
+/* --- CONTENEDOR SLAM (AJUSTADO LAPTOP) --- */
+.slam-container {
+  max-width: 500px;
+  margin: 10px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.user-response-area {
+  background: #fff;
+  border: 2px solid #fce4ec;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.chat-input {
+  width: 100%;
+  height: 60px;
+  border: none;
+  outline: none;
+  resize: none;
+}
+
+/* --- CONTADOR Y BARRA (RECUPERADOS) --- */
+.progress-section { margin-top: 20px; text-align: center; }
+.contador-texto {
+  font-size: 14px;
+  font-weight: bold;
+  color: #FF1493;
+  margin-bottom: 5px;
+}
+.progress-bar { background: #f0f0f0; height: 8px; border-radius: 10px; overflow: hidden; }
+.progress-fill { background: #FF1493; height: 100%; transition: 0.3s; }
+
+/* --- BOTÓN FOTO (SIN EL GRIS FEO) --- */
+.label-file {
+  background: #ffecf2;
+  color: #FF1493;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1px solid #ffb6c1;
+  display: inline-block;
+}
+
+.photo-preview-bubble {
+  width: 150px;
+  margin: 10px auto;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid #ffecf2;
+}
+.img-in-bubble { width: 100%; display: block; }
+
+/* --- SPINNER --- */
+.spinner-reloj { animation: rotate 2s linear infinite; display: inline-block; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* --- LIMPIEZA DE IMÁGENES ROTAS --- */
+img[alt="Slam Bot"], .avatar-mini, img[src=""], img:not([src]) {
+  display: none !important;
+}
+
+.bubble-bot .message-content {
+  background: #FF1493;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 15px 15px 15px 5px;
+  display: inline-block;
+}
+
+.chat-controls { display: flex; gap: 8px; margin-top: 15px; }
+.btn-chat { flex: 1; border: none; padding: 10px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+.btn-primary { background: #FF1493; color: white; }
+.btn-secondary { background: #eee; }
+.btn-tertiary { background: #fce4ec; color: #FF1493; }

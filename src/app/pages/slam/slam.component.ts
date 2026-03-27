@@ -44,65 +44,79 @@ export class SlamComponent implements OnInit {
   constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService,
     private traduccionService: TraduccionService) {}
 
-ngOnInit(): void {
-    const u = localStorage.getItem('usuario');
-    this.fotoUrlServidor = localStorage.getItem('user_foto_perfil') || 'assets/img/default.png';
+  ngOnInit(): void {
+  const u = localStorage.getItem('usuario');
+  this.fotoUrlServidor = localStorage.getItem('user_foto_perfil') || 'assets/img/default.png';
+  // Eliminamos la lógica de la foto de aquí arriba porque el array está vacío todavía
 
-    if (!u) {
-      alert('Debes iniciar sesión');
-      return;
-    }
-
-    const usuarioObj = JSON.parse(u);
-    this.usuarioId = usuarioObj.id;
-    this.nombreUsuario = usuarioObj.nombre;
-
-    // Cargar preguntas y respuestas existentes en paralelo
-    forkJoin({
-      preguntas: this.preguntaService.obtenerPreguntas(),
-      respuestas: this.respuestaService.obtenerRespuestasPorUsuario(this.usuarioId)
-    }).subscribe({
-      next: ({ preguntas, respuestas }) => {
-        this.preguntas = preguntas;
-
-        // Mapear respuestas existentes
-        this.respuestas = preguntas.map(q => {
-          const rExistente = respuestas.find(r => r.preguntaId === q.id);
-          return {
-            id: rExistente?.id,
-            preguntaId: q.id,
-            usuarioId: this.usuarioId,
-            texto: rExistente?.texto || null,
-            fotoUrl: rExistente?.fotoUrl || null
-          };
-        });
-
-        // Configurar la primera pregunta y la foto inicial
-        if (this.respuestas.length > 0) {
-          this.preguntaActual = 0;
-          this.respuestaActual = this.respuestas[0].texto || '';
-
-          const fotoBD = this.respuestas[0].fotoUrl;
-          if (fotoBD) {
-            // FIX: Si la URL ya es completa, no le pegamos la baseApi
-            if (fotoBD.startsWith('http')) {
-              this.fotoUrlServidor = fotoBD;
-            } else {
-              const baseApi = 'https://backend-ruth-slam.onrender.com';
-              const cleanPath = fotoBD.startsWith('/') ? fotoBD : '/' + fotoBD;
-              this.fotoUrlServidor = `${baseApi}${cleanPath}`;
-            }
-            this.fotoPreview = this.fotoUrlServidor;
-          }
-        }
-      },
-      error: err => console.error('Error al cargar datos iniciales:', err)
-    });
-
-    this.respuestaService.reiniciarSlam$.subscribe(() => {
-      this.reiniciarCuestionario();
-    });
+  if (!u) {
+    alert('Debes iniciar sesión');
+    return;
   }
+
+  const usuarioObj = JSON.parse(u);
+  this.usuarioId = usuarioObj.id;
+  this.nombreUsuario = usuarioObj.nombre;
+
+  // ⚡ Cargar preguntas y respuestas existentes en paralelo
+  forkJoin({
+    preguntas: this.preguntaService.obtenerPreguntas(),
+    respuestas: this.respuestaService.obtenerRespuestasPorUsuario(this.usuarioId)
+  }).subscribe({
+    next: ({ preguntas, respuestas }) => {
+      this.preguntas = preguntas;
+
+      // Mapear respuestas existentes
+      this.respuestas = preguntas.map(q => {
+        const rExistente = respuestas.find(r => r.preguntaId === q.id);
+        return {
+          id: rExistente?.id,
+          preguntaId: q.id,
+          usuarioId: this.usuarioId,
+          texto: rExistente?.texto || null,
+          fotoUrl: rExistente?.fotoUrl || null
+        };
+      });
+
+      // --- AQUÍ VA EL CAMBIO SEGURO ---
+      if (this.respuestas.length > 0) {
+        this.preguntaActual = 0;
+        this.respuestaActual = this.respuestas[0].texto || '';
+
+        // 1. Prioridad: Foto que viene de la Base de Datos
+        // 2. Si no hay en BD, intentamos la del LocalStorage (caché)
+        // --- AQUÍ VA EL CAMBIO SEGURO ---
+        if (this.respuestas.length > 0) {
+          // ...
+          // Definimos la baseApi SIN la barra final
+          const baseApi = 'https://backend-ruth-slam.onrender.com';
+          const fotoGuardada = localStorage.getItem('user_foto_perfil');
+
+          if (this.respuestas[0]?.fotoUrl) {
+              let urlBD = this.respuestas[0].fotoUrl;
+              // Si la URL de la BD ya es completa, la usamos.
+              // Si es relativa, nos aseguramos de que empiece con "/"
+              if (!urlBD.startsWith('http')) {
+                  if (!urlBD.startsWith('/')) {
+                      urlBD = '/' + urlBD;
+                  }
+                  this.fotoUrlServidor = `${baseApi}${urlBD}`;
+              } else {
+                  this.fotoUrlServidor = urlBD;
+              }
+              this.fotoPreview = this.fotoUrlServidor;
+            }
+          }
+      }
+    },
+    error: err => console.error(err)
+  });
+
+  this.respuestaService.reiniciarSlam$.subscribe(() => {
+  this.reiniciarCuestionario(); // Esta es la función que pone preguntaActual = 0
+});
+
+}
 
 onFotoSeleccionada(ev: any) {
     const f: File = ev.target.files && ev.target.files[0];
@@ -160,51 +174,51 @@ this.fotoPreview = this.respuestas[this.preguntaActual].fotoUrl || this.fotoUrlS
 
 
 async guardarTodo() {
-    this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
+  this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
 
-    try {
-      if (this.fotoFile) {
-        const idParaSubir = this.usuarioId.toString();
+  try {
+    if (this.fotoFile) {
+      // FIX 1: En tu código anterior usabas 'usuarioId' del localStorage,
+      // pero a veces se guarda como 'usuario' (un objeto).
+      // Usamos el this.usuarioId que ya tienes cargado en la clase.
+      const idParaSubir = this.usuarioId.toString();
 
-        // Subimos el archivo y esperamos la respuesta del servidor
-        const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, idParaSubir));
+      // FIX 2: Llamamos al servicio pasando el ARCHIVO REAL (this.fotoFile)
+      // No pases this.fotoUrlServidor porque ese tiene el texto base64.
+      const pathRelativo = await firstValueFrom(this.respuestaService.subirFoto(this.fotoFile, idParaSubir));
 
-        const baseApi = 'https://backend-ruth-slam.onrender.com';
-        let urlCompleta = '';
+      const baseApi = 'https://backend-ruth-slam.onrender.com';
 
-        // FIX CRÍTICO: Evitar duplicar la URL de Render
-        if (pathRelativo.startsWith('http')) {
-          urlCompleta = `${pathRelativo}?v=${new Date().getTime()}`;
-        } else {
-          const cleanPath = pathRelativo.startsWith('/') ? pathRelativo : '/' + pathRelativo;
-          urlCompleta = `${baseApi}${cleanPath}?v=${new Date().getTime()}`;
-        }
+      // Aseguramos que el path relativo empiece con /
+      const cleanPath = pathRelativo.startsWith('/') ? pathRelativo : '/' + pathRelativo;
+      const urlCompleta = `${baseApi}${cleanPath}?v=${new Date().getTime()}`;
 
-        // Sincronizamos las respuestas con la nueva URL limpia
-        this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
-        this.fotoUrlServidor = urlCompleta;
-        this.fotoPreview = urlCompleta;
+      // Sincronizamos las respuestas con la nueva URL
+      this.respuestas.forEach(r => r.fotoUrl = urlCompleta);
+      this.fotoUrlServidor = urlCompleta;
+      this.fotoPreview = urlCompleta;
 
-        localStorage.setItem('user_foto_perfil', urlCompleta);
-      }
-    } catch (err) {
-      console.error('Error al subir foto:', err);
-      alert('Hubo un problema al subir la imagen.');
-      return;
+      localStorage.setItem('user_foto_perfil', urlCompleta);
     }
-
-    // Guardar el resto de respuestas (texto)
-    this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
-      next: () => {
-        this.completado = true;
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-      },
-      error: err => {
-        console.error('Error al guardar respuestas:', err);
-        alert('Error al guardar respuestas');
-      }
-    });
+  } catch (err) {
+    console.error('Error al subir foto:', err);
+    // Si sale error 400 aquí, revisa que el servicio use FormData (abajo te explico)
+    alert('Hubo un problema al subir la imagen.');
+    return; // Detenemos si la foto falló
   }
+
+  // Guardar el resto de respuestas (texto)
+  this.respuestaService.guardarRespuestas(this.respuestas).subscribe({
+    next: () => {
+      this.completado = true;
+      confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    },
+    error: err => {
+      console.error(err);
+      alert('Error al guardar respuestas');
+    }
+  });
+}
 
 
 

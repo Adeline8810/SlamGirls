@@ -3,12 +3,12 @@
 
 <div class="header-centrado">
   <div class="bienvenida-contenedor">
-    <h1>Hola, <span>{{nombreUsuario}}</span> ✨</h1>
-    <p>Cuéntanos un poco más sobre ti en este Slam.</p>
+    <h1>Salut, <span>{{nombreUsuario}}</span> ✨</h1>
+    <p>Parle-nous un peu plus de toi dans ce slam.</p>
   </div>
 
   <div class="lang-selector-container">
-    <span class="lang-titulo-label">Idioma</span>
+    <span class="lang-titulo-label">Sélectionne ta langue</span>
     <select id="langCombo" [(ngModel)]="idiomaSeleccionado" (change)="obtenerTraduccionActual()" class="slam-combobox">
       <option value="es">🇪🇸 ES</option>
       <option value="fr">🇫🇷 FR</option>
@@ -40,7 +40,7 @@
         </div>
 
         <div *ngIf="preguntaActual === 0" class="foto-box">
-          <label for="fotoInput" class="label-file">Sube tu foto ❤️</label>
+          <label for="fotoInput" class="label-file">Ajoute ta photo (Ko) ❤️</label>
           <input type="file" id="fotoInput" (change)="onFotoSeleccionada($event)" accept="image/*" style="display: none;" />
         </div>
       </div>
@@ -48,15 +48,15 @@
   </div>
 
   <div class="chat-controls">
-    <button (click)="anterior()" [disabled]="preguntaActual===0" class="btn-chat btn-secondary">Atrás</button>
-    <button (click)="pasar()" class="btn-chat btn-tertiary">Pasar</button>
+    <button (click)="anterior()" [disabled]="preguntaActual===0" class="btn-chat btn-secondary">Retour</button>
+    <button (click)="pasar()" class="btn-chat btn-tertiary">Passer</button>
     <button (click)="siguiente()" class="btn-chat btn-primary">
-      {{ preguntaActual === preguntas.length-1 ? 'Guardar' : 'Siguiente' }}
+      {{ preguntaActual === preguntas.length-1 ? 'Enregistrer' : 'Suivant' }}
     </button>
   </div>
 
   <div class="progress-section">
-    <p class="contador-texto">Pregunta {{preguntaActual + 1}} / {{preguntas.length}}</p>
+    <p class="contador-texto">Question {{preguntaActual + 1}} / {{preguntas.length}}</p>
     <div class="progress-bar">
       <div class="progress-fill" [style.width.%]="((preguntaActual + 1) / preguntas.length) * 100"></div>
     </div>

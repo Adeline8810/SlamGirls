@@ -225,3 +225,49 @@ img[alt="Slam Bot"], .avatar-mini, img[src=""], img:not([src]) {
 .btn-primary { background: #FF1493; color: white; }
 .btn-secondary { background: #eee; }
 .btn-tertiary { background: #fce4ec; color: #FF1493; }
+
+/* ==========================================================
+   --- ARREGLO DE CAJA DE TEXTO (RESPONSIVA Y ROSA) ---
+   ========================================================== */
+.chat-input {
+  /* 1. Responsividad: Ancho completo pero con control */
+  width: 100% !important; /* Forzamos para que en celular no se salga */
+  max-width: 100%;       /* Aseguramos que no crezca más allá de su contenedor */
+
+  /* 2. Tamaño y Padding */
+  height: 60px;          /* Reducido para que no sea una 'cajota' */
+  padding: 12px;         /* Espacio interno cómodo */
+  box-sizing: border-box; /* Crucial: incluye padding y borde en el ancho del 100% */
+
+  /* 3. Estilo: Rosa bajito y Borde marcado */
+  background-color: #fff0f6 !important; /* El rosa bajito que querías */
+  color: #5a3e47;        /* Texto en marrón/rosa oscuro suave */
+  border: 2px solid #ffd1e3 !important;  /* Borde rosa marcado */
+  border-radius: 12px;   /* Bordes redondeados sutiles */
+
+  /* 4. Funcionalidad */
+  resize: none;         /* Quitamos el triangulito para agrandar (feo en celular) */
+  font-family: inherit;  /* Mantenemos tu fuente Poppins */
+  font-size: 1rem;       /* Tamaño de texto legible */
+  transition: all 0.3s ease; /* Animación suave al hacer clic */
+
+  /* Otros ajustes para limpiar */
+  outline: none;         /* Quitamos el borde azul por defecto */
+  margin-bottom: 15px;    /* Espacio con la foto de abajo */
+  display: block;        /* Para que ocupe toda la línea */
+}
+
+/* --- Efecto al hacer clic (Focus) --- */
+.chat-input:focus {
+  background-color: #ffe6f0 !important; /* Un rosa un poco más fuerte al focus */
+  border-color: #FF1493 !important;     /* Borde Hot Pink fucsia fuerte */
+  box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2); /* Sutil brillo rosa */
+}
+
+/* ==========================================================
+   --- ARREGLO ADICIONAL PARA CONTENERLO EN CELULAR ---
+   ========================================================== */
+.bubble-user .user-response-area {
+  padding: 10px; /* Reducimos padding en celular */
+  box-sizing: border-box; /* Para que el contenedor principal tampoco se salga */
+}

@@ -11,9 +11,11 @@
     <span class="lang-titulo-label">Idioma</span>
     <select id="langCombo" [(ngModel)]="idiomaSeleccionado" (change)="obtenerTraduccionActual()" class="slam-combobox">
       <option value="es">🇪🇸 ES</option>
-      <option value="it">🇮🇹 IT</option>
       <option value="fr">🇫🇷 FR</option>
       <option value="en">🇺🇸 EN</option>
+      <option value="uk">🇺🇦 Українська (Ucraniano)</option>
+      <option value="fa">🇮🇷 فارسی (Persa)</option>
+      <option value="it">🇮🇹 IT</option>
     </select>
   </div>
 </div>
@@ -58,5 +60,13 @@
     <div class="progress-bar">
       <div class="progress-fill" [style.width.%]="((preguntaActual + 1) / preguntas.length) * 100"></div>
     </div>
+  </div>
+</div>
+<div class="slam-container final-container" *ngIf="completado">
+  <div class="mensaje-gracias">
+    <div class="icon-final">🎊</div>
+    <h2>¡Muchas gracias, {{nombreUsuario}}!</h2>
+    <p>Tus respuestas han sido guardadas con éxito en el Slam.</p>
+    <button class="btn-chat btn-primary" (click)="salir()">Volver al inicio</button>
   </div>
 </div>

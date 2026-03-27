@@ -271,3 +271,31 @@ img[alt="Slam Bot"], .avatar-mini, img[src=""], img:not([src]) {
   padding: 10px; /* Reducimos padding en celular */
   box-sizing: border-box; /* Para que el contenedor principal tampoco se salga */
 }
+/* --- ORDENAR BOTONES EN CELULAR --- */
+@media (max-width: 600px) {
+  /* Contenedor de los botones del menú */
+  .menubar-buttons-container,
+  .header-flex,
+  .nav-buttons {
+    display: flex !important;
+    flex-direction: column !important; /* Los pone uno debajo del otro */
+    align-items: stretch !important;    /* Hace que todos midan lo mismo de ancho */
+    gap: 10px !important;              /* Espacio entre cada botón */
+    padding: 10px;
+  }
+
+  /* Ajuste individual de cada botón */
+  .btn-menubar,
+  .lang-selector-container,
+  .nav-link {
+    width: 100% !important;   /* Ocupan todo el ancho disponible */
+    margin: 0 !important;      /* Quitamos márgenes que estorben */
+    text-align: center;
+  }
+
+  /* Centrar el logo o título SLAM si es necesario */
+  .logo-slam {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+}

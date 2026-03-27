@@ -1,73 +1,131 @@
-.slam-container {
-  max-width: 480px; /* Tamaño ideal para laptop */
-  margin: 10px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+/* --- ESTILOS DE CABECERA Y CENTRADO --- */
+.header-centrado {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 600px;
 }
 
-.chat-wrapper { display: flex; flex-direction: column; gap: 12px; }
+.bienvenida-contenedor h1 { font-size: 2.2rem; color: #5a3e47; margin: 0; }
+.bienvenida-contenedor h1 span { color: #ff69b4; font-weight: 800; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
 
+/* --- SELECTOR DE IDIOMA ROSA (RECUPERADO) --- */
+.lang-selector-container {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.lang-titulo-label { font-size: 11px; font-weight: bold; color: #ff69b4; text-transform: uppercase; }
+
+.slam-combobox {
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: 2px solid #ff4a68;
+  background-color: #fff0f5;
+  color: #a8003a;
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+  transition: 0.3s;
+}
+
+.slam-combobox:hover { background-color: #ffe6eb; transform: scale(1.02); }
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.slam-container {
+  max-width: 550px;
+  margin: 10px auto 40px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  box-shadow: 0 15px 35px rgba(255, 105, 180, 0.15);
+  backdrop-filter: blur(10px);
+}
+
+/* --- BURBUJAS DE CHAT --- */
+.chat-wrapper { display: flex; flex-direction: column; gap: 20px; }
+
+.bubble { display: flex; max-width: 100%; animation: fadeIn 0.4s ease; }
+
+.bubble-bot { justify-content: flex-start; }
 .bubble-bot .message-content {
   background: #FF1493;
   color: white;
-  padding: 12px 18px;
-  border-radius: 15px 15px 15px 5px;
-  display: inline-block;
+  padding: 15px 20px;
+  border-radius: 20px 20px 20px 5px;
+  font-weight: 500;
+  box-shadow: 3px 3px 10px rgba(255, 20, 147, 0.2);
 }
 
+/* --- CAJA DE RESPUESTA (CENTRADA Y DENTRO) --- */
+.bubble-user { justify-content: center; width: 100%; }
 .user-response-area {
-  background: #fff;
-  border: 2px solid #fce4ec;
-  border-radius: 15px 15px 5px 15px;
-  padding: 12px;
+  background: #fff7fb;
+  border: 2px solid #ffd4e3;
+  border-radius: 20px;
+  padding: 15px;
+  width: 100%;
+  box-sizing: border-box; /* Crucial para que no se salga */
 }
 
 .chat-input {
   width: 100%;
+  height: 90px;
   border: none;
+  background: transparent;
   resize: none;
   outline: none;
-  font-family: inherit;
-  height: 60px;
+  font-size: 1.1rem;
+  color: #4b2b33;
 }
 
-/* --- Arreglo del botón de foto --- */
-.foto-box { margin-top: 10px; text-align: center; }
-.foto-box input[type="file"] { display: none; } /* Oculta el gris feo */
+/* --- SPINNER RELOJITO --- */
+.spinner-reloj { font-size: 1.8rem; animation: rotate 2s linear infinite; display: inline-block; }
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+/* --- FOTO Y BOTÓN DE CARGA --- */
+.photo-preview-bubble {
+  max-width: 220px;
+  margin: 15px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 4px solid white;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.img-in-bubble { width: 100%; display: block; }
+
+.foto-box { text-align: center; margin-top: 10px; }
 .label-file {
   background: #ffecf2;
   color: #FF1493;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 10px 22px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: bold;
+  border: 2px solid #ffb6c1;
   display: inline-block;
-  border: 1px solid #ffb6c1;
+  transition: 0.3s;
 }
+.label-file:hover { background: #FF1493; color: white; }
 
-.photo-preview-bubble {
-  width: 150px;
-  margin: 10px auto;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 2px solid #ffecf2;
-}
+/* --- BOTONES DE CONTROL --- */
+.chat-controls { display: flex; gap: 10px; margin-top: 25px; }
+.btn-chat { flex: 1; padding: 12px; border-radius: 25px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+.btn-primary { background: linear-gradient(135deg, #ff7ab2, #ff4f9a); color: white; }
+.btn-secondary { background: #f0f0f0; color: #666; }
+.btn-tertiary { background: #fff0f5; color: #ff4f9a; border: 1px solid #ffd4e3; }
+.btn-chat:hover { transform: translateY(-2px); filter: brightness(1.05); }
 
-.img-in-bubble { width: 100%; display: block; }
+/* --- PROGRESO --- */
+.progress-bar-container { margin-top: 20px; text-align: center; }
+.progreso-texto { font-size: 12px; color: #ff69b4; margin-bottom: 5px; font-weight: bold; }
+.progress-bar { background: #eee; height: 10px; border-radius: 10px; overflow: hidden; }
+.progress-fill { background: #FF1493; height: 100%; transition: 0.5s ease; }
 
-.chat-controls { display: flex; gap: 8px; margin-top: 20px; }
-.btn-chat { border: none; padding: 10px; border-radius: 15px; cursor: pointer; font-weight: bold; flex: 1; }
-.btn-primary { background: #FF1493; color: white; }
-.btn-secondary { background: #eee; }
-.btn-tertiary { background: #fce4ec; color: #FF1493; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-.progress-bar { background: #f0f0f0; height: 6px; border-radius: 10px; margin-top: 15px; }
-.progress-fill { background: #FF1493; height: 100%; transition: 0.3s; }
-
-/* Header Responsivo */
-.header-flex { display: flex; justify-content: space-between; padding: 10px 20px; align-items: center; }
-.bienvenida-contenedor h1 { font-size: 1.5rem; margin: 0; }
-.bienvenida-contenedor h1 span { color: #FF1493; }
+/* Ocultar iconos rotos */
+img[src=""], img:not([src]) { display: none !important; }
+.avatar-mini { display: none !important; }

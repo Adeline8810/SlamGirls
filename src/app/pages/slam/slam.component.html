@@ -1,28 +1,31 @@
 <app-menubar></app-menubar>
 <ngx-particles [id]="'tsparticles'" [options]="particlesOptions" [particlesInit]="particlesInit"></ngx-particles>
 
-<div class="header-flex">
+<div class="header-centrado">
   <div class="bienvenida-contenedor">
-    <h1>Hola, <span>{{nombreUsuario}}</span></h1>
+    <h1>Hola, <span>{{nombreUsuario}}</span> ✨</h1>
     <p>Cuéntanos un poco más sobre ti.</p>
   </div>
 
   <div class="lang-selector-container">
     <span class="lang-titulo-label">Idioma</span>
     <select id="langCombo" [(ngModel)]="idiomaSeleccionado" (change)="obtenerTraduccionActual()" class="slam-combobox">
-      <option value="es">🇪🇸 ES</option>
-      <option value="it">🇮🇹 IT</option>
-      <option value="fr">🇫🇷 FR</option>
-      <option value="en">🇺🇸 EN</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="it">🇮🇹 Italiano</option>
+      <option value="fr">🇫🇷 Francés</option>
+      <option value="en">🇺🇸 Inglés</option>
     </select>
   </div>
 </div>
 
 <div class="slam-container" *ngIf="!completado && preguntas.length > 0">
   <div class="chat-wrapper">
+
     <div class="bubble bubble-bot">
       <div class="message-content">
-        <p class="question-text">
+        <div *ngIf="cargando" class="spinner-reloj">⏳</div>
+
+        <p class="question-text" *ngIf="!cargando">
           {{ idiomaSeleccionado === 'es' ? preguntas[preguntaActual]?.texto : (preguntasTraducidas[idiomaSeleccionado]?.[preguntas[preguntaActual]?.id] || '...') }}
         </p>
       </div>
@@ -30,7 +33,7 @@
 
     <div class="bubble bubble-user">
       <div class="user-response-area">
-        <textarea [(ngModel)]="respuestaActual" placeholder="Tu respuesta..." class="chat-input"></textarea>
+        <textarea [(ngModel)]="respuestaActual" placeholder="Escribe aquí..." class="chat-input"></textarea>
 
         <div *ngIf="fotoPreview" class="photo-preview-bubble">
           <img [src]="fotoPreview" class="img-in-bubble">
@@ -38,7 +41,7 @@
 
         <div *ngIf="preguntaActual === 0" class="foto-box">
           <label for="fotoInput" class="label-file">Sube tu foto ❤️</label>
-          <input type="file" id="fotoInput" (change)="onFotoSeleccionada($event)" accept="image/*" />
+          <input type="file" id="fotoInput" (change)="onFotoSeleccionada($event)" accept="image/*" style="display: none;" />
         </div>
       </div>
     </div>
@@ -48,7 +51,7 @@
     <button (click)="anterior()" [disabled]="preguntaActual===0" class="btn-chat btn-secondary">Atrás</button>
     <button (click)="pasar()" class="btn-chat btn-tertiary">Pasar</button>
     <button (click)="siguiente()" class="btn-chat btn-primary">
-      {{ preguntaActual === preguntas.length-1 ? 'Guardar' : 'Siguiente' }}
+      {{ preguntaActual === preguntas.length-1 ? 'Guardar todo 🎉' : 'Siguiente' }}
     </button>
   </div>
 

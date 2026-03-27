@@ -1,4 +1,147 @@
-.slam-container { max-width:700px; margin:40px auto; padding:24px; background:linear-gradient(#fff6f9,#fff0f4); border-radius:16px; text-align:center; box-shadow:0 10px 30px rgba(255,105,180,0.08); position:relative; }
+.slam-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.7); /* Fondo semi-transparente para que se vean las partículas */
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  backdrop-filter: blur(5px);
+}
+
+/* --- EL ÁREA DE CHAT (BURBUJAS) --- */
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.bubble {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 85%;
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Burbuja de la App (Pregunta - Color Fucsia/Rosa) */
+.bubble-bot {
+  align-self: flex-start;
+}
+
+.bubble-bot .message-content {
+  background: #FF1493; /* Rosa Profundo */
+  color: white;
+  padding: 15px 20px;
+  border-radius: 20px 20px 20px 5px;
+  box-shadow: 3px 3px 10px rgba(255, 20, 147, 0.2);
+}
+
+/* Burbuja del Usuario (Respuesta - Color Blanco/Plata) */
+.bubble-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.bubble-user .user-response-area {
+  background: white;
+  color: #333;
+  padding: 15px;
+  border-radius: 20px 20px 5px 20px;
+  border: 2px solid #f0f0f0;
+  width: 100%;
+}
+
+/* Avatar circular */
+.avatar-mini img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* --- INPUTS Y TEXTO --- */
+.chat-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: inherit;
+  font-size: 16px;
+  background: transparent;
+}
+
+.question-text {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+/* --- FOTO DENTRO DEL CHAT --- */
+.photo-preview-bubble {
+  margin-top: 10px;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid #ffecf2;
+}
+
+.img-in-bubble {
+  max-width: 100%;
+  display: block;
+}
+
+/* --- BOTONES --- */
+.chat-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn-chat {
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-primary { background: #FF1493; color: white; flex: 2; }
+.btn-secondary { background: #C0C0C0; color: #333; flex: 1; }
+.btn-tertiary { background: #ffb6c1; color: #333; flex: 1; }
+
+.btn-chat:hover:not(:disabled) {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* --- BARRA DE PROGRESO --- */
+.progress-bar {
+  margin-top: 30px;
+  background: #eee;
+  border-radius: 10px;
+  height: 10px;
+  position: relative;
+}
+
+.progress-fill {
+  background: #FF1493;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease-in-out;
+}
+
+/* --- ANIMACIONES --- */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos de cabecera que ya tenías */
+.header-flex { display: flex; justify-content: space-between; align-items: center; padding: 10px; }
+.bienvenida-contenedor h1 span { color: #FF1493; font-weight: bold; }
+
 .slam-title {
   /* 1. Mueve el texto hacia ARRIBA (alejándolo de la foto de arriba) */
   margin-top: 30px; /* Dale más espacio aquí para que baje un poco con la foto */

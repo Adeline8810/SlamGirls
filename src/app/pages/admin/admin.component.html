@@ -1,0 +1,17 @@
+<app-menubar></app-menubar>
+
+<div style="max-width:900px;margin:30px auto;padding:20px;background:#fffafc;border-radius:12px;">
+  <h1>Panel de Administración</h1>
+  <p>Aquí puedes ver opciones administrativas.</p>
+  <div style="display:flex;gap:12px;margin-top:12px">
+    <button (click)="go('/administrar-preguntas')" style="padding:10px 14px;border-radius:10px;background:#ffb6d9;color:#fff;border:none">
+      Administrar preguntas
+    </button>
+    <button (click)="go('ver-usuarios')" style="padding:10px 14px;border-radius:10px;background:#ffb6d9;color:#fff;border:none">
+      Ver usuarios
+    </button>
+    <button (click)="go('ver-respuestas')" style="padding:10px 14px;border-radius:10px;background:#ffb6d9;color:#fff;border:none">
+      Ver Respuestas
+    </button>
+  </div>
+</div>

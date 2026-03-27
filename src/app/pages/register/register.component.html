@@ -1,0 +1,10 @@
+<div class="auth-center">
+  <h2>Registrarse</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <input formControlName="username" placeholder="Usuario" />
+    <input formControlName="nombre" placeholder="Nombre" />
+    <input formControlName="email" placeholder="Email" />
+    <input formControlName="password" type="password" placeholder="Contraseña" />
+    <button type="submit">Registrar</button>
+  </form>
+</div>

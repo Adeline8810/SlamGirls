@@ -1,0 +1,44 @@
+<div class="search-page">
+  <h2 class="title">Busca el SLAM de un amigo 🕵️‍♀️</h2>
+
+  <div class="search-bar" *ngIf="!mostrarSlam">
+    <input type="text" [(ngModel)]="busquedaNombre" placeholder="Nombre o email..." (keyup.enter)="buscarAmigos()">
+    <button (click)="buscarAmigos()" [disabled]="cargando">Buscar</button>
+  </div>
+
+  <div class="lista-resultados" *ngIf="amigosEncontrados.length > 0 && !mostrarSlam">
+    <table class="tabla-usuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Usuario</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let amigo of amigosEncontrados">
+          <td>{{ amigo.nombre }}</td>
+          <td>@{{ amigo.username }}</td>
+          <td><button class="btn-ver" (click)="verSlam(amigo)">📖 Ver SLAM</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="resultado-container" *ngIf="mostrarSlam">
+
+    <button class="btn-volver" (click)="volverALista()">⬅ Volver a la lista</button>
+    <button class="btn-volver-buscador" (click)="volverAlBuscadorMain()">
+    🔍 Nuevo buscador
+  </button>
+
+  <div class="perfil-header" *ngIf="respuestasAmigo.length > 0 && respuestasAmigo[0].fotoUrl">
+  <img [src]="'https://backend-ruth-slam.onrender.com' + respuestasAmigo[0].fotoUrl + '?t=' + obtenerTiempo()"
+       class="foto-perfil-amigo"
+       alt="Foto de perfil">
+</div>
+
+<div *ngFor="let item of respuestasAmigo" class="card">
+  <p class="pregunta">💖 {{ item.pregunta }}</p> <p class="respuesta">{{ item.respuesta }}</p> </div>
+  </div>
+</div>

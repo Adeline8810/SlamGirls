@@ -1,0 +1,372 @@
+.slam-container { max-width:700px; margin:40px auto; padding:24px; background:linear-gradient(#fff6f9,#fff0f4); border-radius:16px; text-align:center; box-shadow:0 10px 30px rgba(255,105,180,0.08); position:relative; }
+.slam-title {
+  /* 1. Mueve el texto hacia ARRIBA (alejándolo de la foto de arriba) */
+  margin-top: 30px; /* Dale más espacio aquí para que baje un poco con la foto */
+
+  /* 2. Separa el texto de la respuesta de ABAJO */
+  margin-bottom: 25px; /* Un poco de aire con el cuadro de texto */
+
+  /* 3. Centra el texto */
+  text-align: center;
+  width: 100%;
+
+  /* 4. Estilo de fuente (tus valores originales) */
+  font-size: 1.4rem;
+  color: #ff4f9a;
+  transition: transform .25s ease;
+  font-weight: bold; /* Para que resalte un poco más */
+}
+
+
+.slam-title.bounce { transform: translateY(-8px) scale(1.02); }
+.foto-preview img { width:220px; border-radius:12px; box-shadow:0 6px 20px rgba(255,79,154,0.18); margin-bottom:12px; }
+.respuesta-box { width:100%; height:140px; padding:12px; border-radius:12px; border:2px solid #ffd4e3; background:#fff7fc; resize:none; }
+.foto-box { margin:12px 0; }
+.botones { display:flex; justify-content:space-between; gap:10px; margin-top:12px; }
+button { padding:10px 16px; border-radius:24px; border:none; cursor:pointer; }
+.btn-primary { background: linear-gradient(135deg,#ff7ab2,#ff4f9a); color:white; box-shadow:0 6px 18px rgba(255,79,154,0.15); }
+.btn-secondary { background:white; color:#4b2b33; border:1px solid #ffd4e3; }
+.btn-tertiary { background:#ffeef6; color:#4b2b33; }
+.mensaje-final { padding:30px; border-radius:12px; background:linear-gradient(#fff0f6,#fff9fb); }
+.contador { color:#7b3b60; margin-top:8px; }
+.label-file { display:block; margin-bottom:6px; color:#7b3b60; font-weight:600; }
+
+.bienvenida-contenedor {
+  text-align: center;
+  margin-bottom: 20px;
+  animation: fadeIn 1s ease-in;
+  text-align: center;
+  animation: fadeInDown 0.8s ease-out; /* Animación suave al cargar */
+}
+/* El "Hola, " (texto normal) */
+.bienvenida-contenedor h1 {
+  font-size: 2.2rem;
+  color: #5a3e47; /* Un marrón/rosa muy suave, no negro puro */
+  font-family: 'Poppins', sans-serif; /* Asegúrate de tener esta fuente o usa una similar */
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* El nombre "Ruth" (el span) */
+.bienvenida-contenedor h1 span {
+  color: #ff69b4; /* Rosa Hot Pink pero más suave */
+  font-weight: 800;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.2); /* Sutil brillo rosa */
+  position: relative;
+}
+
+/* Un toque coqueto: un mini corazón después del nombre (opcional) */
+.bienvenida-contenedor h1 span::after {
+  content: ' 💕';
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+/* El texto secundario "Cuéntanos un poco más..." */
+.bienvenida-contenedor p {
+  font-size: 1rem;
+  color: #8b6b75;
+  font-weight: 400;
+  margin-top: 0;
+}
+
+
+.slam-title span {
+  color: #ff4081; /* O el color principal de tu app */
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.divisor {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(to right, transparent, #ccc, transparent);
+  margin-bottom: 20px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+/* Contenedor principal para centrarlo y darle espacio */
+.lang-selector-container {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* El estilo "vistoso" del combo */
+.slam-combobox {
+  appearance: none; /* Quitamos el estilo nativo de Windows/Mac */
+  padding: 12px 40px 12px 20px;
+  border-radius: 25px; /* Bordes muy redondeados */
+  border: 2px solid #ff4a68; /* El rosa fucsia de tu botón 'Continuar' */
+  background-color: #fff0f5; /* Un rosa pastel súper suave para el fondo */
+  color: #a8003a; /* Un tono vino tinto para el texto */
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Icono de flecha personalizada (flecha hacia abajo rosa) */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff4a68%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.3c0%203%201.1%205.8%203.1%208.2l131.6%20130.6a17.6%2017.6%200%200%200%2025.8%200L293.1%2091.2c2-2.4%203.1-5.2%203.1-8.3%200-4.8-1.8-9.3-5.4-13.5z%22%2F%3E%3C%2F%3E%3C%2Fsvg%22');
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px auto;
+}
+
+/* Estilo cuando pasas el mouse por encima (hover) */
+.slam-combobox:hover {
+  background-color: #ffe6eb;
+  border-color: #ff6f8a;
+  box-shadow: 0 4px 10px rgba(255, 74, 104, 0.2); /* Sombra rosa suave */
+}
+
+/* Estilo cuando está enfocado */
+.slam-combobox:focus {
+  outline: none;
+  border-color: #ff1f4a;
+  box-shadow: 0 0 0 3px rgba(255, 74, 104, 0.3);
+}
+
+/* Icono del mundo al lado */
+.lang-label i {
+  color: #ff4a68;
+  font-size: 20px;
+}
+
+
+
+/* Botón Continuar con efecto de pulso */
+.continue-btn {
+  background: linear-gradient(135deg, #ff4a68 0%, #ff1f4a 100%);
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 50px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(255, 31, 74, 0.4);
+  transition: transform 0.2s;
+}
+
+.continue-btn:hover {
+  transform: scale(1.05); /* Se hace un poquito más grande al tocarlo */
+}
+
+/* El combo de idiomas más elegante */
+.slam-combobox {
+  border: 2px solid #ff4a68;
+  border-radius: 20px;
+  padding: 8px 15px;
+  background-color: white;
+  color: #ff4a68;
+  font-weight: bold;
+  outline: none;
+}
+
+/* Spinner de reloj de arena elegante */
+.elegant-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #fff0f5;
+  border-radius: 50%;
+  border-top-color: #d63384; /* Rosa elegante */
+  border-bottom-color: #ecb3cb; /* Rosa pastel */
+  animation: spinner 1.2s ease-in-out infinite;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+.pregunta-container {
+  display: flex;
+  flex-direction: column; /* Apila los elementos uno debajo de otro */
+  align-items: center;    /* Centra horizontalmente todo lo que está adentro */
+  justify-content: center; /* Centra verticalmente si el contenedor tiene altura */
+  text-align: center;      /* Centra el texto de adentro */
+  width: 100%;
+  max-width: 600px;        /* Opcional: para que no se estire demasiado en pantallas grandes */
+  margin: 0 auto;          /* Centra el contenedor completo en la página */
+}
+
+/* 2. Estilo para la foto (para que no salga pegada) */
+.foto-pregunta {
+  margin-bottom: 25px; /* Separa la foto de la pregunta que viene abajo */
+  /* tus otros estilos de la foto (border-radius, box-shadow, etc) */
+}.pregunta-container {
+  display: flex;
+  flex-direction: column; /* Apila los elementos uno debajo de otro */
+  align-items: center;    /* Centra horizontalmente todo lo que está adentro */
+  justify-content: center; /* Centra verticalmente si el contenedor tiene altura */
+  text-align: center;      /* Centra el texto de adentro */
+  width: 100%;
+  max-width: 600px;        /* Opcional: para que no se estire demasiado en pantallas grandes */
+  margin: 0 auto;          /* Centra el contenedor completo en la página */
+}
+
+/* 2. Estilo para la foto (para que no salga pegada) */
+.foto-pregunta {
+  margin-bottom: 25px; /* Separa la foto de la pregunta que viene abajo */
+  /* tus otros estilos de la foto (border-radius, box-shadow, etc) */
+}
+
+/* Contenedor que alinea los dos bloques */
+.header-flex {
+  display: flex;
+  justify-content: center; /* Centra el saludo */
+  align-items: center;
+  position: relative; /* Para ubicar el combo a la derecha */
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 0; /* Más aire arriba y abajo */
+}
+
+/* Movemos el selector de idiomas a la esquina derecha */
+.lang-selector-container {
+  position: absolute;
+  right: 0;           /* Pegado a la derecha */
+  top: 50%;           /* Al centro vertical */
+  transform: translateY(-50%); /* Ajuste fino de centrado vertical */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Ajuste del combo para que se vea más delicado arriba */
+.slam-combobox {
+  padding: 8px 35px 8px 12px; /* Un poco más pequeño */
+  font-size: 14px;
+  border-radius: 20px;
+  border: 2px solid #ff4a68;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Para que en pantallas pequeñas no se amontone */
+@media (max-width: 768px) {
+  .header-flex {
+    flex-direction: column;
+    position: static;
+  }
+  .lang-selector-container {
+    position: static;
+    transform: none;
+    margin-top: 15px;
+  }
+}
+
+
+
+/* slam.component.css */
+
+/* Contenedor del combo a la derecha */
+.lang-selector-container {
+  position: absolute;
+  right: 20px; /* Un poco separado del borde */
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* El icono del mundo antes del combo */
+.lang-label i {
+  color: #ff85a2; /* Rosa pastel vibrante */
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* EL COMBO ESTILIZADO (La magia) */
+.slam-combobox {
+  appearance: none; /* Quitamos el estilo feo por defecto */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding: 10px 40px 10px 18px; /* Espacio para el texto y la flecha */
+  font-size: 14px;
+  font-weight: 600;
+  color: #a84a6c; /* Rosa oscuro elegante */
+  background-color: #fff0f5; /* Fondo rosa pastel súper suave */
+
+  border: 2px solid #ffb6c1; /* Borde rosa claro */
+  border-radius: 30px; /* Bordes MUY redondeados, estilo burbuja */
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  /* Icono de flecha personalizada (flecha hacia abajo rosa chic) */
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23ff69b4%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.3c0%203%201.1%205.8%203.1%208.2l131.6%20130.6a17.6%2017.6%200%200%200%2025.8%200L293.1%2091.2c2-2.4%203.1-5.2%203.1-8.3%200-4.8-1.8-9.3-5.4-13.5z%22%2F%3E%3C%2F%3E%3C%2Fsvg%22');
+  background-repeat: no-repeat;
+  background-position: right 15px top 50%;
+  background-size: 12px auto;
+
+  box-shadow: 0 4px 10px rgba(255, 182, 193, 0.2); /* Sutil sombra rosa */
+}
+
+/* Efecto al pasar el mouse (hover) */
+.slam-combobox:hover {
+  background-color: #ffe4e1; /* Rosa un poco más cálido */
+  border-color: #ff69b4; /* Borde más intenso */
+  transform: translateY(-2px); /* Pequeño salto coquetón */
+  box-shadow: 0 6px 15px rgba(255, 105, 180, 0.3);
+}
+
+/* Efecto al hacer clic/enfoque (focus) */
+.slam-combobox:focus {
+  outline: none;
+  border-color: #ff1493; /* Rosa fucsia */
+  box-shadow: 0 0 0 3px rgba(255, 20, 147, 0.2);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Esto hace que el título se ponga arriba del combo */
+.lang-selector-container {
+  display: flex;
+  flex-direction: column; /* Alinea el texto arriba y el combo abajo */
+  align-items: flex-end;    /* Lo pega a la derecha */
+  gap: 4px;                /* Espacio chiquito entre el texto y el combo */
+}
+
+/* El estilo del título */
+.lang-titulo-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #ff69b4; /* Rosa coqueto */
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  margin-right: 5px;
+}
+/* slam.component.css */
+
+/* Hacemos que el contenedor sea transparente para ver los brillos al fondo */
+.header-flex, .slam-container {
+  background: transparent !important;
+}
+
+/* Si tienes un color de fondo en el componente, quítalo o ponlo así: */
+:host {
+ display: block;
+  background-color: transparent !important;
+}
+.slam-container, .header-flex {
+  background: transparent !important; /* Quita cualquier color de fondo aquí */
+}

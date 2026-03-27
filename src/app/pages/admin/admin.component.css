@@ -1,0 +1,49 @@
+.admin-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #fff0f6;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.10);
+  text-align: center;
+}
+
+.titulo {
+  font-size: 2rem;
+  color: #ff4f9a;
+  margin-bottom: 10px;
+}
+
+.subtitulo {
+  color: #ff7cb6;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+.admin-tag {
+  background: #ff4f9a;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 10px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.btn-opcion {
+  background: #ff4f9a;
+  border: none;
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-opcion:hover {
+  background: #ff77b8;
+}

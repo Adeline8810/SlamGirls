@@ -1,0 +1,11 @@
+<nav class="menu-bar">
+  <div class="brand">SLAM</div>
+  <div class="menu-buttons">
+    <button (click)="go('/slam')">Llenar Slam</button>
+    <button *ngIf="esAdmin" (click)="go('/admin')">Administrador</button>
+    <button class="menu-buttons" (click)="irABuscarAmigo()">
+  🔍 Busca un amigo
+    </button>
+    <button (click)="logout()">Salir</button>
+  </div>
+</nav>

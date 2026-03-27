@@ -299,3 +299,36 @@ img[alt="Slam Bot"], .avatar-mini, img[src=""], img:not([src]) {
     margin-bottom: 15px;
   }
 }
+/* --- MEJORA DE BOTONES EN MÓVIL --- */
+@media (max-width: 600px) {
+  /* Contenedor que envuelve los botones del menú superior */
+  .menubar-buttons-container,
+  .header-flex,
+  .nav-buttons {
+    display: flex !important;
+    flex-direction: column !important; /* Los apila uno abajo del otro */
+    align-items: center !important;    /* Los centra horizontalmente */
+    gap: 15px !important;              /* Crea una separación clara de 15px entre botones */
+    margin-top: 15px !important;
+    padding: 10px;
+  }
+
+  /* Estilo para cada botón individual */
+  .btn-menubar,
+  .nav-link,
+  .quitter-btn {
+    width: 85% !important;     /* No ocupan todo el ancho para que se vea más elegante */
+    padding: 12px 20px !important; /* Los hace más gorditos y fáciles de tocar */
+    margin: 0 !important;
+    border-radius: 25px !important; /* Mantiene el estilo redondeado que te gusta */
+    text-align: center !important;
+    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.2); /* Sombra suave rosa para que resalten */
+    font-size: 1rem !important;
+  }
+
+  /* Si el texto es muy largo, que no se amontone */
+  .btn-menubar span {
+    display: block;
+    white-space: nowrap;
+  }
+}

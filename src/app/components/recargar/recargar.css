@@ -1,0 +1,7 @@
+.account-info {
+  background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%); /* Degradado dorado */
+  color: #5d4037; /* Color café oscuro para el texto sobre el oro */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(248, 181, 0, 0.3);
+}

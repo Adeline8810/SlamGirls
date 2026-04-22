@@ -18,7 +18,7 @@ export class RecargarService {
 
   // Generador de enlace de WhatsApp en Francés
   generarLinkWhatsApp(username: string, monedas: number, precio: number): string {
-    const miTelefono = "34600000000"; // Tu número real aquí
+    const miTelefono = "0782655533"; // Tu número real aquí
     const mensaje = `Bonjour! Je suis ${username}. Je souhaite recharger ${monedas} pièces pour $${precio}. Comment puis-je payer?`;
     return `https://wa.me/${miTelefono}?text=${encodeURIComponent(mensaje)}`;
   }

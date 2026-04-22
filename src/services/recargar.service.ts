@@ -22,4 +22,11 @@ export class RecargarService {
     const mensaje = `Bonjour! Je suis ${username}. Je souhaite recharger ${monedas} pièces pour $${precio}. Comment puis-je payer?`;
     return `https://wa.me/${miTelefono}?text=${encodeURIComponent(mensaje)}`;
   }
+
+
+  // En tu recargar.service.ts
+obtenerDatosUsuario(username: string): Observable<any> {
+  // Apuntamos al nuevo endpoint de monedas
+  return this.http.get(`https://backend-ruth-slam.onrender.com/api/usuarios/monedas/${username}`);
+}
 }

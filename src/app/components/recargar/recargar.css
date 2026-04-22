@@ -1,7 +1,136 @@
-.account-info {
-  background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%); /* Degradado dorado */
-  color: #5d4037; /* Color café oscuro para el texto sobre el oro */
-  padding: 20px;
+/* Contenedor Principal */
+.recharge-main {
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+/* Cabecera */
+.recharge-header {
+  background-color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.btn-back {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.recharge-header h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Tarjeta de Saldo Dorada */
+.balance-card {
+  margin: 20px;
+  padding: 25px;
+  background: linear-gradient(135deg, #fceabb 0%, #f8b500 100%);
   border-radius: 15px;
+  color: #5d4037;
   box-shadow: 0 4px 15px rgba(248, 181, 0, 0.3);
+}
+
+.balance-card .label {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.amount-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.amount-row .number {
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+.details-link {
+  margin-left: auto;
+  font-size: 0.8rem;
+  background: rgba(255,255,255,0.3);
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Título de sección */
+.section-title {
+  padding: 0 20px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* La Cuadrícula de Monedas (Esto es lo que falta) */
+.coins-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos tarjetas por fila */
+  gap: 15px;
+  padding: 0 20px;
+}
+
+/* Cada Tarjeta de Moneda */
+.coin-item {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  border: 1px solid #eee;
+  transition: transform 0.2s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.coin-item:active {
+  transform: scale(0.95);
+}
+
+.badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #ff4757;
+  color: white;
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: 12px 0 12px 0;
+  text-transform: uppercase;
+}
+
+.coin-info {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.price {
+  color: #2ed573;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.discount-tag {
+  background: #fff0e0;
+  color: #ff9800;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 8px;
 }

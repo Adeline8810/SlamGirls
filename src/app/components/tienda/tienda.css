@@ -173,3 +173,72 @@
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
 }
+
+/* ... (Todo el CSS anterior se mantiene, añadimos esto) ... */
+
+/* Zona de Previsualización Arriba */
+.preview-zone {
+  background: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* El marco que previsualizamos (debe ser más grande que el avatar) */
+.preview-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  pointer-events: none; /* No interfiere con el clic en el avatar si lo hubiera */
+}
+
+.user-info {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.user-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.preview-status {
+  font-size: 0.85rem;
+  color: #d81b60; /* Rosa fuerte */
+  margin: 5px 0 0;
+  font-weight: 600;
+}
+
+/* Estado seleccionado en el Grid */
+.gift-card.selected {
+  border-color: #da70d6; /* Violeta */
+  background: rgba(216, 191, 216, 0.1);
+}
+
+/* ... (El resto del CSS se mantiene igual) ... */

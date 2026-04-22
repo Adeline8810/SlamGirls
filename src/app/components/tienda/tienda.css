@@ -1,116 +1,175 @@
+/* Contenedor Principal con Gradiente Vibrante */
 .shop-container {
-  background-color: #1a1a2e; /* Fondo oscuro tipo App */
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%), /* Fondo base claro */
+              linear-gradient(to bottom, rgba(255, 182, 193, 0.3), rgba(216, 191, 216, 0.3)); /* Tintes rosa/violeta suaves */
   min-height: 100vh;
-  color: white;
-  padding-bottom: 80px;
+  color: #333; /* Texto oscuro para que se lea bien */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-bottom: 90px;
 }
 
+/* Cabecera Luminosa */
 .shop-header {
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: 20px;
   justify-content: space-between;
-  background: #16213e;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
+.shop-header h1 {
+  font-size: 1.4rem;
+  margin: 0;
+  color: #d81b60; /* Un rosa fuerte y bonito */
+  font-weight: 700;
+}
+
+/* Botón Atrás Coqueto */
+.btn-back {
+  background: none;
+  border: 1px solid #ffb6c1;
+  color: #ffb6c1;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Saldo con Borde Rosa/Dorado */
 .user-balance {
-  background: rgba(255, 215, 0, 0.2);
-  padding: 5px 12px;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 6px 15px;
   border-radius: 20px;
-  border: 1px solid #ffd700;
+  border: 2px solid #ffd700;
   font-weight: bold;
-  color: #ffd700;
+  color: #b8860b; /* Dorado oscuro */
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
+/* Pestañas (Tabs) Estilo StarMaker Coqueto */
 .shop-tabs {
   display: flex;
-  overflow-x: auto;
-  padding: 10px;
-  gap: 20px;
-  border-bottom: 1px solid #333;
+  justify-content: center;
+  padding: 15px;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid #eee;
 }
 
 .tab {
-  padding: 8px 0;
-  white-space: nowrap;
+  padding: 10px 20px;
   color: #888;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  border-radius: 20px;
+  transition: all 0.3s;
 }
 
 .tab.active {
-  color: #e94560;
-  border-bottom: 3px solid #e94560;
+  color: white;
+  background: linear-gradient(45deg, #ff69b4, #da70d6); /* Rosa a Violeta */
+  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
 }
 
+/* Grid de Regalos Luminoso */
 .gifts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas como StarMaker */
-  gap: 10px;
-  padding: 15px;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  gap: 15px;
+  padding: 20px;
 }
 
+/* Tarjetas de Regalo Estilo 'Owned' de tu referencia */
 .gift-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 10px;
+  background: white;
+  border-radius: 15px;
+  padding: 15px;
   text-align: center;
   position: relative;
-  border: 1px solid transparent;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.gift-card:active {
-  border-color: #e94560;
-  background: rgba(233, 69, 96, 0.1);
+.gift-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(216, 191, 216, 0.4);
+  border-color: #dda0dd; /* Violeta claro */
 }
 
+/* Iconos de Regalo (necesitas las imágenes) */
 .gift-icon img {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 }
 
 .gift-name {
-  font-size: 0.75rem;
-  margin: 5px 0;
-  color: #ccc;
+  font-size: 0.8rem;
+  margin: 10px 0 5px;
+  color: #555;
+  font-weight: 600;
 }
 
 .gift-price {
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: #ffd700;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffd700; /* Dorado para el precio */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
 }
 
+/* Badge de NEW Rosa Llamativo */
 .gift-badge {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  background: #e94560;
-  font-size: 0.6rem;
-  padding: 2px 5px;
-  border-radius: 4px;
+  top: -5px;
+  left: -5px;
+  background: #ff1493; /* Rosa neón */
+  color: white;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-weight: bold;
 }
 
-/* Pie de página de compra */
+/* Pie de página de compra Llamativo */
 .shop-footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background: #16213e;
+  background: rgba(255, 255, 255, 0.95);
   padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #333;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+  border-top: 1px solid #eee;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+  backdrop-filter: blur(5px);
 }
 
+.selected-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #d81b60;
+  font-weight: 600;
+}
+
+/* Botón Comprar Rosa Llamativo */
 .btn-buy {
-  background: linear-gradient(90deg, #e94560, #ff4d4d);
+  background: linear-gradient(90deg, #ff1493, #ff69b4); /* Rosa fuerte a rosa claro */
   border: none;
   color: white;
-  padding: 10px 25px;
-  border-radius: 25px;
+  padding: 12px 30px;
+  border-radius: 30px;
   font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
 }

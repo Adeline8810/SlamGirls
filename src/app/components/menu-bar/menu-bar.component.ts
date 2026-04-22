@@ -46,5 +46,9 @@ irRecargar() {
   this.router.navigate(['/recargar']); // Esto redirige a la nueva vista
 }
 
+irTienda() {
+  this.router.navigate(['/tienda']); // Esto redirige a la nueva vista
+}
+
 
 }

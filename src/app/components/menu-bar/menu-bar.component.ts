@@ -42,4 +42,9 @@ irABuscarAmigo() {
 }
 
 
+irRecargar() {
+  this.router.navigate(['/recargar']); // Esto redirige a la nueva vista
+}
+
+
 }

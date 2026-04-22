@@ -6,6 +6,7 @@ import { SlamComponent } from './pages/slam/slam.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 import { Recargar } from './components/recargar/recargar';
+import { Tienda } from './components/tienda/tienda';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'admin', component: AdminComponent },
   { path: 'buscar-amigo', component: BuscarAmigo },
   { path: 'recargar', component: Recargar },
+  { path: 'tienda', component: Tienda },
   { path: '**', redirectTo: '' }
 ];

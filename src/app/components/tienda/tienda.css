@@ -1,0 +1,116 @@
+.shop-container {
+  background-color: #1a1a2e; /* Fondo oscuro tipo App */
+  min-height: 100vh;
+  color: white;
+  padding-bottom: 80px;
+}
+
+.shop-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  justify-content: space-between;
+  background: #16213e;
+}
+
+.user-balance {
+  background: rgba(255, 215, 0, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #ffd700;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.shop-tabs {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px;
+  gap: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.tab {
+  padding: 8px 0;
+  white-space: nowrap;
+  color: #888;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.tab.active {
+  color: #e94560;
+  border-bottom: 3px solid #e94560;
+}
+
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas como StarMaker */
+  gap: 10px;
+  padding: 15px;
+}
+
+.gift-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  position: relative;
+  border: 1px solid transparent;
+}
+
+.gift-card:active {
+  border-color: #e94560;
+  background: rgba(233, 69, 96, 0.1);
+}
+
+.gift-icon img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.gift-name {
+  font-size: 0.75rem;
+  margin: 5px 0;
+  color: #ccc;
+}
+
+.gift-price {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.gift-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #e94560;
+  font-size: 0.6rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* Pie de página de compra */
+.shop-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #16213e;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #333;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+}
+
+.btn-buy {
+  background: linear-gradient(90deg, #e94560, #ff4d4d);
+  border: none;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 25px;
+  font-weight: bold;
+}

@@ -1,0 +1,38 @@
+<div class="shop-container">
+  <div class="shop-header">
+    <button class="btn-back" (click)="irAtras()">‹</button>
+    <h1>Boutique de Cadeaux</h1>
+    <div class="user-balance">
+      🟡 <span>{{ usuarioActual.monedas }}</span>
+    </div>
+  </div>
+
+  <div class="shop-tabs">
+    <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
+    <div class="tab" [class.active]="tabActiva === 'especiales'" (click)="cambiarTab('especiales')">Spéciaux</div>
+    <div class="tab" [class.active]="tabActiva === 'vip'" (click)="cambiarTab('vip')">Privilège</div>
+  </div>
+
+  <div class="gifts-grid">
+    <div class="gift-card" *ngFor="let regalo of regalosFiltrados" (click)="seleccionarRegalo(regalo)">
+      <div class="gift-icon">
+        <img [src]="regalo.imagenUrl" [alt]="regalo.nombre">
+      </div>
+      <p class="gift-name">{{ regalo.nombre }}</p>
+      <div class="gift-price">
+        <span class="coin-mini">🟡</span> {{ regalo.precio }}
+      </div>
+      <div class="gift-badge" *ngIf="regalo.esNuevo">NEW</div>
+    </div>
+  </div>
+
+  <div class="shop-footer" *ngIf="regaloSeleccionado">
+    <div class="selected-info">
+      <img [src]="regaloSeleccionado.imagenUrl" width="30">
+      <span>{{ regaloSeleccionado.nombre }}</span>
+    </div>
+    <button class="btn-buy" (click)="comprarRegalo()">
+      Acheter ({{ regaloSeleccionado.precio }} 🟡)
+    </button>
+  </div>
+</div>

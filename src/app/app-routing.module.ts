@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 // Importamos el nuevo componente que acabas de crear
 import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 import { Recargar } from './components/recargar/recargar';
+import { Tienda } from './components/tienda/tienda';
+
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
   {
@@ -35,6 +37,11 @@ const routes: Routes = [
    {
     path: 'recargar',
     component: Recargar
+  },
+
+     {
+    path: 'tienda',
+    component: Tienda
   },
 
 

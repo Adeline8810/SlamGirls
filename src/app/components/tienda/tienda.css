@@ -1,82 +1,67 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-:root {
-  --fucsia: #f03e81;
-  --gris-fondo: #f2f3f5;
-}
-
 .shop-container {
   background: white;
   max-width: 500px;
   margin: 0 auto;
   min-height: 100vh;
   position: relative;
-  font-family: sans-serif;
 }
 
-/* HEADER Y FLECHA */
-.shop-header { display: flex; align-items: center; padding: 10px 15px; background: white; }
-.btn-back { background: none; border: none; font-size: 32px; color: var(--fucsia); cursor: pointer; margin-right: 10px; }
-.header-title { color: #d81b60; font-size: 1.1rem; flex-grow: 1; text-align: center; font-weight: bold; }
-.user-coins { background: #fff9e6; border: 1px solid #ffd700; border-radius: 20px; padding: 4px 12px; font-weight: bold; font-size: 0.85rem; }
+/* HEADER Y NAV (Pestañas limpias como pediste) */
+.shop-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 15px; }
+.header-title { color: #d81b60; font-size: 1.1rem; }
+.user-coins { background: #fff9e6; border: 1px solid #ffd700; border-radius: 20px; padding: 4px 12px; font-weight: bold; }
 
-/* TABS */
-.shop-nav { display: flex; overflow-x: auto; padding: 15px 10px; gap: 10px; border-bottom: 1px solid #eee; }
-.nav-item { color: #888; font-size: 0.9rem; padding: 8px 16px; white-space: nowrap; cursor: pointer; border-radius: 20px; }
-.nav-item.active { color: white !important; background-color: var(--fucsia) !important; }
+.shop-nav { display: flex; overflow-x: auto; padding: 15px 10px; gap: 15px; border-bottom: 1px solid #eee; scrollbar-width: none; }
+.nav-item { color: #888; font-size: 0.9rem; padding: 8px 16px; white-space: nowrap; cursor: pointer; }
+.nav-item.active { color: white; background-color: #f03e81; border-radius: 20px; }
 
-/* PREVIEW SUPERIOR */
-.preview-area { padding: 20px 0; text-align: center; background: white; }
+/* PREVIEW */
+.preview-area { padding: 20px 0; text-align: center; }
 .avatar-frame-container { position: relative; width: 130px; height: 130px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
 .avatar-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; }
 .pendant-overlay { position: absolute; width: 140px; height: 140px; object-fit: contain; z-index: 10; pointer-events: none; }
 
-/* GRID CON FONDO GRIS */
-.products-container { background-color: var(--gris-fondo); padding: 15px; min-height: 60vh; }
+/* GRID Y TARJETAS (FONDO GRIS) */
+.products-container { background-color: #f2f3f5; padding: 15px; min-height: 60vh; }
 .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
-/* TARJETA BLANCA */
 .item-card {
-  background: white !important;
+  background: white;
   border-radius: 12px;
   padding: 10px;
   text-align: center;
   position: relative;
   border: 2px solid transparent;
+  overflow: hidden; /* IMPORTANTE: No deja salir nada de la tarjeta */
+}
+
+.item-card.selected { border-color: #f03e81; }
+
+/* BLOQUEO DE TAMAÑO DE IMAGEN */
+.item-img-box {
+  width: 100%;
+  height: 70px; /* Altura fija para la imagen en la tarjeta */
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
 }
 
-.item-card.selected {
-  border-color: var(--fucsia) !important;
-  background: #fff5fa !important;
+.product-img-fixed {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Obliga a la imagen a caber en los 70px */
 }
 
-/* AQUÍ SE BLOQUEA EL ERROR DEL TAMAÑO */
-.locked-frame {
-  width: 80px !important;   /* Ancho fijo de la celda */
-  height: 80px !important;  /* Alto fijo de la celda */
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important; /* No permite que nada salga */
-}
+/* DETALLES VISUALES */
+.new-badge { position: absolute; top: 5px; left: 5px; background: #f03e81; color: white; font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+.item-title { font-size: 0.7rem; color: #444; margin-bottom: 3px; }
+.item-cost { color: #f03e81; font-weight: bold; font-size: 0.8rem; }
 
-.img-content {
-  width: 60px !important;    /* La corona nunca medirá más de 60px */
-  height: 60px !important;
-  object-fit: contain !important;
-  pointer-events: none;
-}
-
-/* ETIQUETAS Y TEXTO */
-.new-badge { position: absolute; top: 6px; left: 6px; background: var(--fucsia); color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-.item-title { font-size: 11px; color: #555; margin-top: 5px; height: 14px; overflow: hidden; }
-.item-price { color: var(--fucsia); font-weight: bold; font-size: 12px; margin-top: 2px; }
-
-/* FOOTER */
-.action-footer { position: fixed; bottom: 0; max-width: 500px; width: 100%; background: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 2000; }
-.buy-btn { background-color: var(--fucsia); color: white; border: none; padding: 10px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+/* FOOTER Y BOTÓN */
+.action-footer { position: fixed; bottom: 0; max-width: 500px; width: 100%; background: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+.buy-btn { background-color: #f03e81; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; }
 
 @media (max-width: 400px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }

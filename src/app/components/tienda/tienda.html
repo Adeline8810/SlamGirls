@@ -27,17 +27,16 @@
   <main class="products-container">
     <div class="products-grid">
       <div class="item-card" *ngFor="let item of productosFiltrados"
-           (click)="seleccionarObjeto(item)"
-           [class.selected]="objetoSeleccionado === item">
+           (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
 
         <div class="new-badge" *ngIf="item.esNuevo">NEW</div>
 
-        <div class="locked-frame">
-          <img [src]="item.imagenUrl" class="img-content">
+        <div class="item-img-box">
+          <img [src]="item.imagenUrl" class="product-img-fixed">
         </div>
 
         <p class="item-title">{{ item.nombre }}</p>
-        <div class="item-price">🟡 {{ item.precio }}</div>
+        <div class="item-cost">🟡 {{ item.precio }}</div>
       </div>
     </div>
   </main>

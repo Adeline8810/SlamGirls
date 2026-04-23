@@ -1,152 +1,114 @@
-/* --- BASE --- */
+/* RESET TOTAL */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 .shop-container {
-  background: #f8f9fa;
+  background: #ffffff;
   min-height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  padding-bottom: 110px;
   max-width: 500px;
   margin: 0 auto;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
   position: relative;
+  padding-bottom: 90px; /* Espacio para el footer */
   overflow-x: hidden;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
+/* HEADER */
 .shop-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 15px;
-  background: white;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  padding: 10px 15px;
+  background: #fff;
+  height: 60px;
 }
 
-.shop-header h1 {
-  font-size: 1.1rem;
+.shop-title {
   color: #d81b60;
-  margin: 0;
-  flex: 1;
-  text-align: center;
-}
-
-.btn-back {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: #d81b60;
-  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: bold;
 }
 
 .user-balance {
-  background: #fff9e6;
-  padding: 5px 12px;
+  background: #fffbe6;
+  border: 1.5px solid #ffcc00;
   border-radius: 20px;
-  border: 1.5px solid #ffd700;
+  padding: 4px 10px;
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
-/* --- PREVIEW --- */
+/* AVATAR Y MARCO (PENDANT) */
 .preview-zone {
-  text-align: center;
   padding: 20px 0;
-  background: white;
+  text-align: center;
 }
 
 .avatar-container {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 140px;
+  height: 140px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-avatar {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  margin-top: 15px;
   object-fit: cover;
-  background: #f0f0f0;
+  background: #eee;
 }
 
 .preview-frame {
   position: absolute;
+  width: 140px; /* El marco es más grande que el avatar */
+  height: 140px;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  object-fit: contain;
   z-index: 10;
+  transform: scale(1.1); /* Ajuste para que el borde encaje perfecto */
 }
 
-.username-display {
-  margin-top: 10px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* --- TABS --- */
+/* TABS */
 .shop-tabs {
   display: flex;
   overflow-x: auto;
   padding: 10px;
-  gap: 10px;
-  background: white;
-  border-bottom: 1px solid #eee;
+  gap: 8px;
+  scrollbar-width: none;
 }
 
-.shop-tabs::-webkit-scrollbar { display: none; }
-
 .tab {
-  padding: 8px 16px;
-  color: #888;
+  padding: 10px 18px;
+  background: #f0f0f0;
+  border-radius: 25px;
   font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 20px;
   white-space: nowrap;
-  cursor: pointer;
+  color: #666;
 }
 
 .tab.active {
-  color: white;
   background: #ff69b4;
+  color: white;
 }
 
-/* --- GRILLA (CORREGIDA) --- */
+/* GRID DE PRODUCTOS */
 .gifts-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 15px;
   padding: 15px;
 }
 
 .gift-card {
-  background: white;
-  border-radius: 12px;
-  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 15px;
+  padding: 15px;
   text-align: center;
   border: 2px solid transparent;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden; /* No permite que la imagen se salga */
-}
-
-/* ESTE ES EL BLOQUEO DE SEGURIDAD */
-.gift-icon-container {
-  width: 100%;
-  height: 80px; /* ALTURA FIJA PARA QUE NO EXPLOTE */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
-}
-
-.gift-img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; /* Mantiene la forma sin deformar */
 }
 
 .gift-card.selected {
@@ -154,98 +116,73 @@
   background: #fff5f8;
 }
 
-.gift-name {
-  font-size: 0.8rem;
-  font-weight: bold;
-  margin-bottom: 4px;
+.gift-icon-container {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.gift-price {
-  font-size: 0.85rem;
-  color: #b8860b;
+.gift-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-.gift-badge {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background: #ff1493;
-  color: white;
-  font-size: 0.6rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  z-index: 5;
-}
-
-/* --- FOOTER --- */
+/* FOOTER (SOLUCIÓN AL DESCUADRE) */
 .shop-footer {
   position: fixed;
   bottom: 0;
   max-width: 500px;
   width: 100%;
+  height: 80px; /* Altura fija para evitar saltos */
   background: white;
-  padding: 15px;
+  border-top: 1px solid #eee;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
-  z-index: 2000;
+  justify-content: space-between;
+  padding: 0 15px;
+  z-index: 1000;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mini-icon-box {
+  width: 40px;
+  height: 40px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .footer-mini-img {
-  width: 35px;
-  height: 35px;
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
-  margin-right: 8px;
 }
 
-.selected-info {
-  display: flex;
-  align-items: center;
+.footer-item-name {
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
 .btn-buy {
   background: #ff1493;
   color: white;
   border: none;
-  padding: 10px 18px;
-  border-radius: 25px;
+  padding: 12px 20px;
+  border-radius: 30px;
   font-weight: bold;
+  font-size: 0.9rem;
 }
 
-/* PC */
-@media (min-width: 480px) {
-  .gifts-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* Contenedor principal que mantiene todo unido */
-.avatar-container {
-  position: relative;
-  width: 110px;  /* Ajusta según tu diseño, pero debe ser cuadrado */
-  height: 110px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* El avatar del usuario (Círculo central) */
-.user-avatar {
-  width: 80px;   /* Un poco más pequeño que el contenedor para que el marco respire */
-  height: 80px;
-  border-radius: 50%;
-  object-fit: cover;
-  z-index: 5;    /* Por debajo del marco */
-}
-
-/* El marco o Pendant (Lo que se ve descuadrado) */
-.preview-frame {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;   /* Ocupa todo el contenedor de 110px */
-  height: 100%;
-  z-index: 10;   /* Por encima del avatar */
-  object-fit: contain; /* CRUCIAL: Mantiene la proporción y centra la imagen */
-  pointer-events: none; /* Para que no interfiera con clics */
+.btn-buy:disabled {
+  background: #ccc;
 }

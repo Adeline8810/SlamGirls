@@ -1,49 +1,45 @@
 <div class="shop-container">
   <header class="shop-header">
     <button class="btn-back" (click)="irAtras()">‹</button>
-    <h1>Boutique de Cadeaux</h1>
+    <h1 class="shop-title">Boutique de Cadeaux</h1>
     <div class="user-balance">
       🟡 <span>{{ usuarioActual.monedas }}</span>
     </div>
   </header>
 
-<section class="preview-zone">
-  <div class="avatar-container">
-    <img [src]="usuarioActual.avatarUrl" class="user-avatar">
-
-    <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
-         [src]="objetoSeleccionado.imagenUrl"
-         class="preview-frame">
-  </div>
-  <p class="username-display">{{ usuarioActual.username }}</p>
-</section>
+  <section class="preview-zone">
+    <div class="avatar-container">
+      <img [src]="usuarioActual.avatarUrl" class="user-avatar">
+      <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
+           [src]="objetoSeleccionado.imagenUrl" class="preview-frame">
+    </div>
+    <p class="username-display">{{ usuarioActual.username }}</p>
+  </section>
 
   <nav class="shop-tabs">
     <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
     <div class="tab" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
     <div class="tab" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
-    <div class="tab" [class.active]="tabActiva === 'sound_effect'" (click)="cambiarTab('sound_effect')">Sound Effect</div>
   </nav>
 
   <main class="gifts-grid">
     <div class="gift-card" *ngFor="let item of productosFiltrados"
          (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
-
       <div class="gift-badge" *ngIf="item.esNuevo">NEW</div>
-
       <div class="gift-icon-container">
-        <img [src]="item.imagenUrl" [alt]="item.nombre" class="gift-img">
+        <img [src]="item.imagenUrl" class="gift-img">
       </div>
-
       <p class="gift-name">{{ item.nombre }}</p>
       <div class="gift-price">🟡 {{ item.precio }}</div>
     </div>
   </main>
 
   <footer class="shop-footer" *ngIf="objetoSeleccionado">
-    <div class="selected-info">
-      <img [src]="objetoSeleccionado.imagenUrl" class="footer-mini-img">
-      <span>{{ objetoSeleccionado.nombre }}</span>
+    <div class="footer-left">
+      <div class="mini-icon-box">
+        <img [src]="objetoSeleccionado.imagenUrl" class="footer-mini-img">
+      </div>
+      <span class="footer-item-name">{{ objetoSeleccionado.nombre }}</span>
     </div>
     <button class="btn-buy" (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">

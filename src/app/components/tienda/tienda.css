@@ -1,269 +1,168 @@
-/* Contenedor Principal con Gradiente Vibrante */
+/* --- CONTENEDOR Y FONDO --- */
 .shop-container {
-  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%), /* Fondo base claro */
-              linear-gradient(to bottom, rgba(255, 182, 193, 0.3), rgba(216, 191, 216, 0.3)); /* Tintes rosa/violeta suaves */
+  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
   min-height: 100vh;
-  color: #333; /* Texto oscuro para que se lea bien */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding-bottom: 90px;
+  font-family: 'Segoe UI', sans-serif;
+  padding-bottom: 100px; /* Espacio para que el footer no tape nada */
+  overflow-x: hidden;
 }
 
-/* Cabecera Luminosa */
+/* --- CABECERA RESPONSIVA --- */
 .shop-header {
   display: flex;
   align-items: center;
-  padding: 20px;
   justify-content: space-between;
+  padding: 10px 15px;
   background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }
 
 .shop-header h1 {
-  font-size: 1.4rem;
-  margin: 0;
-  color: #d81b60; /* Un rosa fuerte y bonito */
-  font-weight: 700;
-}
-
-/* Botón Atrás Coqueto */
-.btn-back {
-  background: none;
-  border: 1px solid #ffb6c1;
-  color: #ffb6c1;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Saldo con Borde Rosa/Dorado */
-.user-balance {
-  background: rgba(255, 215, 0, 0.1);
-  padding: 6px 15px;
-  border-radius: 20px;
-  border: 2px solid #ffd700;
-  font-weight: bold;
-  color: #b8860b; /* Dorado oscuro */
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-/* Pestañas (Tabs) Estilo StarMaker Coqueto */
-.shop-tabs {
-  display: flex;
-  justify-content: center;
-  padding: 15px;
-  gap: 15px;
-  background: rgba(255, 255, 255, 0.7);
-  border-bottom: 1px solid #eee;
-}
-
-.tab {
-  padding: 10px 20px;
-  color: #888;
-  cursor: pointer;
-  font-weight: 600;
-  border-radius: 20px;
-  transition: all 0.3s;
-}
-
-.tab.active {
-  color: white;
-  background: linear-gradient(45deg, #ff69b4, #da70d6); /* Rosa a Violeta */
-  box-shadow: 0 4px 10px rgba(255, 105, 180, 0.4);
-}
-
-/* Grid de Regalos Luminoso */
-.gifts-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-  gap: 15px;
-  padding: 20px;
-}
-
-/* Tarjetas de Regalo Estilo 'Owned' de tu referencia */
-.gift-card {
-  background: white;
-  border-radius: 15px;
-  padding: 15px;
-  text-align: center;
-  position: relative;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.gift-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(216, 191, 216, 0.4);
-  border-color: #dda0dd; /* Violeta claro */
-}
-
-/* Iconos de Regalo (necesitas las imágenes) */
-.gift-icon img {
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-}
-
-.gift-name {
-  font-size: 0.8rem;
-  margin: 10px 0 5px;
-  color: #555;
-  font-weight: 600;
-}
-
-.gift-price {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #ffd700; /* Dorado para el precio */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-}
-
-/* Badge de NEW Rosa Llamativo */
-.gift-badge {
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  background: #ff1493; /* Rosa neón */
-  color: white;
-  font-size: 0.65rem;
-  padding: 3px 8px;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-/* Pie de página de compra Llamativo */
-.shop-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #eee;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
-  backdrop-filter: blur(5px);
-}
-
-.selected-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  font-size: 1.1rem; /* Tamaño reducido para que no se corte */
   color: #d81b60;
-  font-weight: 600;
+  margin: 0;
+  flex: 1;
+  text-align: center;
+  white-space: nowrap; /* Evita que el título salte de línea */
 }
 
-/* Botón Comprar Rosa Llamativo */
-.btn-buy {
-  background: linear-gradient(90deg, #ff1493, #ff69b4); /* Rosa fuerte a rosa claro */
-  border: none;
-  color: white;
-  padding: 12px 30px;
-  border-radius: 30px;
+.user-balance {
+  background: #fff9e6;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #ffd700;
   font-weight: bold;
-  font-size: 1rem;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0; /* Evita que las monedas se aplasten */
 }
 
-/* ... (Todo el CSS anterior se mantiene, añadimos esto) ... */
-
-/* Zona de Previsualización Arriba */
+/* --- VISTA PREVIA DEL AVATAR --- */
 .preview-zone {
-  background: white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+  text-align: center;
+  padding: 15px 0;
 }
 
 .avatar-container {
   position: relative;
   width: 120px;
   height: 120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
 }
 
 .user-avatar {
-  width: 100px;
-  height: 100px;
+  width: 85px;
+  height: 85px;
   border-radius: 50%;
+  margin-top: 17px;
   object-fit: cover;
-  border: 4px solid white;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* El marco que previsualizamos (debe ser más grande que el avatar) */
 .preview-frame {
   position: absolute;
   top: 0;
   left: 0;
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  pointer-events: none; /* No interfiere con el clic en el avatar si lo hubiera */
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* Para que no interfiera con clics */
 }
 
-.user-info {
-  margin-top: 15px;
-  text-align: center;
+/* --- PESTAÑAS (TABS) CON SCROLL LATERAL --- */
+.shop-tabs {
+  display: flex;
+  overflow-x: auto; /* Permite deslizar si son muchas pestañas */
+  padding: 10px;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  scrollbar-width: none; /* Oculta barra en Firefox */
 }
 
-.user-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #333;
-  margin: 0;
-}
+.shop-tabs::-webkit-scrollbar { display: none; } /* Oculta barra en Chrome */
 
-.preview-status {
+.tab {
+  padding: 8px 18px;
+  color: #888;
   font-size: 0.85rem;
-  color: #d81b60; /* Rosa fuerte */
-  margin: 5px 0 0;
   font-weight: 600;
+  border-radius: 20px;
+  white-space: nowrap;
+  transition: 0.3s;
 }
 
-/* Estado seleccionado en el Grid */
+.tab.active {
+  color: white;
+  background: linear-gradient(45deg, #ff69b4, #da70d6);
+  box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+}
+
+/* --- GRILLA DE REGALOS (2 COLUMNAS EN MÓVIL) --- */
+.gifts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
+  gap: 12px;
+  padding: 15px;
+}
+
+.gift-card {
+  background: white;
+  border-radius: 15px;
+  padding: 12px;
+  text-align: center;
+  position: relative;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
 .gift-card.selected {
-  border-color: #da70d6; /* Violeta */
-  background: rgba(216, 191, 216, 0.1);
+  border-color: #ff69b4;
+  background: #fff5f8;
 }
 
-/* Busca esta clase y aumenta el tamaño */
-.avatar-container .preview-frame {
-  width: 140px;  /* Antes quizás estaba en 100px o 120px, súbelo */
-  height: 140px;
-}
-
-/* Y quizás necesites ajustar el avatar para que encaje bien detrás */
-.avatar-container .user-avatar {
-  width: 110px; /* Ajusta según el tamaño del marco */
-  height: 110px;
-}
-/* Busca esta clase para hacer el icono del regalo más grande */
 .gift-icon img {
-  width: 120px;  /* Sube el ancho */
-  height: 120px; /* Sube el alto */
-  /* Asegúrate de usar object-fit para que no se deforme */
+  width: 75px;
+  height: 75px;
   object-fit: contain;
 }
 
-/* Quizás necesites agrandar el contenedor de la tarjeta si la imagen es muy grande */
-.gift-card {
-    min-height: 200px; /* Ajusta el alto de la tarjeta */
+.gift-name {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #444;
+  margin: 8px 0 4px;
 }
-/* ... (El resto del CSS se mantiene igual) ... */
 
+.gift-price {
+  font-size: 0.85rem;
+  color: #b8860b;
+  font-weight: bold;
+}
 
+/* --- FOOTER DE COMPRA --- */
+.shop-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+  z-index: 200;
+}
+
+.btn-buy {
+  background: linear-gradient(90deg, #ff1493, #ff69b4);
+  border: none;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 0.95rem;
+}

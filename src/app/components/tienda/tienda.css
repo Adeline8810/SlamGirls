@@ -168,35 +168,38 @@
 .btn-back {
   background: none;
   border: none;
-  font-size: 32px;
-  color: #f03e81 !important; /* El color fucsia */
+  font-size: 32px !important;
+  color: #f03e81 !important; /* Rosa intenso de la imagen */
   cursor: pointer;
+  padding: 0 10px;
+  line-height: 1;
 }
-
 /* 2. El NEW en rosita con estilo redondeado */
 .new-badge {
   position: absolute;
-  top: 5px;
-  left: 5px;
+  top: 6px;
+  left: 6px;
   background-color: #f03e81 !important;
-  color: white;
+  color: white !important;
   font-size: 10px;
   font-weight: bold;
   padding: 2px 8px;
   border-radius: 4px;
   z-index: 10;
+  text-transform: uppercase;
 }
 
 /* 3. El PRECIO en rosita */
 .item-price {
   color: #f03e81 !important;
   font-weight: bold;
+  font-size: 13px;
+  margin-top: 2px;
 }
-
 /* 4. BLOQUEO para que la corona NO se haga grande al clic */
 .locked-frame {
-  width: 80px !important;
-  height: 80px !important;
+  width: 100% !important;
+  height: 70px !important; /* Altura fija para que no se estire */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -204,14 +207,60 @@
 }
 
 .img-content {
-  max-width: 60px !important; /* Aquí controlas que no crezca */
-  max-height: 60px !important;
+  max-width: 60px !important; /* Límite de ancho para que no se vea gigante */
+  max-height: 60px !important; /* Límite de alto */
+  width: auto !important;
+  height: auto !important;
   object-fit: contain !important;
 }
 
-/* 5. Pestaña activa en rosita */
+/* 5. Pestaña activa (rosado con bordes redondeados) */
 .nav-item.active {
   background-color: #f03e81 !important;
   color: white !important;
   border-radius: 20px;
+  padding: 8px 16px;
+}
+
+/* Limpia el Badge */
+.gift-badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #f03e81 !important;
+  color: white !important;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Limpia el Precio */
+.gift-price {
+  color: #f03e81 !important;
+  font-weight: bold;
+}
+
+/* EL CANDADO: Esto es lo más importante que debe quedar */
+.gift-icon-container {
+  width: 100% !important;
+  height: 70px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.gift-img {
+  max-width: 60px !important; /* NO BORRES EL !IMPORTANT */
+  max-height: 60px !important;
+  width: auto !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+/* La tarjeta seleccionada */
+.gift-card.selected {
+  border: 2px solid #f03e81 !important;
+  background-color: #fff5fa !important;
 }

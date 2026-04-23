@@ -32,8 +32,8 @@
 
         <div class="new-badge" *ngIf="item.esNuevo">NEW</div>
 
-        <div class="img-lock-box">
-          <img [src]="item.imagenUrl" class="img-strictly-fixed">
+        <div class="locked-frame">
+          <img [src]="item.imagenUrl" class="img-content">
         </div>
 
         <p class="item-title">{{ item.nombre }}</p>

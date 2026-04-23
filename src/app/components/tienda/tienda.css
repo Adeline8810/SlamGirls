@@ -2,7 +2,7 @@
 
 :root {
   --fucsia: #f03e81;
-  --gris-fondo: #ebedef;
+  --gris-fondo: #f2f3f5;
 }
 
 .shop-container {
@@ -15,67 +15,68 @@
 }
 
 /* HEADER Y FLECHA */
-.shop-header { display: flex; align-items: center; padding: 10px 15px; }
-.btn-back { background: none; border: none; font-size: 35px; color: var(--fucsia); cursor: pointer; margin-right: 10px; line-height: 1; }
+.shop-header { display: flex; align-items: center; padding: 10px 15px; background: white; }
+.btn-back { background: none; border: none; font-size: 32px; color: var(--fucsia); cursor: pointer; margin-right: 10px; }
 .header-title { color: #d81b60; font-size: 1.1rem; flex-grow: 1; text-align: center; font-weight: bold; }
 .user-coins { background: #fff9e6; border: 1px solid #ffd700; border-radius: 20px; padding: 4px 12px; font-weight: bold; font-size: 0.85rem; }
 
 /* TABS */
-.shop-nav { display: flex; overflow-x: auto; padding: 15px 10px; gap: 10px; border-bottom: 1px solid #eee; scrollbar-width: none; }
+.shop-nav { display: flex; overflow-x: auto; padding: 15px 10px; gap: 10px; border-bottom: 1px solid #eee; }
 .nav-item { color: #888; font-size: 0.9rem; padding: 8px 16px; white-space: nowrap; cursor: pointer; border-radius: 20px; }
 .nav-item.active { color: white !important; background-color: var(--fucsia) !important; }
 
-/* PREVIEW */
+/* PREVIEW SUPERIOR */
 .preview-area { padding: 20px 0; text-align: center; background: white; }
 .avatar-frame-container { position: relative; width: 130px; height: 130px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
 .avatar-img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; }
 .pendant-overlay { position: absolute; width: 140px; height: 140px; object-fit: contain; z-index: 10; pointer-events: none; }
 
-/* GRID Y FONDO GRIS */
+/* GRID CON FONDO GRIS */
 .products-container { background-color: var(--gris-fondo); padding: 15px; min-height: 60vh; }
 .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
-/* TARJETAS QUE NO EXPLOTAN */
+/* TARJETA BLANCA */
 .item-card {
   background: white !important;
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 10px;
   text-align: center;
   position: relative;
   border: 2px solid transparent;
-  overflow: hidden; /* Corta cualquier exceso */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.item-card.selected { border-color: var(--fucsia) !important; background: #fff5fa !important; }
+.item-card.selected {
+  border-color: var(--fucsia) !important;
+  background: #fff5fa !important;
+}
 
-/* EL BLOQUEO MAESTRO */
-.img-lock-box {
-  width: 100% !important;
-  height: 65px !important; /* Altura fija para la corona en la grilla */
+/* AQUÍ SE BLOQUEA EL ERROR DEL TAMAÑO */
+.locked-frame {
+  width: 80px !important;   /* Ancho fijo de la celda */
+  height: 80px !important;  /* Alto fijo de la celda */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  overflow: hidden !important;
-  margin-bottom: 5px;
+  overflow: hidden !important; /* No permite que nada salga */
 }
 
-.img-strictly-fixed {
-  max-width: 60px !important; /* NUNCA será más ancha que esto */
-  max-height: 60px !important; /* NUNCA será más alta que esto */
-  width: auto !important;
-  height: auto !important;
-  object-fit: contain !important; /* Mantiene la forma sin estirarse */
+.img-content {
+  width: 60px !important;    /* La corona nunca medirá más de 60px */
+  height: 60px !important;
+  object-fit: contain !important;
+  pointer-events: none;
 }
 
-/* ETIQUETA NEW */
+/* ETIQUETAS Y TEXTO */
 .new-badge { position: absolute; top: 6px; left: 6px; background: var(--fucsia); color: white; font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
-
-/* TEXTOS Y PRECIO */
-.item-title { font-size: 11px; color: #555; margin-bottom: 2px; }
-.item-price { color: var(--fucsia) !important; font-weight: bold; font-size: 13px; }
+.item-title { font-size: 11px; color: #555; margin-top: 5px; height: 14px; overflow: hidden; }
+.item-price { color: var(--fucsia); font-weight: bold; font-size: 12px; margin-top: 2px; }
 
 /* FOOTER */
 .action-footer { position: fixed; bottom: 0; max-width: 500px; width: 100%; background: white; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 2000; }
-.buy-btn { background-color: var(--fucsia); color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; }
+.buy-btn { background-color: var(--fucsia); color: white; border: none; padding: 10px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; }
 
 @media (max-width: 400px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }

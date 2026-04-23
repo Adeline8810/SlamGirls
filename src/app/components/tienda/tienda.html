@@ -1,49 +1,51 @@
 <div class="shop-container">
   <header class="shop-header">
     <button class="btn-back" (click)="irAtras()">‹</button>
-    <h1 class="header-title">Boutique de Cadeaux</h1>
+    <h1>Boutique de Cadeaux</h1>
     <div class="user-balance">
       🟡 <span>{{ usuarioActual.monedas }}</span>
     </div>
   </header>
 
-  <section class="preview-section">
-    <div class="avatar-wrapper">
-      <img [src]="usuarioActual.avatarUrl" class="user-photo">
+  <section class="preview-zone">
+    <div class="avatar-container">
+      <img [src]="usuarioActual.avatarUrl" class="user-avatar">
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl"
-           class="pendant-frame"
+           class="preview-frame"
            [style.transform]="obtenerEscala(objetoSeleccionado.id)">
     </div>
-    <p class="user-name">{{ usuarioActual.username }}</p>
+    <p class="username-display">{{ usuarioActual.username }}</p>
   </section>
 
-  <nav class="category-tabs">
-    <div class="tab-item" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
-    <div class="tab-item" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
-    <div class="tab-item" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
+  <nav class="shop-tabs">
+    <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
+    <div class="tab" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
+    <div class="tab" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
   </nav>
 
-  <main class="shop-body">
-    <div class="products-grid">
-      <div class="product-card" *ngFor="let item of productosFiltrados"
+  <main class="gifts-grid-container">
+    <div class="gifts-grid">
+      <div class="gift-card" *ngFor="let item of productosFiltrados"
            (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
-        <div class="new-tag" *ngIf="item.esNuevo">NEW</div>
-        <div class="img-container">
-          <img [src]="item.imagenUrl" class="product-img">
+        <div class="gift-badge" *ngIf="item.esNuevo">NEW</div>
+        <div class="gift-icon-container">
+          <img [src]="item.imagenUrl" class="gift-img">
         </div>
-        <p class="product-label">{{ item.nombre }}</p>
-        <div class="product-price">🟡 {{ item.precio }}</div>
+        <p class="gift-name">{{ item.nombre }}</p>
+        <div class="gift-price">🟡 {{ item.precio }}</div>
       </div>
     </div>
   </main>
 
-  <footer class="purchase-footer" *ngIf="objetoSeleccionado">
-    <div class="selection-details">
-      <img [src]="objetoSeleccionado.imagenUrl" class="mini-preview">
-      <span class="selection-name">{{ objetoSeleccionado.nombre }}</span>
+  <footer class="shop-footer" *ngIf="objetoSeleccionado">
+    <div class="footer-left">
+      <div class="mini-icon-box">
+        <img [src]="objetoSeleccionado.imagenUrl" class="footer-mini-img">
+      </div>
+      <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
-    <button class="buy-button" (click)="comprarObjeto()"
+    <button class="btn-buy" (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">
       Acheter ({{ objetoSeleccionado.precio }} 🟡)
     </button>

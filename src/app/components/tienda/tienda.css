@@ -380,23 +380,3 @@
 }
 
 
-.shop-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 15px;
-  gap: 10px; /* Espacio entre elementos */
-  background: white;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.shop-header h1 {
-  font-size: 1.2rem; /* Bajamos un poco el tamaño para que quepa */
-  margin: 0;
-  flex: 1; /* Esto hace que el título ocupe el espacio central */
-  text-align: center;
-  white-space: nowrap; /* Evita que salte de línea si no quieres */
-  overflow: hidden;
-  text-overflow: ellipsis; /* Si es MUY largo, pone "..." al final en vez de romperse */
-}

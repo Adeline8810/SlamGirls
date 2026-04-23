@@ -45,12 +45,13 @@
 
 .avatar-container {
   position: relative;
-  width: 180px;  /* Ajusta según tu diseño */
-  height: 180px;
-  margin: 20px auto;
-  display: flex;
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+  display: flex;       /* Centralizado flexible */
   align-items: center;
   justify-content: center;
+  overflow: visible;   /* Permite que la corona brille hacia afuera */
 }
 
 /* La foto del usuario siempre centrada y circular */
@@ -74,16 +75,17 @@
 }
 
 .user-avatar {
-  width: 90px; /* TAMAÑO FIJO DE LA FOTO */
-  height: 90px;
+  width: 100px;        /* Tamaño de la foto de perfil */
+  height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  z-index: 5;
+  position: absolute;  /* Se despega del flujo para centrarse con la corona */
+  z-index: 1;
 }
 
 .preview-frame {
-  position: absolute;
-  width: 140px; /* Ajuste base del marco */
+  position: absolute;  /* Se encima a la foto */
+  width: 100%;         /* Usa el tamaño del contenedor (150px) */
   height: 140px;
   object-fit: contain;
   z-index: 10;

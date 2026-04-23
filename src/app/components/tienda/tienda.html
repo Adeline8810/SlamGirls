@@ -7,14 +7,16 @@
     </div>
   </header>
 
-  <section class="preview-zone">
-    <div class="avatar-container">
-      <img [src]="usuarioActual.avatarUrl" class="user-avatar">
-      <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
-           [src]="objetoSeleccionado.imagenUrl" class="preview-frame">
-    </div>
-    <p class="username-display">{{ usuarioActual.username }}</p>
-  </section>
+<section class="preview-zone">
+  <div class="avatar-container">
+    <img [src]="usuarioActual.avatarUrl" class="user-avatar">
+
+    <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
+         [src]="objetoSeleccionado.imagenUrl"
+         class="preview-frame">
+  </div>
+  <p class="username-display">{{ usuarioActual.username }}</p>
+</section>
 
   <nav class="shop-tabs">
     <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>

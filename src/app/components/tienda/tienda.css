@@ -217,3 +217,35 @@
 @media (min-width: 480px) {
   .gifts-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* Contenedor principal que mantiene todo unido */
+.avatar-container {
+  position: relative;
+  width: 110px;  /* Ajusta según tu diseño, pero debe ser cuadrado */
+  height: 110px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* El avatar del usuario (Círculo central) */
+.user-avatar {
+  width: 80px;   /* Un poco más pequeño que el contenedor para que el marco respire */
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 5;    /* Por debajo del marco */
+}
+
+/* El marco o Pendant (Lo que se ve descuadrado) */
+.preview-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;   /* Ocupa todo el contenedor de 110px */
+  height: 100%;
+  z-index: 10;   /* Por encima del avatar */
+  object-fit: contain; /* CRUCIAL: Mantiene la proporción y centra la imagen */
+  pointer-events: none; /* Para que no interfiera con clics */
+}

@@ -84,11 +84,12 @@ obtenerAncho(id: string): number {
 
 obtenerEscala(id: any): string {
   switch(id) {
-    case 9: return 'scale(1.55)';
-    case 8: return 'scale(1.45)';
+    case 9: return 'scale(1.5)'; // Mariposa
+    case 8: return 'scale(1.4)'; // Alas
     case 4: return 'scale(1.25)';
     default: return 'scale(1.15)';
   }
 }
+
 
 }

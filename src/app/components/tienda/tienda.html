@@ -9,17 +9,13 @@
 
   <div class="preview-zone">
     <div class="avatar-container">
-      <img [src]="usuarioActual.avatarUrl"
-           (error)="usuarioActual.avatarUrl = 'assets/img-rotas.png'"
-           alt="Avatar" class="user-avatar">
+      <img [src]="usuarioActual.avatarUrl" alt="Avatar" class="user-avatar">
 
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl"
-           (error)="objetoSeleccionado.imagenUrl = 'assets/img-rotas.png'"
            alt="Vista previa marco"
            class="preview-frame">
     </div>
-
     <div class="user-info">
       <p class="user-name">{{ usuarioActual.username }}</p>
       <p class="preview-status" *ngIf="objetoSeleccionado">
@@ -42,9 +38,7 @@
          [class.selected]="objetoSeleccionado === item">
 
       <div class="gift-icon">
-        <img [src]="item.imagenUrl"
-             [alt]="item.nombre"
-             (error)="item.imagenUrl = 'assets/img-rotas.png'">
+        <img [src]="item.imagenUrl" [alt]="item.nombre">
       </div>
 
       <p class="gift-name">{{ item.nombre }}</p>
@@ -59,12 +53,9 @@
 
   <div class="shop-footer" *ngIf="objetoSeleccionado">
     <div class="selected-info">
-      <img [src]="objetoSeleccionado.imagenUrl"
-           (error)="objetoSeleccionado.imagenUrl = 'assets/img-rotas.png'"
-           width="30" alt="Icono seleccionado">
+      <img [src]="objetoSeleccionado.imagenUrl" width="30" alt="Icono">
       <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
-
     <button class="btn-buy"
             (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">

@@ -90,19 +90,14 @@ obtenerAncho(id: string): number {
 }
 
 obtenerEscala(id: number): string {
-  // Ajustes de zoom y posición vertical según el archivo original
   switch(id) {
     case 4:
-      // Si la corona 4 se ve "vacía", aumentamos el zoom para "cerrar" el círculo interno
-      return 'scale(1.2) translateY(0%)';
+      return 'scale(1.25)'; // La agrandamos para que "cierre" más sobre la foto
     case 8:
     case 9:
-      // Las mariposas son máscaras, no círculos.
-      // Reducimos el scale para que no tapen toda la cara y las movemos un poquito hacia arriba si es necesario (ej: -3%)
-      return 'scale(0.85) translateY(-3%)';
+      return 'scale(0.9)';  // Las achicamos un poco para que no tapen todo
     default:
-      // Estándar para las coronas 1, 2, 3, 5, 6, 7
-      return 'scale(1.1) translateY(0%)';
+      return 'scale(1.1)';  // Tamaño estándar
   }
 }
 

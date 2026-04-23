@@ -8,15 +8,15 @@
   </header>
 
 <section class="preview-zone">
-  <div class="avatar-stage-container">
-    <div class="photo-ball-wrapper">
-      <img [src]="fotoUrlServidor" class="user-avatar-ball">
+  <div class="avatar-master-container">
+    <div class="photo-circle">
+      <img [src]="fotoUrlServidor" class="user-img">
     </div>
 
-    <div class="frame-ball-wrapper" *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'">
+    <div class="frame-overlay" *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'">
        <img [src]="objetoSeleccionado.imagenUrl"
-            class="pendant-overlay-item"
-            [style.transform]="obtenerEscala(objetoSeleccionado.id)">
+            [style.transform]="obtenerEscala(objetoSeleccionado.id)"
+            class="pendant-img">
     </div>
   </div>
   <p class="username-display">ruth</p>

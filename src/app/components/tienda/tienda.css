@@ -162,3 +162,56 @@
 @media (max-width: 360px) {
   .gifts-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+
+/* 1. La flechita de regreso en rosita */
+.btn-back {
+  background: none;
+  border: none;
+  font-size: 32px;
+  color: #f03e81 !important; /* El color fucsia */
+  cursor: pointer;
+}
+
+/* 2. El NEW en rosita con estilo redondeado */
+.new-badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: #f03e81 !important;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+/* 3. El PRECIO en rosita */
+.item-price {
+  color: #f03e81 !important;
+  font-weight: bold;
+}
+
+/* 4. BLOQUEO para que la corona NO se haga grande al clic */
+.locked-frame {
+  width: 80px !important;
+  height: 80px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+
+.img-content {
+  max-width: 60px !important; /* Aquí controlas que no crezca */
+  max-height: 60px !important;
+  object-fit: contain !important;
+}
+
+/* 5. Pestaña activa en rosita */
+.nav-item.active {
+  background-color: #f03e81 !important;
+  color: white !important;
+  border-radius: 20px;
+}

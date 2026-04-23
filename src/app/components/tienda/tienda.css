@@ -45,36 +45,31 @@
 
 .avatar-container {
   position: relative;
-  width: 50vw;        /* En mobile ocupa la mitad del ancho de pantalla */
-  max-width: 180px;   /* En PC no pasará de 180px */
-  aspect-ratio: 1 / 1; /* Mantiene el círculo perfecto siempre */
-  width: 150px;
-  height: 150px;
-  margin: 0 auto;
-  display: flex;       /* Centralizado flexible */
+  width: 50vw;        /* En mobile ocupa la mitad del ancho */
+  max-width: 180px;   /* En PC no pasará de este tamaño */
+  aspect-ratio: 1 / 1;
+  margin: 20px auto;
+  display: flex;
   align-items: center;
   justify-content: center;
-  overflow: visible;   /* Permite que la corona brille hacia afuera */
+   overflow: visible;   /* Permite que la corona brille hacia afuera */
 }
+
 .photo-wrapper {
-  width: 65%;         /* La foto ocupa el 65% del contenedor de la corona */
-  height: 65%;
+  width: 70%;         /* Ajusta este % para que la cara encaje en el hueco de la corona */
+  height: 70%;
   border-radius: 50%;
   overflow: hidden;
   z-index: 1;
-  background-color: #f0f0f0; /* Color de carga */
 }
 /* La foto del usuario siempre centrada y circular */
 .user-avatar-preview {
- width: 100%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
-  object-fit: cover;
-  position: absolute; /* Importante para que no empuje a la corona */
-  z-index: 1;
 }
 
+/* Contenedor de la corona que cubre todo el área */
 .frame-wrapper {
   position: absolute;
   top: 0;
@@ -85,17 +80,14 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-  pointer-events: none;
+  pointer-events: none; /* Para que no estorbe al hacer clic */
 }
 
 /* La corona se encima perfectamente */
 .preview-frame-overlay {
-  position: absolute;
-  width: 100%;  /* Ocupa todo el contenedor de 180px */
+  width: 100%;
   height: 100%;
-  object-fit: contain;
-  z-index: 2;   /* Va por delante de la foto */
-  pointer-events: none; /* Para que no interfiera con clics */
+  object-fit: contain; /* Mantiene la forma de la corona sin deformarla */
 }
 
 .username-display {

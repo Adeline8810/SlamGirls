@@ -92,15 +92,12 @@ obtenerAncho(id: string): number {
 obtenerEscala(id: number): string {
   switch(id) {
     case 4:
-      // Scale mayor para que el círculo interno de la corona 4 se pegue a la foto
-      return 'scale(1.2) translateY(0%)';
+      return 'scale(1.3)'; // Agrandamos la corona 4 para cerrar el espacio blanco
     case 8:
     case 9:
-      // Scale menor para que las alas o mariposas no se salgan de la pantalla
-      return 'scale(0.9) translateY(0%)';
+      return 'scale(0.9)'; // Reducimos las coronas muy grandes
     default:
-      // Estándar para las coronas 1, 2, 3, 5, 6, 7
-      return 'scale(1.1) translateY(0%)';
+      return 'scale(1.1)'; // Escala normal para el resto
   }
 }
 

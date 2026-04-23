@@ -55,6 +55,7 @@
    overflow: visible;   /* Permite que la corona brille hacia afuera */
 }
 
+
 .photo-wrapper {
   width: 70%;         /* Ajusta este % para que la cara encaje en el hueco de la corona */
   height: 70%;
@@ -315,4 +316,60 @@
 .gift-card.selected {
   border: 2px solid #f03e81 !important;
   background-color: #fff5fa !important;
+}
+
+/* EL ESCENARIO - Contenedor cuadrado responsivo */
+.avatar-stage-container {
+  position: relative;
+  width: 50vw;          /* Tamaño base para mobile */
+  max-width: 220px;     /* Límite para PC */
+  aspect-ratio: 1 / 1;  /* Siempre cuadrado */
+  margin: 15px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* EL HUECO DE LA FOTO - La "bola" central */
+.photo-ball-wrapper {
+  width: 65%;           /* Ajusta este % si la cara queda pequeña */
+  height: 65%;
+  border-radius: 50%;
+  overflow: hidden;
+  position: absolute;   /* Despegado del flujo para compartir el centro */
+  z-index: 1;
+}
+
+.user-avatar-ball {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* EL CONTENEDOR DE LA CORONA - Cubre todo el escenario */
+.frame-ball-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;           /* Por delante de la foto */
+  pointer-events: none; /* No estorba clics */
+}
+
+/* LA CORONA/MÁSCARA REAL */
+.pendant-overlay-item {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* ESTO ES LO MÁS IMPORTANTE: No la corta, la ajusta completa */
+}
+
+.username-display {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 5px;
+  color: #333;
 }

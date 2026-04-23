@@ -90,15 +90,19 @@ obtenerAncho(id: string): number {
 }
 
 obtenerEscala(id: number): string {
+  // Ajustes de zoom y posición vertical según el archivo original
   switch(id) {
     case 4:
-      return 'scale(1.3)'; // Agrandamos la corona 4 para cerrar el espacio blanco
+      // Si la corona 4 se ve "vacía", aumentamos el zoom para "cerrar" el círculo interno
+      return 'scale(1.2) translateY(0%)';
     case 8:
-      return 'scale(0.9)';
     case 9:
-      return 'scale(0.9)'; // Reducimos las coronas muy grandes
+      // Las mariposas son máscaras, no círculos.
+      // Reducimos el scale para que no tapen toda la cara y las movemos un poquito hacia arriba si es necesario (ej: -3%)
+      return 'scale(0.85) translateY(-3%)';
     default:
-      return 'scale(1.1)'; // Escala normal para el resto
+      // Estándar para las coronas 1, 2, 3, 5, 6, 7
+      return 'scale(1.1) translateY(0%)';
   }
 }
 

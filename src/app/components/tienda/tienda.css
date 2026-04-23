@@ -241,4 +241,27 @@
   background: rgba(216, 191, 216, 0.1);
 }
 
+/* Busca esta clase y aumenta el tamaño */
+.avatar-container .preview-frame {
+  width: 140px;  /* Antes quizás estaba en 100px o 120px, súbelo */
+  height: 140px;
+}
+
+/* Y quizás necesites ajustar el avatar para que encaje bien detrás */
+.avatar-container .user-avatar {
+  width: 110px; /* Ajusta según el tamaño del marco */
+  height: 110px;
+}
+/* Busca esta clase para hacer el icono del regalo más grande */
+.gift-icon img {
+  width: 120px;  /* Sube el ancho */
+  height: 120px; /* Sube el alto */
+  /* Asegúrate de usar object-fit para que no se deforme */
+  object-fit: contain;
+}
+
+/* Quizás necesites agrandar el contenedor de la tarjeta si la imagen es muy grande */
+.gift-card {
+    min-height: 200px; /* Ajusta el alto de la tarjeta */
+}
 /* ... (El resto del CSS se mantiene igual) ... */

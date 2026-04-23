@@ -1,49 +1,63 @@
 <div class="shop-container">
   <div class="shop-header">
     <button class="btn-back" (click)="irAtras()">‹</button>
-    <h1>Boutique</h1>
+    <h1>Boutique de Cadeaux</h1>
     <div class="user-balance">
       🟡 <span>{{ usuarioActual.monedas }}</span>
     </div>
   </div>
 
-  <div class="preview-section">
-    <div class="avatar-wrapper">
-      <img [src]="usuarioActual.avatarUrl" class="user-avatar">
+  <div class="preview-zone">
+    <div class="avatar-container">
+      <img [src]="usuarioActual.avatarUrl" alt="Avatar" class="user-avatar">
+
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
-           [src]="objetoSeleccionado.imagenUrl" class="frame-overlay">
+           [src]="objetoSeleccionado.imagenUrl"
+           alt="Vista previa marco"
+           class="preview-frame">
     </div>
-    <p class="preview-name">{{ usuarioActual.username }}</p>
-    <p class="preview-status" *ngIf="objetoSeleccionado">Aperçu du {{ objetoSeleccionado.nombre }}</p>
+    <div class="user-info">
+      <p class="user-name">{{ usuarioActual.username }}</p>
+      <p class="preview-status" *ngIf="objetoSeleccionado">
+        Aperçu du {{ objetoSeleccionado.nombre }}
+      </p>
+    </div>
   </div>
 
   <div class="shop-tabs">
-    <button *ngFor="let tab of ['populares', 'avatar_pendant', 'user_decoration', 'sound_effect']"
-            [class.active]="tabActiva === tab" (click)="cambiarTab(tab)">
-      {{ tab.replace('_', ' ') | titlecase }}
-    </button>
+    <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
+    <div class="tab" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
+    <div class="tab" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
+    <div class="tab" [class.active]="tabActiva === 'sound_effect'" (click)="cambiarTab('sound_effect')">Sound Effect</div>
   </div>
 
   <div class="gifts-grid">
-    <div class="gift-card" *ngFor="let item of productosFiltrados"
-         (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
-      <div class="gift-img-container">
+    <div class="gift-card"
+         *ngFor="let item of productosFiltrados"
+         (click)="seleccionarObjeto(item)"
+         [class.selected]="objetoSeleccionado === item">
+
+      <div class="gift-icon">
         <img [src]="item.imagenUrl" [alt]="item.nombre">
       </div>
-      <div class="gift-info">
-        <p class="name">{{ item.nombre }}</p>
-        <p class="price">🟡 {{ item.precio }}</p>
+
+      <p class="gift-name">{{ item.nombre }}</p>
+
+      <div class="gift-price">
+        <span class="coin-mini">🟡</span> {{ item.precio }}
       </div>
-      <div class="new-badge" *ngIf="item.esNuevo">NEW</div>
+
+      <div class="gift-badge" *ngIf="item.esNuevo">NEW</div>
     </div>
   </div>
 
   <div class="shop-footer" *ngIf="objetoSeleccionado">
-    <div class="footer-details">
-      <img [src]="objetoSeleccionado.imagenUrl">
+    <div class="selected-info">
+      <img [src]="objetoSeleccionado.imagenUrl" width="30" alt="Icono">
       <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
-    <button class="btn-buy" (click)="comprarObjeto()"
+    <button class="btn-buy"
+            (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">
       Acheter ({{ objetoSeleccionado.precio }} 🟡)
     </button>

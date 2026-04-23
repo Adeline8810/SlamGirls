@@ -9,12 +9,15 @@
 
 <section class="preview-zone">
   <div class="avatar-container">
-    <img [src]="fotoUrlServidor" class="user-avatar-preview">
+    <div class="photo-wrapper">
+      <img [src]="fotoUrlServidor" class="user-avatar-preview">
+    </div>
 
-    <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
-         [src]="objetoSeleccionado.imagenUrl"
-         class="preview-frame-overlay"
-         [style.transform]="obtenerEscala(objetoSeleccionado.id)">
+    <div class="frame-wrapper" *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'">
+       <img [src]="objetoSeleccionado.imagenUrl"
+            class="preview-frame-overlay"
+            [style.transform]="obtenerEscala(objetoSeleccionado.id)">
+    </div>
   </div>
   <p class="username-display">{{ usuarioActual.username }}</p>
 </section>

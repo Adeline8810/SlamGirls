@@ -45,6 +45,9 @@
 
 .avatar-container {
   position: relative;
+  width: 50vw;        /* En mobile ocupa la mitad del ancho de pantalla */
+  max-width: 180px;   /* En PC no pasará de 180px */
+  aspect-ratio: 1 / 1; /* Mantiene el círculo perfecto siempre */
   width: 150px;
   height: 150px;
   margin: 0 auto;
@@ -53,15 +56,36 @@
   justify-content: center;
   overflow: visible;   /* Permite que la corona brille hacia afuera */
 }
-
+.photo-wrapper {
+  width: 65%;         /* La foto ocupa el 65% del contenedor de la corona */
+  height: 65%;
+  border-radius: 50%;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #f0f0f0; /* Color de carga */
+}
 /* La foto del usuario siempre centrada y circular */
 .user-avatar-preview {
-  width: 100px;  /* Este tamaño es el "hueco" de la corona */
-  height: 100px;
+ width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 50%;
   object-fit: cover;
   position: absolute; /* Importante para que no empuje a la corona */
   z-index: 1;
+}
+
+.frame-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
 }
 
 /* La corona se encima perfectamente */
@@ -72,6 +96,14 @@
   object-fit: contain;
   z-index: 2;   /* Va por delante de la foto */
   pointer-events: none; /* Para que no interfiera con clics */
+}
+
+.username-display {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 5px;
+  color: #333;
 }
 
 .user-avatar {

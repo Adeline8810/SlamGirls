@@ -83,7 +83,6 @@ obtenerAncho(id: string): number {
 }
 
 obtenerEscala(id: any): string {
-  // Estos valores aseguran que el "hueco" de las alas no encoja la foto
   switch(id) {
     case 9: return 'scale(1.55)';
     case 8: return 'scale(1.45)';
@@ -91,6 +90,5 @@ obtenerEscala(id: any): string {
     default: return 'scale(1.15)';
   }
 }
-
 
 }

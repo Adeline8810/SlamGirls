@@ -34,6 +34,7 @@ export class SlamComponent implements OnInit {
   completado = false;
   usuarioId!: number; // ✅ Ahora siempre será number después de la verificación
   nombreUsuario: string = '';
+  usuarioActual: any;
   fotoUrlServidor: string | null = null;
   idiomaSeleccionado = 'es';
   preguntasTraducidas: { [key: string]: { [id: number]: string } } = {};
@@ -45,6 +46,9 @@ export class SlamComponent implements OnInit {
     private traduccionService: TraduccionService) {}
 
   ngOnInit(): void {
+
+
+
   const u = localStorage.getItem('usuario');
   this.fotoUrlServidor = localStorage.getItem('user_foto_perfil') || 'assets/img/default.png';
   // Eliminamos la lógica de la foto de aquí arriba porque el array está vacío todavía
@@ -55,6 +59,7 @@ export class SlamComponent implements OnInit {
   }
 
   const usuarioObj = JSON.parse(u);
+  this.usuarioActual = usuarioObj;
   this.usuarioId = usuarioObj.id;
   this.nombreUsuario = usuarioObj.nombre;
 
@@ -119,18 +124,47 @@ export class SlamComponent implements OnInit {
 }
 
 onFotoSeleccionada(ev: any) {
-    const f: File = ev.target.files && ev.target.files[0];
-    if (!f) return;
-    this.fotoFile = f; // <--- ESTE es el archivo real, el binario. ¡Está perfecto!
+  const f: File = ev.target.files && ev.target.files[0];
+  if (!f) return;
+  this.fotoFile = f;
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = (e.target as any).result;
-      this.fotoPreview = result; // <--- USAMOS base64 SOLO para que tú lo veas en pantalla (vista previa)
-      //this.fotoUrlServidor = result; // <--- ¡¡BORRA O COMENTA ESTA LÍNEA!! NUNCA pongas base64 aquí.
-    };
-    reader.readAsDataURL(f);
-  }
+  // 1. Vista previa local (inmediata)
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    this.fotoPreview = (e.target as any).result;
+  };
+  reader.readAsDataURL(f);
+
+  // 2. Subida automática al servidor
+  const idParaSubir = this.usuarioId.toString();
+
+  this.respuestaService.subirFoto(f, idParaSubir).subscribe({
+    next: (pathRelativo) => {
+      const baseApi = 'https://backend-ruth-slam.onrender.com';
+      const cleanPath = pathRelativo.startsWith('/') ? pathRelativo : '/' + pathRelativo;
+      const urlFinal = `${baseApi}${cleanPath}?v=${new Date().getTime()}`;
+
+      // ASIGNACIÓN MÁGICA:
+      // Esto actualiza la variable que lee la "bola" de la tienda
+      this.fotoUrlServidor = urlFinal;
+      this.fotoPreview = urlFinal;
+
+      // Si tu tienda usa usuarioActual.avatarUrl, cámbialo aquí:
+      if(this.usuarioActual) {
+        this.usuarioActual.avatarUrl = urlFinal;
+      }
+
+      // Guardamos en LocalStorage para que al refrescar no se pierda
+      localStorage.setItem('user_foto_perfil', urlFinal);
+
+      console.log("Foto subida con éxito:", urlFinal);
+    },
+    error: (err) => {
+      console.error('Error al subir foto:', err);
+      alert('No se pudo subir la foto al servidor');
+    }
+  });
+}
   anterior() {
     this.respuestas[this.preguntaActual].texto = this.respuestaActual || null;
     if (this.preguntaActual > 0) {

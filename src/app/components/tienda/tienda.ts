@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./tienda.css']
 })
 export class Tienda implements OnInit {
+  fotoUrlServidor: string | null = null;
   usuarioActual: any = {
     username: 'ruth',
     monedas: 4,
@@ -47,6 +48,12 @@ export class Tienda implements OnInit {
 
   ngOnInit() {
     this.cambiarTab(this.tabActiva);
+    const fotoGuardada = localStorage.getItem('user_foto_perfil');
+    if (fotoGuardada) {
+      this.fotoUrlServidor = fotoGuardada;
+    } else if (this.usuarioActual?.avatarUrl) {
+      this.fotoUrlServidor = this.usuarioActual.avatarUrl;
+    }
   }
 
   cambiarTab(tipo: string) {

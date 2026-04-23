@@ -9,7 +9,7 @@
 
   <section class="preview-zone">
     <div class="avatar-container">
-      <img [src]="usuarioActual.avatarUrl" class="user-avatar">
+      <img [src]="fotoUrlServidor || 'assets/img/default-avatar.png'" class="user-avatar">
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl"
            class="preview-frame"

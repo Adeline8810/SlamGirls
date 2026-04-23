@@ -94,6 +94,7 @@ obtenerEscala(id: number): string {
     case 4:
       return 'scale(1.3)'; // Agrandamos la corona 4 para cerrar el espacio blanco
     case 8:
+      return 'scale(0.9)';
     case 9:
       return 'scale(0.9)'; // Reducimos las coronas muy grandes
     default:

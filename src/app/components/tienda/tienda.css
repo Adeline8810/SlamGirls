@@ -45,12 +45,32 @@
 
 .avatar-container {
   position: relative;
-  width: 130px;
-  height: 130px;
-  margin: 0 auto;
+  width: 180px;  /* Ajusta según tu diseño */
+  height: 180px;
+  margin: 20px auto;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* La foto del usuario siempre centrada y circular */
+.user-avatar-preview {
+  width: 100px;  /* Este tamaño es el "hueco" de la corona */
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute; /* Importante para que no empuje a la corona */
+  z-index: 1;
+}
+
+/* La corona se encima perfectamente */
+.preview-frame-overlay {
+  position: absolute;
+  width: 100%;  /* Ocupa todo el contenedor de 180px */
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;   /* Va por delante de la foto */
+  pointer-events: none; /* Para que no interfiera con clics */
 }
 
 .user-avatar {

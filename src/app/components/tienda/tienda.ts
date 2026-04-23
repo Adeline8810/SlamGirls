@@ -92,17 +92,14 @@ obtenerAncho(id: string): number {
 obtenerEscala(id: number): string {
   switch(id) {
     case 8:
-      // Si se ve muy grande, bajamos la escala (ejemplo: 0.8)
-      // y la movemos un poco hacia arriba si es necesario
-      return 'translate(-50%, -55%) scale(0.8)';
-
+      // Si la 8 queda muy arriba, aumentamos el % de Y (ej: 55% o 60%)
+      return 'scale(1.1) translateY(5%)';
     case 9:
-      // La corona 9 parece ser muy alta, ajustamos escala y posición
-      return 'translate(-50%, -50%) scale(0.7)';
-
+      // Si la 9 es muy grande, bajamos el scale
+      return 'scale(0.9) translateY(0%)';
     default:
-      // El ajuste estándar para las demás
-      return 'translate(-50%, -50%) scale(1.1)';
+      // Para todas las demás, escala normal y centradas
+      return 'scale(1.1) translateY(0%)';
   }
 }
 

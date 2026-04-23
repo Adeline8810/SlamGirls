@@ -1,17 +1,16 @@
-/* --- CONTENEDOR ESTILO APP --- */
+/* --- BASE --- */
 .shop-container {
   background: #f8f9fa;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
   padding-bottom: 110px;
-  max-width: 500px; /* Evita que se vea fatal en PC */
-  margin: 0 auto;  /* Centra la tienda en la pantalla */
+  max-width: 500px;
+  margin: 0 auto;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
   position: relative;
   overflow-x: hidden;
 }
 
-/* --- CABECERA --- */
 .shop-header {
   display: flex;
   align-items: center;
@@ -31,7 +30,24 @@
   text-align: center;
 }
 
-/* --- ZONA DE AVATAR --- */
+.btn-back {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #d81b60;
+  cursor: pointer;
+}
+
+.user-balance {
+  background: #fff9e6;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #ffd700;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* --- PREVIEW --- */
 .preview-zone {
   text-align: center;
   padding: 20px 0;
@@ -40,7 +56,7 @@
 
 .avatar-container {
   position: relative;
-  width: 110px; /* Tamaño fijo para el marco */
+  width: 110px;
   height: 110px;
   margin: 0 auto;
 }
@@ -66,20 +82,19 @@
 .username-display {
   margin-top: 10px;
   font-weight: bold;
-  font-size: 1rem;
   color: #333;
 }
 
-/* --- TABS CON SCROLL --- */
+/* --- TABS --- */
 .shop-tabs {
   display: flex;
   overflow-x: auto;
   padding: 10px;
   gap: 10px;
-  background: #fff;
+  background: white;
   border-bottom: 1px solid #eee;
-  scrollbar-width: none;
 }
+
 .shop-tabs::-webkit-scrollbar { display: none; }
 
 .tab {
@@ -97,10 +112,10 @@
   background: #ff69b4;
 }
 
-/* --- GRILLA RESPONSIVA --- */
+/* --- GRILLA (CORREGIDA) --- */
 .gifts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   padding: 15px;
 }
@@ -111,32 +126,62 @@
   padding: 12px;
   text-align: center;
   border: 2px solid transparent;
-  transition: all 0.2s ease-in-out;
-  position: relative;
-  overflow: hidden; /* <--- CRUCIAL: Corta cualquier cosa que intente salirse */
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  overflow: hidden; /* No permite que la imagen se salga */
+}
+
+/* ESTE ES EL BLOQUEO DE SEGURIDAD */
+.gift-icon-container {
+  width: 100%;
+  height: 80px; /* ALTURA FIJA PARA QUE NO EXPLOTE */
+  display: flex;
+  align-items: center;
   justify-content: center;
+  margin-bottom: 8px;
+}
+
+.gift-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* Mantiene la forma sin deformar */
 }
 
 .gift-card.selected {
   border-color: #ff69b4;
   background: #fff5f8;
-  transform: scale(1.02); /* Un pequeño efecto de enfoque sin romper el layout */
 }
 
-.gift-icon img {
-  max-width: 100%;
-  max-height: 100%; /* <--- Esto obliga a la imagen a caber en los 80px */
-  object-fit: contain; /* Mantiene la proporción sin estirar */
+.gift-name {
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 
-/* --- FOOTER FIJO --- */
+.gift-price {
+  font-size: 0.85rem;
+  color: #b8860b;
+}
+
+.gift-badge {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background: #ff1493;
+  color: white;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  z-index: 5;
+}
+
+/* --- FOOTER --- */
 .shop-footer {
   position: fixed;
   bottom: 0;
-  max-width: 500px; /* Para que no se estire en PC */
+  max-width: 500px;
   width: 100%;
   background: white;
   padding: 15px;
@@ -147,18 +192,28 @@
   z-index: 2000;
 }
 
+.footer-mini-img {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  margin-right: 8px;
+}
+
+.selected-info {
+  display: flex;
+  align-items: center;
+}
+
 .btn-buy {
   background: #ff1493;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 18px;
   border-radius: 25px;
   font-weight: bold;
 }
 
-/* Ajuste para PC: 3 columnas */
+/* PC */
 @media (min-width: 480px) {
-  .gifts-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  .gifts-grid { grid-template-columns: repeat(3, 1fr); }
 }

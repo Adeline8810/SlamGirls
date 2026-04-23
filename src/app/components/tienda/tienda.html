@@ -26,10 +26,13 @@
   <main class="gifts-grid">
     <div class="gift-card" *ngFor="let item of productosFiltrados"
          (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
+
       <div class="gift-badge" *ngIf="item.esNuevo">NEW</div>
-      <div class="gift-icon">
-        <img [src]="item.imagenUrl" [alt]="item.nombre">
+
+      <div class="gift-icon-container">
+        <img [src]="item.imagenUrl" [alt]="item.nombre" class="gift-img">
       </div>
+
       <p class="gift-name">{{ item.nombre }}</p>
       <div class="gift-price">🟡 {{ item.precio }}</div>
     </div>
@@ -37,7 +40,7 @@
 
   <footer class="shop-footer" *ngIf="objetoSeleccionado">
     <div class="selected-info">
-      <img [src]="objetoSeleccionado.imagenUrl">
+      <img [src]="objetoSeleccionado.imagenUrl" class="footer-mini-img">
       <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
     <button class="btn-buy" (click)="comprarObjeto()"

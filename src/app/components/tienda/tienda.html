@@ -2,48 +2,51 @@
   <header class="shop-header">
     <button class="btn-back" (click)="irAtras()">‹</button>
     <h1 class="header-title">Boutique de Cadeaux</h1>
-    <div class="user-balance">
+    <div class="user-coins">
       🟡 <span>{{ usuarioActual.monedas }}</span>
     </div>
   </header>
 
-  <section class="preview-section">
-    <div class="avatar-wrapper">
-      <img [src]="usuarioActual.avatarUrl" class="user-photo">
+  <section class="preview-area">
+    <div class="avatar-frame-container">
+      <img [src]="usuarioActual.avatarUrl" class="avatar-img">
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl"
-           class="pendant-frame"
+           class="pendant-overlay"
            [style.transform]="obtenerEscala(objetoSeleccionado.id)">
     </div>
-    <p class="user-name">{{ usuarioActual.username }}</p>
+    <p class="avatar-name">{{ usuarioActual.username }}</p>
   </section>
 
-  <nav class="category-tabs">
-    <div class="tab-item" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
-    <div class="tab-item" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
-    <div class="tab-item" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
+  <nav class="shop-nav">
+    <div class="nav-item" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
+    <div class="nav-item" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
+    <div class="nav-item" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
   </nav>
 
-  <main class="shop-body">
+  <main class="products-container">
     <div class="products-grid">
-      <div class="product-card" *ngFor="let item of productosFiltrados"
+      <div class="item-card" *ngFor="let item of productosFiltrados"
            (click)="seleccionarObjeto(item)" [class.selected]="objetoSeleccionado === item">
-        <div class="new-tag" *ngIf="item.esNuevo">NEW</div>
-        <div class="img-container">
-          <img [src]="item.imagenUrl" class="product-img">
+
+        <div class="new-badge" *ngIf="item.esNuevo">NEW</div>
+
+        <div class="item-img-box">
+          <img [src]="item.imagenUrl" class="product-img-fixed">
         </div>
-        <p class="product-label">{{ item.nombre }}</p>
-        <div class="product-price">🟡 {{ item.precio }}</div>
+
+        <p class="item-title">{{ item.nombre }}</p>
+        <div class="item-cost">🟡 {{ item.precio }}</div>
       </div>
     </div>
   </main>
 
-  <footer class="purchase-footer" *ngIf="objetoSeleccionado">
-    <div class="selection-details">
-      <img [src]="objetoSeleccionado.imagenUrl" class="mini-preview">
-      <span class="selection-name">{{ objetoSeleccionado.nombre }}</span>
+  <footer class="action-footer" *ngIf="objetoSeleccionado">
+    <div class="footer-info">
+      <img [src]="objetoSeleccionado.imagenUrl" class="mini-icon">
+      <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
-    <button class="buy-button" (click)="comprarObjeto()"
+    <button class="buy-btn" (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">
       Acheter ({{ objetoSeleccionado.precio }} 🟡)
     </button>

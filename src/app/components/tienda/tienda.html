@@ -7,14 +7,14 @@
     </div>
   </header>
 
-  <div class="preview-zone">
+  <section class="preview-zone">
     <div class="avatar-container">
       <img [src]="usuarioActual.avatarUrl" class="user-avatar">
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl" class="preview-frame">
     </div>
-    <p style="margin-top: 10px; font-weight: bold;">{{ usuarioActual.username }}</p>
-  </div>
+    <p class="username-display">{{ usuarioActual.username }}</p>
+  </section>
 
   <nav class="shop-tabs">
     <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
@@ -37,12 +37,12 @@
 
   <footer class="shop-footer" *ngIf="objetoSeleccionado">
     <div class="selected-info">
-      <img [src]="objetoSeleccionado.imagenUrl" width="40">
+      <img [src]="objetoSeleccionado.imagenUrl">
       <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
     <button class="btn-buy" (click)="comprarObjeto()"
             [disabled]="usuarioActual.monedas < objetoSeleccionado.precio">
-      Acheter
+      Acheter ({{ objetoSeleccionado.precio }} 🟡)
     </button>
   </footer>
 </div>

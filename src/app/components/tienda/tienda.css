@@ -1,66 +1,57 @@
-/* --- CONTENEDOR Y FONDO --- */
+/* --- CONTENEDOR ESTILO APP --- */
 .shop-container {
-  background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+  background: #f8f9fa;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
-  padding-bottom: 100px; /* Espacio para que el footer no tape nada */
+  padding-bottom: 110px;
+  max-width: 500px; /* Evita que se vea fatal en PC */
+  margin: 0 auto;  /* Centra la tienda en la pantalla */
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  position: relative;
   overflow-x: hidden;
 }
 
-/* --- CABECERA RESPONSIVA --- */
+/* --- CABECERA --- */
 .shop-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 15px;
+  padding: 12px 15px;
   background: white;
   position: sticky;
   top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
 }
 
 .shop-header h1 {
-  font-size: 1.1rem; /* Tamaño reducido para que no se corte */
+  font-size: 1.1rem;
   color: #d81b60;
   margin: 0;
   flex: 1;
   text-align: center;
-  white-space: nowrap; /* Evita que el título salte de línea */
 }
 
-.user-balance {
-  background: #fff9e6;
-  padding: 5px 12px;
-  border-radius: 20px;
-  border: 1.5px solid #ffd700;
-  font-weight: bold;
-  font-size: 0.85rem;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  flex-shrink: 0; /* Evita que las monedas se aplasten */
-}
-
-/* --- VISTA PREVIA DEL AVATAR --- */
+/* --- ZONA DE AVATAR --- */
 .preview-zone {
   text-align: center;
-  padding: 15px 0;
+  padding: 20px 0;
+  background: white;
 }
 
 .avatar-container {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 110px; /* Tamaño fijo para el marco */
+  height: 110px;
   margin: 0 auto;
 }
 
 .user-avatar {
-  width: 85px;
-  height: 85px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin-top: 17px;
+  margin-top: 15px;
   object-fit: cover;
+  background: #f0f0f0;
 }
 
 .preview-frame {
@@ -69,53 +60,58 @@
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Para que no interfiera con clics */
+  z-index: 10;
 }
 
-/* --- PESTAÑAS (TABS) CON SCROLL LATERAL --- */
+.username-display {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #333;
+}
+
+/* --- TABS CON SCROLL --- */
 .shop-tabs {
   display: flex;
-  overflow-x: auto; /* Permite deslizar si son muchas pestañas */
+  overflow-x: auto;
   padding: 10px;
   gap: 10px;
-  background: rgba(255, 255, 255, 0.6);
-  scrollbar-width: none; /* Oculta barra en Firefox */
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  scrollbar-width: none;
 }
-
-.shop-tabs::-webkit-scrollbar { display: none; } /* Oculta barra en Chrome */
+.shop-tabs::-webkit-scrollbar { display: none; }
 
 .tab {
-  padding: 8px 18px;
+  padding: 8px 16px;
   color: #888;
   font-size: 0.85rem;
   font-weight: 600;
   border-radius: 20px;
   white-space: nowrap;
-  transition: 0.3s;
+  cursor: pointer;
 }
 
 .tab.active {
   color: white;
-  background: linear-gradient(45deg, #ff69b4, #da70d6);
-  box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
+  background: #ff69b4;
 }
 
-/* --- GRILLA DE REGALOS (2 COLUMNAS EN MÓVIL) --- */
+/* --- GRILLA RESPONSIVA --- */
 .gifts-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
   gap: 12px;
   padding: 15px;
 }
 
 .gift-card {
   background: white;
-  border-radius: 15px;
+  border-radius: 12px;
   padding: 12px;
   text-align: center;
-  position: relative;
   border: 2px solid transparent;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  transition: 0.2s;
 }
 
 .gift-card.selected {
@@ -124,45 +120,39 @@
 }
 
 .gift-icon img {
-  width: 75px;
+  width: 100%;
+  max-width: 75px; /* Tamaño controlado del icono */
   height: 75px;
   object-fit: contain;
 }
 
-.gift-name {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: #444;
-  margin: 8px 0 4px;
-}
-
-.gift-price {
-  font-size: 0.85rem;
-  color: #b8860b;
-  font-weight: bold;
-}
-
-/* --- FOOTER DE COMPRA --- */
+/* --- FOOTER FIJO --- */
 .shop-footer {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
+  max-width: 500px; /* Para que no se estire en PC */
+  width: 100%;
   background: white;
-  padding: 15px 20px;
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-  z-index: 200;
+  box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+  z-index: 2000;
 }
 
 .btn-buy {
-  background: linear-gradient(90deg, #ff1493, #ff69b4);
-  border: none;
+  background: #ff1493;
   color: white;
-  padding: 12px 25px;
-  border-radius: 30px;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
   font-weight: bold;
-  font-size: 0.95rem;
+}
+
+/* Ajuste para PC: 3 columnas */
+@media (min-width: 480px) {
+  .gifts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }

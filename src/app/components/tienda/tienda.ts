@@ -70,4 +70,26 @@ export class Tienda implements OnInit {
   }
 
   irAtras() { window.history.back(); }
+
+
+obtenerAncho(id: string): number {
+  // Ajusta estos valores probando cuál hace que el círculo encaje
+  switch(id) {
+    case 'corona_8': return 220; // Más grande para que el centro no se encoja
+    case 'corona_9': return 240; // Las alas son muy anchas, necesita más ancho
+    case 'corona_4': return 180;
+    default: return 150;        // Tamaño estándar para las normales (1, 2, 5)
+  }
+}
+
+obtenerEscala(id: string): string {
+  // Si notas que el círculo sigue pequeño, aumenta el scale
+  switch(id) {
+    case 'corona_9': return 'scale(1.2) translateY(-5px)';
+    case 'corona_8': return 'scale(1.1)';
+    default: return 'scale(1)';
+  }
+}
+
+
 }

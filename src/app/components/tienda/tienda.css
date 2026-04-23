@@ -45,31 +45,28 @@
 
 .avatar-container {
   position: relative;
-  width: 140px;
-  height: 140px;
-  margin: 0 auto;
+  width: 150px; /* Contenedor grande para que quepan las alas */
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
 }
 
 .user-avatar {
-  width: 100px;
+  width: 100px;  /* TAMAÑO FIJO QUE NO CAMBIA */
   height: 100px;
   border-radius: 50%;
   object-fit: cover;
-  background: #eee;
+  z-index: 5;
 }
 
 .preview-frame {
   position: absolute;
-  width: 140px; /* El marco es más grande que el avatar */
-  height: 140px;
-  top: 0;
-  left: 0;
-  object-fit: contain;
   z-index: 10;
-  transform: scale(1.1); /* Ajuste para que el borde encaje perfecto */
+  display: block;
+  /* Eliminamos width 100% fijo para controlarlo por modelo */
+  transition: transform 0.2s ease;
 }
 
 /* TABS */

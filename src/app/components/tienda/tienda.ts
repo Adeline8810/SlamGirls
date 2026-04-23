@@ -89,14 +89,20 @@ obtenerAncho(id: string): number {
   }
 }
 
-obtenerEscala(id: any): string {
-  // Ajustamos el multiplicador para que el "hueco" del marco
-  // siempre mida los mismos 90px que la foto de usuario.
+obtenerEscala(id: number): string {
   switch(id) {
-    case 9: return 'scale(1.5)'; // Mariposa grande: la agrandamos más
-    case 8: return 'scale(1.35)'; // Marco con alas
-    case 4: return 'scale(1.25)';
-    default: return 'scale(1.15)'; // Escala para los marcos normales
+    case 8:
+      // Si se ve muy grande, bajamos la escala (ejemplo: 0.8)
+      // y la movemos un poco hacia arriba si es necesario
+      return 'translate(-50%, -55%) scale(0.8)';
+
+    case 9:
+      // La corona 9 parece ser muy alta, ajustamos escala y posición
+      return 'translate(-50%, -50%) scale(0.7)';
+
+    default:
+      // El ajuste estándar para las demás
+      return 'translate(-50%, -50%) scale(1.1)';
   }
 }
 

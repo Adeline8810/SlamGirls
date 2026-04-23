@@ -22,8 +22,8 @@ export class Tienda implements OnInit {
   totalProductos = [
     // Pestaña: Avatar Pendant
    { id: 1, nombre: 'Corona 1', precio: 800, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/corona1.png' },
-    { id: 2, nombre: 'Corona 2', precio: 600, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona2.jfif' },
-    { id: 3, nombre: 'Corona 3', precio: 1200, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona3.jfif' },
+    { id: 2, nombre: 'Corona 2', precio: 600, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona2.png' },
+    { id: 3, nombre: 'Corona 3', precio: 1200, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona3.png' },
     { id: 4, nombre: 'Corona 4', precio: 1500, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/corona4.png' },
     // Pestaña: User Decoration (Fondos, etc.)
     { id: 5, nombre: 'Fond Ciel Étoilé', precio: 500, tipo: 'user_decoration', esNuevo: false, imagenUrl: 'assets/shop/decor_sky.png' },

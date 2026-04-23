@@ -21,11 +21,10 @@ export class Tienda implements OnInit {
   // Las imágenes deben estar en assets/shop/ y ser .png transparentes
   totalProductos = [
     // Pestaña: Avatar Pendant
-    { id: 1, nombre: 'Cadre Étoile d\'Or', precio: 800, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/shop/frame_star_gold.png' },
-    { id: 2, nombre: 'Cadre Fleur de Lys', precio: 600, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/shop/frame_fleur.png' },
-    { id: 3, nombre: 'Cadre Couronne d\'Argent', precio: 1200, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/shop/frame_crown_silver.png' },
-    { id: 4, nombre: 'Cadre Diamant Bleu', precio: 1500, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/shop/frame_diamond_blue.png' },
-
+   { id: 1, nombre: 'Corona 1', precio: 800, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/corona1.png' },
+    { id: 2, nombre: 'Corona 2', precio: 600, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona2.jfif' },
+    { id: 3, nombre: 'Corona 3', precio: 1200, tipo: 'avatar_pendant', esNuevo: false, imagenUrl: 'assets/corona3.jfif' },
+    { id: 4, nombre: 'Corona 4', precio: 1500, tipo: 'avatar_pendant', esNuevo: true, imagenUrl: 'assets/corona4.png' },
     // Pestaña: User Decoration (Fondos, etc.)
     { id: 5, nombre: 'Fond Ciel Étoilé', precio: 500, tipo: 'user_decoration', esNuevo: false, imagenUrl: 'assets/shop/decor_sky.png' },
     { id: 6, nombre: 'Fond Jardin Rose', precio: 400, tipo: 'user_decoration', esNuevo: false, imagenUrl: 'assets/shop/decor_garden.png' },

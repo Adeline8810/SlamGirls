@@ -10,13 +10,12 @@
   <div class="preview-zone">
     <div class="avatar-container">
       <img [src]="usuarioActual.avatarUrl"
-           (error)="usuarioActual.avatarUrl = 'assets/placeholder-user.png'"
-           alt="Avatar"
-           class="user-avatar">
+           (error)="usuarioActual.avatarUrl = 'assets/img-rotas.png'"
+           alt="Avatar" class="user-avatar">
 
       <img *ngIf="objetoSeleccionado && tabActiva === 'avatar_pendant'"
            [src]="objetoSeleccionado.imagenUrl"
-           (error)="objetoSeleccionado.imagenUrl = 'assets/imagen-rota.png'"
+           (error)="objetoSeleccionado.imagenUrl = 'assets/img-rotas.png'"
            alt="Vista previa marco"
            class="preview-frame">
     </div>
@@ -30,18 +29,10 @@
   </div>
 
   <div class="shop-tabs">
-    <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">
-      Populaires
-    </div>
-    <div class="tab" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">
-      Avatar Pendant
-    </div>
-    <div class="tab" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">
-      User Decoration
-    </div>
-    <div class="tab" [class.active]="tabActiva === 'sound_effect'" (click)="cambiarTab('sound_effect')">
-      Sound Effect
-    </div>
+    <div class="tab" [class.active]="tabActiva === 'populares'" (click)="cambiarTab('populares')">Populaires</div>
+    <div class="tab" [class.active]="tabActiva === 'avatar_pendant'" (click)="cambiarTab('avatar_pendant')">Avatar Pendant</div>
+    <div class="tab" [class.active]="tabActiva === 'user_decoration'" (click)="cambiarTab('user_decoration')">User Decoration</div>
+    <div class="tab" [class.active]="tabActiva === 'sound_effect'" (click)="cambiarTab('sound_effect')">Sound Effect</div>
   </div>
 
   <div class="gifts-grid">
@@ -53,7 +44,7 @@
       <div class="gift-icon">
         <img [src]="item.imagenUrl"
              [alt]="item.nombre"
-             (error)="item.imagenUrl = 'assets/imagen-rota.png'">
+             (error)="item.imagenUrl = 'assets/img-rotas.png'">
       </div>
 
       <p class="gift-name">{{ item.nombre }}</p>
@@ -69,9 +60,8 @@
   <div class="shop-footer" *ngIf="objetoSeleccionado">
     <div class="selected-info">
       <img [src]="objetoSeleccionado.imagenUrl"
-           (error)="objetoSeleccionado.imagenUrl = 'assets/corona1.png'"
-           width="30"
-           alt="Icono seleccionado">
+           (error)="objetoSeleccionado.imagenUrl = 'assets/img-rotas.png'"
+           width="30" alt="Icono seleccionado">
       <span>{{ objetoSeleccionado.nombre }}</span>
     </div>
 

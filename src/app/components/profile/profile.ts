@@ -20,7 +20,6 @@ export class Profile implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    //  this.videos = this.videoService.getVideos();
     // Simulación de videos (luego esto viene de un servicio)
     this.videos = [
       { id: 1, thumbnail: 'https://via.placeholder.com/150', title: 'Video 1' },

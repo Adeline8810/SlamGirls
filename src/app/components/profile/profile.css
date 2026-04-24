@@ -54,13 +54,7 @@
   font-weight: bold;
 }
 
-/* GRID VIDEOS */
-.video-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  padding: 10px;
-}
+
 
 .video-card {
   background: white;
@@ -147,15 +141,17 @@
 
 /* Contenedor de la cuadrícula de videos */
 .video-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas como TikTok/Instagram */
+display: grid !important; /* Forzamos el grid */
+  grid-template-columns: repeat(3, 1fr) !important;
   gap: 10px;
-  padding: 15px;
+  padding: 20px;
+  min-height: 300px; /* Le damos altura obligatoria */
+  background: #f0f0f0; /* Color gris de fondo para ver dónde está el área */
 }
 
 /* El recuadro para subir nuevo video */
 .upload-box {
-  border: 2px dashed #ccc;
+ border: 2px dashed #ca43a4;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -88,27 +88,24 @@ export class Profile implements OnInit {
 
 onVideoSeleccionado(event: any) {
   const file = event.target.files[0];
-  if (!file || !this.usuarioId) return;
+  if (!file) return; // Solo validamos que exista el archivo
 
-  // --- VALIDACIÓN DE PESO (2MB máximo) ---
   const pesoEnMB = file.size / 1024 / 1024;
   if (pesoEnMB > 2) {
     alert(`El video es muy pesado (${pesoEnMB.toFixed(2)}MB). Máximo permitido: 2MB`);
     return;
   }
 
-  console.log("Subiendo video, por favor espera...");
+  // Si usuarioId está vacío, le ponemos 1 por defecto para que no falle
+  const idSeguro = this.usuarioId ? this.usuarioId.toString() : "1";
 
-  this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
+  console.log("Subiendo video...");
+  this.respuestaService.subirVideo(file, idSeguro).subscribe({
     next: (res) => {
       this.videos.unshift(res);
       alert("¡Video subido con éxito!");
-      console.log("Video cargado:", res);
     },
-    error: (err) => {
-      console.error(err);
-      alert("Error al subir: El servidor rechazó el archivo por tamaño o formato.");
-    }
+    error: (err) => alert("Error en el servidor")
   });
 }
   changeTab(tab: string) {

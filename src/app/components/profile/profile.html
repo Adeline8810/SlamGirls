@@ -21,20 +21,20 @@
 
   <div class="tabs">
     <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Homepage</button>
-    <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Momentos</button>
+    <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
     <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">Likes</button>
     <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-<div class="video-grid" >
+<div class="video-grid" *ngIf="selectedTab === 'videos'">
 
-<div (click)="videoInput.click()">
+  <div (click)="videoInput.click()">
     <div class="plus-circle">
-      <span style="color: #ff4d6d; font-weight: bold;">+</span>
+      <span>+</span>
     </div>
-    <p style="color: #333; font-weight: 500;">Subir nuevo</p>
-    <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
+    <p>Subir nuevo</p>
+    <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
   </div>
 
   <div class="video-card" *ngFor="let video of videos" (click)="reproducirVideo(video)">

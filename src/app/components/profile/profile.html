@@ -27,9 +27,9 @@
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-<div class="video-grid" *ngIf="selectedTab === 'videos'">
+<div class="video-grid" >
 
-  <div (click)="videoInput.click()">
+  <div class="video-card upload-box" (click)="videoInput.click()">
     <div class="plus-circle">
       <span>+</span>
     </div>

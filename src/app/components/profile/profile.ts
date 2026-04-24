@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { RespuestaService } from '../../../services/respuesta.service';
 
 @Component({
   selector: 'app-profile',
@@ -7,34 +6,38 @@ import { RespuestaService } from '../../../services/respuesta.service';
   styleUrls: ['./profile.css']
 })
 export class Profile implements OnInit {
-  // Datos del usuario
+  // Variables de identidad
   usuarioId: number = 123;
   usuarioActual = { username: 'ruth' };
-  fotoUrlServidor: string = 'assets/ruth-profile.jpg'; // Foto que viene del Slam
+  fotoUrlServidor: string = 'assets/img/ruth_slam.jpg'; // URL de la foto cargada
 
-  // Listas de contenido
-  misFotos: string[] = []; // Fotos para el carrusel superior
-  misVideos: any[] = [
-    { thumbnail: 'assets/v1.jpg', duration: '00:30', url: 'vid1.mp4' },
-    { thumbnail: 'assets/v2.jpg', duration: '00:15', url: 'vid2.mp4' }
+  // Objeto de la corona (integrado de tu módulo tienda)
+  objetoSeleccionado: any = null;
+
+  // Lista de videos con duración (como en la imagen)
+  misVideos = [
+    { id: 1, thumb: 'assets/v1.jpg', duration: '00:00' },
+    { id: 2, thumb: 'assets/v2.jpg', duration: '00:30' },
+    { id: 3, thumb: 'assets/v3.jpg', duration: '00:30' },
+    { id: 4, thumb: 'assets/v4.jpg', duration: '00:30' }
   ];
 
-  // Corona activa (la que arreglamos en el módulo tienda)
-  coronaActiva: any = null;
+  constructor() {}
 
-  constructor(private respuestaService: RespuestaService) {}
+  ngOnInit(): void {}
 
-  ngOnInit() {
-    // Aquí cargarías los datos iniciales del usuario
+  // Lógica para las coronas (ajuste que hicimos antes)
+  obtenerEscala(id: number): string {
+    if (id === 8 || id === 9) return 'scale(0.85) translateY(-3%)';
+    return 'scale(1.1)';
   }
 
-  irA(ruta: string) {
-    console.log('Navegando a:', ruta);
-    // Lógica de navegación
+  irA(seccion: string) {
+    console.log('Navegando a:', seccion);
   }
 
-  reproducir(video: any) {
-    console.log('Abriendo reproductor para:', video.url);
-    // Aquí abrirías la pantalla tipo StarMaker con el botón de regalos
+  verVideo(video: any) {
+    // Aquí abrirás el reproductor con opción de regalos
+    console.log('Reproduciendo video:', video.id);
   }
 }

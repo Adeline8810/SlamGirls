@@ -1,45 +1,40 @@
-import { Component } from '@angular/core';
-import { PreguntaService } from '../../../services/pregunta.service';
+import { Component, OnInit } from '@angular/core';
 import { RespuestaService } from '../../../services/respuesta.service';
-import { TraduccionService } from '../../../services/traduccion.service';
-import { Pregunta } from '../../../models/pregunta';
-import { Respuesta } from '../../../models/respuesta';
 
 @Component({
   selector: 'app-profile',
-  imports: [],
   templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  styleUrls: ['./profile.css']
 })
-export class Profile {
-  misFotos: string[] = [];
-  seguidores = 7900;
-  seguidos = 743;
-  regalos = 40500;
-  usuarioId: number = 123; // El ID que corresponda
-
-  // AÑADE ESTA LÍNEA PARA QUITAR EL ERROR ROJO:
+export class Profile implements OnInit {
+  // Datos del usuario
+  usuarioId: number = 123;
   usuarioActual = { username: 'ruth' };
+  fotoUrlServidor: string = 'assets/ruth-profile.jpg'; // Foto que viene del Slam
 
-   constructor( private respuestaService: RespuestaService,private traduccionService: TraduccionService) {
+  // Listas de contenido
+  misFotos: string[] = []; // Fotos para el carrusel superior
+  misVideos: any[] = [
+    { thumbnail: 'assets/v1.jpg', duration: '00:30', url: 'vid1.mp4' },
+    { thumbnail: 'assets/v2.jpg', duration: '00:15', url: 'vid2.mp4' }
+  ];
 
+  // Corona activa (la que arreglamos en el módulo tienda)
+  coronaActiva: any = null;
 
-      }
+  constructor(private respuestaService: RespuestaService) {}
 
-  onSubirMedia(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      // Aquí usarías tu servicio de subirFoto que ya creamos para el Slam
-      this.respuestaService.subirFoto(file, this.usuarioId.toString()).subscribe({
-        next: (path) => {
-          const urlCompleta = `https://backend-ruth-slam.onrender.com/${path}`;
-          this.misFotos.unshift(urlCompleta); // Añade la foto al principio del carrusel
-        }
-      });
-    }
+  ngOnInit() {
+    // Aquí cargarías los datos iniciales del usuario
   }
 
   irA(ruta: string) {
-    // Lógica para navegar a tienda, quiz, etc.
+    console.log('Navegando a:', ruta);
+    // Lógica de navegación
+  }
+
+  reproducir(video: any) {
+    console.log('Abriendo reproductor para:', video.url);
+    // Aquí abrirías la pantalla tipo StarMaker con el botón de regalos
   }
 }

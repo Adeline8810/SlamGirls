@@ -1,94 +1,128 @@
 .profile-container {
-  background: #fafafa;
+  background-color: #ffffff;
   min-height: 100vh;
+  padding-bottom: 80px; /* Espacio para tu navegación inferior */
 }
 
-/* CARRUSEL */
-.profile-carousel {
+/* SECTOR SUPERIOR */
+.upper-sector {
   position: relative;
-  width: 100%;
-  height: 40vh; /* Ocupa casi la mitad de la pantalla */
-  background: #eee;
+  text-align: center;
+}
+
+.panoramic-carousel {
+  height: 250px;
+  background: #2a0845;
+  position: relative;
+  overflow: hidden;
 }
 
 .carousel-track {
   display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
   height: 100%;
-  scrollbar-width: none; /* Esconde scroll en Firefox */
 }
 
-.carousel-item {
+.carousel-img {
   min-width: 100%;
   height: 100%;
   object-fit: cover;
-  scroll-snap-align: start;
+  filter: brightness(0.7);
 }
 
-.btn-upload {
+.carousel-arrow {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  width: 50px;
-  height: 50px;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f6d365;
+  font-size: 24px;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* FOTO CON CORONA */
+.avatar-crown-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: -60px auto 10px; /* Sube la foto para que pise el carrusel */
+  z-index: 5;
+}
+
+.photo-wrapper {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.9);
-  border: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  cursor: pointer;
+  overflow: hidden;
+  border: 4px solid white;
 }
 
-/* ESTADÍSTICAS */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 20px;
+.user-photo { width: 100%; height: 100%; object-fit: cover; }
+
+.crown-overlay {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
 }
 
-.stat-card {
-  background: white;
-  padding: 15px 5px;
-  text-align: center;
-  border-radius: 12px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+/* DIVISORIA */
+.glass-divider {
+  height: 10px;
+  background: linear-gradient(to bottom, #f0f2f5, #ffffff);
+  border-top: 1px solid #e4e6eb;
+  margin: 20px 0;
 }
 
-.stat-value {
-  display: block;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.stat-label {
-  font-size: 0.8rem;
-  color: #888;
-}
-
-/* BOTONES DE ACCIÓN */
-.action-buttons {
-  padding: 0 20px;
+/* SECTOR INFERIOR */
+.action-grid {
+  padding: 0 15px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
-.btn-action {
-  width: 100%;
+.action-card {
   padding: 15px 20px;
-  border: none;
   border-radius: 15px;
+  border: none;
   color: white;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  transition: transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
-
-.btn-action:active { transform: scale(0.98); }
 
 .pink { background: linear-gradient(90deg, #ff7eb3, #ff758c); }
 .gold { background: linear-gradient(90deg, #f6d365, #fda085); }
 .purple { background: linear-gradient(90deg, #a18cd1, #fbc2eb); }
+
+/* VIDEOS */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  padding: 15px;
+}
+
+.video-thumb {
+  aspect-ratio: 9/16;
+  background: #000;
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+
+.duration {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+}

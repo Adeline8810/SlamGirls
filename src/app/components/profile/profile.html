@@ -1,49 +1,54 @@
 <div class="profile-container">
-  <header class="profile-carousel">
-    <div class="carousel-track">
-      <img *ngFor="let foto of misFotos" [src]="foto" class="carousel-item">
-      <div *ngIf="misFotos.length === 0" class="carousel-item empty-state">
-        <span>Añade tus primeras fotos</span>
+  <header class="upper-sector">
+    <div class="panoramic-carousel">
+      <div class="carousel-track">
+        <img *ngFor="let foto of misFotos" [src]="foto" class="carousel-img">
+        <div *ngIf="misFotos.length === 0" class="empty-carousel">
+          <img src="assets/default-bg.jpg" class="carousel-img">
+        </div>
+      </div>
+      <div class="carousel-arrow">
+        <span>❯❯❯</span>
       </div>
     </div>
-    <button class="btn-upload" (click)="fileInput.click()">
-      <span class="icon">📷</span>
-    </button>
-    <input #fileInput type="file" (change)="onSubirMedia($event)" hidden accept="image/*,video/*">
+
+    <div class="avatar-crown-container">
+      <div class="photo-wrapper">
+        <img [src]="fotoUrlServidor" class="user-photo">
+      </div>
+      <div class="crown-overlay" *ngIf="coronaActiva">
+        <img [src]="coronaActiva.url" [style.transform]="'scale(1.1)'">
+      </div>
+    </div>
+
+    <div class="user-meta">
+      <h2 class="username">@{{ usuarioActual.username }}</h2>
+      <div class="tags-row">
+        <span class="tag-chip">Géminis</span>
+        <span class="tag-chip">Técnico en Informática</span>
+        <span class="tag-chip">Adaptable</span>
+      </div>
+    </div>
   </header>
 
-  <section class="user-info">
-    <h1 class="username">@{{ usuarioActual.username }}</h1>
-    <div class="tags-container">
-      <span class="tag">Géminis</span>
-      <span class="tag">Técnico en Informática</span>
-    </div>
-  </section>
+  <div class="glass-divider"></div>
 
-  <section class="stats-grid">
-    <div class="stat-card">
-      <span class="stat-value">{{ seguidores }}</span>
-      <span class="stat-label">Seguidores</span>
+  <main class="lower-sector">
+    <div class="action-grid">
+      <button class="action-card pink" (click)="irA('quiz')">Remplis Quiz <span>›</span></button>
+      <button class="action-card gold" (click)="irA('ami')">Trouve un ami <span>›</span></button>
+      <button class="action-card purple" (click)="irA('tienda')">Tienda <span>›</span></button>
     </div>
-    <div class="stat-card">
-      <span class="stat-value">{{ seguidos }}</span>
-      <span class="stat-label">Seguidos</span>
-    </div>
-    <div class="stat-card">
-      <span class="stat-value">🟡 {{ regalos }}</span>
-      <span class="stat-label">Regalos</span>
-    </div>
-  </section>
 
-  <nav class="action-buttons">
-    <button class="btn-action pink" (click)="irA('remplir-quiz')">
-      Remplis Quiz <span>›</span>
-    </button>
-    <button class="btn-action gold" (click)="irA('trouve-ami')">
-      Trouve un Ami <span>›</span>
-    </button>
-    <button class="btn-action purple" (click)="irA('tienda')">
-      Tienda <span>›</span>
-    </button>
-  </nav>
+    <section class="video-gallery">
+      <h3 class="section-title">Mes Vidéos (Récents)</h3>
+      <div class="video-grid">
+        <div class="video-thumb" *ngFor="let video of misVideos" (click)="reproducir(video)">
+          <img [src]="video.thumbnail" class="thumb-img">
+          <span class="duration">{{ video.duration }}</span>
+          <div class="play-icon">▶</div>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>

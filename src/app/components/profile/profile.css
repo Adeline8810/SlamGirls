@@ -1,110 +1,80 @@
-/* BASE */
 .profile-container {
-  font-family: 'Inter', 'Segoe UI', sans-serif;
-  background: #0f172a; /* azul oscuro elegante */
-  color: #e5e7eb;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
   min-height: 100vh;
 }
 
 /* HEADER */
 .header {
-  padding: 24px 16px;
+  background: white;
+  padding: 20px;
   text-align: center;
-  background: #111827;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .avatar {
-  width: 95px;
-  height: 95px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.1);
   object-fit: cover;
 }
 
-.header h2 {
-  margin: 10px 0 4px;
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.header p {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-/* STATS */
 .stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 18px;
+  margin-top: 15px;
+}
+
+.stats div {
+  text-align: center;
 }
 
 .stats strong {
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.stats span {
-  font-size: 11px;
-  color: #6b7280;
+  display: block;
+  font-size: 18px;
 }
 
 /* TABS */
 .tabs {
   display: flex;
-  padding: 8px;
-  gap: 8px;
   overflow-x: auto;
-  background: #0f172a;
+  background: white;
+  border-bottom: 1px solid #ddd;
 }
 
 .tabs button {
-  padding: 8px 14px;
-  border-radius: 999px;
+  flex: 1;
+  padding: 12px;
   border: none;
-  background: #1f2933;
-  color: #9ca3af;
-  font-size: 13px;
+  background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .tabs button.active {
-  background: #e5e7eb;
-  color: #111827;
-  font-weight: 500;
+  border-bottom: 3px solid #ff4d6d;
+  font-weight: bold;
 }
 
-/* GRID */
+/* GRID VIDEOS */
 .video-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-  padding: 12px;
+  padding: 10px;
 }
 
-/* CARD */
 .video-card {
-  background: #111827;
-  border-radius: 12px;
+  background: white;
+  border-radius: 10px;
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: transform 0.2s ease;
-}
-
-.video-card:hover {
-  transform: translateY(-3px);
 }
 
 .video-card img {
   width: 100%;
-  height: 130px;
+  height: 120px;
   object-fit: cover;
 }
 
 .video-card p {
-  padding: 6px;
-  font-size: 12px;
-  color: #d1d5db;
+  padding: 5px;
+  font-size: 14px;
 }

@@ -5,6 +5,7 @@ interface Video {
   id: number;
   thumbnail: string;
   title: string;
+  url?: string;
 }
 
 @Component({
@@ -14,41 +15,43 @@ interface Video {
 })
 export class Profile implements OnInit {
   selectedTab: string = 'videos'; // Por defecto en videos como pediste
-  videos: Video[] = [];
+  usuarioActual: any = {}; // ✅ Declarado para que el HTML no de error
+  videos: any[] = []; // Aquí guardaremos los videos de la DB
 
   // VARIABLES REALES (Igual que en tu Slam)
   usuarioId!: number;
   nombreUsuario: string = '';
-  usuarioActual: any;
+
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
 
   constructor(private respuestaService: RespuestaService) {}
 
-  ngOnInit(): void {
-    // 1. OBTENER USUARIO LOGUEADO (Igual que en tu Slam)
+ ngOnInit(): void {
     const u = localStorage.getItem('usuario');
-    if (!u) {
-      alert('Debes iniciar sesión');
-      return;
+    if (u) {
+      this.usuarioActual = JSON.parse(u);
+      this.usuarioId = this.usuarioActual.id;
+
+      // ✅ Cargar videos reales del usuario al entrar
+      this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
+        this.videos = res;
+      });
     }
-
-    const usuarioObj = JSON.parse(u);
-    this.usuarioActual = usuarioObj;
-    this.usuarioId = usuarioObj.id;
-    this.nombreUsuario = usuarioObj.nombre;
-
-    // 2. CARGAR FOTO (Prioridad LocalStorage para rapidez, luego podrías pedir a BD)
-    const fotoGuardada = localStorage.getItem('user_foto_perfil');
-    if (fotoGuardada) {
-      this.fotoUrlServidor = fotoGuardada;
-    }
-
-    // Carga de videos (placeholder por ahora)
-    this.videos = [
-      { id: 1, thumbnail: 'https://via.placeholder.com/150', title: 'Video 1' },
-      { id: 2, thumbnail: 'https://via.placeholder.com/150', title: 'Video 2' }
-    ];
   }
+
+  onSubirMedia(event: any) {
+    const file = event.target.files[0];
+    if (file && this.usuarioId) {
+      // ✅ .toString() para arreglar el error de la imagen
+      this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
+        next: (nuevoVideo) => {
+          this.videos.unshift(nuevoVideo); // Lo añade a la vista inmediatamente
+          console.log("Video guardado en tabla 'videos'");
+        }
+      });
+    }
+  }
+
 
   // MÉTODO EDITAR/SUBIR FOTO (Copiado de tu lógica de Slam)
   onFotoSeleccionada(ev: any) {
@@ -82,6 +85,26 @@ export class Profile implements OnInit {
       }
     });
   }
+
+  onVideoSeleccionado(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.respuestaService.subirFoto(file, this.usuarioId.toString()).subscribe({
+      next: (path) => {
+        const urlFinal = `https://backend-ruth-slam.onrender.com/${path}`;
+
+        const nuevoVideo: Video = {
+          id: Date.now(),
+          thumbnail: 'assets/img/video_placeholder.png',
+          title: file.name,
+          url: urlFinal // ✅ Ahora TypeScript lo reconocerá
+        };
+
+        this.videos.unshift(nuevoVideo);
+      }
+    });
+  }
+}
 
   changeTab(tab: string) {
     this.selectedTab = tab;

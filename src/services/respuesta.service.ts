@@ -44,6 +44,18 @@
   }
 
 
+  // En tu RespuestaService
+obtenerVideos(usuarioId: number): Observable<any[]> {
+  // Ajusta la URL a tu endpoint de Node.js que consulta la tabla 'videos'
+  return this.http.get<any[]>(`${this.api}/videos/${usuarioId}`);
+}
+
+subirVideo(file: File, usuarioId: string): Observable<any> {
+  const formData = new FormData();
+  formData.append('video', file);
+  // Este endpoint en tu Backend debe hacer el INSERT en la tabla de Supabase
+  return this.http.post(`${this.api}/subir-video/${usuarioId}`, formData);
+}
 
 
   }

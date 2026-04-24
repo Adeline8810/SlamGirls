@@ -1,75 +1,16 @@
+/* --- CONTENEDOR PRINCIPAL --- */
 .profile-container {
   font-family: Arial, sans-serif;
   background: #f5f5f5;
   min-height: 100vh;
 }
 
-/* HEADER */
+/* --- HEADER Y AVATAR --- */
 .header {
   background: white;
   padding: 20px;
   text-align: center;
 }
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.stats {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 15px;
-}
-
-.stats div {
-  text-align: center;
-}
-
-.stats strong {
-  display: block;
-  font-size: 18px;
-}
-
-/* TABS */
-.tabs {
-  display: flex;
-  overflow-x: auto;
-  background: white;
-  border-bottom: 1px solid #ddd;
-}
-
-.tabs button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.tabs button.active {
-  border-bottom: 3px solid #ff4d6d;
-  font-weight: bold;
-}
-
-
-
-
-
-.video-card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-}
-
-.video-card p {
-  padding: 5px;
-  font-size: 14px;
-}
-
-
 
 .avatar-container {
   position: relative;
@@ -105,61 +46,65 @@
   opacity: 1;
 }
 
-.upload-trigger {
-  border: 2px dashed #ccc;
+/* --- ESTADÍSTICAS --- */
+.stats {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #eee !important;
+  justify-content: space-around;
+  margin-top: 15px;
 }
 
-.plus-icon {
-  font-size: 40px;
-  color: #ff4d6d;
+.stats div {
+  text-align: center;
 }
 
-
-.video-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Esto hace que el video llene la cajita sin deformarse */
-  border-radius: 10px;
-  background-color: #000; /* Fondo negro por si tarda en cargar */
+.stats strong {
+  display: block;
+  font-size: 18px;
 }
 
-.thumb-wrapper {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1; /* Mantiene la cajita cuadrada */
-  overflow: hidden;
+/* --- NAVEGACIÓN (TABS) --- */
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  background: white;
+  border-bottom: 1px solid #ddd;
 }
 
-/* Contenedor de la cuadrícula de videos */
+.tabs button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+.tabs button.active {
+  border-bottom: 3px solid #ff4d6d;
+  font-weight: bold;
+}
+
+/* --- CUADRÍCULA DE VIDEOS (LA CLAVE) --- */
 .video-grid {
-display: grid !important; /* Forzamos el grid */
-  grid-template-columns: repeat(3, 1fr) !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important; /* 3 columnas */
   gap: 10px;
   padding: 20px;
-  min-height: 300px; /* Le damos altura obligatoria */
-  background: #f0f0f0; /* Color gris de fondo para ver dónde está el área */
-    min-height: 300px;
+  min-height: 400px; /* Altura para asegurar visibilidad */
+  background: #f0f0f0;
 }
 
-/* El recuadro para subir nuevo video */
+/* --- BOTÓN DE SUBIDA --- */
 .upload-box {
- border: 2px dashed #ca43a4;
-  display: flex;
+  border: 2px dashed #ca43a4 !important;
+  display: flex !important;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 200px;
-  background: #f9f9f9;
+  background: #ffffff !important; /* Cambiado de rojo a blanco para que se vea profesional */
   cursor: pointer;
   border-radius: 10px;
-   border: 2px dashed #ca43a4;
-
-    background: red !important;
 }
 
 .plus-circle {
@@ -168,19 +113,43 @@ display: grid !important; /* Forzamos el grid */
   font-weight: bold;
 }
 
-/* Las tarjetas de videos ya subidos */
+/* --- TARJETAS DE VIDEO --- */
 .video-card {
-   width: 100%;
+  width: 100%;
   height: 200px;
-  background: white;
-  background: #000;
+  background: #000; /* Fondo negro para los videos */
   border-radius: 10px;
   overflow: hidden;
   position: relative;
+}
+
+.thumb-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .video-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 10px;
+}
+
+.video-card p {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* --- OTROS --- */
+.plus-icon {
+  font-size: 40px;
+  color: #ff4d6d;
 }

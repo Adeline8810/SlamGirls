@@ -57,19 +57,16 @@
   }
 
 
-// 1. Para obtener los videos del usuario
 obtenerVideos(usuarioId: number): Observable<Video[]> {
-  // Ajustado a: /api/videos/usuario/{id} (como en tu Java)
-  return this.http.get<Video[]>(`${this.api}/videos/usuario/${usuarioId}`);
+  // Usamos la ruta directa a videos
+  return this.http.get<Video[]>(`https://backend-ruth-slam.onrender.com/api/videos/usuario/${usuarioId}`);
 }
 
-// 2. Para subir un nuevo video
 subirVideo(file: File, usuarioId: string): Observable<Video> {
   const formData = new FormData();
   formData.append('video', file);
-
-  // Ajustado a: /api/videos/upload/{id} (como en tu Java)
-  return this.http.post<Video>(`${this.api}/videos/upload/${usuarioId}`, formData);
+  // Usamos la ruta directa a videos
+  return this.http.post<Video>(`https://backend-ruth-slam.onrender.com/api/videos/upload/${usuarioId}`, formData);
 }
 
   }

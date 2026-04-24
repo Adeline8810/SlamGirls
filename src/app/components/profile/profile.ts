@@ -88,16 +88,28 @@ export class Profile implements OnInit {
 
 onVideoSeleccionado(event: any) {
   const file = event.target.files[0];
-  if (file && this.usuarioId) {
-    this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
-      next: (res) => {
-        // 'res' ya es un objeto Video con urlVideo y titulo que viene de Java
-        this.videos.unshift(res);
-        console.log("Video cargado con éxito");
-      },
-      error: (err) => alert("Error al subir el video")
-    });
+  if (!file || !this.usuarioId) return;
+
+  // --- VALIDACIÓN DE PESO (2MB máximo) ---
+  const pesoEnMB = file.size / 1024 / 1024;
+  if (pesoEnMB > 2) {
+    alert(`El video es muy pesado (${pesoEnMB.toFixed(2)}MB). Máximo permitido: 2MB`);
+    return;
   }
+
+  console.log("Subiendo video, por favor espera...");
+
+  this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
+    next: (res) => {
+      this.videos.unshift(res);
+      alert("¡Video subido con éxito!");
+      console.log("Video cargado:", res);
+    },
+    error: (err) => {
+      console.error(err);
+      alert("Error al subir: El servidor rechazó el archivo por tamaño o formato.");
+    }
+  });
 }
   changeTab(tab: string) {
     this.selectedTab = tab;

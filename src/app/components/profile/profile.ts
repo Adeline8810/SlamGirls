@@ -1,43 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 
+interface Video {
+  id: number;
+  thumbnail: string;
+  title: string;
+}
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
   styleUrls: ['./profile.css']
 })
 export class Profile implements OnInit {
-  // Variables de identidad
-  usuarioId: number = 123;
-  usuarioActual = { username: 'ruth' };
-  fotoUrlServidor: string = 'assets/img/ruth_slam.jpg'; // URL de la foto cargada
 
-  // Objeto de la corona (integrado de tu módulo tienda)
-  objetoSeleccionado: any = null;
+  selectedTab: string = 'cover';
 
-  // Lista de videos con duración (como en la imagen)
-  misVideos = [
-    { id: 1, thumb: 'assets/v1.jpg', duration: '00:00' },
-    { id: 2, thumb: 'assets/v2.jpg', duration: '00:30' },
-    { id: 3, thumb: 'assets/v3.jpg', duration: '00:30' },
-    { id: 4, thumb: 'assets/v4.jpg', duration: '00:30' }
-  ];
+  videos: Video[] = [];
 
   constructor() {}
 
-  ngOnInit(): void {}
-
-  // Lógica para las coronas (ajuste que hicimos antes)
-  obtenerEscala(id: number): string {
-    if (id === 8 || id === 9) return 'scale(0.85) translateY(-3%)';
-    return 'scale(1.1)';
+  ngOnInit(): void {
+    //  this.videos = this.videoService.getVideos();
+    // Simulación de videos (luego esto viene de un servicio)
+    this.videos = [
+      { id: 1, thumbnail: 'https://via.placeholder.com/150', title: 'Video 1' },
+      { id: 2, thumbnail: 'https://via.placeholder.com/150', title: 'Video 2' },
+      { id: 3, thumbnail: 'https://via.placeholder.com/150', title: 'Video 3' },
+      { id: 4, thumbnail: 'https://via.placeholder.com/150', title: 'Video 4' }
+    ];
   }
 
-  irA(seccion: string) {
-    console.log('Navegando a:', seccion);
-  }
-
-  verVideo(video: any) {
-    // Aquí abrirás el reproductor con opción de regalos
-    console.log('Reproduciendo video:', video.id);
+  changeTab(tab: string) {
+    this.selectedTab = tab;
   }
 }

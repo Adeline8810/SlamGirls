@@ -1,4 +1,12 @@
 /* FONDO GENERAL */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
+}
+
 .profile-container {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
@@ -136,4 +144,8 @@
 
 .video-card:hover::after {
   opacity: 1;
+}
+.profile-container {
+  min-height: 100vh;
+  background: transparent;
 }

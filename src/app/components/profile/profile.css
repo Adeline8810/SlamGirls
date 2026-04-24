@@ -1,151 +1,110 @@
-/* FONDO GENERAL */
-
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
-}
-
+/* BASE */
 .profile-container {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(180deg, #1a1a2e, #0f0f1a);
-  color: white;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: #0f172a; /* azul oscuro elegante */
+  color: #e5e7eb;
   min-height: 100vh;
 }
 
 /* HEADER */
 .header {
-  padding: 20px;
+  padding: 24px 16px;
   text-align: center;
-  background: linear-gradient(135deg, #ff4d6d, #7b2cbf);
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background: #111827;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .avatar {
-  width: 110px;
-  height: 110px;
+  width: 95px;
+  height: 95px;
   border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 0 15px rgba(255,255,255,0.6);
+  border: 2px solid rgba(255,255,255,0.1);
   object-fit: cover;
 }
 
 .header h2 {
-  margin: 10px 0 5px;
+  margin: 10px 0 4px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .header p {
-  opacity: 0.8;
+  font-size: 12px;
+  color: #9ca3af;
 }
 
 /* STATS */
 .stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 15px;
-}
-
-.stats div {
-  text-align: center;
+  margin-top: 18px;
 }
 
 .stats strong {
-  display: block;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .stats span {
-  font-size: 12px;
-  opacity: 0.8;
+  font-size: 11px;
+  color: #6b7280;
 }
 
 /* TABS */
 .tabs {
   display: flex;
+  padding: 8px;
+  gap: 8px;
   overflow-x: auto;
-  padding: 10px;
-  gap: 10px;
+  background: #0f172a;
 }
 
 .tabs button {
-  padding: 10px 15px;
-  border-radius: 20px;
+  padding: 8px 14px;
+  border-radius: 999px;
   border: none;
-  background: rgba(255,255,255,0.1);
-  color: white;
+  background: #1f2933;
+  color: #9ca3af;
+  font-size: 13px;
   cursor: pointer;
-  transition: 0.3s;
-}
-
-.tabs button:hover {
-  background: rgba(255,255,255,0.2);
+  transition: all 0.2s ease;
 }
 
 .tabs button.active {
-  background: linear-gradient(135deg, #ff4d6d, #ff9a8b);
-  box-shadow: 0 0 10px rgba(255, 77, 109, 0.8);
-  font-weight: bold;
+  background: #e5e7eb;
+  color: #111827;
+  font-weight: 500;
 }
 
 /* GRID */
 .video-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 10px;
   padding: 12px;
 }
 
-/* TARJETAS */
+/* CARD */
 .video-card {
-  background: #1f1f2e;
-  border-radius: 15px;
+  background: #111827;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.6);
-  transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.2s ease;
 }
 
 .video-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(255, 77, 109, 0.4);
+  transform: translateY(-3px);
 }
 
 .video-card img {
   width: 100%;
-  height: 140px;
+  height: 130px;
   object-fit: cover;
 }
 
 .video-card p {
-  padding: 8px;
-  font-size: 14px;
-  text-align: center;
-}
-
-/* EFECTO BRILLO */
-.video-card::after {
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.2),
-    transparent
-  );
-  opacity: 0;
-  transition: 0.4s;
-}
-
-.video-card:hover::after {
-  opacity: 1;
-}
-.profile-container {
-  min-height: 100vh;
-  background: transparent;
+  padding: 6px;
+  font-size: 12px;
+  color: #d1d5db;
 }

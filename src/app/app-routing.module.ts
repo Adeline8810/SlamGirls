@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
+import { Profile } from './components/profile/profile';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -44,6 +45,10 @@ const routes: Routes = [
     component: Tienda
   },
 
+    {
+    path: 'profile',
+    component: Profile
+  },
 
   { path: '**', redirectTo: '/admin' }
 

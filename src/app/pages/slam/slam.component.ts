@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PreguntaService } from '../../../services/pregunta.service';
 import { RespuestaService } from '../../../services/respuesta.service';
+import { TraduccionService } from '../../../services/traduccion.service';
 import { Pregunta } from '../../../models/pregunta';
 import { Respuesta } from '../../../models/respuesta';
 import { MenuBarComponent } from '../../components/menu-bar/menu-bar.component';
 import { forkJoin, firstValueFrom } from 'rxjs';
-import { TraduccionService } from '../../../services/traduccion.service';
 import confetti from 'canvas-confetti';
 
 import { NgxParticlesModule } from "@tsparticles/angular";
@@ -43,7 +43,9 @@ export class SlamComponent implements OnInit {
   cargando: boolean = false;
 
   constructor(private preguntaService: PreguntaService, private respuestaService: RespuestaService,
-    private traduccionService: TraduccionService) {}
+    private traduccionService: TraduccionService) {
+
+    }
 
   ngOnInit(): void {
 

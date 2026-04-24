@@ -3,6 +3,10 @@
   <div class="menu-buttons">
     <button (click)="go('/slam')">Remplis Quiz</button>
     <button *ngIf="esAdmin" (click)="go('/admin')">Administrador</button>
+     <button class="menu-buttons" (click)="irMoiProfile()">
+      iProfile
+    </button>
+
     <button class="menu-buttons" (click)="irABuscarAmigo()">
   🔍 Trouve un ami
     </button>

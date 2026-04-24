@@ -7,6 +7,7 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
+import { Profile } from './components/profile/profile';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: 'buscar-amigo', component: BuscarAmigo },
   { path: 'recargar', component: Recargar },
   { path: 'tienda', component: Tienda },
+  { path: 'profile', component: Profile },
   { path: '**', redirectTo: '' }
 ];

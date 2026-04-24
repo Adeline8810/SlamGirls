@@ -1,0 +1,49 @@
+<div class="profile-container">
+  <header class="profile-carousel">
+    <div class="carousel-track">
+      <img *ngFor="let foto of misFotos" [src]="foto" class="carousel-item">
+      <div *ngIf="misFotos.length === 0" class="carousel-item empty-state">
+        <span>Añade tus primeras fotos</span>
+      </div>
+    </div>
+    <button class="btn-upload" (click)="fileInput.click()">
+      <span class="icon">📷</span>
+    </button>
+    <input #fileInput type="file" (change)="onSubirMedia($event)" hidden accept="image/*,video/*">
+  </header>
+
+  <section class="user-info">
+    <h1 class="username">@{{ usuarioActual.username }}</h1>
+    <div class="tags-container">
+      <span class="tag">Géminis</span>
+      <span class="tag">Técnico en Informática</span>
+    </div>
+  </section>
+
+  <section class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-value">{{ seguidores }}</span>
+      <span class="stat-label">Seguidores</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ seguidos }}</span>
+      <span class="stat-label">Seguidos</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">🟡 {{ regalos }}</span>
+      <span class="stat-label">Regalos</span>
+    </div>
+  </section>
+
+  <nav class="action-buttons">
+    <button class="btn-action pink" (click)="irA('remplir-quiz')">
+      Remplis Quiz <span>›</span>
+    </button>
+    <button class="btn-action gold" (click)="irA('trouve-ami')">
+      Trouve un Ami <span>›</span>
+    </button>
+    <button class="btn-action purple" (click)="irA('tienda')">
+      Tienda <span>›</span>
+    </button>
+  </nav>
+</div>

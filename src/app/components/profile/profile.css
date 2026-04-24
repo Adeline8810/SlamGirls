@@ -1,0 +1,94 @@
+.profile-container {
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+/* CARRUSEL */
+.profile-carousel {
+  position: relative;
+  width: 100%;
+  height: 40vh; /* Ocupa casi la mitad de la pantalla */
+  background: #eee;
+}
+
+.carousel-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  height: 100%;
+  scrollbar-width: none; /* Esconde scroll en Firefox */
+}
+
+.carousel-item {
+  min-width: 100%;
+  height: 100%;
+  object-fit: cover;
+  scroll-snap-align: start;
+}
+
+.btn-upload {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* ESTADÍSTICAS */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 20px;
+}
+
+.stat-card {
+  background: white;
+  padding: 15px 5px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.stat-value {
+  display: block;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* BOTONES DE ACCIÓN */
+.action-buttons {
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-action {
+  width: 100%;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s;
+}
+
+.btn-action:active { transform: scale(0.98); }
+
+.pink { background: linear-gradient(90deg, #ff7eb3, #ff758c); }
+.gold { background: linear-gradient(90deg, #f6d365, #fda085); }
+.purple { background: linear-gradient(90deg, #a18cd1, #fbc2eb); }

@@ -39,11 +39,12 @@
 
   <div class="video-card" *ngFor="let video of videos" (click)="reproducirVideo(video)">
     <div class="thumb-wrapper">
-      <img [src]="video.thumbnail" alt="preview">
+      <video [src]="video.urlVideo" class="video-preview"></video>
       <div class="play-icon">▶</div>
     </div>
-    <p class="video-title">{{ video.title }}</p>
+    <p class="video-title">{{ video.titulo }}</p>
   </div>
+
 </div>
 
 </div>

@@ -3,6 +3,13 @@
   import { Respuesta } from '../models/respuesta';
   import { Observable } from 'rxjs';
 
+  export interface Video {
+  id: number;
+  titulo: string;
+  urlVideo: string;
+  thumbnail?: string;
+ }
+
   @Injectable({ providedIn: 'root' })
   export class RespuestaService {
     //private api = 'https://backend-ruth-slam.onrender.com/api/respuestas';
@@ -12,9 +19,15 @@
 
    reiniciarSlam$ = new EventEmitter<void>();
 
+
+
+
    dispararReinicio() {
    this.reiniciarSlam$.emit();
+
   }
+
+
 
 
  subirFoto(file: File, usuarioId: string): Observable<string> {
@@ -44,18 +57,19 @@
   }
 
 
-  // En tu RespuestaService
-obtenerVideos(usuarioId: number): Observable<any[]> {
-  // Ajusta la URL a tu endpoint de Node.js que consulta la tabla 'videos'
-  return this.http.get<any[]>(`${this.api}/videos/${usuarioId}`);
+// 1. Para obtener los videos del usuario
+obtenerVideos(usuarioId: number): Observable<Video[]> {
+  // Ajustado a: /api/videos/usuario/{id} (como en tu Java)
+  return this.http.get<Video[]>(`${this.api}/videos/usuario/${usuarioId}`);
 }
 
-subirVideo(file: File, usuarioId: string): Observable<any> {
+// 2. Para subir un nuevo video
+subirVideo(file: File, usuarioId: string): Observable<Video> {
   const formData = new FormData();
   formData.append('video', file);
-  // Este endpoint en tu Backend debe hacer el INSERT en la tabla de Supabase
-  return this.http.post(`${this.api}/subir-video/${usuarioId}`, formData);
-}
 
+  // Ajustado a: /api/videos/upload/{id} (como en tu Java)
+  return this.http.post<Video>(`${this.api}/videos/upload/${usuarioId}`, formData);
+}
 
   }

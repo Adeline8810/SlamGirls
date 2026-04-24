@@ -3,9 +3,9 @@ import { RespuestaService } from '../../../services/respuesta.service'; // Ajust
 
 interface Video {
   id: number;
-  thumbnail: string;
-  title: string;
-  url?: string;
+  titulo: string;
+  urlVideo?: string;
+  thumbnail?: string;
 }
 
 @Component({
@@ -86,26 +86,19 @@ export class Profile implements OnInit {
     });
   }
 
-  onVideoSeleccionado(event: any) {
+onVideoSeleccionado(event: any) {
   const file = event.target.files[0];
-  if (file) {
-    this.respuestaService.subirFoto(file, this.usuarioId.toString()).subscribe({
-      next: (path) => {
-        const urlFinal = `https://backend-ruth-slam.onrender.com/${path}`;
-
-        const nuevoVideo: Video = {
-          id: Date.now(),
-          thumbnail: 'assets/img/video_placeholder.png',
-          title: file.name,
-          url: urlFinal // ✅ Ahora TypeScript lo reconocerá
-        };
-
-        this.videos.unshift(nuevoVideo);
-      }
+  if (file && this.usuarioId) {
+    this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
+      next: (res) => {
+        // 'res' ya es un objeto Video con urlVideo y titulo que viene de Java
+        this.videos.unshift(res);
+        console.log("Video cargado con éxito");
+      },
+      error: (err) => alert("Error al subir el video")
     });
   }
 }
-
   changeTab(tab: string) {
     this.selectedTab = tab;
   }

@@ -1,69 +1,52 @@
 <div class="profile-container">
-
-  <div class="header">
-    <div class="avatar-container" (click)="fileInput.click()">
-      <img class="avatar" [src]="fotoUrlServidor" alt="avatar">
-      <div class="edit-overlay">Editar</div>
-    </div>
-
-    <input #fileInput type="file" (change)="onFotoSeleccionada($event)" hidden accept="image/*">
-
-    <h2>{{ nombreUsuario }}</h2>
-    <p>ID: {{ usuarioId }}</p>
-
-    <div class="stats">
-      <div><strong>7.9K</strong><span>Followers</span></div>
-      <div><strong>743</strong><span>Following</span></div>
-      <div><strong>718</strong><span>Rank</span></div>
-      <div><strong>40.5K</strong><span>Gifts</span></div>
-    </div>
-  </div>
-
   <div class="tabs">
-    <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">HomepageEE</button>
+    <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Homepage</button>
     <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
-    <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">Likes</button>
     <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-  <div *ngIf="selectedTab === 'homepage'" style="padding: 20px; text-align: center;">
-    <h3>🏠 Esta es la pestaña HOMEPAGE</h3>
-    <p>Aquí irá la información principal de tu perfil.</p>
-  </div>
+  @switch (selectedTab) {
+    @case ('homepage') {
+      <div class="tab-content">
+        <h3>🏠 Homepage</h3>
+        <p>Bienvenido a la página principal.</p>
+      </div>
+    }
 
-  <div *ngIf="selectedTab === 'moment'" style="padding: 20px; text-align: center;">
-    <h3>📸 Esta es la pestaña MOMENT</h3>
-    <p>Aquí se verán tus publicaciones recientes.</p>
-  </div>
+    @case ('moment') {
+      <div class="tab-content">
+        <h3>📸 Momentos</h3>
+      </div>
+    }
 
-  <div *ngIf="selectedTab === 'likes'" style="padding: 20px; text-align: center;">
-    <h3>❤️ Esta es la pestaña LIKES</h3>
-    <p>Aquí aparecerán las cosas que te han gustado.</p>
-  </div>
+    @case ('videos') {
+      <div class="video-grid">
 
-<div class="video-grid" *ngIf="selectedTab === 'videos'">
+        <div class="video-card upload-box" (click)="videoInput.click()">
+          <div class="plus-circle"><span>+</span></div>
+          <p>Subir nuevo video</p>
+          <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
+        </div>
 
-  <div class="video-card upload-box" (click)="videoInput.click()">
-    <div class="plus-circle">
-      <span>+</span>
-    </div>
-    <p>Subir nuevo video</p>
-    <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
-  </div>
+        @for (video of videos; track video.id) {
+          <div class="video-card">
+            <div class="thumb-wrapper">
+              <video [src]="video.urlVideo" class="video-preview" controls muted></video>
+            </div>
+            <p class="video-title">{{ video.titulo }}</p>
+          </div>
+        } @empty {
+          <p>Aún no has subido ningún video.</p>
+        }
 
-  <div class="video-card" *ngFor="let video of videos">
-    <div class="thumb-wrapper">
-      <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
-    </div>
-    <p class="video-title">{{ video.titulo }}</p>
-  </div>
+      </div>
+    }
 
-</div>
-
-  <div *ngIf="selectedTab === 'collab'" style="padding: 20px; text-align: center;">
-    <h3>🖼️ Esta es la pestaña ALBUM</h3>
-    <p>Colección de fotos personales.</p>
-  </div>
-
+    @case ('collab') {
+      <div class="tab-content">
+        <h3>🖼️ Álbum</h3>
+      </div>
+    }
+  }
 </div>

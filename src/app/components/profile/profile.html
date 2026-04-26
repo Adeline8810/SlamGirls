@@ -42,24 +42,24 @@
     <p>Aquí aparecerán las cosas que te han gustado.</p>
   </div>
 
-  <div class="video-grid" [hidden]="selectedTab !== 'videos'">
+<div class="video-grid" *ngIf="selectedTab === 'videos'">
 
-    <div class="video-card upload-box" (click)="videoInput.click()">
-      <div class="plus-circle">
-        <span>+</span>
-      </div>
-      <p>Subir nuevo</p>
-      <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
+  <div class="video-card upload-box" (click)="videoInput.click()">
+    <div class="plus-circle">
+      <span>+</span>
     </div>
-
-    <div class="video-card" *ngFor="let video of videos">
-      <div class="thumb-wrapper">
-        <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
-      </div>
-      <p class="video-title">{{ video.titulo }}</p>
-    </div>
-
+    <p>Subir nuevo video</p>
+    <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
   </div>
+
+  <div class="video-card" *ngFor="let video of videos">
+    <div class="thumb-wrapper">
+      <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
+    </div>
+    <p class="video-title">{{ video.titulo }}</p>
+  </div>
+
+</div>
 
   <div *ngIf="selectedTab === 'collab'" style="padding: 20px; text-align: center;">
     <h3>🖼️ Esta es la pestaña ALBUM</h3>

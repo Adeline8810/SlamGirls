@@ -1,0 +1,46 @@
+<div class="video-overlay">
+  <div class="player-container">
+
+    <button class="btn-close" (click)="cerrar()">✕</button>
+
+    <div class="video-wrapper">
+      <video [src]="video().urlVideo" controls autoplay></video>
+    </div>
+
+    <div class="interaction-bar">
+      <div class="user-info">
+        <img [src]="video().thumbnail || 'assets/img/default.png'" class="avatar-mini">
+        <span>{{ video().titulo }}</span>
+      </div>
+
+      <div class="actions">
+        <button (click)="darRegalo()" class="action-btn">
+          <span class="icon">🎁</span>
+          <span>Regalo</span>
+        </button>
+
+        <button class="action-btn">
+          <span class="icon">💬</span>
+          <span>4</span>
+        </button>
+
+        <button (click)="compartir()" class="action-btn">
+          <span class="icon">🔄</span>
+          <span>Compartir</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="comments-area">
+      <div class="comment-item">
+        <strong>Gohan69</strong>
+        <p>Compartido</p>
+      </div>
+      <div class="comment-item">
+        <strong>Céline-Bonté</strong>
+        <p>Tu es le meilleur chanteur que je connais</p>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , signal} from '@angular/core';
 import { RespuestaService } from '../../../services/respuesta.service'; // Ajusta la ruta a tu proyecto
-
+import { VideoDetail } from '../../components/video-detail/video-detail';
+import { CommonModule } from '@angular/common';
 interface Video {
   id: number;
   titulo: string;
@@ -11,7 +12,9 @@ interface Video {
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
-  styleUrls: ['./profile.css']
+  styleUrls: ['./profile.css'],
+  standalone: true, // <--- ESTO ES IMPORTANTE EN ANGULAR 20
+  imports: [VideoDetail, CommonModule] // <--- Ahora ya no debería estar en rojo
 })
 export class Profile implements OnInit {
   selectedTab: string = 'videos'; // Por defecto en videos como pediste
@@ -23,6 +26,7 @@ export class Profile implements OnInit {
   nombreUsuario: string = '';
 
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
+  videoSeleccionado = signal<any>(null);
 
   constructor(private respuestaService: RespuestaService) {}
 
@@ -37,6 +41,10 @@ export class Profile implements OnInit {
         this.videos = res;
       });
     }
+  }
+
+  verVideo(video: any) {
+    this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar
   }
 
   onSubirMedia(event: any) {

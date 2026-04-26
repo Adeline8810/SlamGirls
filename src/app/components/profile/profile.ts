@@ -100,8 +100,8 @@ onVideoSeleccionado(event: any) {
   if (!file) return;
 
   const pesoEnMB = file.size / 1024 / 1024;
-  if (pesoEnMB > 2) {
-    alert(`El video es muy pesado (${pesoEnMB.toFixed(2)}MB). Máximo permitido: 2MB`);
+  if (pesoEnMB > 50) {
+    alert(`El video es muy pesado (${pesoEnMB.toFixed(2)}MB). Máximo permitido: 50MB`);
     return;
   }
 

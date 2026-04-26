@@ -1,46 +1,45 @@
 <div class="video-overlay">
   <div class="player-container">
-
-    <button class="btn-close" (click)="cerrar()">✕</button>
+    <button class="btn-back" (click)="close.emit()">❮</button>
 
     <div class="video-wrapper">
-      <video [src]="video().urlVideo" controls autoplay></video>
+      <video [src]="video().urlVideo" autoplay controls></video>
+
+      @if (efectoActivo()) {
+        <div class="gift-animation">
+          <img [src]="efectoActivo()" class="flying-gift">
+          <div class="sent-label">¡Enviaste un regalo!</div>
+        </div>
+      }
     </div>
 
-    <div class="interaction-bar">
-      <div class="user-info">
-        <img [src]="video().thumbnail || 'assets/img/default.png'" class="avatar-mini">
-        <span>{{ video().titulo }}</span>
+    <div class="gift-section">
+      <div class="gift-tabs">
+        <span class="active">Gift</span>
+        <span>Activity</span>
+        <span>Special</span>
       </div>
 
-      <div class="actions">
-        <button (click)="darRegalo()" class="action-btn">
-          <span class="icon">🎁</span>
-          <span>Regalo</span>
-        </button>
-
-        <button class="action-btn">
-          <span class="icon">💬</span>
-          <span>4</span>
-        </button>
-
-        <button (click)="compartir()" class="action-btn">
-          <span class="icon">🔄</span>
-          <span>Compartir</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="comments-area">
-      <div class="comment-item">
-        <strong>Gohan69</strong>
-        <p>Compartido</p>
-      </div>
-      <div class="comment-item">
-        <strong>Céline-Bonté</strong>
-        <p>Tu es le meilleur chanteur que je connais</p>
+      <div class="gift-grid">
+        @for (item of listaRegalos; track item.id) {
+          <div class="gift-card"
+               [class.selected]="regaloSeleccionado()?.id === item.id"
+               (click)="seleccionarRegalo(item)">
+            <img [src]="item.icon">
+            <p>{{ item.nombre }}</p>
+            <span>🪙 {{ item.precio }}</span>
+          </div>
+        }
       </div>
     </div>
 
+    <div class="gift-footer">
+      <div class="coin-balance">
+        🪙 {{ misMonedas() }} <span class="arrow">❯</span>
+      </div>
+      <button class="btn-send" [disabled]="!regaloSeleccionado()" (click)="lanzarRegalo()">
+        SEND
+      </button>
+    </div>
   </div>
 </div>

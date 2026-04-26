@@ -27,42 +27,48 @@
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-  <div *ngIf="selectedTab === 'homepage'" style="padding: 20px; text-align: center;">
-    <h3>🏠 Esta es la pestaña HOMEPAGE</h3>
-    <p>Aquí irá la información principal de tu perfil.</p>
-  </div>
-
-  <div *ngIf="selectedTab === 'moment'" style="padding: 20px; text-align: center;">
-    <h3>📸 Esta es la pestaña MOMENT</h3>
-    <p>Aquí se verán tus publicaciones recientes.</p>
-  </div>
-
-  <div *ngIf="selectedTab === 'likes'" style="padding: 20px; text-align: center;">
-    <h3>❤️ Esta es la pestaña LIKES</h3>
-    <p>Aquí aparecerán las cosas que te han gustado.</p>
-  </div>
-
-  <div class="video-grid" *ngIf="selectedTab === 'videos'">
-
-    <div class="video-card upload-box" (click)="videoInput.click()">
-      <div class="plus-circle">
-        <span>+</span>
+ @switch (selectedTab) {
+    @case ('homepage') {
+      <div class="tab-content">
+        <h3>🏠 Homepage</h3>
+        <p>Bienvenido a la página principal.</p>
       </div>
-      <p>Subir nuevo video</p>
-      <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
-    </div>
+    }
 
-    <div class="video-card" *ngFor="let video of videos">
-      <div class="thumb-wrapper">
-        <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
+    @case ('moment') {
+      <div class="tab-content">
+        <h3>📸 Momentos</h3>
       </div>
-      <p class="video-title">{{ video.titulo }}</p>
-    </div>
-  </div>
+    }
 
-  <div *ngIf="selectedTab === 'collab'" style="padding: 20px; text-align: center;">
-    <h3>🖼️ Esta es la pestaña ALBUM</h3>
-    <p>Colección de fotos personales.</p>
-  </div>
+    @case ('videos') {
+      <div class="video-grid">
+
+        <div class="video-card upload-box" (click)="videoInput.click()">
+          <div class="plus-circle"><span>+</span></div>
+          <p>Subir nuevo video</p>
+          <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
+        </div>
+
+        @for (video of videos; track video.id) {
+          <div class="video-card">
+            <div class="thumb-wrapper">
+              <video [src]="video.urlVideo" class="video-preview" controls muted></video>
+            </div>
+            <p class="video-title">{{ video.titulo }}</p>
+          </div>
+        } @empty {
+          <p>Aún no has subido ningún video.</p>
+        }
+
+      </div>
+    }
+
+    @case ('collab') {
+      <div class="tab-content">
+        <h3>🖼️ Álbum</h3>
+      </div>
+    }
+  }
 
 </div>

@@ -20,13 +20,13 @@ export class VideoDetail implements OnInit {
   efectoActivo = signal<string | null>(null); // Para la animación
 
   listaRegalos = [
-    { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/gifts/rose.png' },
-    { id: 2, nombre: 'Microphone', precio: 9, icon: 'assets/gifts/mic.png' },
-    { id: 3, nombre: 'Songful', precio: 18, icon: 'assets/gifts/songful.png' },
-    { id: 4, nombre: 'Glow sticks', precio: 48, icon: 'assets/gifts/glow.png' },
-    { id: 5, nombre: 'Music Box', precio: 60, icon: 'assets/gifts/music.png' },
-    { id: 6, nombre: 'Ferrari', precio: 3000, icon: 'assets/gifts/ferrari.png' },
-    { id: 7, nombre: 'Pearl', precio: 200, icon: 'assets/gifts/pearl.png' }
+    { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
+    { id: 2, nombre: 'Microphone', precio: 9, icon: 'assets/regalo2.png' },
+    { id: 3, nombre: 'Songful', precio: 18, icon: 'assets/regalo3.png' },
+    { id: 4, nombre: 'Glow sticks', precio: 48, icon: 'assets/regalo4.png' },
+    { id: 5, nombre: 'Music Box', precio: 60, icon: 'assets/regalo5.png' },
+    { id: 6, nombre: 'Ferrari', precio: 3000, icon: 'assets/regalo6.png' },
+    { id: 7, nombre: 'Pearl', precio: 200, icon: 'assets/regalo7.png' }
   ];
 
   ngOnInit() {

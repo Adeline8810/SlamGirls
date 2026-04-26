@@ -20,6 +20,7 @@ export class Profile implements OnInit {
   selectedTab: string = 'videos'; // Por defecto en videos como pediste
   usuarioActual: any = {}; // ✅ Declarado para que el HTML no de error
   videos: any[] = []; // Aquí guardaremos los videos de la DB
+  cargandoVideo: boolean = false;
 
   // VARIABLES REALES (Igual que en tu Slam)
   usuarioId!: number;
@@ -96,7 +97,7 @@ export class Profile implements OnInit {
 
 onVideoSeleccionado(event: any) {
   const file = event.target.files[0];
-  if (!file) return; // Solo validamos que exista el archivo
+  if (!file) return;
 
   const pesoEnMB = file.size / 1024 / 1024;
   if (pesoEnMB > 2) {
@@ -104,16 +105,24 @@ onVideoSeleccionado(event: any) {
     return;
   }
 
-  // Si usuarioId está vacío, le ponemos 1 por defecto para que no falle
   const idSeguro = this.usuarioId ? this.usuarioId.toString() : "1";
 
+  this.cargandoVideo = true; // <-- 2. Activar reloj
   console.log("Subiendo video...");
+
   this.respuestaService.subirVideo(file, idSeguro).subscribe({
     next: (res) => {
+      // 3. Forzar refresco de URL para que el video abra siempre
+      res.urlVideo = res.urlVideo + '?t=' + Date.now();
+
       this.videos.unshift(res);
+      this.cargandoVideo = false; // <-- 4. Desactivar reloj
       alert("¡Video subido con éxito!");
     },
-    error: (err) => alert("Error en el servidor")
+    error: (err) => {
+      this.cargandoVideo = false;
+      alert("Error en el servidor");
+    }
   });
 }
   changeTab(tab: string) {

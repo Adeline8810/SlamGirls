@@ -1,5 +1,4 @@
 <div class="profile-container">
-
   <div class="header">
     <div class="avatar-container" (click)="fileInput.click()">
       <img class="avatar" [src]="fotoUrlServidor" alt="avatar">
@@ -8,8 +7,7 @@
     <input #fileInput type="file" (change)="onFotoSeleccionada($event)" hidden accept="image/*">
     <h2>{{ nombreUsuario }}</h2>
     <p>ID: {{ usuarioId }}</p>
-    <div class="stats">
-      </div>
+    <div class="stats"></div>
   </div>
 
   <div class="tabs">
@@ -26,21 +24,27 @@
 
     @case ('videos') {
       <div class="video-grid">
-        <div class="video-card upload-box" (click)="videoInput.click()">
-          <div class="plus-circle"><span>+</span></div>
-          <p>Subir nuevo video</p>
+        <div class="video-card upload-box" (click)="!cargandoVideo && videoInput.click()">
+          <div class="plus-circle">
+            @if (cargandoVideo) {
+              <span class="timer-icon">⏳</span> } @else {
+              <span>+</span> }
+          </div>
+          <p>{{ cargandoVideo ? 'Subiendo...' : 'Subir nuevo video' }}</p>
           <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
         </div>
 
         @for (video of videos; track video.id) {
           <div class="video-card" (click)="verVideo(video)">
             <div class="thumb-wrapper">
-              <video [src]="video.urlVideo" class="video-preview" muted></video>
+              <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
             </div>
             <p class="video-title">{{ video.titulo }}</p>
           </div>
         } @empty {
-          <p>Aún no has subido ningún video.</p>
+          @if (!cargandoVideo) {
+            <p>Aún no has subido ningún video.</p>
+          }
         }
       </div>
     }
@@ -54,5 +58,4 @@
       (close)="videoSeleccionado.set(null)">
     </app-video-detail>
   }
-
 </div>

@@ -153,3 +153,23 @@
   font-size: 40px;
   color: #ff4d6d;
 }
+
+.timer-icon {
+  display: inline-block;
+  font-size: 30px;
+  animation: rotateTimer 2s linear infinite;
+}
+
+@keyframes rotateTimer {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.upload-box {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-box:hover {
+  background-color: #f0f0f0;
+}

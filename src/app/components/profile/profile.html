@@ -42,7 +42,7 @@
     <p>Aquí aparecerán las cosas que te han gustado.</p>
   </div>
 
-  <div class="video-grid" >
+  <div class="video-grid" [hidden]="selectedTab !== 'videos'">
 
     <div class="video-card upload-box" (click)="videoInput.click()">
       <div class="plus-circle">

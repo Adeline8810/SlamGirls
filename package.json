@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "predeploy": "ng build --configuration production --base-href /mi-proyecto-final/",
+    "predeploy": "ng build --configuration production --base-href /SlamGirls/",
 
     "deploy": "git add . && git commit -m \"Update App\" && git push origin master && ng build --configuration production --base-href \"https://adeline8810.github.io/SlamGirls/\" && npx angular-cli-ghpages --dir=dist/demo-angular/browser"
   },

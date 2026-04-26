@@ -27,19 +27,22 @@
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-  <div class="tab-content" *ngIf="selectedTab === 'homepage'">
-    <p>Bienvenido a la página de inicio de {{ nombreUsuario }}</p>
+  <div *ngIf="selectedTab === 'homepage'" style="padding: 20px; text-align: center;">
+    <h3>🏠 Esta es la pestaña HOMEPAGE</h3>
+    <p>Aquí irá la información principal de tu perfil.</p>
   </div>
 
-  <div class="tab-content" *ngIf="selectedTab === 'moment'">
-    <p>No hay momentos para mostrar.</p>
+  <div *ngIf="selectedTab === 'moment'" style="padding: 20px; text-align: center;">
+    <h3>📸 Esta es la pestaña MOMENT</h3>
+    <p>Aquí se verán tus publicaciones recientes.</p>
   </div>
 
-  <div class="tab-content" *ngIf="selectedTab === 'likes'">
-    <p>Aquí aparecerán tus videos favoritos.</p>
+  <div *ngIf="selectedTab === 'likes'" style="padding: 20px; text-align: center;">
+    <h3>❤️ Esta es la pestaña LIKES</h3>
+    <p>Aquí aparecerán las cosas que te han gustado.</p>
   </div>
 
-  <div class="video-grid" *ngIf="selectedTab === true">
+  <div class="video-grid" *ngIf="selectedTab === 'videos'">
 
     <div class="video-card upload-box" (click)="videoInput.click()">
       <div class="plus-circle">
@@ -56,8 +59,11 @@
       <p class="video-title">{{ video.titulo }}</p>
     </div>
 
-  </div> <div class="tab-content" *ngIf="selectedTab === 'collab'">
-    <p>Tu álbum está vacío por ahora.</p>
+  </div>
+
+  <div *ngIf="selectedTab === 'collab'" style="padding: 20px; text-align: center;">
+    <h3>🖼️ Esta es la pestaña ALBUM</h3>
+    <p>Colección de fotos personales.</p>
   </div>
 
 </div>

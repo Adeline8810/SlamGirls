@@ -27,23 +27,37 @@
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-<div class="video-grid" >
+  <div class="tab-content" *ngIf="selectedTab === 'homepage'">
+    <p>Bienvenido a la página de inicio de {{ nombreUsuario }}</p>
+  </div>
 
-  <div class="video-card upload-box" (click)="videoInput.click()">
-    <div class="plus-circle">
-      <span>+</span>
+  <div class="tab-content" *ngIf="selectedTab === 'moment'">
+    <p>No hay momentos para mostrar.</p>
+  </div>
+
+  <div class="tab-content" *ngIf="selectedTab === 'likes'">
+    <p>Aquí aparecerán tus videos favoritos.</p>
+  </div>
+
+  <div class="video-grid" *ngIf="selectedTab === 'videos'">
+
+    <div class="video-card upload-box" (click)="videoInput.click()">
+      <div class="plus-circle">
+        <span>+</span>
+      </div>
+      <p>Subir nuevo</p>
+      <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
     </div>
-    <p>Subir nuevo</p>
-    <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/mp4,video/x-m4v,video/*">
-  </div>
 
-<div class="video-card" *ngFor="let video of videos">
-  <div class="thumb-wrapper">
-    <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
-  </div>
-  <p class="video-title">{{ video.titulo }}</p>
-</div>
+    <div class="video-card" *ngFor="let video of videos">
+      <div class="thumb-wrapper">
+        <video [src]="video.urlVideo" class="video-preview" controls muted preload="metadata"></video>
+      </div>
+      <p class="video-title">{{ video.titulo }}</p>
+    </div>
 
-</div>
+  </div> <div class="tab-content" *ngIf="selectedTab === 'collab'">
+    <p>Tu álbum está vacío por ahora.</p>
+  </div>
 
 </div>

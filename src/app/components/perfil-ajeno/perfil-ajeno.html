@@ -1,12 +1,55 @@
-<div class="video-grid">
-  @for (video of videos; track video.id) {
-    <div class="video-card" (click)="verVideo(video)">
-      <div class="thumb-wrapper">
-        <video [src]="getSafeUrl(video.urlVideo)" class="video-preview" muted></video>
-      </div>
-      <p class="video-title">{{ video.titulo }}</p>
+<div class="profile-container" *ngIf="usuario()">
+
+  <div class="header">
+    <div class="avatar-container">
+      <img class="avatar"
+           [src]="usuario().fotoUrl || 'assets/img/default.png'"
+           alt="avatar">
     </div>
-  }
+
+    <h2>{{ usuario().nombre }} 🇫🇷</h2>
+    <p>ID: {{ usuario().id }}</p>
+
+    <div class="stats"></div>
+  </div>
+  <div class="tabs">
+    <button (click)="selectedTab = 'homepage'" [class.active]="selectedTab === 'homepage'">Homepage</button>
+    <button (click)="selectedTab = 'moment'" [class.active]="selectedTab === 'moment'">Moment</button>
+    <button (click)="selectedTab = 'likes'" [class.active]="selectedTab === 'likes'">Likes</button>
+    <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
+    <button (click)="selectedTab = 'collab'" [class.active]="selectedTab === 'collab'">Album</button>
+  </div>
+  <div class="tab-main-content">
+    @switch (selectedTab) {
+      @case ('homepage') { <div class="tab-content"><h3>🏠 Homepage de {{ usuario().nombre }}</h3></div> }
+      @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
+      @case ('likes') { <div class="tab-content"><h3>❤️ Likes</h3></div> }
+
+      @case ('videos') {
+        <div class="video-grid">
+          @for (video of videos; track video.id) {
+            <div class="video-card" (click)="verVideo(video)">
+              <div class="thumb-wrapper">
+                <video [src]="getSafeUrl(video.urlVideo)"
+                       class="video-preview"
+                       muted
+                       preload="auto"></video>
+              </div>
+              <p class="video-title">{{ video.titulo }}</p>
+            </div>
+          } @empty {
+            <p class="empty-msg">Este usuario aún no ha subido videos.</p>
+          }
+        </div>
+      }
+
+      @case ('collab') { <div class="tab-content"><h3>🖼️ Álbum</h3></div> }
+    }
+  </div>
+  <div class="action-footer">
+    <button class="btn-parler">🚀 parler</button>
+    <button class="btn-amitie">❤️ Amitié</button>
+  </div>
 </div>
 
 @if (videoSeleccionado()) {

@@ -31,29 +31,51 @@ export class PerfilAjeno implements OnInit {
   ) {}
 
   ngOnInit() {
-    // 1. Obtener el username de la URL
-    const username = this.route.snapshot.paramMap.get('username');
-    if (username) {
-      console.log("Buscando a:", username);
-      this.usuarioService.obtenerDetallesUsuario(username).subscribe(res => {
-        // Encontramos el usuario exacto en la búsqueda
-        const encontrado = res.find((u: any) => u.username === username);
-       if (encontrado) {
-          // Si tiene foto, le sumamos un número al final para que el navegador la recargue de verdad
-          if (encontrado.fotoUrl) {
-            encontrado.fotoUrl = encontrado.fotoUrl + '?t=' + Date.now();
-          }
+  // 1. Obtenemos el nombre del usuario de la URL (Adeline)
+  const username = this.route.snapshot.paramMap.get('username');
 
-          this.usuario.set(encontrado);
-          this.cargarVideos(encontrado.id);
-          console.log("Foto de Adeline cargada:", encontrado.fotoUrl);
-        } else {
-          console.error("Usuario no encontrado en la búsqueda");
-          // Podrías redirigir a una página de 404
+  if (username) {
+    console.log("Buscando a:", username);
+
+    // 2. Llamamos al servicio de búsqueda
+    this.miServicio.buscarUsuarios(username).subscribe({
+      next: (res : any) => {
+        console.log("Respuesta cruda del servidor:", res);
+
+        // --- EL ARREGLO ESTÁ AQUÍ ---
+
+        let encontrado = null;
+
+        // Caso A: El servidor devuelve una lista (como esperábamos antes)
+        if (Array.isArray(res)) {
+          encontrado = res.find((u: any) => u.username === username);
         }
-      });
-    }
+        // Caso B: El servidor devuelve directamente el objeto del usuario (lo más probable)
+        else if (res && typeof res === 'object' && res.username === username) {
+          encontrado = res;
+        }
+
+        // 3. Si encontramos al usuario, lo cargamos
+        if (encontrado) {
+          console.log("Usuario encontrado y cargado:", encontrado);
+          this.usuario.set(encontrado);
+
+          // Importante: Asegúrate de tener el ID para cargar los videos
+          if (encontrado.id) {
+            this.cargarVideos(encontrado.id);
+          }
+        } else {
+          console.warn("No se encontró a nadie con el usuario:", username);
+          // Opcional: Redirigir a una página de error o mostrar mensaje
+        }
+      },
+      error: (err) => {
+        // Por si acaso el servidor falla totalmente
+        console.error("Error en la petición al servidor:", err);
+      }
+    });
   }
+}
 
   cargarVideos(userId: number) {
     this.respuestaService.obtenerVideos(userId).subscribe(res => {

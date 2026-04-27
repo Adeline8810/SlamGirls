@@ -125,3 +125,28 @@
   font-size: 10px;
   color: white;
 }
+
+
+/* Para que el video llene el cuadro sin dejar franjas negras */
+.thumb-wrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9; /* Ajusta esto a 9/16 si son videos verticales tipo TikTok */
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 👈 Esto elimina el espacio negro sobrante */
+}
+
+/* Estilo del Avatar para que no se vea vacío */
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #ff0050;
+  object-fit: cover;
+}

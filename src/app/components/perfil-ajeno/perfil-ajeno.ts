@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TraduccionService } from '../../../services/traduccion.service';
 import { RespuestaService } from '../../../services/respuesta.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-perfil-ajeno',
@@ -25,6 +26,7 @@ export class PerfilAjeno implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private miServicio: TraduccionService,
+    private usuarioService: UsuarioService,
     private respuestaService: RespuestaService
   ) {}
 
@@ -33,7 +35,7 @@ export class PerfilAjeno implements OnInit {
     const username = this.route.snapshot.paramMap.get('username');
     if (username) {
       console.log("Buscando a:", username);
-      this.miServicio.buscarUsuarios(username).subscribe(res => {
+      this.usuarioService.obtenerDetallesUsuario(username).subscribe(res => {
         // Encontramos el usuario exacto en la búsqueda
         const encontrado = res.find((u: any) => u.username === username);
        if (encontrado) {

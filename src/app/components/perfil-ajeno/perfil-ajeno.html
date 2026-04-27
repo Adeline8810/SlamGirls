@@ -1,68 +1,37 @@
 <div class="profile-container" *ngIf="usuario()">
-  <div class="header-bg" [style.background-image]="'url(' + usuario().fotoUrl + ')'"></div>
-
-  <div class="profile-content">
-    <button class="btn-back" (click)="volver()">❮</button>
-
-  <div class="avatar-section">
-      <img
-        [src]="usuario().fotoUrl ? usuario().fotoUrl : 'assets/default-avatar.png'"
-        class="main-avatar"
-        (error)="$any($event.target).src = 'assets/default-avatar.png'"> <h2 class="display-name">{{ usuario().nombre }} 🇫🇷</h2>
-      <p class="id-text">ID: {{ usuario().id }}</p>
+  <div class="header">
+    <div class="avatar-container">
+      <img class="avatar"
+           [src]="usuario().fotoUrl || 'assets/img/default.png'"
+           alt="avatar">
     </div>
+    <h2>{{ usuario().nombre }}</h2>
+    <p>ID: {{ usuario().id }}</p>
+  </div>
 
-    <div class="stats-bar">
-      <div class="stat-item"><strong>188</strong><span>Abonnés</span></div>
-      <div class="stat-item"><strong>16</strong><span>Abonnements</span></div>
-      <div class="stat-item"><strong>417</strong><span>Cadeaux</span></div>
-    </div>
+  <div class="tabs">
+    <button (click)="selectedTab = 'homepage'" [class.active]="selectedTab === 'homepage'">Homepage</button>
+    <button (click)="selectedTab = 'moment'" [class.active]="selectedTab === 'moment'">Moment</button>
+    <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
+  </div>
 
-    <div class="tabs">
-      <button (click)="selectedTab = 'homepage'" [class.active]="selectedTab === 'homepage'">Homepage</button>
-      <button (click)="selectedTab = 'moment'" [class.active]="selectedTab === 'moment'">Moment</button>
-      <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
-    </div>
-
-    <div class="tab-main-content">
-      @switch (selectedTab) {
-        @case ('homepage') {
-          <div class="tab-content"><h3>🏠 Información de {{ usuario().nombre }}</h3></div>
-        }
-        @case ('moment') {
-          <div class="tab-content"><h3>📸 Momentos Recientes</h3></div>
-        }
-        @case ('videos') {
-          <div class="video-grid">
-            @for (video of videos; track video.id) {
-              <div class="video-card" (click)="verVideo(video)">
-                <div class="thumb-wrapper">
-                  <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
-                </div>
-                <p class="video-title">{{ video.titulo }}</p>
-              </div>
-            } @empty {
-              <p class="empty-msg">Este usuario aún no ha subido videos.</p>
-            }
+  <div class="tab-content" *ngIf="selectedTab === 'videos'">
+    <div class="video-grid">
+      @for (video of videos; track video.id) {
+        <div class="video-card" (click)="verVideo(video)">
+          <div class="thumb-wrapper">
+            <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
           </div>
-        }
+          <p class="video-title">{{ video.titulo }}</p>
+        </div>
+      } @empty {
+        <p class="empty-msg">Aún no hay videos subidos.</p>
       }
-    </div>
-
-    <div class="action-footer">
-      <button class="btn-parler" (click)="irAlChat()">
-        <span class="icon">🚀</span> parler
-      </button>
-      <button class="btn-amitie">
-        <span class="icon">❤️</span> Amitié
-      </button>
     </div>
   </div>
 
-  @if (videoSeleccionado()) {
-    <app-video-detail
-      [video]="videoSeleccionado()"
-      (close)="videoSeleccionado.set(null)">
-    </app-video-detail>
-  }
+  <div class="action-footer">
+    <button class="btn-parler">🚀 parler</button>
+    <button class="btn-amitie">❤️ Amitié</button>
+  </div>
 </div>

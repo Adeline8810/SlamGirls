@@ -134,3 +134,12 @@
   border-radius: 4px;
   margin-top: 8px;
 }
+
+.coin-circle {
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ffd700, #ffb74d);
+  border-radius: 50%;
+  border: 1px solid #c5a000;
+  display: inline-block;
+}

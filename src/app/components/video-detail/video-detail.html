@@ -1,5 +1,6 @@
 <div *ngIf="efectoActivo()" class="lanzamiento-efecto" (animationend)="limpiarEfecto()">
   <img [src]="efectoActivo()" alt="Regalo">
+  <span class="combo-text" *ngIf="contadorRegalo() > 1">x{{ contadorRegalo() }}</span>
 </div>
 
 <div class="video-overlay">
@@ -30,13 +31,14 @@
       </div>
     </div>
 
-    <div class="gift-footer">
-      <div class="coin-balance">
-        🪙 {{ misMonedas() }} <span class="arrow">❯</span>
-      </div>
-      <button class="btn-send" [disabled]="!regaloSeleccionado()" (click)="lanzarRegalo()">
-        SEND
-      </button>
-    </div>
+  <div class="gift-footer" *ngIf="tabActual === 'gift'">
+  <div class="coin-balance" (click)="abrirPantallaRecarga()">
+    <span class="coin-icon">🟡</span> <span class="coin-amount">{{ misMonedas() }}</span>
+    <span class="arrow-icon">❯</span> </div>
+
+  <button class="btn-send" [disabled]="!regaloSeleccionado()" (click)="lanzarRegalo()">
+    SEND
+  </button>
+</div>
   </div>
 </div>

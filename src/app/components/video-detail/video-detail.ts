@@ -2,6 +2,7 @@ import { Component, input, output, signal, inject, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
 import confetti from 'canvas-confetti';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-video-detail',
@@ -11,6 +12,9 @@ import confetti from 'canvas-confetti';
   styleUrl: './video-detail.css'
 })
 export class VideoDetail implements OnInit {
+
+  constructor(private router: Router) {}
+
   private recargarService = inject(RecargarService);
 
   video = input.required<any>();
@@ -19,6 +23,9 @@ export class VideoDetail implements OnInit {
   misMonedas = signal<number>(0);
   regaloSeleccionado = signal<any>(null);
   efectoActivo = signal<string | null>(null);
+  contadorRegalo = signal(0);
+  timerRegalo: any;
+  tabActual: 'gift' | 'comments' = 'gift';
 
   listaRegalos = [
     { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
@@ -101,6 +108,18 @@ export class VideoDetail implements OnInit {
     // 3. Restar monedas localmente
     this.misMonedas.update(m => m - regalo.precio);
 
+    this.contadorRegalo.update(v => v + 1);
+
+  // Reiniciar el contador si pasan 3 segundos sin enviar nada
+  if (this.timerRegalo) clearTimeout(this.timerRegalo);
+  this.timerRegalo = setTimeout(() => {
+    this.contadorRegalo.set(0);
+    this.efectoActivo.set(null);
+  }, 3000);
+
+  this.efectoActivo.set(regalo.icon);
+  this.dispararEfectoEstrellas();
+
     // 4. API / DB
     console.log(`Regalo ${regalo.nombre} enviado`);
 
@@ -110,4 +129,13 @@ export class VideoDetail implements OnInit {
       this.regaloSeleccionado.set(null);
     }, 2000);
   }
+
+
+
+  abrirPantallaRecarga() {
+  // 3. Esto te lleva a la ruta que tengas configurada para el componente Recargar
+  // Asegúrate de que en tu app.routes.ts la ruta sea 'recargar'
+  this.router.navigate(['/recargar']);
+}
+
 }

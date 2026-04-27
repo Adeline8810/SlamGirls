@@ -383,3 +383,37 @@
     transform: translateY(-400px) scale(0.2);
   }
 }
+
+
+.coin-balance {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.coin-balance:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.coin-icon {
+  font-size: 18px;
+  color: #ffb74d; /* Dorado */
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+
+.coin-amount {
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.arrow-icon {
+  color: #888;
+  font-size: 14px;
+  margin-left: 5px;
+}

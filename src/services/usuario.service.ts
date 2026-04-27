@@ -35,4 +35,21 @@ export class UsuarioService {
   eliminarUsuario(id: number) {
     return this.http.delete<void>(`${this.api}/${id}`);
   }
+
+
+
+subirFotoPerfil(file: File, usuarioId: string): Observable<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('usuarioId', usuarioId);
+
+  // CAMBIO: Ahora la URL termina en /api/usuarios/upload-foto ✅
+  return this.http.post('https://backend-ruth-slam.onrender.com/api/usuarios/upload-foto', formData, {
+    responseType: 'text'
+  });
+}
+
+
+
+
 }

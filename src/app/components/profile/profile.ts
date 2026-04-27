@@ -1,5 +1,6 @@
 import { Component, OnInit , signal} from '@angular/core';
 import { RespuestaService } from '../../../services/respuesta.service'; // Ajusta la ruta a tu proyecto
+import { UsuarioService } from '../../../services/usuario.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
 import { CommonModule } from '@angular/common';
 interface Video {
@@ -29,7 +30,7 @@ export class Profile implements OnInit {
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
   videoSeleccionado = signal<any>(null);
 
-  constructor(private respuestaService: RespuestaService) {}
+  constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,) {}
 
  ngOnInit(): void {
     const u = localStorage.getItem('usuario');
@@ -64,34 +65,49 @@ export class Profile implements OnInit {
 
   // MÉTODO EDITAR/SUBIR FOTO (Copiado de tu lógica de Slam)
  onFotoSeleccionada(ev: any) {
-    const f: File = ev.target.files && ev.target.files[0];
-    if (!f) return;
+  const f: File = ev.target.files && ev.target.files[0];
+  if (!f) return;
 
-    // Vista previa
-    const reader = new FileReader();
-    reader.onload = (e) => { this.fotoUrlServidor = (e.target as any).result; };
-    reader.readAsDataURL(f);
+  // 1. Mostrar vista previa inmediata en el navegador
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    this.fotoUrlServidor = (e.target as any).result;
+  };
+  reader.readAsDataURL(f);
 
-    const idParaSubir = this.usuarioId.toString();
+  // 2. Preparar el ID del usuario
+  const idParaSubir = this.usuarioId.toString();
 
-    this.respuestaService.subirFoto(f, idParaSubir).subscribe({
-      next: (urlCloudinary) => {
-        this.fotoUrlServidor = urlCloudinary;
-        if(this.usuarioActual) this.usuarioActual.avatarUrl = urlCloudinary;
-        localStorage.setItem('user_foto_perfil', urlCloudinary);
-        console.log("Subida exitosa:", urlCloudinary);
-      },
-      error: (err) => {
-      console.error('ERROR DEL SERVIDOR:', err);
+  // 3. Llamada al servicio de USUARIOS (no de respuestas)
+  this.usuarioService.subirFotoPerfil(f, idParaSubir).subscribe({
+    next: (urlCloudinary: string) => {
+      // ✅ Guardamos la URL real que nos devolvió el servidor
+      this.fotoUrlServidor = urlCloudinary;
+
+      // Actualizamos el objeto del usuario en memoria para que el HTML se refresque
+      if (this.usuarioActual) {
+        this.usuarioActual.fotoUrl = urlCloudinary;
+      }
+
+      // Guardamos en el almacenamiento local para persistencia
+      localStorage.setItem('user_foto_perfil', urlCloudinary);
+
+      console.log("¡Éxito! Foto vinculada al usuario en la base de datos.");
+      alert('Foto de perfil actualizada correctamente.');
+    },
+    error: (err) => {
+      console.error('Error detallado:', err);
+
+      // Manejo de errores basado en la realidad del servidor
       if (err.status === 413) {
-        alert('¡Error 413! La foto sigue siendo demasiado pesada para el servidor.');
-      } else if (err.status === 0) {
-        alert('El servidor está tardando en responder, espera un poco.');
+        alert('Error: La imagen es demasiado pesada para el servidor (Límite excedido).');
+      } else if (err.status === 404) {
+        alert('Error: No se encontró el usuario en la base de datos.');
       } else {
-        alert('Error ' + err.status + ': Algo salió mal en el servidor.');
+        alert('Error al subir la foto. Por favor, revisa la consola o los logs de Render.');
       }
     }
-    });
+  });
 }
 
 onVideoSeleccionado(event: any) {

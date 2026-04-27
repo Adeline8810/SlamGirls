@@ -22,6 +22,7 @@ export class Profile implements OnInit {
   usuarioActual: any = {}; // ✅ Declarado para que el HTML no de error
   videos: any[] = []; // Aquí guardaremos los videos de la DB
   cargandoVideo: boolean = false;
+  cargandoFoto: boolean = false;
 
   // VARIABLES REALES (Igual que en tu Slam)
   usuarioId!: number;
@@ -86,44 +87,37 @@ export class Profile implements OnInit {
   const f: File = ev.target.files && ev.target.files[0];
   if (!f) return;
 
-  // 1. Mostrar vista previa inmediata en el navegador
+  // Validación de tamaño (Mantenla siempre)
+  const pesoEnMB = f.size / 1024 / 1024;
+  if (pesoEnMB > 10) {
+    alert(`La foto es muy pesada (${pesoEnMB.toFixed(2)}MB). Máximo 10MB.`);
+    return;
+  }
+
+  // Activar estado de carga ✅
+  this.cargandoFoto = true;
+
+  // Vista previa local
   const reader = new FileReader();
-  reader.onload = (e) => {
-    this.fotoUrlServidor = (e.target as any).result;
-  };
+  reader.onload = (e) => { this.fotoUrlServidor = (e.target as any).result; };
   reader.readAsDataURL(f);
 
-  // 2. Preparar el ID del usuario
   const idParaSubir = this.usuarioId.toString();
 
-  // 3. Llamada al servicio de USUARIOS (no de respuestas)
   this.usuarioService.subirFotoPerfil(f, idParaSubir).subscribe({
     next: (urlCloudinary: string) => {
-      // ✅ Guardamos la URL real que nos devolvió el servidor
       this.fotoUrlServidor = urlCloudinary;
-
-      // Actualizamos el objeto del usuario en memoria para que el HTML se refresque
       if (this.usuarioActual) {
         this.usuarioActual.fotoUrl = urlCloudinary;
+        localStorage.setItem('usuario', JSON.stringify(this.usuarioActual));
       }
-
-      // Guardamos en el almacenamiento local para persistencia
-      localStorage.setItem('user_foto_perfil', urlCloudinary);
-
-      console.log("¡Éxito! Foto vinculada al usuario en la base de datos.");
-      alert('Foto de perfil actualizada correctamente.');
+      this.cargandoFoto = false; // Desactivar carga ✅
+      alert('¡Foto actualizada!');
     },
     error: (err) => {
-      console.error('Error detallado:', err);
-
-      // Manejo de errores basado en la realidad del servidor
-      if (err.status === 413) {
-        alert('Error: La imagen es demasiado pesada para el servidor (Límite excedido).');
-      } else if (err.status === 404) {
-        alert('Error: No se encontró el usuario en la base de datos.');
-      } else {
-        alert('Error al subir la foto. Por favor, revisa la consola o los logs de Render.');
-      }
+      this.cargandoFoto = false; // Desactivar carga si hay error ✅
+      console.error(err);
+      alert('Error al subir la foto.');
     }
   });
 }

@@ -372,3 +372,55 @@
     transform: translate(-50%, -200px) scale(0);
   }
 }
+
+
+/* --- ESTILO DEL EFECTO VISUAL (Ajustado para solucionar tu error) --- */
+.lanzamiento-efecto {
+  position: fixed;
+  /* Posicionamos en el centro de la pantalla para calcular bien el origen */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Ocupa todo el ancho de pantalla */
+  height: 100vh; /* Ocupa todo el alto de pantalla */
+  z-index: 12000;
+  pointer-events: none; /* No interfiere con clics */
+
+  /* Usamos Flexbox para centrar la imagen perfectamente */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; /* Alineamos la imagen al borde inferior */
+  padding-bottom: 80px; /* Separación desde el botón SEND */
+}
+
+/* --- ESTILO DE LA IMAGEN DENTRO DEL EFECTO --- */
+.lanzamiento-efecto img {
+  max-width: 150px; /* Tamaño máximo para que no se vea gigante */
+  max-height: 150px;
+
+  /* ✅ APLICAMOS LA NUEVA ANIMACIÓN DIRECTAMENTE A LA IMAGEN ✅ */
+  /* La animación debe empezar a la vez que el confeti */
+  animation: regaloVueloTotalmenteLimpio 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+/* --- ✅ NUEVA ANIMACIÓN: SOLUCIÓN TOTAL ✅ --- */
+/* Esta animación asegura que el regalo aparezca pequeño y suba de inmediato */
+@keyframes regaloVueloTotalmenteLimpio {
+  0% {
+    /* Pequeño (scale 0.1), abajo (translateY 100px) e invisible */
+    transform: translateY(100px) scale(0.1);
+    opacity: 0;
+  }
+  20% {
+    /* Aparece rápido y crece un poco mientras sube */
+    transform: translateY(-50px) scale(1.2); /* Un pequeño "pop" */
+    opacity: 1;
+    /* Efecto de brillo dorado sobre la rosa */
+    filter: drop-shadow(0 0 20px gold);
+  }
+  /* Vuelo hacia el video */
+  100% {
+    /* Sigue subiendo hasta desaparecer */
+    transform: translateY(-400px) scale(0.2);
+    opacity: 0;
+  }
+}

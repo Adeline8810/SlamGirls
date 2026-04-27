@@ -1,5 +1,5 @@
 
-<div *ngIf="efectoActivo()" class="efecto-regalo-volando">
+<div *ngIf="efectoActivo()" class="lanzamiento-efecto" (animationend)="limpiarEfecto()">
   <img [src]="efectoActivo()" alt="Regalo lanzado">
 </div>
 

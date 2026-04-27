@@ -87,43 +87,33 @@ export class Profile implements OnInit {
   const f: File = ev.target.files && ev.target.files[0];
   if (!f) return;
 
-  // 1. VALIDACIÓN ULTRA ESTRICTA ✅
-  const limiteMB = 5;
-  const pesoArchivo = f.size / 1024 / 1024;
+  // Verificamos el ID en la consola
+  console.log("Intentando subir foto para el usuario ID:", this.usuarioId);
 
-  if (pesoArchivo > limiteMB) {
-    // Si entra aquí, mandamos el mensaje y CORTAMOS la ejecución
-    alert(`¡ALTO! La foto es muy pesada (${pesoArchivo.toFixed(2)}MB). El límite son ${limiteMB}MB.`);
-
-    // Limpiamos el input para que el usuario sepa que falló
-    ev.target.value = '';
-    return; // <--- ESTO ES LO MÁS IMPORTANTE: Detiene el envío al servidor
+  if (!this.usuarioId) {
+    alert("Error: El ID del usuario no existe. Recarga la página.");
+    return;
   }
 
-  // 2. Si pasó la validación, activamos el cargando y procedemos
+  // Si funcionaba antes, vamos a bajar el límite a 2MB para asegurar éxito
+  if (f.size > 2 * 1024 * 1024) {
+    alert("Esta foto es muy grande. Para probar que el sistema aún funciona, elige una de menos de 2MB.");
+    return;
+  }
+
   this.cargandoFoto = true;
 
-  // Vista previa local (opcional)
-  const reader = new FileReader();
-  reader.onload = (e) => { this.fotoUrlServidor = (e.target as any).result; };
-  reader.readAsDataURL(f);
-
-  const idParaSubir = this.usuarioId.toString();
-
-  this.usuarioService.subirFotoPerfil(f, idParaSubir).subscribe({
-    next: (urlCloudinary: string) => {
-      this.fotoUrlServidor = urlCloudinary;
-      if (this.usuarioActual) {
-        this.usuarioActual.fotoUrl = urlCloudinary;
-        localStorage.setItem('usuario', JSON.stringify(this.usuarioActual));
-      }
+  this.usuarioService.subirFotoPerfil(f, this.usuarioId.toString()).subscribe({
+    next: (url) => {
+      console.log("Subida exitosa:", url);
+      this.fotoUrlServidor = url;
       this.cargandoFoto = false;
-      alert('Foto de perfil actualizada correctamente.');
+      alert("¡Sigue funcionando! Foto actualizada.");
     },
     error: (err) => {
       this.cargandoFoto = false;
-      console.error('Error en el servidor:', err);
-      alert('Error al subir la foto al servidor. Revisa tu conexión.');
+      console.error("Error capturado:", err);
+      alert("El servidor de Render está tardando en responder. Intenta en 1 minuto.");
     }
   });
 }

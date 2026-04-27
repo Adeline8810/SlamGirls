@@ -34,4 +34,8 @@ export class PerfilAjeno implements OnInit {
   irAlChat() {
     this.router.navigate(['/chat', this.usuario().username]);
   }
+
+  volver() {
+  window.history.back();
+}
 }

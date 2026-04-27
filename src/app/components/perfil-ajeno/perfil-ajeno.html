@@ -2,12 +2,12 @@
   <div class="header-bg" [style.background-image]="'url(' + usuario().fotoUrl + ')'"></div>
 
   <div class="profile-content">
-    <button class="btn-back" (click)="window.history.back()">❮</button>
+   <button class="btn-back" (click)="volver()">❮</button>
 
-    <div class="avatar-section">
+   <div class="avatar-section">
       <img [src]="usuario().fotoUrl || 'assets/default-avatar.png'" class="main-avatar">
       <h2 class="display-name">{{ usuario().nombre }} 🇫🇷</h2>
-      <p class="id-text">ID: {{ usuario().id_app }}</p>
+      <p class="id-text">ID: {{ usuario().id }}</p>
     </div>
 
     <div class="stats-bar">

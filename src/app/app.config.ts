@@ -9,6 +9,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), // 👈 CAMBIA EL [] POR 'routes'
     provideHttpClient(),
     provideAnimationsAsync()
-    //cambio
+    //cambio 2
   ]
 };

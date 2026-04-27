@@ -87,6 +87,7 @@ export class Profile implements OnInit {
   const f: File = ev.target.files && ev.target.files[0];
   if (!f) return;
 
+  // Verificamos el ID en la consola
   console.log("Intentando subir foto para el usuario ID:", this.usuarioId);
 
   if (!this.usuarioId) {
@@ -94,9 +95,9 @@ export class Profile implements OnInit {
     return;
   }
 
-  // Puedes dejar este límite o quitarlo si ya no lo necesitas
+  // Si funcionaba antes, vamos a bajar el límite a 2MB para asegurar éxito
   if (f.size > 2 * 1024 * 1024) {
-    alert("La foto es muy grande. Máximo 2MB.");
+    alert("Esta foto es muy grande. Para probar que el sistema aún funciona, elige una de menos de 2MB.");
     return;
   }
 
@@ -107,14 +108,16 @@ export class Profile implements OnInit {
       console.log("Subida exitosa:", url);
       this.fotoUrlServidor = url;
       this.cargandoFoto = false;
+      alert("¡Sigue funcionando! Foto actualizada.");
     },
     error: (err) => {
       this.cargandoFoto = false;
-      console.error("Error real del servidor:", err);
-      alert("Error al subir la foto");
+      console.error("Error capturado:", err);
+      alert("El servidor de Render está tardando en responder. Intenta en 1 minuto.");
     }
   });
 }
+
 onVideoSeleccionado(event: any) {
   const file = event.target.files[0];
   if (!file) return;

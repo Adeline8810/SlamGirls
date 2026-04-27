@@ -382,24 +382,25 @@
   left: 0;
   width: 100vw; /* Ocupa todo el ancho de pantalla */
   height: 100vh; /* Ocupa todo el alto de pantalla */
-  z-index: 12000;
+  z-index: 15000;
   pointer-events: none; /* No interfiere con clics */
 
   /* Usamos Flexbox para centrar la imagen perfectamente */
   display: flex;
   justify-content: center;
-  align-items: flex-end; /* Alineamos la imagen al borde inferior */
+  align-items: center;
   padding-bottom: 80px; /* Separación desde el botón SEND */
 }
 
 /* --- ESTILO DE LA IMAGEN DENTRO DEL EFECTO --- */
 .lanzamiento-efecto img {
-  max-width: 150px; /* Tamaño máximo para que no se vea gigante */
-  max-height: 150px;
+width: 100px;  /* Tamaño controlado desde el inicio */
+  height: 100px;
+  object-fit: contain;
+  opacity: 0;    /* INVISIBLE POR DEFECTO para que no haya rastro del "grande" */
 
-  /* ✅ APLICAMOS LA NUEVA ANIMACIÓN DIRECTAMENTE A LA IMAGEN ✅ */
-  /* La animación debe empezar a la vez que el confeti */
-  animation: regaloVueloTotalmenteLimpio 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  /* Animación: dura 1.2s, empieza suave y termina rápido */
+  animation: vueloLimpio 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
 }
 
 /* --- ✅ NUEVA ANIMACIÓN: SOLUCIÓN TOTAL ✅ --- */
@@ -422,5 +423,21 @@
     /* Sigue subiendo hasta desaparecer */
     transform: translateY(-400px) scale(0.2);
     opacity: 0;
+  }
+}
+
+@keyframes vueloLimpio {
+  0% {
+    opacity: 0;
+    transform: translateY(200px) scale(0.1); /* Empieza abajo y mini */
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(50px) scale(1.2);  /* Aparece con un pequeño 'pop' */
+    filter: drop-shadow(0 0 15px gold);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-400px) scale(0.3); /* Sube hasta el video y se encoge */
   }
 }

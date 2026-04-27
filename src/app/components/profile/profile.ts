@@ -64,34 +64,34 @@ export class Profile implements OnInit {
 
   // MÉTODO EDITAR/SUBIR FOTO (Copiado de tu lógica de Slam)
  onFotoSeleccionada(ev: any) {
-  const f: File = ev.target.files && ev.target.files[0];
-  if (!f) return;
+    const f: File = ev.target.files && ev.target.files[0];
+    if (!f) return;
 
-  // Vista previa inmediata para que el usuario no espere
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    this.fotoUrlServidor = (e.target as any).result;
-  };
-  reader.readAsDataURL(f);
+    // Vista previa
+    const reader = new FileReader();
+    reader.onload = (e) => { this.fotoUrlServidor = (e.target as any).result; };
+    reader.readAsDataURL(f);
 
-  const idParaSubir = this.usuarioId.toString();
-  this.respuestaService.subirFoto(f, idParaSubir).subscribe({
-    next: (urlRecibida) => {
-      // Como Java ahora manda la URL de Cloudinary, la usamos directamente ✅
-      const urlFinal = urlRecibida;
+    const idParaSubir = this.usuarioId.toString();
 
-      this.fotoUrlServidor = urlFinal;
-      if(this.usuarioActual) this.usuarioActual.avatarUrl = urlFinal;
+    this.respuestaService.subirFoto(f, idParaSubir).subscribe({
+      next: (urlCloudinary) => {
+        this.fotoUrlServidor = urlCloudinary;
+        if(this.usuarioActual) this.usuarioActual.avatarUrl = urlCloudinary;
+        localStorage.setItem('user_foto_perfil', urlCloudinary);
+        console.log("Subida exitosa:", urlCloudinary);
+      },
+      error: (err) => {
+        console.error('Error completo del servidor:', err);
 
-      // Guardamos en localStorage para que al refrescar la página se mantenga
-      localStorage.setItem('user_foto_perfil', urlFinal);
-      console.log("Foto guardada permanentemente en Cloudinary:", urlFinal);
-    },
-    error: (err) => {
-      console.error('Error al subir foto:', err);
-      alert('Error: Revisa que el API SECRET en Render termine en 0 y no en 8'); //
-    }
-  });
+        // LÓGICA CORREGIDA: Si el error es 413, es por el tamaño
+        if (err.status === 413) {
+            alert('¡La foto es demasiado grande para el servidor!');
+        } else {
+            alert('Error al subir: El servidor respondió con código ' + err.status);
+        }
+      }
+    });
 }
 
 onVideoSeleccionado(event: any) {

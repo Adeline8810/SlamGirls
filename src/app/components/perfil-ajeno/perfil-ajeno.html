@@ -4,9 +4,11 @@
   <div class="profile-content">
     <button class="btn-back" (click)="volver()">❮</button>
 
-    <div class="avatar-section">
-      <img [src]="usuario().fotoUrl || 'assets/default-avatar.png'" class="main-avatar">
-      <h2 class="display-name">{{ usuario().nombre }} 🇫🇷</h2>
+  <div class="avatar-section">
+      <img
+        [src]="usuario().fotoUrl ? usuario().fotoUrl : 'assets/default-avatar.png'"
+        class="main-avatar"
+        (error)="$any($event.target).src = 'assets/default-avatar.png'"> <h2 class="display-name">{{ usuario().nombre }} 🇫🇷</h2>
       <p class="id-text">ID: {{ usuario().id }}</p>
     </div>
 

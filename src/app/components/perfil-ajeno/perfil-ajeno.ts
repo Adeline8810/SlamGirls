@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TraduccionService } from '../../../services/traduccion.service';
-import { RespuestaService } from '../../../services/respuesta.service'; // Para los videos
+import { RespuestaService } from '../../../services/respuesta.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
 
 @Component({
@@ -15,8 +15,11 @@ import { VideoDetail } from '../../components/video-detail/video-detail';
 export class PerfilAjeno implements OnInit {
   usuario = signal<any>(null);
   videos: any[] = [];
-  selectedTab: string = 'videos'; // Empezamos en videos como en tu perfil
+  selectedTab: string = 'videos';
   videoSeleccionado = signal<any>(null);
+
+  // Variable para asegurar que siempre haya una foto por defecto si el servidor no devuelve nada
+  defaultAvatar: string = 'assets/img/default.png';
 
   constructor(
     private route: ActivatedRoute,
@@ -26,13 +29,25 @@ export class PerfilAjeno implements OnInit {
   ) {}
 
   ngOnInit() {
+    // 1. Obtener el username de la URL
     const username = this.route.snapshot.paramMap.get('username');
     if (username) {
+      console.log("Buscando a:", username);
       this.miServicio.buscarUsuarios(username).subscribe(res => {
+        // Encontramos el usuario exacto en la búsqueda
         const encontrado = res.find((u: any) => u.username === username);
-        if (encontrado) {
+       if (encontrado) {
+          // Si tiene foto, le sumamos un número al final para que el navegador la recargue de verdad
+          if (encontrado.fotoUrl) {
+            encontrado.fotoUrl = encontrado.fotoUrl + '?t=' + Date.now();
+          }
+
           this.usuario.set(encontrado);
-          this.cargarVideos(encontrado.id); // Cargar videos del usuario ajeno
+          this.cargarVideos(encontrado.id);
+          console.log("Foto de Adeline cargada:", encontrado.fotoUrl);
+        } else {
+          console.error("Usuario no encontrado en la búsqueda");
+          // Podrías redirigir a una página de 404
         }
       });
     }
@@ -40,7 +55,11 @@ export class PerfilAjeno implements OnInit {
 
   cargarVideos(userId: number) {
     this.respuestaService.obtenerVideos(userId).subscribe(res => {
-      this.videos = res;
+      // Forzamos un refresco de caché para los videos, igual que en tu perfil
+      this.videos = res.map((v: any) => ({
+        ...v,
+        urlVideo: v.urlVideo + '?t=' + Date.now()
+      }));
     });
   }
 

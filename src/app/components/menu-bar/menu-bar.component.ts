@@ -46,7 +46,9 @@ irABuscarAmigo() {
   this.router.navigate(['/buscar-amigo']); // Esto redirige a la nueva vista
 }
 
-
+irBuscarUsuario() {
+  this.router.navigate(['/buscar-usuario']); // Esto redirige a la nueva vista
+}
 
 irRecargar() {
   this.router.navigate(['/recargar']); // Esto redirige a la nueva vista
@@ -55,8 +57,7 @@ irRecargar() {
 irTienda() {
   this.router.navigate(['/tienda']); // Esto redirige a la nueva vista
 }
-irBuscarUsuario() {
-  this.router.navigate(['/buscar-usuario']); // Esto redirige a la nueva vista
-}
+
+
 
 }

@@ -2,10 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Importamos el nuevo componente que acabas de crear
 import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
+import { BuscarUsuario } from './components/buscar-usuario/buscar-usuario';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
-import { BuscarUsuario } from './components/buscar-usuario/buscar-usuario';
+
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },

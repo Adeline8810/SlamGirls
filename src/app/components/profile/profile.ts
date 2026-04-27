@@ -87,17 +87,23 @@ export class Profile implements OnInit {
   const f: File = ev.target.files && ev.target.files[0];
   if (!f) return;
 
-  // Validación de tamaño (Mantenla siempre)
-  const pesoEnMB = f.size / 1024 / 1024;
-  if (pesoEnMB > 10) {
-    alert(`La foto es muy pesada (${pesoEnMB.toFixed(2)}MB). Máximo 10MB.`);
-    return;
+  // 1. VALIDACIÓN ULTRA ESTRICTA ✅
+  const limiteMB = 5;
+  const pesoArchivo = f.size / 1024 / 1024;
+
+  if (pesoArchivo > limiteMB) {
+    // Si entra aquí, mandamos el mensaje y CORTAMOS la ejecución
+    alert(`¡ALTO! La foto es muy pesada (${pesoArchivo.toFixed(2)}MB). El límite son ${limiteMB}MB.`);
+
+    // Limpiamos el input para que el usuario sepa que falló
+    ev.target.value = '';
+    return; // <--- ESTO ES LO MÁS IMPORTANTE: Detiene el envío al servidor
   }
 
-  // Activar estado de carga ✅
+  // 2. Si pasó la validación, activamos el cargando y procedemos
   this.cargandoFoto = true;
 
-  // Vista previa local
+  // Vista previa local (opcional)
   const reader = new FileReader();
   reader.onload = (e) => { this.fotoUrlServidor = (e.target as any).result; };
   reader.readAsDataURL(f);
@@ -111,13 +117,13 @@ export class Profile implements OnInit {
         this.usuarioActual.fotoUrl = urlCloudinary;
         localStorage.setItem('usuario', JSON.stringify(this.usuarioActual));
       }
-      this.cargandoFoto = false; // Desactivar carga ✅
-      alert('¡Foto actualizada!');
+      this.cargandoFoto = false;
+      alert('Foto de perfil actualizada correctamente.');
     },
     error: (err) => {
-      this.cargandoFoto = false; // Desactivar carga si hay error ✅
-      console.error(err);
-      alert('Error al subir la foto.');
+      this.cargandoFoto = false;
+      console.error('Error en el servidor:', err);
+      alert('Error al subir la foto al servidor. Revisa tu conexión.');
     }
   });
 }

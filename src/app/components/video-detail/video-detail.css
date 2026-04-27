@@ -426,18 +426,3 @@ width: 100px;  /* Tamaño controlado desde el inicio */
   }
 }
 
-@keyframes vueloLimpio {
-  0% {
-    opacity: 0;
-    transform: translateY(200px) scale(0.1); /* Empieza abajo y mini */
-  }
-  15% {
-    opacity: 1;
-    transform: translateY(50px) scale(1.2);  /* Aparece con un pequeño 'pop' */
-    filter: drop-shadow(0 0 15px gold);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-400px) scale(0.3); /* Sube hasta el video y se encoge */
-  }
-}

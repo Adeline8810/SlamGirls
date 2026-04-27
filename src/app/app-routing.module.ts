@@ -58,11 +58,15 @@ const routes: Routes = [
     component: Profile
   },
 
+
+{ path: 'perfil/:username', component: PerfilAjeno },
+
+
+
   { path: '**', redirectTo: '/admin' }
 
 
 ,
-{ path: 'perfil/:username', component: PerfilAjeno },
 
 ];
 

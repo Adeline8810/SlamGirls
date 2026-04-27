@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router ,RouterModule} from '@angular/router';
 import { TraduccionService } from '../../../services/traduccion.service';
 import { UsuarioService } from '../../../services/usuario.service';
+import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
+
+
 
 @Component({
   selector: 'app-perfil-ajeno',
@@ -18,8 +21,13 @@ export class PerfilAjeno implements OnInit {
     private route: ActivatedRoute,
     private service: TraduccionService,
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private sanitizer: DomSanitizer
   ) {}
+
+   getSafeUrl(url: string) {
+  return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
 
   ngOnInit() {
     // Obtenemos el username de la URL (ej: /perfil/Adeline)

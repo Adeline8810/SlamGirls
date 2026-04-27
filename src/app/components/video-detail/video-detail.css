@@ -338,21 +338,7 @@
 }
 
 
-.efecto-regalo-volando {
-  position: fixed;
-  top: 40%; /* Aparece sobre el video */
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10000; /* Por encima de TODO */
-  pointer-events: none;
-  animation: aparecerYSubir 2s ease-in-out forwards;
-}
 
-.efecto-regalo-volando img {
-  width: 120px;
-  height: 120px;
-  filter: drop-shadow(0 0 20px gold);
-}
 
 @keyframes aparecerYSubir {
   0% {
@@ -377,30 +363,24 @@
 /* --- ESTILO DEL EFECTO VISUAL (Ajustado para solucionar tu error) --- */
 .lanzamiento-efecto {
   position: fixed;
-  /* Posicionamos en el centro de la pantalla para calcular bien el origen */
   top: 0;
   left: 0;
-  width: 100vw; /* Ocupa todo el ancho de pantalla */
-  height: 100vh; /* Ocupa todo el alto de pantalla */
-  z-index: 15000;
-  pointer-events: none; /* No interfiere con clics */
-
-  /* Usamos Flexbox para centrar la imagen perfectamente */
+  width: 100vw;
+  height: 100vh;
+  z-index: 15000; /* Por encima de todo */
+  pointer-events: none;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding-bottom: 80px; /* Separación desde el botón SEND */
+  align-items: center; /* Centrado para que vuele desde el medio hacia arriba */
 }
 
 /* --- ESTILO DE LA IMAGEN DENTRO DEL EFECTO --- */
 .lanzamiento-efecto img {
-width: 100px;  /* Tamaño controlado desde el inicio */
-  height: 100px;
+  width: 120px; /* <--- ESTO EVITA QUE SE VEA GRANDE */
+  height: 120px;
   object-fit: contain;
-  opacity: 0;    /* INVISIBLE POR DEFECTO para que no haya rastro del "grande" */
-
-  /* Animación: dura 1.2s, empieza suave y termina rápido */
-  animation: vueloLimpio 1.2s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+  opacity: 0; /* Empieza invisible */
+  animation: vueloHaciaArriba 1.2s ease-out forwards;
 }
 
 /* --- ✅ NUEVA ANIMACIÓN: SOLUCIÓN TOTAL ✅ --- */
@@ -426,3 +406,19 @@ width: 100px;  /* Tamaño controlado desde el inicio */
   }
 }
 
+
+@keyframes vueloHaciaArriba {
+  0% {
+    opacity: 0;
+    transform: translateY(100px) scale(0.1);
+  }
+  20% {
+    opacity: 1;
+    transform: translateY(0) scale(1.2); /* El "pop" que te gusta */
+    filter: drop-shadow(0 0 20px gold);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-400px) scale(0.2);
+  }
+}

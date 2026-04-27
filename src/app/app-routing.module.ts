@@ -38,7 +38,7 @@ const routes: Routes = [
 
     {
     path: 'buscar-usuario',
-    component: BuscarAmigo
+    component: BuscarUsuario
   },
 
    {

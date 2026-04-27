@@ -49,7 +49,9 @@ subirFotoPerfil(file: File, usuarioId: string): Observable<string> {
   });
 }
 
-
+getOne(id: number): Observable<any> {
+  return this.http.get(`https://backend-ruth-slam.onrender.com/api/usuarios/${id}`);
+}
 
 
 }

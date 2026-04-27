@@ -33,17 +33,35 @@ export class Profile implements OnInit {
   constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,) {}
 
  ngOnInit(): void {
-    const u = localStorage.getItem('usuario');
-    if (u) {
-      this.usuarioActual = JSON.parse(u);
-      this.usuarioId = this.usuarioActual.id;
+  const u = localStorage.getItem('usuario');
+  if (u) {
+    this.usuarioActual = JSON.parse(u);
+    this.usuarioId = this.usuarioActual.id;
 
-      // ✅ Cargar videos reales del usuario al entrar
-      this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
-        this.videos = res;
-      });
-    }
+    // 1. CARGAR DATOS DEL USUARIO DESDE EL SERVIDOR ✅
+    // Esto recupera la fotoUrl que guardamos en la tabla 'usuarios'
+    this.usuarioService.getOne(this.usuarioId).subscribe({
+      next: (userServer) => {
+        this.usuarioActual = userServer;
+
+        // Si el usuario tiene foto en la DB, la usamos; si no, dejamos la de por defecto
+        if (userServer.fotoUrl) {
+          this.fotoUrlServidor = userServer.fotoUrl;
+        }
+
+        // Actualizamos el localStorage para que el resto de la app tenga la foto nueva
+        localStorage.setItem('usuario', JSON.stringify(userServer));
+        console.log("Datos del usuario actualizados desde el servidor");
+      },
+      error: (err) => console.error("Error al traer datos del usuario", err)
+    });
+
+    // 2. MANTENEMOS TU LÓGICA DE VIDEOS (Sin cambios) ✅
+    this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
+      this.videos = res;
+    });
   }
+}
 
   verVideo(video: any) {
     this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar

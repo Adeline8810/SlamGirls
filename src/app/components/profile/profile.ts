@@ -63,37 +63,36 @@ export class Profile implements OnInit {
 
 
   // MÉTODO EDITAR/SUBIR FOTO (Copiado de tu lógica de Slam)
-  onFotoSeleccionada(ev: any) {
-    const f: File = ev.target.files && ev.target.files[0];
-    if (!f) return;
+ onFotoSeleccionada(ev: any) {
+  const f: File = ev.target.files && ev.target.files[0];
+  if (!f) return;
 
-    // Vista previa inmediata
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.fotoUrlServidor = (e.target as any).result;
-    };
-    reader.readAsDataURL(f);
+  // Vista previa inmediata para que el usuario no espere
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    this.fotoUrlServidor = (e.target as any).result;
+  };
+  reader.readAsDataURL(f);
 
-    // Subida al servidor usando tu servicio
-    const idParaSubir = this.usuarioId.toString();
-    this.respuestaService.subirFoto(f, idParaSubir).subscribe({
-      next: (pathRelativo) => {
-        const baseApi = 'https://backend-ruth-slam.onrender.com';
-        const cleanPath = pathRelativo.startsWith('/') ? pathRelativo : '/' + pathRelativo;
-        const urlFinal = `${baseApi}${cleanPath}?v=${new Date().getTime()}`;
+  const idParaSubir = this.usuarioId.toString();
+  this.respuestaService.subirFoto(f, idParaSubir).subscribe({
+    next: (urlRecibida) => {
+      // Como Java ahora manda la URL de Cloudinary, la usamos directamente ✅
+      const urlFinal = urlRecibida;
 
-        this.fotoUrlServidor = urlFinal;
-        if(this.usuarioActual) this.usuarioActual.avatarUrl = urlFinal;
+      this.fotoUrlServidor = urlFinal;
+      if(this.usuarioActual) this.usuarioActual.avatarUrl = urlFinal;
 
-        localStorage.setItem('user_foto_perfil', urlFinal);
-        console.log("Foto de perfil actualizada en Profile:", urlFinal);
-      },
-      error: (err) => {
-        console.error('Error al subir foto:', err);
-        alert('No se pudo actualizar la foto');
-      }
-    });
-  }
+      // Guardamos en localStorage para que al refrescar la página se mantenga
+      localStorage.setItem('user_foto_perfil', urlFinal);
+      console.log("Foto guardada permanentemente en Cloudinary:", urlFinal);
+    },
+    error: (err) => {
+      console.error('Error al subir foto:', err);
+      alert('Error: Revisa que el API SECRET en Render termine en 0 y no en 8'); //
+    }
+  });
+}
 
 onVideoSeleccionado(event: any) {
   const file = event.target.files[0];

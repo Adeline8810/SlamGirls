@@ -1,13 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router ,RouterModule} from '@angular/router';
 import { TraduccionService } from '../../../services/traduccion.service';
 import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-perfil-ajeno',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './perfil-ajeno.html',
   styleUrl: './perfil-ajeno.css'
 })

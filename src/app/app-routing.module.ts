@@ -5,6 +5,7 @@ import { BuscarAmigo } from './components/buscar-amigo/buscar-amigo';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
+import { BuscarUsuario } from './components/buscar-usuario/buscar-usuario';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -32,6 +33,11 @@ const routes: Routes = [
 
   {
     path: 'buscar-amigo',
+    component: BuscarAmigo
+  },
+
+    {
+    path: 'buscar-usuario',
     component: BuscarAmigo
   },
 

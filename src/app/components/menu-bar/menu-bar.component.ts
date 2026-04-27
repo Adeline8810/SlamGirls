@@ -55,6 +55,8 @@ irRecargar() {
 irTienda() {
   this.router.navigate(['/tienda']); // Esto redirige a la nueva vista
 }
-
+irBuscarUsuario() {
+  this.router.navigate(['/buscar-usuario']); // Esto redirige a la nueva vista
+}
 
 }

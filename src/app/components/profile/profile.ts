@@ -82,15 +82,15 @@ export class Profile implements OnInit {
         console.log("Subida exitosa:", urlCloudinary);
       },
       error: (err) => {
-        console.error('Error completo del servidor:', err);
-
-        // LÓGICA CORREGIDA: Si el error es 413, es por el tamaño
-        if (err.status === 413) {
-            alert('¡La foto es demasiado grande para el servidor!');
-        } else {
-            alert('Error al subir: El servidor respondió con código ' + err.status);
-        }
+      console.error('ERROR DEL SERVIDOR:', err);
+      if (err.status === 413) {
+        alert('¡Error 413! La foto sigue siendo demasiado pesada para el servidor.');
+      } else if (err.status === 0) {
+        alert('El servidor está tardando en responder, espera un poco.');
+      } else {
+        alert('Error ' + err.status + ': Algo salió mal en el servidor.');
       }
+    }
     });
 }
 

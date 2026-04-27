@@ -9,6 +9,7 @@ import { BuscarUsuario } from './components/buscar-usuario/buscar-usuario';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
+import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'recargar', component: Recargar },
   { path: 'tienda', component: Tienda },
   { path: 'profile', component: Profile },
+  { path: 'perfil/:username', component: PerfilAjeno },
   { path: '**', redirectTo: '' }
 ];

@@ -1,4 +1,3 @@
-
 <div *ngIf="efectoActivo()" class="lanzamiento-efecto" (animationend)="limpiarEfecto()">
   <img [src]="efectoActivo()" alt="Regalo">
 </div>
@@ -9,14 +8,7 @@
 
     <div class="video-wrapper">
       <video [src]="video().urlVideo" autoplay controls></video>
-
-      @if (efectoActivo()) {
-        <div class="gift-animation">
-          <img [src]="efectoActivo()" class="flying-gift">
-          <div class="sent-label">¡Enviaste un regalo!</div>
-        </div>
-      }
-    </div>
+      </div>
 
     <div class="gift-section">
       <div class="gift-tabs">

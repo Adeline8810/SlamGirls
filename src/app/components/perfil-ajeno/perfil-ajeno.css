@@ -76,3 +76,52 @@
 
 .btn-parler { background: #fff1f5; color: #ff4081; }
 .btn-amitie { background: #ff4081; color: white; }
+
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #333;
+  margin-bottom: 15px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  color: #888;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.tabs button.active {
+  color: white;
+  border-bottom: 2px solid #ff0050; /* Color estilo TikTok */
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas de videos */
+  gap: 5px;
+  padding: 10px;
+}
+
+.video-card {
+  aspect-ratio: 9 / 16; /* Formato vertical */
+  background: black;
+  overflow: hidden;
+  position: relative;
+}
+
+.video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-title {
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  font-size: 10px;
+  color: white;
+}

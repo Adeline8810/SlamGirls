@@ -1,49 +1,53 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router ,RouterModule} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TraduccionService } from '../../../services/traduccion.service';
-import { UsuarioService } from '../../../services/usuario.service';
-import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
-
-
+import { RespuestaService } from '../../../services/respuesta.service'; // Para los videos
+import { VideoDetail } from '../../components/video-detail/video-detail';
 
 @Component({
   selector: 'app-perfil-ajeno',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule, VideoDetail],
   templateUrl: './perfil-ajeno.html',
   styleUrl: './perfil-ajeno.css'
 })
 export class PerfilAjeno implements OnInit {
   usuario = signal<any>(null);
+  videos: any[] = [];
+  selectedTab: string = 'videos'; // Empezamos en videos como en tu perfil
+  videoSeleccionado = signal<any>(null);
 
   constructor(
     private route: ActivatedRoute,
-    private service: TraduccionService,
-    private usuarioService: UsuarioService,
     private router: Router,
-    private sanitizer: DomSanitizer
+    private miServicio: TraduccionService,
+    private respuestaService: RespuestaService
   ) {}
 
-   getSafeUrl(url: string) {
-  return this.sanitizer.bypassSecurityTrustResourceUrl(url);
-}
-
   ngOnInit() {
-    // Obtenemos el username de la URL (ej: /perfil/Adeline)
     const username = this.route.snapshot.paramMap.get('username');
     if (username) {
-      this.usuarioService.obtenerDetallesUsuario(username).subscribe(data => {
-        this.usuario.set(data);
+      this.miServicio.buscarUsuarios(username).subscribe(res => {
+        const encontrado = res.find((u: any) => u.username === username);
+        if (encontrado) {
+          this.usuario.set(encontrado);
+          this.cargarVideos(encontrado.id); // Cargar videos del usuario ajeno
+        }
       });
     }
   }
 
-  irAlChat() {
-    this.router.navigate(['/chat', this.usuario().username]);
+  cargarVideos(userId: number) {
+    this.respuestaService.obtenerVideos(userId).subscribe(res => {
+      this.videos = res;
+    });
   }
 
-  volver() {
-  window.history.back();
-}
+  verVideo(video: any) {
+    this.videoSeleccionado.set(video);
+  }
+
+  volver() { this.router.navigate(['/buscar-usuario']); }
+  irAlChat() { /* Tu lógica futura */ }
 }

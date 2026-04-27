@@ -11,40 +11,42 @@
     </div>
 
     <div class="stats-bar">
-      <div class="stat-item">
-        <strong>188</strong>
-        <span>Abonnés</span>
-      </div>
-      <div class="stat-item">
-        <strong>16</strong>
-        <span>Abonnements</span>
-      </div>
-      <div class="stat-item">
-        <strong>417</strong>
-        <span>Cadeaux</span>
-      </div>
+      <div class="stat-item"><strong>188</strong><span>Abonnés</span></div>
+      <div class="stat-item"><strong>16</strong><span>Abonnements</span></div>
+      <div class="stat-item"><strong>417</strong><span>Cadeaux</span></div>
     </div>
 
-    <div class="videos-container" style="margin: 20px 0; padding: 0 15px;">
-      <h3 style="color: white; font-size: 1rem; margin-bottom: 10px;">Videos</h3>
-      <div class="videos-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+    <div class="tabs">
+      <button (click)="selectedTab = 'homepage'" [class.active]="selectedTab === 'homepage'">Homepage</button>
+      <button (click)="selectedTab = 'moment'" [class.active]="selectedTab === 'moment'">Moment</button>
+      <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
+    </div>
 
-        @for (video of usuario().videos; track video) {
-          <div class="video-item" style="border-radius: 10px; overflow: hidden; background: #000; height: 200px;">
-            <iframe
-              [src]="getSafeUrl(video)"
-              style="width: 100%; height: 100%; border: none;"
-              allowfullscreen>
-            </iframe>
-          </div>
-        } @empty {
-          <p style="color: #888; font-size: 0.8rem; grid-column: span 2; text-align: center;">
-            Este usuario no tiene videos cargados.
-          </p>
+    <div class="tab-main-content">
+      @switch (selectedTab) {
+        @case ('homepage') {
+          <div class="tab-content"><h3>🏠 Información de {{ usuario().nombre }}</h3></div>
         }
-
-      </div>
+        @case ('moment') {
+          <div class="tab-content"><h3>📸 Momentos Recientes</h3></div>
+        }
+        @case ('videos') {
+          <div class="video-grid">
+            @for (video of videos; track video.id) {
+              <div class="video-card" (click)="verVideo(video)">
+                <div class="thumb-wrapper">
+                  <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
+                </div>
+                <p class="video-title">{{ video.titulo }}</p>
+              </div>
+            } @empty {
+              <p class="empty-msg">Este usuario aún no ha subido videos.</p>
+            }
+          </div>
+        }
+      }
     </div>
+
     <div class="action-footer">
       <button class="btn-parler" (click)="irAlChat()">
         <span class="icon">🚀</span> parler
@@ -54,4 +56,11 @@
       </button>
     </div>
   </div>
+
+  @if (videoSeleccionado()) {
+    <app-video-detail
+      [video]="videoSeleccionado()"
+      (close)="videoSeleccionado.set(null)">
+    </app-video-detail>
+  }
 </div>

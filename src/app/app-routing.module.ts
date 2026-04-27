@@ -6,6 +6,7 @@ import { BuscarUsuario } from './components/buscar-usuario/buscar-usuario';
 import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
+import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 
 
 const routes: Routes = [
@@ -60,7 +61,8 @@ const routes: Routes = [
   { path: '**', redirectTo: '/admin' }
 
 
-
+,
+{ path: 'perfil/:username', component: PerfilAjeno },
 
 ];
 

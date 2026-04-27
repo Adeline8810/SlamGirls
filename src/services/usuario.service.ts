@@ -53,5 +53,8 @@ getOne(id: number): Observable<any> {
   return this.http.get(`https://backend-ruth-slam.onrender.com/api/usuarios/${id}`);
 }
 
+obtenerDetallesUsuario(username: string): Observable<any> {
+  return this.http.get(`https://backend-ruth-slam.onrender.com/api/usuarios/perfil/${username}`);
+}
 
 }

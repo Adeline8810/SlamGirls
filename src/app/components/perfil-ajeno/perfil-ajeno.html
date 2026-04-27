@@ -1,0 +1,37 @@
+<div class="profile-container" *ngIf="usuario()">
+  <div class="header-bg" [style.background-image]="'url(' + usuario().fotoUrl + ')'"></div>
+
+  <div class="profile-content">
+    <button class="btn-back" (click)="window.history.back()">❮</button>
+
+    <div class="avatar-section">
+      <img [src]="usuario().fotoUrl || 'assets/default-avatar.png'" class="main-avatar">
+      <h2 class="display-name">{{ usuario().nombre }} 🇫🇷</h2>
+      <p class="id-text">ID: {{ usuario().id_app }}</p>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <strong>188</strong>
+        <span>Abonnés</span>
+      </div>
+      <div class="stat-item">
+        <strong>16</strong>
+        <span>Abonnements</span>
+      </div>
+      <div class="stat-item">
+        <strong>417</strong>
+        <span>Cadeaux</span>
+      </div>
+    </div>
+
+    <div class="action-footer">
+      <button class="btn-parler" (click)="irAlChat()">
+        <span class="icon">🚀</span> parler
+      </button>
+      <button class="btn-amitie">
+        <span class="icon">❤️</span> Amitié
+      </button>
+    </div>
+  </div>
+</div>

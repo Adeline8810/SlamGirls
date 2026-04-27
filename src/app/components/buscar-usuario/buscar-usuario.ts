@@ -34,8 +34,10 @@ export class BuscarUsuario {
     });
   }
 
-  verPerfil(username: string) {
-    // Esta ruta la usaremos para ver los regalos y videos del otro
-    this.router.navigate(['/perfil', username]);
-  }
+verPerfil(username: string) {
+  // Esto te lleva a la ruta que definimos en el AppRoutingModule
+  this.router.navigate(['/perfil', username]);
+}
+
+
 }

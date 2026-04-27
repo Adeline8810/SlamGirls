@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-end; /* Empuja la ventana de regalos hacia abajo */
+  z-index: 2000;
 }
 
 .player-container {
@@ -21,6 +22,7 @@
   flex-direction: column;
   position: relative;
   box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+  z-index: 2100;
 }
 
 .btn-close {
@@ -225,6 +227,7 @@
   border-radius: 20px;
   font-weight: bold;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-send:disabled {
@@ -325,4 +328,47 @@
   background: #444;
   box-shadow: none;
   cursor: not-allowed;
+}
+
+
+.btn-send:not(:disabled) {
+  background: #ff4081;
+  box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+  transform: scale(1.05);
+}
+
+
+.efecto-regalo-volando {
+  position: fixed;
+  top: 40%; /* Aparece sobre el video */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000; /* Por encima de TODO */
+  pointer-events: none;
+  animation: aparecerYSubir 2s ease-in-out forwards;
+}
+
+.efecto-regalo-volando img {
+  width: 120px;
+  height: 120px;
+  filter: drop-shadow(0 0 20px gold);
+}
+
+@keyframes aparecerYSubir {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -200px) scale(0);
+  }
 }

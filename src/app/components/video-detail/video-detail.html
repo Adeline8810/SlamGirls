@@ -1,3 +1,8 @@
+
+<div *ngIf="efectoActivo()" class="efecto-regalo-volando">
+  <img [src]="efectoActivo()" alt="Regalo lanzado">
+</div>
+
 <div class="video-overlay">
   <div class="player-container">
     <button class="btn-back" (click)="close.emit()">❮</button>

@@ -1,6 +1,7 @@
 import { Component, input, output, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RecargarService } from '../../../services/recargar.service'; // Tu servicio de la imagen
+import { RecargarService } from '../../../services/recargar.service';
+import confetti from 'canvas-confetti';
 
 @Component({
   selector: 'app-video-detail',
@@ -17,7 +18,7 @@ export class VideoDetail implements OnInit {
 
   misMonedas = signal<number>(0);
   regaloSeleccionado = signal<any>(null);
-  efectoActivo = signal<string | null>(null); // Para la animación
+  efectoActivo = signal<string | null>(null);
 
   listaRegalos = [
     { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
@@ -34,11 +35,9 @@ export class VideoDetail implements OnInit {
   }
 
   obtenerMonedas() {
-    // Jalamos el username del localStorage o del objeto usuario
     const userJson = localStorage.getItem('usuario');
     if (userJson) {
       const user = JSON.parse(userJson);
-      // Usamos tu service: obtenerDatosUsuario(username)
       this.recargarService.obtenerDatosUsuario(user.username).subscribe({
         next: (data) => {
           this.misMonedas.set(data.monedas);
@@ -52,6 +51,40 @@ export class VideoDetail implements OnInit {
     this.regaloSeleccionado.set(regalo);
   }
 
+  // --- NUEVO MÉTODO PARA EL EFECTO VISUAL ---
+  private dispararEfectoEstrellas() {
+    const duracion = 2 * 1000;
+    const fin = Date.now() + duracion;
+
+    const intervalo = setInterval(() => {
+      if (Date.now() > fin) {
+        return clearInterval(intervalo);
+      }
+
+      // Disparo desde la derecha (donde está el botón SEND)
+      confetti({
+        particleCount: 3,
+        angle: 120, // Hacia la izquierda y arriba
+        spread: 55,
+        origin: { x: 0.9, y: 0.9 }, // Esquina inferior derecha
+        colors: ['#FFE100', '#FFD700', '#FFFFFF'],
+        shapes: ['star'],
+        zIndex: 10000
+      });
+
+      // Disparo desde la izquierda para equilibrar
+      confetti({
+        particleCount: 3,
+        angle: 60, // Hacia la derecha y arriba
+        spread: 55,
+        origin: { x: 0.1, y: 0.9 }, // Esquina inferior izquierda
+        colors: ['#FFE100', '#FFD700', '#FFFFFF'],
+        shapes: ['star'],
+        zIndex: 10000
+      });
+    }, 100);
+  }
+
   lanzarRegalo() {
     const regalo = this.regaloSeleccionado();
     if (!regalo || this.misMonedas() < regalo.precio) {
@@ -59,16 +92,19 @@ export class VideoDetail implements OnInit {
       return;
     }
 
-    // 1. Activar animación visual
+    // 1. Activar animación visual (Ícono grande)
     this.efectoActivo.set(regalo.icon);
 
-    // 2. Restar monedas localmente para feedback instantáneo
+    // 2. DISPARAR ESTRELLAS FUGACES 🌟
+    this.dispararEfectoEstrellas();
+
+    // 3. Restar monedas localmente
     this.misMonedas.update(m => m - regalo.precio);
 
-    // 3. Aquí llamarías a tu API para descontar en DB (debes tener un endpoint POST para esto)
+    // 4. API / DB
     console.log(`Regalo ${regalo.nombre} enviado`);
 
-    // 4. Limpiar efecto después de 2 segundos
+    // 5. Limpiar efectos
     setTimeout(() => {
       this.efectoActivo.set(null);
       this.regaloSeleccionado.set(null);

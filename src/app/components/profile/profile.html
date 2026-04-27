@@ -1,10 +1,23 @@
 <div class="profile-container">
   <div class="header">
-    <div class="avatar-container" (click)="fileInput.click()">
-      <img class="avatar" [src]="fotoUrlServidor" alt="avatar">
-      <div class="edit-overlay">Editar</div>
+    <div class="avatar-container" (click)="!cargandoFoto && fileInput.click()">
+
+    @if (cargandoFoto) {
+        <div class="loading-overlay">
+          <div class="spinner"></div>
+          <span class="loading-text">Cargando...</span>
+        </div>
+      }
+
+      <img class="avatar"
+           [src]="fotoUrlServidor"
+           [class.blur]="cargandoFoto"
+           alt="avatar">
+
+      <div class="edit-overlay" *ngIf="!cargandoFoto">Editar</div>
     </div>
     <input #fileInput type="file" (change)="onFotoSeleccionada($event)" hidden accept="image/*">
+
     <h2>{{ nombreUsuario }}</h2>
     <p>ID: {{ usuarioId }}</p>
     <div class="stats"></div>

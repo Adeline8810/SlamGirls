@@ -1,43 +1,39 @@
 <div class="profile-container" *ngIf="usuario()">
-  <div class="header">
-    <div class="header-bg" [style.background-image]="'url(' + (usuario().fotoUrl || 'assets/img/default.png') + ')'"></div>
-    <div class="header-content">
-      <div class="avatar-container">
-        <img class="avatar" [src]="usuario().fotoUrl || 'assets/img/default.png'">
-      </div>
-      <h2>{{ usuario().nombre }} 🇫🇷</h2>
-      <p class="id-text">ID: {{ usuario().id }}</p>
+  <div class="header-bg" [style.background-image]="'url(' + (usuario().fotoUrl || 'assets/img/default.png') + ')'"></div>
+
+  <div class="profile-content">
+    <img class="main-avatar" [src]="usuario().fotoUrl || 'assets/img/default.png'">
+    <h2>{{ usuario().nombre }}</h2>
+    <p class="id-text">ID: {{ usuario().id }}</p>
+
+    <div class="tabs">
+      <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
+      <button (click)="selectedTab = 'info'" [class.active]="selectedTab === 'info'">Info</button>
     </div>
-  </div>
 
-  <div class="tabs">
-    <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
-    <button (click)="selectedTab = 'homepage'" [class.active]="selectedTab === 'homepage'">Info</button>
-    <button (click)="selectedTab = 'album'" [class.active]="selectedTab === 'album'">Álbum</button>
-  </div>
-
-  <div class="tab-content-container">
-    @switch (selectedTab) {
-      @case ('videos') {
+    <div class="tab-content-container">
+      @if (selectedTab === 'videos') {
         <div class="video-grid">
           @for (video of videos; track video.id) {
             <div class="video-card" (click)="verVideo(video)">
-              <video [src]="getSafeUrl(video.urlVideo)" class="video-preview" muted></video>
+              <video
+                [src]="getSafeUrl(video.urlVideo)"
+                class="video-preview"
+                muted
+                autoplay
+                loop
+                playsinline
+                preload="auto">
+              </video>
             </div>
           }
         </div>
-      }
-      @case ('homepage') {
+      } @else {
         <div class="info-pane">
-          <p>Información de perfil de {{ usuario().nombre }}</p>
+          <p>Próximamente más información de {{ usuario().nombre }}</p>
         </div>
       }
-      @case ('album') {
-        <div class="info-pane">
-          <p>Álbum de fotos próximamente.</p>
-        </div>
-      }
-    }
+    </div>
   </div>
 
   <div class="action-footer">
@@ -45,3 +41,7 @@
     <button class="btn-amitie">❤️ Amitié</button>
   </div>
 </div>
+
+@if (videoSeleccionado()) {
+  <app-video-detail [video]="videoSeleccionado()" (close)="videoSeleccionado.set(null)"></app-video-detail>
+}

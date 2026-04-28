@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as iSockJS from 'sockjs-client';
+import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { Subject } from 'rxjs';
 
@@ -14,8 +14,9 @@ export class ChatSocketService {
 
   conectar() {
     // Usamos la URL de tu backend en Render
-    const socket = new (iSockJS as any)('https://backend-ruth-slam.onrender.com/ws-chat');
+   const socket = new (SockJS as any)('https://backend-ruth-slam.onrender.com/ws-chat');
     this.stompClient = Stomp.over(socket);
+
 
     // Desactivamos logs molestos en consola
     this.stompClient.debug = () => {};

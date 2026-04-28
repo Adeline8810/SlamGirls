@@ -3,7 +3,8 @@
     <div class="header-top">
       <button class="back-btn" (click)="volver()">❮</button>
       <div class="user-badge">
-        <img [src]="receptor().fotoUrl || 'assets/img/default.png'" class="mini-avatar-slam">
+        <img [src]="receptor()?.fotoUrl || 'assets/img/default.png'" class="mini-avatar-slam">
+
         <span class="status-dot"></span>
       </div>
       <div class="user-info-slam">

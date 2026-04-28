@@ -330,7 +330,7 @@ reiniciarCuestionario() {
         enable: false
       },
       move: {
-        direction: "none",
+        direction: "none" as any,
         enable: true,
         outModes: {
           default: "out"

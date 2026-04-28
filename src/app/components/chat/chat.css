@@ -1,241 +1,101 @@
+/* 1. Contenedor de mensajes (el área con scroll) */
 .messages-container {
-  flex: 1;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Espacio pequeño entre burbujas */
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background-color: #f5f7fb; /* Color claro de fondo como la captura */
-}
-
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: #111;
-  color: white;
-}
-
-.chat-header {
-  padding: 15px;
-  background: #1a1a1a;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #333;
-}
-
-.messages-list {
-  flex: 1;
-  padding: 15px;
+  background-color: #fff; /* Fondo blanco para que resalten las burbujas */
+  height: 450px;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  scrollbar-width: none; /* Esconde scroll en Firefox */
 }
 
-.bubble {
-padding: 10px 15px;
-  max-width: 70%;
-  position: relative;
-  font-size: 14px;
-  line-height: 1.4;
+.messages-container::-webkit-scrollbar {
+  display: none; /* Esconde scroll en Chrome/Safari */
 }
 
-.bubble.me {
-  align-self: flex-end;
-  background: #ff4081; /* Rosa como tus botones */
-  color: white;
-  border-bottom-right-radius: 2px;
-}
-
-.bubble.other {
-  align-self: flex-start;
-  background: #333;
-  color: white;
-  border-bottom-left-radius: 2px;
-}
-
-.chat-input-area {
-  padding: 15px;
-  background: #1a1a1a;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-
-input {
-  flex: 1;
-  background: #222;
-  border: 1px solid #444;
-  padding: 10px 15px;
-  border-radius: 25px;
-  color: white;
-  outline: none;
-}
-
-.btn-send {
-  background: #ff4081;
-  border: none;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
+/* 2. Filas de mensajes */
 .message-row {
   display: flex;
   width: 100%;
+  margin-bottom: 2px;
 }
 
-.row-me { justify-content: flex-end; } /* Tus mensajes a la derecha */
-.row-other { justify-content: flex-start; } /* Los de ella a la izquierda */
-
-/* Color Rosa Fuerte (Estilo Slam) para el receptor */
-.row-other .bubble {
-background-color: #ffffff;
-  color: #333;
-  border-radius: 18px 18px 18px 4px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+.row-me {
+  justify-content: flex-end; /* Mis mensajes a la derecha */
 }
 
-/* Color Gris para tus mensajes */
+.row-other {
+  justify-content: flex-start; /* Sus mensajes a la izquierda */
+}
+
+/* 3. La Burbuja (Estilo Facebook Messenger) */
+.bubble {
+  max-width: 70%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+/* Burbuja MÍA (Rosa fuerte con degradado) */
 .row-me .bubble {
-background: #d1e3ff; /* Blanco */
-  color: #333;
-  border-radius: 18px 18px 4px 18px;
-  justify-content: flex-end;
+  background: linear-gradient(135deg, #ff4d7d 0%, #ff7597 100%);
+  color: white;
+  /* Bordes: Arriba-Izq, Arriba-Der, Abajo-Der, Abajo-Izq */
+  border-radius: 20px 20px 4px 20px;
+  box-shadow: 0 4px 10px rgba(255, 77, 125, 0.2);
 }
 
-.chat-page {
-background: #fdfdfd; /* Fondo claro */
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+/* Burbuja del OTRO (Gris suave rosado) */
+.row-other .bubble {
+  background-color: #f1f0f0;
+  color: #1c1e21;
+  border-radius: 20px 20px 20px 4px;
 }
 
-/* Cabecera estilo Perfil */
-.chat-header-slam {
-background: white;
-  padding: 15px;
-  border-bottom-left-radius: 25px;
-  border-bottom-right-radius: 25px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  z-index: 10;
-}
-
-.header-top { display: flex; align-items: center; gap: 10px; }
-
-.mini-avatar-slam {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #ff4081;
-}
-
-.profile-album-mini {
-margin-top: 15px;
-  overflow-x: auto; /* Permite deslizar las fotos a los lados */
-  padding-bottom: 5px;
-}
-
-.album-scroll {
-  display: flex;
-  gap: 10px;
-}
-
-.album-item {
-width: 85px;
-  height: 85px;
-  border-radius: 12px;
-  object-fit: cover; /* Para que la foto no se estire */
-  border: 1px solid #eee;
-}
-
-/* Footer con cajones */
-.chat-footer-slam {
-  background: white;
-  padding: 10px;
-  border-top: 1px solid #eee;
-}
-
-.input-row {
-  display: flex;
-  align-items: center;
-  background: #f9f9f9;
-  border-radius: 25px;
-  padding: 5px 15px;
-  margin-bottom: 10px;
-}
-
-.input-row input {
-  flex: 1;
-  border: none;
-  background: transparent;
-  padding: 10px;
-  outline: none;
-}
-
-.tools-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 10px;
-}
-
-.tool-icon {
-  font-size: 1.5rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-.drawer {
-  height: 200px;
-  background: #fdfdfd;
-  border-top: 1px solid #eee;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 iconos por fila */
-  gap: 15px;
-  overflow-y: auto;
-}
-
-.mini-album {
-  margin-top: 10px;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-.album-thumb {
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
-  margin-right: 5px;
-  object-fit: cover;
-}
-.slam-tools {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: white;
-  border-top: 1px solid #eee;
-  padding: 10px;
-}
-.icon-bar {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 10px;
-}
-
-.emoji-drawer span {
-  font-size: 2rem;
-  text-align: center;
-  cursor: pointer;
-}
+/* 4. Hora del mensaje */
 .time {
   display: block;
   font-size: 10px;
-  color: #999;
   margin-top: 4px;
+  opacity: 0.6;
+}
+
+.row-me .time {
+  color: #ffffff;
   text-align: right;
+}
+
+.row-other .time {
+  color: #65676b;
+  text-align: left;
+}
+
+/* 5. Estilo para el input (si usas estas clases en el HTML) */
+.input-area {
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #f0f2f5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  border: none;
+  background: #f0f2f5;
+  padding: 10px 15px;
+  border-radius: 20px;
+  outline: none;
+}
+
+.mic-btn {
+  color: #ff4d7d;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }

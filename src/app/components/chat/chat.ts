@@ -35,68 +35,85 @@ export class Chat implements OnInit, OnDestroy {
     this.miUsuario = JSON.parse(localStorage.getItem('usuario') || '{}');
   }
 
-  ngOnInit() {
-    // 1. Nombre de la URL
-    this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
+ ngOnInit() {
+  // 1. Nombre de la URL
+  this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
-    // 2. Escuchar Socket
-    this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
-      if (msg.emisorId !== this.miUsuario.id) {
-        this.mensajes.update(prev => [
-          ...prev,
-          { ...msg, soyYo: false }
-        ]);
-        this.hacerScroll();
-      }
-    });
+  // 2. Escuchar Socket
+  this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
+    // ESTOS LOGS SON PARA VER POR QUÉ NO SALE EL MENSAJE DEL OTRO
+    console.log("--- NUEVO MENSAJE RECIBIDO ---");
+    console.log("Contenido:", msg.texto);
+    console.log("¿Quién lo envía (emisorId)?:", msg.emisorId);
+    console.log("¿Quién soy yo (miUsuario.id)?:", this.miUsuario.id);
+    console.log("¿Con quién estoy hablando (receptor id)?:", this.receptor()?.id);
 
-    // 3. Cargar datos del receptor y LUEGO el historial
-    this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
-      next: (res: any) => {
-        let encontrado = Array.isArray(res)
-          ? res.find((u: any) => u.username === this.receptorNombre)
-          : res;
+    // Si el emisor NO soy yo, lo agrego a la pantalla
+    if (msg.emisorId !== this.miUsuario.id) {
+      console.log("✅ El mensaje es del otro. Agregando a la lista...");
+      this.mensajes.update(prev => [
+        ...prev,
+        { ...msg, soyYo: false }
+      ]);
+      this.hacerScroll();
+    } else {
+      console.log("ℹ️ El mensaje lo envié yo (o tiene mi ID), por eso el socket lo ignora aquí.");
+    }
+  });
 
-        if (encontrado) {
-          this.receptor.set(encontrado);
+  // 3. CARGAR RECEPTOR (Busca los datos de la persona con la que hablas)
+  this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
+    next: (res: any) => {
+      let encontrado = Array.isArray(res)
+        ? res.find((u: any) => u.username === this.receptorNombre)
+        : res;
 
-          // --- AQUÍ CARGAMOS LOS VIDEOS ---
+      if (encontrado) {
+        console.log("✅ Receptor cargado:", encontrado);
+        this.receptor.set(encontrado);
+
+        // Una vez tenemos al receptor, cargamos sus videos e historial
+        if (encontrado.id) {
           this.respuestaService.obtenerVideos(encontrado.id).subscribe(resVideos => {
             this.videos = resVideos;
           });
 
-          // --- IMPORTANTE: CARGAR HISTORIAL AQUÍ (Ya tenemos el ID del receptor) ---
           this.cargarHistorial();
         }
-      },
-      error: (err) => console.error("Error al cargar datos del chat", err)
-    });
-  }
+      }
+    },
+    error: (err) => console.error("Error al cargar datos del chat", err)
+  });
+}
 
   cargarHistorial() {
-    // Usamos tus variables correctas: miUsuario y receptor()
-    const emisorId = this.miUsuario.id;
-    const receptorId = this.receptor().id;
+  const emisorId = this.miUsuario.id;
+  const receptorId = this.receptor().id;
 
-    if (!emisorId || !receptorId) return;
-
-    this.usuarioService.obtenerHistorial(emisorId, receptorId).subscribe({
-      next: (historial) => {
-        const mensajesFormateados = historial.map(m => ({
-          texto: m.texto,
-          emisorId: m.emisorId,
-          receptorId: m.receptorId,
-          hora: m.hora,
-          soyYo: m.emisorId === this.miUsuario.id
-        }));
-
-        // IMPORTANTE: Actualizamos el signal con los datos de la base de datos
-        this.mensajes.set(mensajesFormateados);
-        this.hacerScroll();
-      },
-      error: (err) => console.error('Error cargando historial', err)
-      });
+  if (!emisorId || !receptorId) {
+    console.warn("Faltan IDs para cargar el historial");
+    return;
   }
+
+  this.usuarioService.obtenerHistorial(emisorId, receptorId).subscribe({
+    next: (historial) => {
+      console.log("Historial recibido de DB:", historial); // Para que veas si vienen los del otro
+
+      const mensajesFormateados = historial.map(m => ({
+        texto: m.texto,
+        emisorId: m.emisorId,
+        receptorId: m.receptorId,
+        hora: m.hora,
+        // Usamos == para evitar problemas de tipo (string vs number)
+        soyYo: m.emisorId == this.miUsuario.id
+      }));
+
+      this.mensajes.set(mensajesFormateados);
+      this.hacerScroll();
+    },
+    error: (err) => console.error('Error cargando historial', err)
+  });
+}
 
   enviarMensaje() {
     console.log("Intentando enviar mensaje...");

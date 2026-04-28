@@ -113,3 +113,18 @@
 
 .btn-parler { background: #333; color: white; }
 .btn-amitie { background: #ff4081; color: white; }
+
+
+.tabs button.active {
+  color: #e91e63; /* Color rosa del Slam */
+  border-bottom: 2px solid #e91e63;
+  font-weight: bold;
+}
+
+/* Estilo para que los videos se vean como una galería limpia */
+.video-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}

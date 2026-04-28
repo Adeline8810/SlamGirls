@@ -16,8 +16,8 @@ import { VideoDetail } from '../../components/video-detail/video-detail';
 export class PerfilAjeno implements OnInit {
   usuario = signal<any>(null);
   videos: any[] = [];
-  selectedTab: string = 'videos';
-  videoSeleccionado = signal<any>(null);
+  selectedTab: string = 'videos'; // Pestaña por defecto
+  videoSeleccionado = signal<any>(null); // Para el modal de detalle
 
   constructor(
     private route: ActivatedRoute,
@@ -60,18 +60,26 @@ export class PerfilAjeno implements OnInit {
     });
   }
 
-  verVideo(video: any) {
-    // Esto activa el componente app-video-detail
-    this.videoSeleccionado.set(video);
-  }
-
-  volver() { this.router.navigate(['/buscar-usuario']); }
-
-
-irAlChat() {
-  this.router.navigate(['/chat', this.usuario().username]);
+changeTab(tab: string) {
+  this.selectedTab = tab;
 }
 
+verVideo(video: any) {
+  // Aquí es donde guardamos el video para mostrarlo con opciones
+  this.videoSeleccionado.set(video);
+}
+
+irAlChat() {
+  // 1. Accedemos al valor de la señal usando ()
+  // 2. Usamos 'username' que es lo que validaste en el ngOnInit
+  const usuarioData = this.usuario();
+
+  if (usuarioData && usuarioData.username) {
+    this.router.navigate(['/chat', usuarioData.username]);
+  } else {
+    console.error("No se puede redirigir: faltan datos del usuario");
+  }
+}
 
 
 }

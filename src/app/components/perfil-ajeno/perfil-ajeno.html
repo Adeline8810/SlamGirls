@@ -1,39 +1,30 @@
-<div class="profile-container" *ngIf="usuario()">
+<div class="profile-container">
   <div class="header-bg" [style.background-image]="'url(' + (usuario().fotoUrl || 'assets/img/default.png') + ')'"></div>
 
-  <div class="profile-content">
-    <img class="main-avatar" [src]="usuario().fotoUrl || 'assets/img/default.png'">
-    <h2>{{ usuario().nombre }}</h2>
-    <p class="id-text">ID: {{ usuario().id }}</p>
-
-    <div class="tabs">
-      <button (click)="selectedTab = 'videos'" [class.active]="selectedTab === 'videos'">Videos</button>
-      <button (click)="selectedTab = 'info'" [class.active]="selectedTab === 'info'">Info</button>
+  <div class="avatar-section">
+    <div class="avatar-ring">
+      <img [src]="usuario().fotoUrl || 'assets/img/default.png'" class="main-avatar">
     </div>
+    <p class="profile-id">ID: {{ usuario().id }}</p>
+  </div>
 
-    <div class="tab-content-container">
-      @if (selectedTab === 'videos') {
-        <div class="video-grid">
-          @for (video of videos; track video.id) {
-            <div class="video-card" (click)="verVideo(video)">
-              <video
-                [src]="getSafeUrl(video.urlVideo)"
-                class="video-preview"
-                muted
-                autoplay
-                loop
-                playsinline
-                preload="auto">
-              </video>
-            </div>
-          }
-        </div>
-      } @else {
-        <div style="padding: 40px; color: #888;">
-          <p>Próximamente más información de {{ usuario().nombre }}</p>
-        </div>
-      }
+  <div class="tabs">
+    <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Homepage</button>
+    <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
+    <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">Likes</button>
+    <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
+    <button (click)="changeTab('album')" [class.active]="selectedTab === 'album'">Album</button>
+  </div>
+
+  <div class="video-grid-container" *ngIf="selectedTab === 'videos'">
+   @for (video of videos; track video.id) {
+    <div class="video-card" (click)="verVideo(video)">
+      <video preload="metadata" class="video-preview">
+        <source [src]="video.urlVideo" type="video/mp4">
+      </video>
+      <p class="video-title">{{ video.titulo }}</p>
     </div>
+  }
   </div>
 
   <div class="action-footer">

@@ -1,11 +1,11 @@
 .messages-container {
-flex: 1;
+  flex: 1;
   overflow-y: auto;
-  padding: 15px;
-  background: #f7f7f7;
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
+  background-color: #f5f7fb; /* Color claro de fondo como la captura */
 }
 
 
@@ -35,10 +35,11 @@ flex: 1;
 }
 
 .bubble {
-padding: 12px 18px;
-  border-radius: 20px;
-  max-width: 80%;
-  font-size: 0.9rem;
+padding: 10px 15px;
+  max-width: 70%;
+  position: relative;
+  font-size: 14px;
+  line-height: 1.4;
 }
 
 .bubble.me {
@@ -93,15 +94,18 @@ input {
 
 /* Color Rosa Fuerte (Estilo Slam) para el receptor */
 .row-other .bubble {
-background: #e91e63; /* Rosa fuerte */
-  color: white;
+background-color: #ffffff;
+  color: #333;
+  border-radius: 18px 18px 18px 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 /* Color Gris para tus mensajes */
 .row-me .bubble {
-background: #ffffff; /* Blanco */
+background: #d1e3ff; /* Blanco */
   color: #333;
-  border: 1px solid #ddd;
+  border-radius: 18px 18px 4px 18px;
+  justify-content: flex-end;
 }
 
 .chat-page {
@@ -227,4 +231,11 @@ width: 85px;
   font-size: 2rem;
   text-align: center;
   cursor: pointer;
+}
+.time {
+  display: block;
+  font-size: 10px;
+  color: #999;
+  margin-top: 4px;
+  text-align: right;
 }

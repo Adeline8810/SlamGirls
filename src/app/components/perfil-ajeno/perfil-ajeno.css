@@ -1,130 +1,106 @@
+/* Perfil Ajenos - Estilo Slam Corregido */
 .profile-container {
-  position: relative;
-  background: #111;
+  background: #000;
   min-height: 100vh;
   color: white;
-  padding-bottom: 100px;
-  overflow-x: hidden; /* Evita scroll horizontal */
+  padding-bottom: 80px; /* Espacio para el footer fijo */
+  position: relative;
 }
 
 .header-bg {
-  height: 200px; /* Reducido para que no se vea tan grande */
+  height: 180px;
+  width: 100%;
   background-size: cover;
   background-position: center;
-  filter: blur(15px) brightness(0.6);
+  filter: blur(8px) brightness(0.5);
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 0;
 }
 
-.profile-content {
+.avatar-section {
   position: relative;
-  z-index: 1;
+  margin-top: 100px; /* Sube o baja el avatar sobre el fondo */
   text-align: center;
-  padding: 20px;
-  margin-top: 120px; /* Ajuste para que baje de la cabecera */
+  z-index: 2;
 }
 
 .main-avatar {
-  width: 90px; /* Tamaño moderado */
-  height: 90px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  border: 3px solid #ff4081;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  margin: 0 auto 10px auto;
+  border: 4px solid #ff4081;
   object-fit: cover;
+  box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
+}
+
+.profile-id {
+  font-size: 0.8rem;
+  color: #aaa;
+  margin-top: 8px;
 }
 
 .tabs {
   display: flex;
-  justify-content: space-around;
-  background: #1a1a1a;
-  border-bottom: 1px solid #333;
-  margin: 20px -20px 10px -20px; /* Extender al borde */
+  overflow-x: auto;
+  background: #111;
+  margin-top: 20px;
+  border-bottom: 1px solid #222;
 }
 
 .tabs button {
+  flex: 1;
+  padding: 15px 5px;
   background: none;
   border: none;
-  color: #888;
-  padding: 12px 0;
-  font-weight: bold;
-  flex: 1;
+  color: #666;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
 .tabs button.active {
-  color: white;
-  border-bottom: 3px solid #ff4081;
+  color: #ff4081;
+  border-bottom: 2px solid #ff4081;
+  font-weight: bold;
 }
 
-.tab-content-container {
-  min-height: 300px;
-}
-
-.video-grid {
+.video-grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2px;
+  padding: 2px;
 }
 
 .video-card {
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  background: #000;
-  position: relative;
+  aspect-ratio: 9/16;
+  background: #222;
   overflow: hidden;
-  cursor: pointer;
 }
 
 .video-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  pointer-events: none; /* Permite que el click llegue a la video-card */
 }
 
 .action-footer {
-  display: flex;
-  gap: 10px;
-  padding: 15px;
   position: fixed;
   bottom: 0;
-  left: 0;
   width: 100%;
-  background: rgba(17, 17, 17, 0.95);
-  z-index: 100;
+  padding: 15px;
+  display: flex;
+  gap: 10px;
+  background: linear-gradient(transparent, #000);
   box-sizing: border-box;
 }
 
 .btn-parler, .btn-amitie {
   flex: 1;
-  padding: 10px;
-  border-radius: 20px;
+  border-radius: 30px;
+  padding: 12px;
   border: none;
   font-weight: bold;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
+  color: white;
 }
 
-.btn-parler { background: #333; color: white; }
-.btn-amitie { background: #ff4081; color: white; }
-
-
-.tabs button.active {
-  color: #e91e63; /* Color rosa del Slam */
-  border-bottom: 2px solid #e91e63;
-  font-weight: bold;
-}
-
-/* Estilo para que los videos se vean como una galería limpia */
-.video-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: #000;
-}
+.btn-parler { background: #333; }
+.btn-amitie { background: #ff4081; }

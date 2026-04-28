@@ -34,7 +34,7 @@
 
   <div class="chat-footer-slam">
     <div class="input-row">
-      <button class="tool-btn">✨ Truth</button>
+      <button class="truth-btn" (click)="enviarTruth()">✨ Truth</button>
       <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Write a message..." (keyup.enter)="enviarMensaje()">
       <button class="voice-btn">🎙️</button>
     </div>

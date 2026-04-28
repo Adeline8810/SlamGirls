@@ -1,60 +1,86 @@
-/* Perfil Ajenos - Estilo Slam Corregido */
+/* 1. Contenedor principal: Centra el perfil y limita el ancho en PC */
 .profile-container {
   background: #000;
   min-height: 100vh;
   color: white;
-  padding-bottom: 80px; /* Espacio para el footer fijo */
+  padding-bottom: 90px;
   position: relative;
+  max-width: 500px; /* Tamaño ideal tipo móvil */
+  margin: 0 auto;   /* Centra todo el bloque en la pantalla */
+  overflow-x: hidden;
+  font-family: sans-serif;
 }
 
+/* 2. Fondo borroso: Altura controlada para que no ocupe toda la pantalla */
 .header-bg {
-  height: 180px;
+  height: 200px;
   width: 100%;
   background-size: cover;
   background-position: center;
-  filter: blur(8px) brightness(0.5);
+  filter: blur(15px) brightness(0.4);
   position: absolute;
   top: 0;
+  left: 0;
+  z-index: 1;
 }
 
+/* 3. Sección del Avatar: Subido un poco para que pise el fondo */
 .avatar-section {
   position: relative;
-  margin-top: 100px; /* Sube o baja el avatar sobre el fondo */
+  padding-top: 80px;
   text-align: center;
   z-index: 2;
+}
+
+.avatar-ring {
+  display: inline-block;
+  padding: 3px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff4081, #ff85a2);
+  box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
 }
 
 .main-avatar {
   width: 110px;
   height: 110px;
   border-radius: 50%;
-  border: 4px solid #ff4081;
+  border: 3px solid #000;
   object-fit: cover;
-  box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
+  display: block;
 }
 
 .profile-id {
-  font-size: 0.8rem;
-  color: #aaa;
-  margin-top: 8px;
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
 }
 
+/* 4. Tabs (Menú de navegación): Con scroll lateral si no caben */
 .tabs {
   display: flex;
   overflow-x: auto;
-  background: #111;
-  margin-top: 20px;
+  background: #000;
+  margin-top: 25px;
   border-bottom: 1px solid #222;
+  scrollbar-width: none;
 }
+
+.tabs::-webkit-scrollbar { display: none; }
 
 .tabs button {
   flex: 1;
+  min-width: 80px;
   padding: 15px 5px;
   background: none;
   border: none;
   color: #666;
-  font-size: 0.85rem;
-  white-space: nowrap;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
 .tabs button.active {
@@ -63,6 +89,7 @@
   font-weight: bold;
 }
 
+/* 5. Grid de Videos: 3 columnas perfectas */
 .video-grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -72,8 +99,9 @@
 
 .video-card {
   aspect-ratio: 9/16;
-  background: #222;
+  background: #111;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .video-preview {
@@ -82,25 +110,39 @@
   object-fit: cover;
 }
 
+/* 6. Footer de acciones: Siempre abajo y del mismo ancho que el perfil */
 .action-footer {
   position: fixed;
   bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
+  max-width: 500px; /* Igual al contenedor principal */
   padding: 15px;
   display: flex;
   gap: 10px;
-  background: linear-gradient(transparent, #000);
+  background: linear-gradient(transparent, #000 40%);
   box-sizing: border-box;
+  z-index: 10;
 }
 
 .btn-parler, .btn-amitie {
   flex: 1;
   border-radius: 30px;
-  padding: 12px;
+  padding: 14px;
   border: none;
   font-weight: bold;
   color: white;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.btn-parler { background: #333; }
-.btn-amitie { background: #ff4081; }
+.btn-parler {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-amitie {
+  background: #ff4081;
+  box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+}

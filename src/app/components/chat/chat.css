@@ -1,61 +1,93 @@
-/* 1. Contenedor de mensajes (el área con scroll) */
-.messages-container {
+/* 1. Contenedor Principal del Chat */
+.chat-container {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Espacio pequeño entre burbujas */
-  padding: 20px;
-  background-color: #fff; /* Fondo blanco para que resalten las burbujas */
-  height: 450px;
+  height: 100vh;
+  background-color: #000; /* Fondo oscuro para que resalten las burbujas */
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* 2. ENCABEZADO (Aquí corregimos la foto gigante) */
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: #111;
+  border-bottom: 1px solid #222;
+  gap: 12px;
+}
+
+.chat-header img {
+  width: 45px;      /* Tamaño de la foto pequeño */
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ff4d7d;
+}
+
+.chat-header .info-user {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header h2 {
+  color: white;
+  font-size: 16px;
+  margin: 0;
+}
+
+.chat-header p {
+  color: #888;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* 3. ÁREA DE MENSAJES (Las burbujas que ya te gustan) */
+.messages-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 15px;
   overflow-y: auto;
-  scrollbar-width: none; /* Esconde scroll en Firefox */
+  background-color: #000;
 }
 
-.messages-container::-webkit-scrollbar {
-  display: none; /* Esconde scroll en Chrome/Safari */
-}
+/* Esconder scrollbar */
+.messages-container::-webkit-scrollbar { display: none; }
 
-/* 2. Filas de mensajes */
 .message-row {
   display: flex;
   width: 100%;
-  margin-bottom: 2px;
 }
 
-.row-me {
-  justify-content: flex-end; /* Mis mensajes a la derecha */
-}
+.row-me { justify-content: flex-end; }
+.row-other { justify-content: flex-start; }
 
-.row-other {
-  justify-content: flex-start; /* Sus mensajes a la izquierda */
-}
-
-/* 3. La Burbuja (Estilo Facebook Messenger) */
 .bubble {
-  max-width: 70%;
-  padding: 12px 16px;
-  font-size: 15px;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  max-width: 75%;
+  padding: 10px 15px;
+  font-size: 14px;
   position: relative;
-  transition: all 0.2s ease;
+  line-height: 1.4;
 }
 
-/* Burbuja MÍA (Rosa fuerte con degradado) */
+/* Burbujas Rosas (Tus mensajes) */
 .row-me .bubble {
-  background: linear-gradient(135deg, #ff4d7d 0%, #ff7597 100%);
+  background: linear-gradient(135deg, #ff4d7d, #ff7597);
   color: white;
-  /* Bordes: Arriba-Izq, Arriba-Der, Abajo-Der, Abajo-Izq */
-  border-radius: 20px 20px 4px 20px;
-  box-shadow: 0 4px 10px rgba(255, 77, 125, 0.2);
+  border-radius: 18px 18px 4px 18px;
+  box-shadow: 0 2px 8px rgba(255, 77, 125, 0.3);
 }
 
-/* Burbuja del OTRO (Gris suave rosado) */
+/* Burbujas Grises (Del otro) */
 .row-other .bubble {
-  background-color: #f1f0f0;
-  color: #1c1e21;
-  border-radius: 20px 20px 20px 4px;
+  background-color: #262626;
+  color: #efefef;
+  border-radius: 18px 18px 18px 4px;
 }
 
-/* 4. Hora del mensaje */
 .time {
   display: block;
   font-size: 10px;
@@ -63,21 +95,10 @@
   opacity: 0.6;
 }
 
-.row-me .time {
-  color: #ffffff;
-  text-align: right;
-}
-
-.row-other .time {
-  color: #65676b;
-  text-align: left;
-}
-
-/* 5. Estilo para el input (si usas estas clases en el HTML) */
+/* 4. INPUT DE TEXTO ABAJO */
 .input-area {
   padding: 15px;
-  background: white;
-  border-top: 1px solid #f0f2f5;
+  background: #111;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -85,17 +106,18 @@
 
 .input-area input {
   flex: 1;
+  background: #262626;
   border: none;
-  background: #f0f2f5;
-  padding: 10px 15px;
-  border-radius: 20px;
+  padding: 12px 15px;
+  border-radius: 25px;
+  color: white;
   outline: none;
 }
 
 .mic-btn {
-  color: #ff4d7d;
-  font-size: 20px;
   background: none;
   border: none;
+  color: #ff4d7d;
+  font-size: 20px;
   cursor: pointer;
 }

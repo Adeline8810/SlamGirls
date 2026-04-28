@@ -72,4 +72,6 @@ irAlChat() {
   this.router.navigate(['/chat', this.usuario().username]);
 }
 
+
+
 }

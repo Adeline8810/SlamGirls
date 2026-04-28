@@ -2,6 +2,9 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UsuarioService } from '../../../services/usuario.service';
+import { RespuestaService } from '../../../services/respuesta.service';
+
 
 @Component({
   selector: 'app-chat',
@@ -14,25 +17,36 @@ export class Chat implements OnInit {
   receptorNombre = '';
   nuevoMensaje = '';
   mensajes = signal<any[]>([]); // Aquí guardaremos la conversación
+  activeTab: string | null = null;
+  receptor = signal<any>({}); // Datos del perfil de la otra persona
+  videos: any[] = [];
 
-  constructor(private route: ActivatedRoute,private router: Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private usuarioService: UsuarioService,   // <--- Añadido
+    private respuestaService: RespuestaService )// <--- Añadido)
+     {}
 
-  ngOnInit() {
-    // Obtenemos el nombre de la persona con la que vamos a hablar desde la URL
-    this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
+ngOnInit() {
+  this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
-    // Simulación de mensajes iniciales
-    this.mensajes.set([
-      { texto: 'Hola!', soyYo: false, hora: '10:00 AM' },
-      { texto: '¿Cómo estás?', soyYo: false, hora: '10:01 AM' }
-    ]);
-  }
+  // Cambiamos el enfoque: buscamos por nombre y luego sus videos
+  this.usuarioService.getOne(this.receptorNombre as any).subscribe({
+    next: (user) => {
+      this.receptor.set(user); // Cargamos info (foto, bio)
 
+      // Con el ID del usuario ajeno, traemos sus fotos para el álbum
+      if (user.id) {
+        this.respuestaService.obtenerVideos(user.id).subscribe(res => {
+          this.videos = res;
+        });
+      }
+    },
+    error: (err) => console.error("Error al cargar perfil ajeno", err)
+  });
+}
 
-// ESTA ES LA FUNCIÓN QUE TE FALTA SEGÚN TU CAPTURA
-  volver() {
-    this.router.navigate(['/buscar-usuario']);
-  }
 
   enviarMensaje() {
     if (this.nuevoMensaje.trim()) {
@@ -46,6 +60,10 @@ export class Chat implements OnInit {
       this.mensajes.update(prev => [...prev, mensaje]);
       this.nuevoMensaje = ''; // Limpiamos el input
     }
+  }
+
+volver() {
+    this.router.navigate(['/buscar-usuario']);
   }
 
 

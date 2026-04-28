@@ -1,29 +1,61 @@
 <div class="chat-page">
-  <div class="chat-header">
-    <button class="back-btn" (click)="volver()">❮</button>
-    <div class="chat-user-info" *ngIf="receptorNombre">
-      <strong>{{ receptorNombre }}</strong>
+  <div class="chat-header-slam">
+    <div class="header-top">
+      <button class="back-btn" (click)="volver()">❮</button>
+      <div class="user-badge">
+        <img [src]="receptor().fotoUrl || 'assets/img/default.png'" class="mini-avatar-slam">
+        <span class="status-dot"></span>
+      </div>
+      <div class="user-info-slam">
+        <strong>{{ receptor().nombre }}</strong>
+        <p class="bio-slam">Bienvenido a mi escenario 🎤</p>
+      </div>
+    </div>
+
+    <div class="profile-album-mini">
+      <div class="album-scroll">
+        @for (video of videos; track video.id) {
+          <img [src]="video.thumbnail || 'assets/img/default-video.png'" class="album-item">
+        }
+      </div>
     </div>
   </div>
 
   <div class="messages-container" id="message-area">
     @for (msg of mensajes(); track msg) {
-    <div class="message-row" [ngClass]="{'row-me': msg.soyYo, 'row-other': !msg.soyYo}">
-      <div class="bubble">
-        {{ msg.texto }}
-        <span class="time">{{ msg.hora }}</span>
+      <div class="message-row" [ngClass]="{'row-me': msg.soyYo, 'row-other': !msg.soyYo}">
+        <div class="bubble">
+          {{ msg.texto }}
+          <span class="time">{{ msg.hora }}</span>
+        </div>
       </div>
-    </div>
-  }
+    }
   </div>
 
-  <div class="chat-footer">
-    <input
-      type="text"
-      class="chat-input"
-      [(ngModel)]="nuevoMensaje"
-      placeholder="Escribe un mensaje..."
-      (keyup.enter)="enviarMensaje()">
-    <button class="send-btn" (click)="enviarMensaje()">➤</button>
+  <div class="chat-footer-slam">
+    <div class="input-row">
+      <button class="tool-btn">✨ Truth</button>
+      <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Write a message..." (keyup.enter)="enviarMensaje()">
+      <button class="voice-btn">🎙️</button>
+    </div>
+
+    <div class="tools-bar">
+      <button class="tool-icon" (click)="activeTab = 'emoji'">😊</button>
+      <button class="tool-icon" (click)="activeTab = 'image'">🖼️</button>
+      <button class="tool-icon" (click)="activeTab = 'gift'">🎁</button>
+      <button class="tool-icon" (click)="activeTab = 'games'">🎮</button>
+      <button class="add-btn">⊕</button>
+    </div>
+
+    @if (activeTab === 'gift') {
+      <div class="drawer gifts-drawer">
+        <p>Selecciona un regalo para {{ receptor().nombre }}</p>
+        </div>
+    }
+    @if (activeTab === 'emoji') {
+      <div class="drawer emoji-drawer">
+        <span>😀</span><span>😂</span><span>😍</span>
+      </div>
+    }
   </div>
 </div>

@@ -37,7 +37,7 @@
     <div class="input-row">
       <button class="truth-btn" (click)="enviarTruth()">✨ Truth</button>
       <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Write a message..." (keyup.enter)="enviarMensaje()">
-      <button class="voice-btn">🎙️</button>
+      <button class="voice-btn" (click)="enviarMensaje()">🎙️</button>
     </div>
 
     <div class="tools-bar">

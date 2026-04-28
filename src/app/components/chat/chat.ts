@@ -95,26 +95,29 @@ this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
     this.router.navigate(['/buscar-usuario']);
   }
 
-  enviarMensaje() {
+ enviarMensaje() {
   const mensajeLimpio = this.nuevoMensaje.trim();
 
-  if (mensajeLimpio && this.receptor().id) {
+  // Validamos que haya texto y que sepamos quién es el receptor
+  if (mensajeLimpio && this.receptor()?.id) {
     const mensajeData = {
       texto: mensajeLimpio,
       emisorId: this.miUsuario.id,
       receptorId: this.receptor().id,
-      soyYo: true, // Lo marcamos para nosotros
+      soyYo: true,
       hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    // Enviar al servidor
+    // 1. Enviamos al servidor
     this.socketService.enviarMensaje(mensajeData);
 
-    // Actualizar pantalla local
+    // 2. Lo pintamos en nuestra pantalla inmediatamente
     this.mensajes.update(prev => [...prev, mensajeData]);
 
-    // Limpiar y scroll
+    // 3. ¡IMPORTANTE! Limpiamos el cajón de texto
     this.nuevoMensaje = '';
+
+    // 4. Bajamos el scroll
     this.hacerScroll();
   }
 }

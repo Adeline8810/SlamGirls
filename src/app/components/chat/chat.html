@@ -1,20 +1,29 @@
-<div class="chat-container">
+<div class="chat-page">
   <div class="chat-header">
-    <button (click)="volver()" style="background:none; border:none; color:white; margin-right:10px;">⬅</button>
-    <strong>{{ receptorNombre }}</strong>
+    <button class="back-btn" (click)="volver()">❮</button>
+    <div class="chat-user-info" *ngIf="receptorNombre">
+      <strong>{{ receptorNombre }}</strong>
+    </div>
   </div>
 
-  <div class="messages-list">
+  <div class="messages-container" id="message-area">
     @for (msg of mensajes(); track msg) {
-      <div class="bubble" [ngClass]="{'me': msg.soyYo, 'other': !msg.soyYo}">
+    <div class="message-row" [ngClass]="{'row-me': msg.soyYo, 'row-other': !msg.soyYo}">
+      <div class="bubble">
         {{ msg.texto }}
-        <small style="display:block; font-size:0.6rem; opacity:0.6; text-align:right;">{{ msg.hora }}</small>
+        <span class="time">{{ msg.hora }}</span>
       </div>
-    }
+    </div>
+  }
   </div>
 
-  <div class="chat-input-area">
-    <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Escribe un mensaje..." (keyup.enter)="enviarMensaje()">
-    <button class="btn-send" (click)="enviarMensaje()">➤</button>
+  <div class="chat-footer">
+    <input
+      type="text"
+      class="chat-input"
+      [(ngModel)]="nuevoMensaje"
+      placeholder="Escribe un mensaje..."
+      (keyup.enter)="enviarMensaje()">
+    <button class="send-btn" (click)="enviarMensaje()">➤</button>
   </div>
 </div>

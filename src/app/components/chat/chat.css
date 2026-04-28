@@ -1,3 +1,13 @@
+.messages-container {
+  flex: 1;
+  padding: 15px; /* Antes era más grande, ahora más compacto */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Esto separa los mensajes de forma elegante */
+}
+
+
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -24,10 +34,10 @@
 }
 
 .bubble {
-  max-width: 70%;
-  padding: 10px 15px;
-  border-radius: 18px;
-  font-size: 0.9rem;
+padding: 12px 18px; /* Más ajustado */
+  border-radius: 20px; /* Redondeado tipo Slam */
+  font-size: 0.95rem;
+  max-width: 80%; /* Para que no ocupe toda la pantalla */
   position: relative;
 }
 
@@ -71,4 +81,27 @@ input {
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.message-row {
+  display: flex;
+  width: 100%;
+}
+
+.row-me { justify-content: flex-end; } /* Tus mensajes a la derecha */
+.row-other { justify-content: flex-start; } /* Los de ella a la izquierda */
+
+/* Color Rosa Fuerte (Estilo Slam) para el receptor */
+.row-other .bubble {
+  background: #c20061;
+  color: white;
+  border-bottom-left-radius: 4px; /* Punta cuadrada abajo a la izquierda */
+}
+
+/* Color Gris para tus mensajes */
+.row-me .bubble {
+  background: #262626;
+  color: white;
+  border: 1px solid #333;
+  border-bottom-right-radius: 4px; /* Punta cuadrada abajo a la derecha */
 }

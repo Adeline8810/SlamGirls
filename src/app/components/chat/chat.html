@@ -37,7 +37,9 @@
     <div class="input-row">
       <button class="truth-btn" (click)="enviarTruth()">✨ Truth</button>
       <input type="text" [(ngModel)]="nuevoMensaje" placeholder="Write a message..." (keyup.enter)="enviarMensaje()">
-      <button class="voice-btn" (click)="enviarMensaje()">🎙️</button>
+    <button (click)="enviarMensaje(); $event.stopPropagation()" class="btn-micro" style="z-index: 10;">
+      <i class="fas fa-microphone"></i>
+    </button>
     </div>
 
     <div class="tools-bar">

@@ -89,31 +89,37 @@ export class Chat implements OnInit, OnDestroy {
           hora: m.hora,
           soyYo: m.emisorId === this.miUsuario.id
         }));
-        this.mensajes.set(mensajesFormateados); // .set porque es un signal
+
+        // IMPORTANTE: Actualizamos el signal con los datos de la base de datos
+        this.mensajes.set(mensajesFormateados);
         this.hacerScroll();
       },
       error: (err) => console.error('Error cargando historial', err)
-    });
+      });
   }
 
   enviarMensaje() {
-    const mensajeLimpio = this.nuevoMensaje.trim();
+    console.log("Intentando enviar mensaje...");
+  const mensajeLimpio = this.nuevoMensaje.trim();
 
-    if (mensajeLimpio && this.receptor()?.id) {
-      const mensajeData = {
-        texto: mensajeLimpio,
-        emisorId: this.miUsuario.id,
-        receptorId: this.receptor().id,
-        soyYo: true,
-        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
+  if (mensajeLimpio && this.receptor()?.id) {
+    const mensajeData = {
+      texto: mensajeLimpio,
+      emisorId: this.miUsuario.id,
+      receptorId: this.receptor().id,
+      soyYo: true, // Esto hace que se pinte a la derecha
+      hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
 
-      this.socketService.enviarMensaje(mensajeData);
-      this.mensajes.update(prev => [...prev, mensajeData]);
-      this.nuevoMensaje = '';
-      this.hacerScroll();
-    }
+    this.socketService.enviarMensaje(mensajeData);
+
+    // ESTO PINTA EL MENSAJE INSTANTÁNEAMENTE EN TU PANTALLA
+    this.mensajes.update(prev => [...prev, mensajeData]);
+
+    this.nuevoMensaje = '';
+    this.hacerScroll();
   }
+}
 
   // --- RESTO DE MÉTODOS ---
   agregarEmoji(emoji: string) {

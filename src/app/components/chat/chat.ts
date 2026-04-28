@@ -37,34 +37,47 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
+  // 1. Obtenemos el nombre de la URL
+  this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
-    // 1. Escuchar mensajes desde Spring Boot (STOMP)
-    this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
-      // Si el mensaje viene del usuario con el que hablo, lo muestro
-      if (msg.emisorId === this.receptor().id) {
-        this.mensajes.update(prev => [...prev, { ...msg, soyYo: false }]);
-        this.hacerScroll();
-      }
-    });
+  // 2. Escuchar mensajes (Socket)
+  this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
+    if (msg.emisorId === this.receptor().id) {
+      this.mensajes.update(prev => [...prev, { ...msg, soyYo: false }]);
+      this.hacerScroll();
+    }
+  });
 
-    // 2. Cargar datos del perfil del receptor
-    // Usamos 'as any' para evitar el error de tipo string vs number
-    this.usuarioService.getOne(this.receptorNombre as any).subscribe({
-      next: (user) => {
-        this.receptor.set(user);
-        if (user.id) {
-          this.respuestaService.obtenerVideos(user.id).subscribe(res => this.videos = res);
+  // 3. CARGAR DATOS DEL RECEPTOR (Usando el nombre, no el ID)
+  // Cambiamos getOne por obtenerDetallesUsuario
+  this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
+    next: (res: any) => {
+      // Manejo de respuesta para encontrar al usuario correcto
+      let encontrado = Array.isArray(res)
+        ? res.find((u: any) => u.username === this.receptorNombre)
+        : res;
+
+      if (encontrado) {
+        this.receptor.set(encontrado);
+
+        // --- AQUÍ CARGAMOS LOS VIDEOS ---
+        // Usamos directamente el servicio de respuesta como hacías antes
+        if (encontrado.id) {
+          this.respuestaService.obtenerVideos(encontrado.id).subscribe(resVideos => {
+            this.videos = resVideos;
+          });
         }
       }
-    });
+    },
+    error: (err) => console.error("Error al cargar datos del chat", err)
+  });
 
-    // Mensajes iniciales de prueba
-    this.mensajes.set([
-      { texto: '¡Hola!', soyYo: false, hora: '10:00 AM' },
-      { texto: '¿Cómo estás?', soyYo: false, hora: '10:01 AM' }
-    ]);
-  }
+  // Mensajes de prueba (opcional)
+  this.mensajes.set([
+    { texto: '¡Hola!', soyYo: false, hora: '10:00 AM' },
+    { texto: '¿Cómo estás?', soyYo: false, hora: '10:01 AM' }
+  ]);
+}
 
   ngOnDestroy() {
     // Cerramos la suscripción cuando el usuario sale del chat

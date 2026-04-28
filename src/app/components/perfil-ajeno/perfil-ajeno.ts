@@ -2,7 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { UsuarioService } from '../../../services/usuario.service'; // 👈 Tu servicio real
+import { UsuarioService } from '../../../services/usuario.service';
 import { RespuestaService } from '../../../services/respuesta.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
 
@@ -22,7 +22,7 @@ export class PerfilAjeno implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private usuarioService: UsuarioService, // 👈 Usamos tu UsuarioService
+    private usuarioService: UsuarioService,
     private respuestaService: RespuestaService,
     private sanitizer: DomSanitizer
   ) {}
@@ -30,13 +30,19 @@ export class PerfilAjeno implements OnInit {
   ngOnInit() {
     const username = this.route.snapshot.paramMap.get('username');
     if (username) {
-      // 👈 Usamos TU método: obtenerDetallesUsuario
       this.usuarioService.obtenerDetallesUsuario(username).subscribe({
         next: (res: any) => {
-          // Como este endpoint (/perfil/${username}) suele devolver el objeto directo:
-          if (res) {
-            this.usuario.set(res);
-            this.cargarVideos(res.id);
+          // CORRECCIÓN: Manejo robusto de la respuesta para evitar error .find
+          let encontrado = null;
+          if (Array.isArray(res)) {
+            encontrado = res.find((u: any) => u.username === username);
+          } else if (res && (res.username === username || res.id)) {
+            encontrado = res;
+          }
+
+          if (encontrado) {
+            this.usuario.set(encontrado);
+            this.cargarVideos(encontrado.id);
           }
         },
         error: (err) => console.error("Error al obtener perfil", err)
@@ -44,7 +50,6 @@ export class PerfilAjeno implements OnInit {
     }
   }
 
-  // Desbloquea el video para que no se vea blanco/bloqueado
   getSafeUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
@@ -56,7 +61,8 @@ export class PerfilAjeno implements OnInit {
   }
 
   verVideo(video: any) {
-    this.videoSeleccionado.set(video); // Esto abre el detalle para dar REGALOS
+    // Esto activa el componente app-video-detail
+    this.videoSeleccionado.set(video);
   }
 
   volver() { this.router.navigate(['/buscar-usuario']); }

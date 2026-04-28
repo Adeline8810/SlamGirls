@@ -29,7 +29,7 @@
           }
         </div>
       } @else {
-        <div class="info-pane">
+        <div style="padding: 40px; color: #888;">
           <p>Próximamente más información de {{ usuario().nombre }}</p>
         </div>
       }
@@ -43,5 +43,8 @@
 </div>
 
 @if (videoSeleccionado()) {
-  <app-video-detail [video]="videoSeleccionado()" (close)="videoSeleccionado.set(null)"></app-video-detail>
+  <app-video-detail
+    [video]="videoSeleccionado()"
+    (close)="videoSeleccionado.set(null)">
+  </app-video-detail>
 }

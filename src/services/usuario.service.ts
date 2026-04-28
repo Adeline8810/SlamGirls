@@ -57,4 +57,8 @@ obtenerDetallesUsuario(username: string): Observable<any> {
   return this.http.get(`https://backend-ruth-slam.onrender.com/api/usuarios/perfil/${username}`);
 }
 
+obtenerHistorial(emisorId: number, receptorId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.api}/chat/historial?emisorId=${emisorId}&receptorId=${receptorId}`);
+}
+
 }

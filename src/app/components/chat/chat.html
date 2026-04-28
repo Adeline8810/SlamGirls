@@ -53,10 +53,13 @@
         <p>Selecciona un regalo para {{ receptor().nombre }}</p>
         </div>
     }
-    @if (activeTab === 'emoji') {
-      <div class="drawer emoji-drawer">
-        <span>😀</span><span>😂</span><span>😍</span>
-      </div>
-    }
+ @if (activeTab === 'emoji') {
+  <div class="drawer emoji-drawer">
+    <span (click)="agregarEmoji('😀')" style="cursor:pointer">😀</span>
+    <span (click)="agregarEmoji('😂')" style="cursor:pointer">😂</span>
+    <span (click)="agregarEmoji('😍')" style="cursor:pointer">😍</span>
+    <span (click)="agregarEmoji('🔥')" style="cursor:pointer">🔥</span>
+  </div>
+}
   </div>
 </div>

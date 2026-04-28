@@ -17,13 +17,12 @@ import { Subscription } from 'rxjs';
 export class Chat implements OnInit, OnDestroy {
   receptorNombre = '';
   nuevoMensaje = '';
-  mensajes = signal<any[]>([]);
+  mensajes = signal<any[]>([]); // Usas signals, así que se actualiza con .set() o .update()
   activeTab: string | null = null;
   receptor = signal<any>({});
   videos: any[] = [];
   miUsuario: any;
 
-  // Guardamos la suscripción para evitar fugas de memoria
   private chatSubscription!: Subscription;
 
   constructor(
@@ -37,99 +36,94 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-  // 1. Obtenemos el nombre de la URL
-  this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
+    // 1. Nombre de la URL
+    this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
-  // 2. Escuchar mensajes (Socket)
-this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
-  console.log("Llegó mensaje del servidor:", msg);
+    // 2. Escuchar Socket
+    this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
+      if (msg.emisorId !== this.miUsuario.id) {
+        this.mensajes.update(prev => [
+          ...prev,
+          { ...msg, soyYo: false }
+        ]);
+        this.hacerScroll();
+      }
+    });
 
-  // REGLA: Si el emisor NO soy yo, entonces es del otro.
-  if (msg.emisorId !== this.miUsuario.id) {
-    this.mensajes.update(prev => [
-      ...prev,
-      { ...msg, soyYo: false, hora: msg.hora || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
-    ]);
-    this.hacerScroll();
-  }
-});
-  // 3. CARGAR DATOS DEL RECEPTOR (Usando el nombre, no el ID)
-  // Cambiamos getOne por obtenerDetallesUsuario
-  this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
-    next: (res: any) => {
-      // Manejo de respuesta para encontrar al usuario correcto
-      let encontrado = Array.isArray(res)
-        ? res.find((u: any) => u.username === this.receptorNombre)
-        : res;
+    // 3. Cargar datos del receptor y LUEGO el historial
+    this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
+      next: (res: any) => {
+        let encontrado = Array.isArray(res)
+          ? res.find((u: any) => u.username === this.receptorNombre)
+          : res;
 
-      if (encontrado) {
-        this.receptor.set(encontrado);
+        if (encontrado) {
+          this.receptor.set(encontrado);
 
-        // --- AQUÍ CARGAMOS LOS VIDEOS ---
-        // Usamos directamente el servicio de respuesta como hacías antes
-        if (encontrado.id) {
+          // --- AQUÍ CARGAMOS LOS VIDEOS ---
           this.respuestaService.obtenerVideos(encontrado.id).subscribe(resVideos => {
             this.videos = resVideos;
           });
+
+          // --- IMPORTANTE: CARGAR HISTORIAL AQUÍ (Ya tenemos el ID del receptor) ---
+          this.cargarHistorial();
         }
-      }
-    },
-    error: (err) => console.error("Error al cargar datos del chat", err)
-  });
+      },
+      error: (err) => console.error("Error al cargar datos del chat", err)
+    });
+  }
 
-  // Mensajes de prueba (opcional)
-  this.mensajes.set([
-    { texto: '¡Hola!', soyYo: false, hora: '10:00 AM' },
-    { texto: '¿Cómo estás?', soyYo: false, hora: '10:01 AM' }
-  ]);
-}
+  cargarHistorial() {
+    // Usamos tus variables correctas: miUsuario y receptor()
+    const emisorId = this.miUsuario.id;
+    const receptorId = this.receptor().id;
 
-  ngOnDestroy() {
-    // Cerramos la suscripción cuando el usuario sale del chat
-    if (this.chatSubscription) {
-      this.chatSubscription.unsubscribe();
+    if (!emisorId || !receptorId) return;
+
+    this.usuarioService.obtenerHistorial(emisorId, receptorId).subscribe({
+      next: (historial) => {
+        const mensajesFormateados = historial.map(m => ({
+          texto: m.texto,
+          emisorId: m.emisorId,
+          receptorId: m.receptorId,
+          hora: m.hora,
+          soyYo: m.emisorId === this.miUsuario.id
+        }));
+        this.mensajes.set(mensajesFormateados); // .set porque es un signal
+        this.hacerScroll();
+      },
+      error: (err) => console.error('Error cargando historial', err)
+    });
+  }
+
+  enviarMensaje() {
+    const mensajeLimpio = this.nuevoMensaje.trim();
+
+    if (mensajeLimpio && this.receptor()?.id) {
+      const mensajeData = {
+        texto: mensajeLimpio,
+        emisorId: this.miUsuario.id,
+        receptorId: this.receptor().id,
+        soyYo: true,
+        hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      this.socketService.enviarMensaje(mensajeData);
+      this.mensajes.update(prev => [...prev, mensajeData]);
+      this.nuevoMensaje = '';
+      this.hacerScroll();
     }
   }
 
-  volver() {
-    this.router.navigate(['/buscar-usuario']);
+  // --- RESTO DE MÉTODOS ---
+  agregarEmoji(emoji: string) {
+    this.nuevoMensaje += emoji;
+    this.activeTab = null;
   }
-
- enviarMensaje() {
-  const mensajeLimpio = this.nuevoMensaje.trim();
-
-  // Validamos que haya texto y que sepamos quién es el receptor
-  if (mensajeLimpio && this.receptor()?.id) {
-    const mensajeData = {
-      texto: mensajeLimpio,
-      emisorId: this.miUsuario.id,
-      receptorId: this.receptor().id,
-      soyYo: true,
-      hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-    };
-
-    // 1. Enviamos al servidor
-    this.socketService.enviarMensaje(mensajeData);
-
-    // 2. Lo pintamos en nuestra pantalla inmediatamente
-    this.mensajes.update(prev => [...prev, mensajeData]);
-
-    // 3. ¡IMPORTANTE! Limpiamos el cajón de texto
-    this.nuevoMensaje = '';
-
-    // 4. Bajamos el scroll
-    this.hacerScroll();
-  }
-}
 
   enviarTruth() {
-    const preguntas = [
-      "¿Cuáles son tus pasatiempos?",
-      "¿Eres mujer o hombre?",
-      "¿Qué música te gusta?"
-    ];
-    const azar = preguntas[Math.floor(Math.random() * preguntas.length)];
-    this.nuevoMensaje = azar;
+    const preguntas = ["¿Cuáles son tus pasatiempos?", "¿Eres mujer o hombre?", "¿Qué música te gusta?"];
+    this.nuevoMensaje = preguntas[Math.floor(Math.random() * preguntas.length)];
     this.enviarMensaje();
   }
 
@@ -138,5 +132,13 @@ this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
       const objDiv = document.getElementById("message-area");
       if (objDiv) objDiv.scrollTop = objDiv.scrollHeight;
     }, 100);
+  }
+
+  ngOnDestroy() {
+    if (this.chatSubscription) this.chatSubscription.unsubscribe();
+  }
+
+  volver() {
+    this.router.navigate(['/buscar-usuario']);
   }
 }

@@ -66,4 +66,10 @@ export class PerfilAjeno implements OnInit {
   }
 
   volver() { this.router.navigate(['/buscar-usuario']); }
+
+
+irAlChat() {
+  this.router.navigate(['/chat', this.usuario().username]);
+}
+
 }

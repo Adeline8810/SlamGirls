@@ -1,0 +1,74 @@
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #111;
+  color: white;
+}
+
+.chat-header {
+  padding: 15px;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+
+.messages-list {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  position: relative;
+}
+
+.bubble.me {
+  align-self: flex-end;
+  background: #ff4081; /* Rosa como tus botones */
+  color: white;
+  border-bottom-right-radius: 2px;
+}
+
+.bubble.other {
+  align-self: flex-start;
+  background: #333;
+  color: white;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-input-area {
+  padding: 15px;
+  background: #1a1a1a;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+input {
+  flex: 1;
+  background: #222;
+  border: 1px solid #444;
+  padding: 10px 15px;
+  border-radius: 25px;
+  color: white;
+  outline: none;
+}
+
+.btn-send {
+  background: #ff4081;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}

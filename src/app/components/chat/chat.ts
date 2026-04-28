@@ -41,13 +41,18 @@ export class Chat implements OnInit, OnDestroy {
   this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
   // 2. Escuchar mensajes (Socket)
-  this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
-    if (msg.emisorId === this.receptor().id) {
-      this.mensajes.update(prev => [...prev, { ...msg, soyYo: false }]);
-      this.hacerScroll();
-    }
-  });
+this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
+  console.log("Llegó mensaje del servidor:", msg);
 
+  // REGLA: Si el emisor NO soy yo, entonces es del otro.
+  if (msg.emisorId !== this.miUsuario.id) {
+    this.mensajes.update(prev => [
+      ...prev,
+      { ...msg, soyYo: false, hora: msg.hora || new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+    ]);
+    this.hacerScroll();
+  }
+});
   // 3. CARGAR DATOS DEL RECEPTOR (Usando el nombre, no el ID)
   // Cambiamos getOne por obtenerDetallesUsuario
   this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({

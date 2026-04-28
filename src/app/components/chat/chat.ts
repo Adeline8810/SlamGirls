@@ -40,26 +40,21 @@ export class Chat implements OnInit, OnDestroy {
   this.receptorNombre = this.route.snapshot.paramMap.get('username') || 'Usuario';
 
   // 2. Escuchar Socket
-  this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
-    // ESTOS LOGS SON PARA VER POR QUÉ NO SALE EL MENSAJE DEL OTRO
-    console.log("--- NUEVO MENSAJE RECIBIDO ---");
-    console.log("Contenido:", msg.texto);
-    console.log("¿Quién lo envía (emisorId)?:", msg.emisorId);
-    console.log("¿Quién soy yo (miUsuario.id)?:", this.miUsuario.id);
-    console.log("¿Con quién estoy hablando (receptor id)?:", this.receptor()?.id);
+ this.chatSubscription = this.socketService.mensajeSubject.subscribe((msg) => {
+  console.log("Llegó mensaje:", msg);
 
-    // Si el emisor NO soy yo, lo agrego a la pantalla
-    if (msg.emisorId !== this.miUsuario.id) {
-      console.log("✅ El mensaje es del otro. Agregando a la lista...");
-      this.mensajes.update(prev => [
-        ...prev,
-        { ...msg, soyYo: false }
-      ]);
-      this.hacerScroll();
-    } else {
-      console.log("ℹ️ El mensaje lo envié yo (o tiene mi ID), por eso el socket lo ignora aquí.");
-    }
-  });
+  // USAMOS != (uno solo) o Number() para que no importe si es string o number
+  if (Number(msg.emisorId) !== Number(this.miUsuario.id)) {
+    console.log("✅ Es del otro, lo añado");
+    this.mensajes.update(prev => [
+      ...prev,
+      { ...msg, soyYo: false }
+    ]);
+    this.hacerScroll();
+  } else {
+    console.log("ℹ️ Es mío, lo ignoro (ya lo pintó enviarMensaje)");
+  }
+});
 
   // 3. CARGAR RECEPTOR (Busca los datos de la persona con la que hablas)
   this.usuarioService.obtenerDetallesUsuario(this.receptorNombre).subscribe({
@@ -98,14 +93,13 @@ export class Chat implements OnInit, OnDestroy {
   this.usuarioService.obtenerHistorial(emisorId, receptorId).subscribe({
     next: (historial) => {
       console.log("Historial recibido de DB:", historial); // Para que veas si vienen los del otro
-
       const mensajesFormateados = historial.map(m => ({
         texto: m.texto,
         emisorId: m.emisorId,
         receptorId: m.receptorId,
         hora: m.hora,
-        // Usamos == para evitar problemas de tipo (string vs number)
-        soyYo: m.emisorId == this.miUsuario.id
+        // Comparación segura convirtiendo ambos a número
+        soyYo: Number(m.emisorId) === Number(this.miUsuario.id)
       }));
 
       this.mensajes.set(mensajesFormateados);

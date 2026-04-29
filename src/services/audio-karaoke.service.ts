@@ -72,4 +72,8 @@ async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
   });
 }
 
+obtenerMisCantos(usuarioId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.api}/usuario/${usuarioId}`);
+}
+
 }

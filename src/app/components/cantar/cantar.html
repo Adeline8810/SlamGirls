@@ -41,4 +41,26 @@
     <p>Subiendo tu obra de arte a la nube...</p>
   </div>
 
+  <!-- ========================================== -->
+  <!-- NUEVA SECCIÓN: MIS GRABACIONES (AQUÍ VA)   -->
+  <!-- ========================================== -->
+  <hr class="divisor-palo-rosa" *ngIf="listaDeCantos.length > 0">
+
+  <div class="mis-covers-seccion" *ngIf="listaDeCantos.length > 0">
+    <h3 class="titulo-galeria">🎙️ Mis Covers Guardados</h3>
+
+    <div class="grid-covers">
+      <div *ngFor="let canto of listaDeCantos" class="card-audio">
+        <div class="card-info">
+          <span class="id-grabacion">#{{canto.id}}</span>
+          <small class="fecha-label">Reciente</small>
+        </div>
+
+        <audio controls class="reproductor-palo-rosa">
+          <source [src]="canto.urlAudio" type="audio/wav">
+        </audio>
+      </div>
+    </div>
+  </div>
+
 </div>

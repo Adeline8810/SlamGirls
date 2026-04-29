@@ -14,6 +14,7 @@ export class Cantar {
   cargandoSubida: boolean = false;
   letraActual: string = 'Presiona comenzar para iniciar...';
   letraSiguiente: string = '';
+  listaDeCantos: any[] = [];
 
 
   constructor(private audioService: AudioKaraokeService) {}
@@ -30,24 +31,50 @@ async iniciar() {
     }
   }
 
-  async finalizarCanto() {
-    try {
-     // const idUsuario = Number(localStorage.getItem('usuarioId'));
-     const idUsuario = 1;
-      const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+ async finalizarCanto() {
+  this.cargandoSubida = true;
 
-      peticion.subscribe({
-        next: (res) => {
-          alert("¡Guardado en tu perfil!");
-          this.grabando = false; // Volvemos al estado "Comenzar" tras el éxito
-        },
-        error: (err) => {
-          console.error(err);
-          this.grabando = false;
-        }
-      });
-    } catch (error) {
-      this.grabando = false;
+  try {
+    // CAMBIA ESTO:
+    // const idUsuario = 1;
+
+    // POR ESTO (Recupera el ID real del que inició sesión):
+    const idUsuario = Number(localStorage.getItem('usuarioId'));
+
+    if (!idUsuario) {
+      alert("No se encontró el ID del usuario. Por favor, inicia sesión de nuevo.");
+      this.cargandoSubida = false;
+      return;
     }
+
+    const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+
+    peticion.subscribe({
+      next: (res) => {
+      this.grabando = false;
+      this.cargandoSubida = false;
+      alert("¡Guardado en tu perfil!");
+
+      // AÑADE ESTA LÍNEA AQUÍ:
+      this.cargarMisCovers();
+    },
+      error: (err) => {
+        this.cargandoSubida = false;
+        this.grabando = false;
+        console.error("Error al subir:", err);
+      }
+    });
+  } catch (error) {
+    this.cargandoSubida = false;
+    this.grabando = false;
+    console.error("Error en el proceso:", error);
   }
+}
+
+cargarMisCovers() {
+  const idUsuario = 1;
+  this.audioService.obtenerMisCantos(idUsuario).subscribe(data => {
+    this.listaDeCantos = data;
+  });
+}
 }

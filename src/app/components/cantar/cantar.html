@@ -1,24 +1,43 @@
-<div class="escenario-container">
+<div class="karaoke-container">
 
-  <div class="header-canto">
-    <button class="back-btn">❮</button>
-    <h2>En el Escenario 🎤</h2>
+  <!-- 1. Cabecera con instrucciones o título -->
+  <div class="cantar-header">
+    <h2>🎤 Sala de Grabación</h2>
+    <p *ngIf="!grabando">Prepárate, ajusta tus audífonos y pulsa Comenzar.</p>
+    <p *ngIf="grabando" class="recording-status">🔴 Grabando con efecto Palo Rosa...</p>
   </div>
 
-  <div class="letras-display">
-    <p class="animacion-letra">{{ fraseActual() }}</p>
+  <!-- 2. Área de Letras (Donde ocurre la magia visual) -->
+  <div class="letras-box">
+    <!-- Aquí va tu lógica de letras que ya tienes implementada -->
+    <p class="letra-actual">{{ letraActual }}</p>
+    <p class="letra-siguiente">{{ letraSiguiente }}</p>
   </div>
 
+  <!-- 3. Panel de Control (Botones) -->
   <div class="controles">
-    @if (!grabando()) {
-      <button class="btn-start" (click)='empezarCantar()'>▶ Comenzar</button>
-    } @else {
-      <button class="btn-stop" (click)='finalizarCanto()'>⏹ Finalizar y Guardar</button>
-    }
+
+    <!-- Botón INICIAR: Solo se ve si NO estamos grabando -->
+    <button *ngIf="!grabando"
+            class="btn-comenzar"
+            (click)="iniciar()">
+      ▶️ Comenzar a Cantar
+    </button>
+
+    <!-- Botón FINALIZAR: Solo se ve si ESTAMOS grabando -->
+    <button *ngIf="grabando"
+            class="btn-finalizar"
+            (click)="finalizarCanto()">
+      ⏹️ Finalizar y Guardar
+    </button>
+
   </div>
 
-  <div class="progress-bar">
-     <div class="fill" [style.width.%]="(tiempoActual / 20) * 100"></div>
+  <!-- 4. Overlay de carga (Opcional pero recomendado) -->
+  <!-- Esto evita que el usuario toque cosas mientras el audio se sube a Cloudinary -->
+  <div class="loading-overlay" *ngIf="cargandoSubida">
+    <div class="spinner"></div>
+    <p>Subiendo tu obra de arte a la nube...</p>
   </div>
 
 </div>

@@ -82,3 +82,34 @@
   background: linear-gradient(90deg, #d8a7b1, #f4dada);
   transition: width 1s linear;
 }
+
+.btn-comenzar {
+  background-color: #d8a7b1; /* Tu color Palo Rosa */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(216, 167, 177, 0.4);
+}
+
+.btn-finalizar {
+  background-color: #ff4d4d; /* Rojo para detener */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.recording-status {
+  color: #ff4d4d;
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.5; }
+}

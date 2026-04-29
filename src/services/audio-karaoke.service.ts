@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import RecordRTC from 'recordrtc';
+import { HttpClient } from '@angular/common/http'; // <--- Importante
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AudioKaraokeService {
+
+  constructor(private http: HttpClient) { }
+
   private mediaRecorder: any;
   private audioContext!: AudioContext;
   private stream!: MediaStream;
+   private api = 'https://backend-ruth-slam.onrender.com//api/cantos';
 
   async iniciarGrabacionConEfecto() {
     // 1. Pedir permiso al micrófono
@@ -44,13 +50,26 @@ export class AudioKaraokeService {
     this.mediaRecorder.startRecording();
   }
 
-  async detenerYObtenerAudio(): Promise<Blob> {
+
+
+async detenerYEnviarAlServidor(): Promise<Observable<any>> {
     return new Promise((resolve) => {
       this.mediaRecorder.stopRecording(() => {
-        const blob = this.mediaRecorder.getBlob();
-        this.stream.getTracks().forEach(track => track.stop()); // Apagar micro
-        resolve(blob);
+        const audioBlob = this.mediaRecorder.getBlob();
+
+        // Cerramos el micro para que se apague la luz de grabación
+        if (this.audioContext) this.audioContext.close();
+
+        // Preparamos el FormData (el sobre para Java)
+        const formData = new FormData();
+        formData.append('archivo', audioBlob, 'mi_voz_karaoke.wav');
+
+        // Retornamos el "disparo" hacia el backend
+        resolve(this.http.post(`${this.api}/subir`, formData));
       });
     });
-  }
+
+
+}
+
 }

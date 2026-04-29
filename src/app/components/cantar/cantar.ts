@@ -15,6 +15,7 @@ export class Cantar {
   letraActual: string = 'Presiona comenzar para iniciar...';
   letraSiguiente: string = '';
 
+
   constructor(private audioService: AudioKaraokeService) {}
 
   // 1. Iniciar la magia
@@ -31,7 +32,8 @@ async iniciar() {
 
   async finalizarCanto() {
     try {
-      const idUsuario = Number(localStorage.getItem('usuarioId'));
+     // const idUsuario = Number(localStorage.getItem('usuarioId'));
+     const idUsuario = 1;
       const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
 
       peticion.subscribe({

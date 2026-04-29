@@ -72,9 +72,18 @@ async iniciar() {
 }
 
 cargarMisCovers() {
-  const idUsuario = 1;
-  this.audioService.obtenerMisCantos(idUsuario).subscribe(data => {
-    this.listaDeCantos = data;
-  });
+  // RECUPERA EL ID REAL DEL STORAGE (Ya no usamos el 1 fijo)
+  const idUsuario = Number(localStorage.getItem('usuarioId'));
+
+  if (idUsuario) {
+    this.audioService.obtenerMisCantos(idUsuario).subscribe({
+      next: (data) => {
+        this.listaDeCantos = data;
+      },
+      error: (err) => console.error("Error al cargar covers:", err)
+    });
+  } else {
+    console.warn("No se encontró usuarioId en el storage.");
+  }
 }
 }

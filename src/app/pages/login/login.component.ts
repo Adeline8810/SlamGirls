@@ -34,14 +34,20 @@ export class LoginComponent {
     const password = this.form.value.password || '';
 
     this.usuarioService.login(username, password).subscribe({
-      next: (u) => {
-        localStorage.setItem('usuario', JSON.stringify(u));
+     next: (u) => {
+  // Guarda el objeto completo (esto ya lo tenías)
+  localStorage.setItem('usuario', JSON.stringify(u));
 
-        if (u?.username === 'ruthadeline')
-          this.router.navigate(['/admin']);
-        else
-          this.router.navigate(['/slam']);
-      },
+  // AÑADE ESTA LÍNEA: Guarda solo el ID para usarlo en las grabaciones
+  if (u && u.id) {
+    localStorage.setItem('usuarioId', u.id.toString());
+  }
+
+  if (u?.username === 'ruthadeline')
+    this.router.navigate(['/admin']);
+  else
+    this.router.navigate(['/slam']);
+},
       error: () => {
         alert('Usuario o contraseña incorrectos');
       }

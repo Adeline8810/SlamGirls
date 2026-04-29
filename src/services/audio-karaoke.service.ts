@@ -76,4 +76,15 @@ obtenerMisCantos(usuarioId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.api}/usuario/${usuarioId}`);
 }
 
+detenerFlujoAudio() {
+  // 1. Cerramos el contexto de audio (esto quita el eco/reverb de inmediato)
+  if (this.audioContext) {
+    this.audioContext.close();
+  }
+  // 2. Apagamos físicamente el micrófono (la luz roja del navegador se quita)
+  if (this.stream) {
+    this.stream.getTracks().forEach(track => track.stop());
+  }
+}
+
 }

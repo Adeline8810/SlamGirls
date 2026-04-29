@@ -35,10 +35,6 @@ async iniciar() {
   this.cargandoSubida = true;
 
   try {
-    // CAMBIA ESTO:
-    // const idUsuario = 1;
-
-    // POR ESTO (Recupera el ID real del que inició sesión):
     const idUsuario = Number(localStorage.getItem('usuarioId'));
 
     if (!idUsuario) {
@@ -49,15 +45,18 @@ async iniciar() {
 
     const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
 
+    // =========================================================
+    // NUEVO: Detenemos el eco y el micro justo después de obtener la petición
+    this.audioService.detenerFlujoAudio();
+    // =========================================================
+
     peticion.subscribe({
       next: (res) => {
-      this.grabando = false;
-      this.cargandoSubida = false;
-      alert("¡Guardado en tu perfil!");
-
-      // AÑADE ESTA LÍNEA AQUÍ:
-      this.cargarMisCovers();
-    },
+        this.grabando = false;
+        this.cargandoSubida = false;
+        alert("¡Guardado en tu perfil!");
+        this.cargarMisCovers();
+      },
       error: (err) => {
         this.cargandoSubida = false;
         this.grabando = false;

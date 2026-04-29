@@ -113,3 +113,22 @@
 @keyframes blink {
   50% { opacity: 0.5; }
 }
+
+.controles {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  min-height: 80px; /* Para que siempre tenga espacio */
+}
+
+.btn-comenzar {
+  background-color: #d8a7b1 !important; /* Rosa palo forzado */
+  color: white !important;
+  padding: 15px 40px;
+  border-radius: 30px;
+  border: 2px solid white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: block !important; /* Aseguramos que se comporte como bloque */
+  z-index: 100;
+}

@@ -18,11 +18,12 @@
   <div class="controles">
 
     <!-- Botón INICIAR: Solo se ve si NO estamos grabando -->
-    <button *ngIf="!grabando"
-            class="btn-comenzar"
-            (click)="iniciar()">
+  <div class="controles">
+    <!-- Quitamos el ngIf momentáneamente para probar -->
+    <button class="btn-comenzar" (click)="iniciar()">
       ▶️ Comenzar a Cantar
     </button>
+</div>
 
     <!-- Botón FINALIZAR: Solo se ve si ESTAMOS grabando -->
     <button *ngIf="grabando"

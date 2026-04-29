@@ -11,7 +11,7 @@ export class AudioKaraokeService {
   private mediaRecorder: any;
   private audioContext!: AudioContext;
   private stream!: MediaStream;
-   private api = 'https://backend-ruth-slam.onrender.com//api/cantos';
+   private api = 'https://backend-ruth-slam.onrender.com/api/cantos';
 
   async iniciarGrabacionConEfecto() {
     // 1. Pedir permiso al micrófono
@@ -53,14 +53,20 @@ export class AudioKaraokeService {
 
 
 async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    // Validamos que el grabador exista y esté grabando
+    if (!this.mediaRecorder || this.mediaRecorder.getState() === 'stopped') {
+      console.warn("El grabador ya estaba detenido.");
+      return;
+    }
+
     this.mediaRecorder.stopRecording(() => {
       const audioBlob = this.mediaRecorder.getBlob();
-
       const formData = new FormData();
       formData.append('archivo', audioBlob, 'grabacion.wav');
-      formData.append('usuarioId', usuarioId.toString()); // <-- Enviamos el ID
+      formData.append('usuarioId', usuarioId.toString());
 
+      // Importante: Al usar 'resolve', devolvemos el POST listo para suscribirse
       resolve(this.http.post(`${this.api}/subir`, formData));
     });
   });

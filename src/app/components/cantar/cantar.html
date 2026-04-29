@@ -1,0 +1,24 @@
+<div class="escenario-container">
+
+  <div class="header-canto">
+    <button class="back-btn">❮</button>
+    <h2>En el Escenario 🎤</h2>
+  </div>
+
+  <div class="letras-display">
+    <p class="animacion-letra">{{ fraseActual() }}</p>
+  </div>
+
+  <div class="controles">
+    @if (!grabando()) {
+      <button class="btn-start" (click)='empezarCantar()'>▶ Comenzar</button>
+    } @else {
+      <button class="btn-stop" (click)='finalizarCanto()'>⏹ Finalizar y Guardar</button>
+    }
+  </div>
+
+  <div class="progress-bar">
+     <div class="fill" [style.width.%]="(tiempoActual / 20) * 100"></div>
+  </div>
+
+</div>

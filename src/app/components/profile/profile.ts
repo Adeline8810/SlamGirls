@@ -3,6 +3,7 @@ import { RespuestaService } from '../../../services/respuesta.service'; // Ajust
 import { UsuarioService } from '../../../services/usuario.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 interface Video {
   id: number;
   titulo: string;
@@ -15,7 +16,7 @@ interface Video {
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
   standalone: true, // <--- ESTO ES IMPORTANTE EN ANGULAR 20
-  imports: [VideoDetail, CommonModule] // <--- Ahora ya no debería estar en rojo
+  imports: [VideoDetail, CommonModule,RouterModule] // <--- Ahora ya no debería estar en rojo
 })
 export class Profile implements OnInit {
   selectedTab: string = 'videos'; // Por defecto en videos como pediste

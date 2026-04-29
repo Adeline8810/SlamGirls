@@ -7,6 +7,8 @@ import { Recargar } from './components/recargar/recargar';
 import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
 import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
+import { Cantar } from './components/cantar/cantar';
+
 
 
 const routes: Routes = [
@@ -61,12 +63,15 @@ const routes: Routes = [
 
 { path: 'perfil/:username', component: PerfilAjeno },
 
-
+{ path: 'cantar', component: Cantar },
 
   { path: '**', redirectTo: '/admin' }
 
 
 ,
+
+
+
 
 ];
 

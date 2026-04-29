@@ -11,6 +11,7 @@ import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
 import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Chat } from './components/chat/chat';
+import { Cantar } from './components/cantar/cantar';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'profile', component: Profile },
   { path: 'perfil/:username', component: PerfilAjeno },
   { path: 'chat/:username', component: Chat },
+  { path: 'cantar', component: Cantar },
   { path: '**', redirectTo: '' }
 ];

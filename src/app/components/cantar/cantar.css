@@ -1,0 +1,84 @@
+/* Contenedor principal estilo pantalla completa */
+.escenario-container {
+  height: 100vh;
+  background-color: #1a1a1a; /* Fondo casi negro para que resalte el palo rosa */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 20px;
+  color: #d8a7b1; /* Color Palo Rosa suave */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Cabecera */
+.header-canto h2 {
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+}
+
+/* Área de la letra: El corazón del karaoke */
+.letras-display {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+}
+
+.animacion-letra {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #f4dada; /* Un rosa aún más clarito para la letra */
+  text-shadow: 0 0 15px rgba(216, 167, 177, 0.4);
+  transition: all 0.5s ease;
+  max-width: 80%;
+}
+
+/* Botones circulares y suaves */
+.controles {
+  margin-bottom: 30px;
+}
+
+.btn-start, .btn-stop {
+  padding: 15px 40px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s active;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-start {
+  background-color: #d8a7b1; /* Palo rosa */
+  color: #4a3439;
+}
+
+.btn-stop {
+  background-color: #b38b93; /* Un tono más oscuro para el stop */
+  color: white;
+}
+
+.btn-start:active, .btn-stop:active {
+  transform: scale(0.95);
+}
+
+/* Barra de progreso sutil */
+.progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d8a7b1, #f4dada);
+  transition: width 1s linear;
+}

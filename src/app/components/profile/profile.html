@@ -51,6 +51,9 @@
           <div class="video-card" (click)="verVideo(video)">
             <div class="thumb-wrapper">
               <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
+              <button class="btn-cantar-overlay" [routerLink]="['/cantar']" (click)="$event.stopPropagation()">
+              🎤 Cantar
+            </button>
             </div>
             <p class="video-title">{{ video.titulo }}</p>
           </div>

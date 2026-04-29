@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component,ViewChild,ElementRef, OnInit } from '@angular/core';
 import { AudioKaraokeService } from '../../../services/audio-karaoke.service';
 import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-cantar',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './cantar.html',
   styleUrls: ['./cantar.css']
 })
 export class Cantar {
+  @ViewChild('pistaAudio') pista!: ElementRef<HTMLAudioElement>;
   grabando: boolean = false;
   cargandoSubida: boolean = false;
   letraActual: string = 'Presiona comenzar para iniciar...';
@@ -19,70 +21,70 @@ export class Cantar {
 
   constructor(private audioService: AudioKaraokeService) {}
 
-  // 1. Iniciar la magia
+  ngOnInit() {
+    this.cargarMisCovers();
+  }
+
 async iniciar() {
     try {
-      this.grabando = true; // El botón debería cambiar a "Finalizar" de inmediato
-      await this.audioService.iniciarGrabacionConEfecto();
+
+      this.grabando = true;
+      // Llamamos al nuevo método que mezcla Voz + Eco + Música
+      await this.audioService.iniciarGrabacionConPista(this.pista.nativeElement);
     } catch (error) {
       console.error("Error al iniciar:", error);
-      this.grabando = false; // Si falla el micro, volvemos al estado inicial
-      alert("No se pudo acceder al micrófono.");
+      this.grabando = false;
+      alert("No se pudo acceder al micrófono o a la pista de audio.");
     }
   }
 
- async finalizarCanto() {
-  this.cargandoSubida = true;
+ // 4. FINALIZAR: Detenemos la música y el eco
+  async finalizarCanto() {
+    this.cargandoSubida = true;
+    this.grabando = false; // Cambiamos el estado visual de inmediato
 
-  try {
-    const idUsuario = Number(localStorage.getItem('usuarioId'));
-
-    if (!idUsuario) {
-      alert("No se encontró el ID del usuario. Por favor, inicia sesión de nuevo.");
-      this.cargandoSubida = false;
-      return;
+    // Detener la música físicamente
+    if (this.pista) {
+      this.pista.nativeElement.pause();
+      this.pista.nativeElement.currentTime = 0;
     }
 
-    const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
-
-    // =========================================================
-    // NUEVO: Detenemos el eco y el micro justo después de obtener la petición
+    // Detener eco y micrófono
     this.audioService.detenerFlujoAudio();
-    // =========================================================
 
-    peticion.subscribe({
-      next: (res) => {
-        this.grabando = false;
+    try {
+      const idUsuario = Number(localStorage.getItem('usuarioId'));
+      if (!idUsuario) {
+        alert("Inicia sesión de nuevo.");
         this.cargandoSubida = false;
-        alert("¡Guardado en tu perfil!");
-        this.cargarMisCovers();
-      },
-      error: (err) => {
-        this.cargandoSubida = false;
-        this.grabando = false;
-        console.error("Error al subir:", err);
+        return;
       }
-    });
-  } catch (error) {
-    this.cargandoSubida = false;
-    this.grabando = false;
-    console.error("Error en el proceso:", error);
+
+      const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+
+      peticion.subscribe({
+        next: (res) => {
+          this.cargandoSubida = false;
+          alert("¡Tu cover se ha guardado con éxito! 🎤");
+          this.cargarMisCovers();
+        },
+        error: (err) => {
+          this.cargandoSubida = false;
+          console.error("Error al subir:", err);
+        }
+      });
+    } catch (error) {
+      this.cargandoSubida = false;
+      console.error("Error:", error);
+    }
   }
-}
 
 cargarMisCovers() {
-  // RECUPERA EL ID REAL DEL STORAGE (Ya no usamos el 1 fijo)
-  const idUsuario = Number(localStorage.getItem('usuarioId'));
-
-  if (idUsuario) {
-    this.audioService.obtenerMisCantos(idUsuario).subscribe({
-      next: (data) => {
+    const idUsuario = Number(localStorage.getItem('usuarioId'));
+    if (idUsuario) {
+      this.audioService.obtenerMisCantos(idUsuario).subscribe(data => {
         this.listaDeCantos = data;
-      },
-      error: (err) => console.error("Error al cargar covers:", err)
-    });
-  } else {
-    console.warn("No se encontró usuarioId en el storage.");
+      });
+    }
   }
-}
 }

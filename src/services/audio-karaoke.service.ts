@@ -52,24 +52,18 @@ export class AudioKaraokeService {
 
 
 
-async detenerYEnviarAlServidor(): Promise<Observable<any>> {
-    return new Promise((resolve) => {
-      this.mediaRecorder.stopRecording(() => {
-        const audioBlob = this.mediaRecorder.getBlob();
+async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
+  return new Promise((resolve) => {
+    this.mediaRecorder.stopRecording(() => {
+      const audioBlob = this.mediaRecorder.getBlob();
 
-        // Cerramos el micro para que se apague la luz de grabación
-        if (this.audioContext) this.audioContext.close();
+      const formData = new FormData();
+      formData.append('archivo', audioBlob, 'grabacion.wav');
+      formData.append('usuarioId', usuarioId.toString()); // <-- Enviamos el ID
 
-        // Preparamos el FormData (el sobre para Java)
-        const formData = new FormData();
-        formData.append('archivo', audioBlob, 'mi_voz_karaoke.wav');
-
-        // Retornamos el "disparo" hacia el backend
-        resolve(this.http.post(`${this.api}/subir`, formData));
-      });
+      resolve(this.http.post(`${this.api}/subir`, formData));
     });
-
-
+  });
 }
 
 }

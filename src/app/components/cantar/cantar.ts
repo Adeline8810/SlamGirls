@@ -21,22 +21,12 @@ export class Cantar {
 
   // 2. Finalizar y subir (El método que limpia todo)
   async finalizarCanto() {
-    this.grabando = false;
+  const idUsuario = Number(localStorage.getItem('usuarioId')); // Ejemplo
+  const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
 
-    // Pedimos al servicio que detenga todo y nos de el "disparador" (Observable)
-    const peticionSubida = await this.audioService.detenerYEnviarAlServidor();
-
-    // Nos suscribimos para saber cuando termine de subir a Cloudinary
-    peticionSubida.subscribe({
-      next: (res) => {
-        console.log("¡Canción en la nube!", res.url);
-        alert("¡Tu interpretación ha sido guardada con éxito!");
-        // Aquí podrías redirigir al perfil o limpiar la pantalla
-      },
-      error: (err) => {
-        console.error("Error al subir:", err);
-        alert("Se grabó pero hubo un problema al subirlo al servidor.");
-      }
-    });
-  }
+  peticion.subscribe({
+    next: (res) => alert("¡Guardado en tu perfil!"),
+    error: (err) => console.error(err)
+  });
+}
 }

@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { AudioKaraokeService } from '../../../services/audio-karaoke.service';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-cantar',
+  imports: [CommonModule],
   templateUrl: './cantar.html',
   styleUrls: ['./cantar.css']
 })
 export class Cantar {
   grabando: boolean = false;
+  cargandoSubida: boolean = false;
   letraActual: string = 'Presiona comenzar para iniciar...';
   letraSiguiente: string = '';
 

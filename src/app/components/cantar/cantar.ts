@@ -14,19 +14,34 @@ export class Cantar {
   constructor(private audioService: AudioKaraokeService) {}
 
   // 1. Iniciar la magia
-  async iniciar() {
-    this.grabando = true;
-    await this.audioService.iniciarGrabacionConEfecto();
+async iniciar() {
+    try {
+      this.grabando = true; // El botón debería cambiar a "Finalizar" de inmediato
+      await this.audioService.iniciarGrabacionConEfecto();
+    } catch (error) {
+      console.error("Error al iniciar:", error);
+      this.grabando = false; // Si falla el micro, volvemos al estado inicial
+      alert("No se pudo acceder al micrófono.");
+    }
   }
 
-  // 2. Finalizar y subir (El método que limpia todo)
   async finalizarCanto() {
-  const idUsuario = Number(localStorage.getItem('usuarioId')); // Ejemplo
-  const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+    try {
+      const idUsuario = Number(localStorage.getItem('usuarioId'));
+      const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
 
-  peticion.subscribe({
-    next: (res) => alert("¡Guardado en tu perfil!"),
-    error: (err) => console.error(err)
-  });
-}
+      peticion.subscribe({
+        next: (res) => {
+          alert("¡Guardado en tu perfil!");
+          this.grabando = false; // Volvemos al estado "Comenzar" tras el éxito
+        },
+        error: (err) => {
+          console.error(err);
+          this.grabando = false;
+        }
+      });
+    } catch (error) {
+      this.grabando = false;
+    }
+  }
 }

@@ -15,17 +15,17 @@
   </div>
 
   <!-- 3. Panel de Control (Botones) -->
+<!-- 3. Panel de Control (Botones) -->
   <div class="controles">
 
-    <!-- Botón INICIAR: Solo se ve si NO estamos grabando -->
-  <div class="controles">
-    <!-- Quitamos el ngIf momentáneamente para probar -->
-    <button class="btn-comenzar" (click)="iniciar()">
+    <!-- BOTÓN INICIAR: Solo aparece cuando NO estás grabando -->
+    <button *ngIf="!grabando"
+            class="btn-comenzar"
+            (click)="iniciar()">
       ▶️ Comenzar a Cantar
     </button>
-</div>
 
-    <!-- Botón FINALIZAR: Solo se ve si ESTAMOS grabando -->
+    <!-- BOTÓN FINALIZAR: Solo aparece cuando SÍ estás grabando -->
     <button *ngIf="grabando"
             class="btn-finalizar"
             (click)="finalizarCanto()">

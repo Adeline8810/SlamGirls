@@ -31,6 +31,9 @@ export class AudioKaraokeService {
     source.connect(output);
     delay.connect(output);
 
+    delay.connect(this.audioContext.destination);
+    source.connect(this.audioContext.destination);
+
     // 5. Configurar el grabador para que guarde la voz CON el efecto
     this.mediaRecorder = new RecordRTC(output.stream, {
       type: 'audio',

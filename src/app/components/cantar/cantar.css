@@ -104,10 +104,12 @@
    4. PASO 2 Y 3: EDICIÓN Y PUBLICACIÓN
    ========================================= */
 .step-container {
-  flex: 1;
+ max-width: 500px;       /* Lo subimos de 450px a 500px para que respire mejor */
+  margin: 0 auto;
+  background: #000;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #0a0a0a;
 }
 
 .preview-mini-video {
@@ -127,20 +129,36 @@
   opacity: 0.6;
 }
 
+.tabs-edit {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 25px;
+  font-size: 18px;       /* Un poco más grande para que sea legible */
+  font-weight: 500;
+  color: #fff;
+}
+
 .controls-card {
-  background: #151515;
-  flex: 1;
-  border-radius: 30px 30px 0 0;
-  padding: 25px;
-  border-top: 1px solid #333;
+  background: #121212;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  padding: 30px 25px;    /* Aumentamos el padding lateral a 25px */
+  flex-grow: 1;
+  width: 100%;           /* Que ocupe todo el ancho del contenedor */
+  box-sizing: border-box; /* Importante para que el padding no ensanche de más */
 }
 
 .slider-row {
-  display: flex;
+ display: flex;
   align-items: center;
   gap: 15px;
-  margin: 25px 0;
-  color: white;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.slider-row span {
+  min-width: 70px;       /* Le damos un ancho fijo a las etiquetas para que no se muevan */
+  font-size: 16px;
 }
 
 .slider-row input[type="range"] {
@@ -310,7 +328,7 @@
   flex-direction: column; /* Alinea los hijos (imagen y botón) verticalmente */
   align-items: center;    /* Centra horizontalmente ambos elementos */
   justify-content: center;
-  padding: 20px 0;
+  padding: 40px 20px;
   width: 100%;
 }
 

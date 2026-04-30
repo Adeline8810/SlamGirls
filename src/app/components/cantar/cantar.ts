@@ -122,6 +122,11 @@ async iniciar() {
  async publicarTodo() {
   // 1. Verificación Crítica de Usuario (Se mantiene igual)
   const idUsuarioStr = localStorage.getItem('usuarioId');
+  // AQUÍ DEBES PONERLO:
+  console.log("🔍 REVISIÓN DE SESIÓN:");
+  console.log("ID recuperado de localStorage:", idUsuarioStr);
+  console.log("Tipo de dato:", typeof idUsuarioStr);
+
   const idUsuario = idUsuarioStr ? Number(idUsuarioStr) : null;
 
   if (!idUsuario || isNaN(idUsuario)) {
@@ -156,16 +161,14 @@ async iniciar() {
         }
       },
       error: (err) => {
-        this.detenerCarga();
-        console.error("Error en la subida:", err);
+  this.detenerCarga();
+  console.error("Detalle del error:", err); // Revisa la consola del navegador (F12)
 
-        if (err.status === 401 || err.status === 403) {
-          alert("Tu sesión ha caducado.");
-          this.router.navigate(['/login']);
-        } else {
-          alert("No se pudo guardar en el servidor. Revisa tu conexión.");
-        }
-      }
+  if (err.status === 401 || err.status === 403) {
+    // Solo si el error es realmente de sesión
+    this.router.navigate(['/login']);
+  }
+}
     });
 
   } catch (error) {
@@ -180,6 +183,7 @@ async iniciar() {
   }
 
  finalizarProcesoExitoso() {
+  console.log("✅ ¡LLEGAMOS A LA FUNCIÓN DE ÉXITO!");
   // 1. Limpiamos el intervalo del cronómetro inmediatamente
   if (this.intervaloTimer) {
     clearInterval(this.intervaloTimer);

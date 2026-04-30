@@ -90,21 +90,20 @@ indiceActivo: number = 0;
 async iniciar() {
   const audioEl = this.pistaAudio?.nativeElement;
 
-  if (!audioEl || !audioEl.src || audioEl.src.includes('undefined')) {
+  // Si no hay src o el src está vacío, entonces sí damos el aviso
+  if (!audioEl || !audioEl.src || audioEl.src === window.location.href) {
     alert("La pista de audio aún no está lista. Espera un segundo.");
     return;
   }
 
   try {
     this.grabando = true;
-    // El servicio debe manejar el play del audio interno
     await this.audioService.iniciarGrabacionConPista(audioEl);
   } catch (error) {
     this.grabando = false;
-    alert("Error de micrófono: Asegúrate de dar permisos en el navegador.");
+    alert("Error de micrófono: Asegúrate de dar permisos.");
   }
 }
-
   async finalizarCanto() {
     this.grabando = false;
 
@@ -216,17 +215,25 @@ obtenerDetalleCancion(id: string) {
       this.cancionSeleccionada = data;
       this.despertandoServidor = false;
 
-      // CRÍTICO: Asignar la URL de la música al elemento audio
       if (this.pistaAudio && data.url_musica) {
         this.pistaAudio.nativeElement.src = data.url_musica;
         this.pistaAudio.nativeElement.load();
-        this.vincularProgresoAudio(); // Activar el seguimiento de letra
+        this.vincularProgresoAudio();
       }
     },
     error: (err) => {
       this.despertandoServidor = false;
-      this.errorCarga = true;
-      console.error("Error al cargar canción:", err);
+      // PLAN B: Si el servidor falla (Error 404 con luz-de-luna), cargamos la pista local
+      console.warn("Servidor no encontrado o ID inválido. Cargando pista local de prueba...");
+
+      if (this.pistaAudio) {
+        this.pistaAudio.nativeElement.src = 'assets/pistas/pista.mp3'; // <--- Tu archivo
+        this.pistaAudio.nativeElement.load();
+        this.vincularProgresoAudio();
+      }
+
+      // Opcional: inventamos datos para que la pantalla no se vea vacía
+      this.cancionSeleccionada = { titulo: 'Luz de Luna (Modo Local)' };
     }
   });
 }

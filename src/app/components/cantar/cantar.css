@@ -1,404 +1,123 @@
-/* Contenedor principal estilo pantalla completa */
-.escenario-container {
-  height: 100vh;
-  background-color: #1a1a1a; /* Fondo casi negro para que resalte el palo rosa */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 40px 20px;
-  color: #d8a7b1; /* Color Palo Rosa suave */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Cabecera */
-.header-canto h2 {
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  font-size: 1.2rem;
-}
-
-/* Área de la letra: El corazón del karaoke */
-.letras-display {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  width: 100%;
-}
-
-.animacion-letra {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #f4dada; /* Un rosa aún más clarito para la letra */
-  text-shadow: 0 0 15px rgba(216, 167, 177, 0.4);
-  transition: all 0.5s ease;
-  max-width: 80%;
-}
-
-/* Botones circulares y suaves */
-.controles {
-  margin-bottom: 30px;
-}
-
-.btn-start, .btn-stop {
-  padding: 15px 40px;
-  border-radius: 50px;
-  border: none;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s active;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.btn-start {
-  background-color: #d8a7b1; /* Palo rosa */
-  color: #4a3439;
-}
-
-.btn-stop {
-  background-color: #b38b93; /* Un tono más oscuro para el stop */
-  color: white;
-}
-
-.btn-start:active, .btn-stop:active {
-  transform: scale(0.95);
-}
-
-/* Barra de progreso sutil */
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: #333;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.fill {
-  height: 100%;
-  background: linear-gradient(90deg, #d8a7b1, #f4dada);
-  transition: width 1s linear;
-}
-
-.btn-comenzar {
-  background-color: #d8a7b1; /* Tu color Palo Rosa */
-  color: white;
-  padding: 15px 30px;
-  border-radius: 30px;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(216, 167, 177, 0.4);
-}
-
-.btn-finalizar {
-  background-color: #ff4d4d; /* Rojo para detener */
-  color: white;
-  padding: 15px 30px;
-  border-radius: 30px;
-  border: none;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.recording-status {
-  color: #ff4d4d;
-  font-weight: bold;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0.5; }
-}
-
-.controles {
-  display: flex;
-  justify-content: center;
-  padding: 20px;
-  min-height: 80px; /* Para que siempre tenga espacio */
-}
-
-.btn-comenzar {
-  background-color: #d8a7b1 !important; /* Rosa palo forzado */
-  color: white !important;
-  padding: 15px 40px;
-  border-radius: 30px;
-  border: 2px solid white;
-  font-size: 1.2rem;
-  cursor: pointer;
-  display: block !important; /* Aseguramos que se comporte como bloque */
-  z-index: 100;
-}
-
-.divisor-palo-rosa {
-  border: 0;
-  height: 1px;
-  background-image: linear-gradient(to right, transparent, #d8a7b1, transparent);
-  margin: 30px 0;
-}
-
-.titulo-galeria {
-  color: #d8a7b1;
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 20px;
-}
-
-
-.mis-covers {
-  margin-top: 30px;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 15px;
-}
-
-.grid-covers {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 15px;
-  margin-top: 15px;
-}
-
-.card-audio {
-  background: #2a2a2a;
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 5px solid #d8a7b1; /* El color palo rosa */
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.card-audio p {
+/* =========================================
+   1. ESTRUCTURA Y CONTENEDOR PRINCIPAL
+   ========================================= */
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-weight: bold;
-  color: #d8a7b1;
+  padding: 0;
 }
 
-audio {
-  width: 100%;
-  height: 35px;
-}
-
-
-.sala-karaoke {
-  background: linear-gradient(180deg, #1a1a2e 0%, #000000 100%);
-  height: 100vh;
-  color: white;
-  padding: 20px;
-}
-
-.header-cantar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 30px;
-}
-
-.btn-principal {
-  background: #ff4d6d;
-  border-radius: 25px;
-  padding: 15px 40px;
-  border: none;
-  color: white;
-  font-weight: bold;
-  position: fixed;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Estilo de la portada cuadrada */
-.upload-portada {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  border: 2px dashed #444;
-}
-
-.img-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-
-/* Contenedor Principal: Fondo oscuro total */
 .karaoke-screen {
-  background-color: #121212;
-  height: 100vh;
+  position: fixed;
+  inset: 0;
+  background-color: #050505;
+  color: white;
   display: flex;
   flex-direction: column;
-  color: white;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   overflow: hidden;
-  position: relative;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* Cabecera */
+/* =========================================
+   2. CABECERA UNIVERSAL
+   ========================================= */
 .karaoke-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  background: rgba(0,0,0,0.2);
+  padding: 10px 20px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
 }
 
-.btn-icon-close {
-  background: none;
-  border: none;
-  color: white;
+.song-info {
+  font-weight: bold;
+  color: #ff2d55;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9rem;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #555;
+  transition: background 0.3s ease;
+}
+
+.status-dot.online {
+  background: #00ff00;
+  box-shadow: 0 0 8px #00ff00;
+}
+
+.close-btn {
   font-size: 24px;
   cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
 }
 
-.song-details {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.song-name {
-  font-weight: 500;
-  font-size: 0.95rem;
-}
-
-/* Letras: Centradas y grandes */
-.lyrics-container {
+/* =========================================
+   3. PASO 1: PANTALLA DE CANTO (LETRAS)
+   ========================================= */
+.lyrics-viewport {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 40px 20px;
   text-align: center;
-  padding: 0 30px;
+  background: radial-gradient(circle, #1a1a1a 0%, #050505 100%);
 }
 
-.letra-actual {
-  font-size: 1.8rem;
+.lyric-line {
+  font-size: 1.5rem;
+  margin: 12px 0;
+  opacity: 0.3;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lyric-line.active {
+  opacity: 1;
+  color: #ff2d55;
+  font-size: 2.2rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  line-height: 1.4;
+  transform: scale(1.1);
+  text-shadow: 0 0 20px rgba(255, 45, 85, 0.4);
 }
 
-.letra-siguiente {
-  font-size: 1.2rem;
-  color: #888;
-  opacity: 0.7;
-}
-
-/* Controles inferiores */
-.bottom-controls {
-  padding: 20px;
-  padding-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.mode-selector {
-  display: flex;
-  gap: 20px;
-  color: #666;
-  font-weight: bold;
-  text-transform: uppercase;
+.error-toast {
+  background: #ff2d55;
+  color: white;
+  padding: 10px;
+  text-align: center;
   font-size: 0.8rem;
-}
-
-.mode-selector .active {
-  color: white;
-  border-bottom: 2px solid white;
-  padding-bottom: 5px;
-}
-
-/* Botón Rosa tipo StarMaker */
-.btn-action-pink {
-  background-color: #ff2d55; /* Rosa vibrante */
-  color: white;
-  border: none;
-  padding: 16px 60px;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  width: 90vw;
-  max-width: 400px;
-  transition: transform 0.2s;
-}
-
-.btn-action-pink:active {
-  transform: scale(0.95);
-}
-
-.btn-action-stop {
-  background-color: #444;
-  color: #ff2d55;
-  border: 2px solid #ff2d55;
-  padding: 16px 60px;
-  border-radius: 30px;
   font-weight: bold;
 }
 
-/* Galería de grabaciones */
-.covers-drawer {
-  background: #1e1e1e;
-  border-radius: 20px 20px 0 0;
-  padding: 20px;
-  max-height: 30vh;
-  overflow-y: auto;
-}
-
-.gallery-title {
-  font-size: 0.9rem;
-  color: #ff2d55;
-  margin-bottom: 15px;
-  text-align: center;
-}
-
-.mini-player {
-  width: 100%;
-  height: 35px;
-  filter: invert(1); /* Para que el reproductor gris se vea blanco */
-  opacity: 0.8;
-}
-
-.mini-portada-circular {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%; /* La hace circular */
-  object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  margin-right: 10px;
-}
-
-.textos-header {
+/* =========================================
+   4. PASO 2 Y 3: EDICIÓN Y PUBLICACIÓN
+   ========================================= */
+.step-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.artist-name {
-  color: #888;
-  font-size: 0.75rem;
-}
-
-
-/* Pantalla de Edición */
-.edit-screen {
-  background: #0a0a1a;
-  display: flex;
-  flex-direction: column;
+  background: #0a0a0a;
 }
 
 .preview-mini-video {
-  height: 40%;
-  position: relative;
+  height: 35vh;
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .preview-mini-video img {
@@ -408,41 +127,25 @@ audio {
   opacity: 0.6;
 }
 
-.btn-change-media {
-  position: absolute;
-  bottom: 20px;
-  background: rgba(0,0,0,0.5);
-  border: 1px solid white;
-  color: white;
-  border-radius: 20px;
-  padding: 5px 15px;
-}
-
 .controls-card {
-  background: #151525;
+  background: #151515;
   flex: 1;
   border-radius: 30px 30px 0 0;
-  padding: 20px;
+  padding: 25px;
+  border-top: 1px solid #333;
 }
 
 .slider-row {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin: 20px 0;
+  margin: 25px 0;
   color: white;
 }
 
-.slider-row input {
+.slider-row input[type="range"] {
   flex: 1;
   accent-color: #ff2d55;
-}
-
-/* Pantalla de Publicar */
-.publish-header {
-  display: flex;
-  gap: 15px;
-  padding: 20px;
 }
 
 .cover-upload {
@@ -451,15 +154,60 @@ audio {
   background: #333;
   border-radius: 10px;
   position: relative;
+  overflow: hidden;
+}
+
+.cover-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* =========================================
+   5. BOTONES Y CONTROLES INFERIORES
+   ========================================= */
+.bottom-controls {
+  padding: 30px 20px;
+  background: linear-gradient(to top, #000 70%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-action-pink {
+  background: linear-gradient(45deg, #ff2d55, #ff718b);
+  border: none;
+  color: white;
+  padding: 18px 40px;
+  border-radius: 35px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  width: 85%;
+  max-width: 350px;
+  cursor: pointer;
+  box-shadow: 0 10px 20px rgba(255, 45, 85, 0.3);
+  transition: transform 0.2s;
+}
+
+.btn-action-pink:active { transform: scale(0.95); }
+.btn-action-pink:disabled { background: #555; cursor: not-allowed; opacity: 0.7; }
+
+.btn-action-stop {
+  background: #1a1a1a;
+  border: 2px solid #ff2d55;
+  color: white;
+  padding: 15px 40px;
+  border-radius: 35px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .final-buttons {
-  position: fixed;
-  bottom: 20px;
-  width: 100%;
   display: flex;
   justify-content: space-around;
-  padding: 0 10px;
+  padding: 20px;
+  width: 100%;
 }
 
 .btn-save {
@@ -468,173 +216,62 @@ audio {
   border: none;
   border-radius: 25px;
   padding: 15px 30px;
+  cursor: pointer;
 }
 
+/* =========================================
+   6. OVERLAYS (CARGA Y ÉXITO)
+   ========================================= */
+.overlay-publicando, .success-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(10px);
+}
+
+.overlay-publicando { background: rgba(0, 0, 0, 0.95); }
+.success-overlay { background: rgba(0, 0, 0, 0.9); }
+
+.loader-content, .success-card {
+  text-align: center;
+  padding: 30px;
+  width: 90%;
+  max-width: 400px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: #222;
+  border-radius: 10px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #ff2d55;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px #ff2d55;
+}
 
 .porcentaje-texto {
   font-size: 3rem;
   font-weight: bold;
   color: #ff2d55;
-  margin: 10px 0;
 }
 
-.progress-bar-container {
-  width: 100%;
-  max-width: 300px;
-  height: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  margin: 20px auto;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ff2d55, #ff718b);
-  width: 0%; /* Se controla desde el TS */
-  transition: width 0.3s ease; /* Para que el avance sea fluido */
-  box-shadow: 0 0 10px #ff2d55;
-}
-
-/* Contenedor principal estilo App */
-.karaoke-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #050505;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  font-family: sans-serif;
-}
-
-/* Cabecera */
-.karaoke-header {
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(0,0,0,0.5);
-}
-
-/* AREA DE LETRAS (Scroll Automático) */
-.lyrics-viewport {
-  flex: 1;
-  overflow-y: hidden; /* Nosotros controlamos el scroll por código */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-}
-
-.lyric-line {
-  font-size: 1.5rem;
-  margin: 10px 0;
-  opacity: 0.3;
-  transition: all 0.3s ease;
-}
-
-.lyric-line.active {
-  opacity: 1;
-  color: #ff2d55;
-  font-size: 2rem;
-  font-weight: bold;
-  transform: scale(1.1);
-}
-
-/* Panel de controles inferior */
-.bottom-controls {
-  padding: 20px;
-  background: linear-gradient(transparent, #111);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-.btn-action-pink {
-  background: #ff2d55;
-  border: none;
-  color: white;
-  padding: 15px 40px;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  width: 80%;
-  max-width: 300px;
-}
-
-.btn-action-stop {
-  background: #333;
-  border: 2px solid #ff2d55;
-  color: white;
-  padding: 12px 30px;
-  border-radius: 25px;
-}
-
-
-/* Contenedor que cubre toda la pantalla */
-.success-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  backdrop-filter: blur(5px);
-}
-
-.success-card {
-  background: #1a1a1a;
-  padding: 40px;
-  border-radius: 20px;
-  text-align: center;
-  border: 1px solid #333;
-  width: 90%;
-  max-width: 400px;
-  animation: slideUp 0.4s ease-out;
-}
-
-.success-card h2 { color: #ff2d55; margin: 20px 0 10px; }
-.success-card p { color: #aaa; margin-bottom: 30px; }
-
-/* Botones profesionales */
-.success-actions { display: flex; flex-direction: column; gap: 10px; }
-
-.btn-primary {
-  background: #ff2d55;
-  color: white;
-  border: none;
-  padding: 12px;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: white;
-  border: 1px solid #444;
-  padding: 12px;
-  border-radius: 25px;
-  cursor: pointer;
-}
-
-/* Animación del Checkmark */
+/* CHECKMARK ANIMATION */
 .checkmark-circle {
   width: 80px;
   height: 80px;
   border-radius: 50%;
   border: 4px solid #4caf50;
   position: relative;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 
 .checkmark-draw:after {
@@ -647,45 +284,15 @@ audio {
   border: solid #4caf50;
   border-width: 0 4px 4px 0;
   transform: rotate(45deg);
-  opacity: 0;
   animation: check 0.8s ease forwards;
 }
 
-@keyframes check {
-  to { opacity: 1; }
-}
+@keyframes check { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.karaoke-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  height: 60px;
-  background: rgba(0,0,0,0.8);
-  position: relative;
-  z-index: 10;
-}
-
-.song-info {
-  font-weight: bold;
-  color: #ff2d55;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #555; /* Gris si está offline */
-}
-
-.status-dot.online {
-  background: #00ff00; /* Verde si despertó */
-  box-shadow: 0 0 8px #00ff00;
+.success-card {
+  background: #1a1a1a;
+  border-radius: 25px;
+  border: 1px solid #333;
+  animation: slideUp 0.4s ease-out;
 }

@@ -17,6 +17,11 @@ export class EditorCanciones {
   letraBruta: string = '';
   audioNombre: string = '';
   paso: number = 1;
+  frases: any[] = [];
+  indiceFrase: number = 0;
+  tiempoInicio: number = 0;
+  estaSincronizando: boolean = false;
+  audioElement: HTMLAudioElement | null = null;
 
   @ViewChild('pistaAudio') pistaAudio!: ElementRef<HTMLAudioElement>;
 
@@ -30,7 +35,7 @@ export class EditorCanciones {
   // --- VARIABLES DE ESTADO DEL FLUJO ---
   pasoEditor: number = 1; // 1: Carga, 2: Sincronización, 3: Revisión/Subida
   musicaIniciada: boolean = false;
-  estaSincronizando: boolean = false;
+
 
   // --- VARIABLES DE LA LÓGICA DE TIEMPOS ---
   // Este array guardará los objetos finales { texto: string, tiempo: number }
@@ -79,23 +84,7 @@ export class EditorCanciones {
   }
 
   // Paso 2: El sistema de "TAP" (Marcar tiempo)
-  marcarTiempo() {
-    const audio = this.pistaAudio.nativeElement;
 
-    if (this.indiceSincronizacion < this.lineasParaSincronizar.length) {
-      // Asignamos el segundo actual de la música a la frase actual
-      this.lineasParaSincronizar[this.indiceSincronizacion].tiempo = audio.currentTime;
-
-      console.log(`Marcado: ${this.lineasParaSincronizar[this.indiceSincronizacion].texto} a los ${audio.currentTime}s`);
-
-      this.indiceSincronizacion++;
-    }
-
-    // Si terminamos todas las líneas
-    if (this.indiceSincronizacion >= this.lineasParaSincronizar.length) {
-      this.finalizarSincronizacion();
-    }
-  }
 
   finalizarSincronizacion() {
     this.musicaIniciada = false;
@@ -138,11 +127,47 @@ onFileSelected(event: any) {
 }
 
 irASincronizar() {
-  if(!this.letraBruta || !this.audioNombre) {
-    alert("Por favor, ingresa la letra y selecciona un audio.");
+if (!this.letraBruta || !this.audioNombre) {
+    alert("Faltan datos");
     return;
   }
-  this.paso = 2; // Esto debería ocultar la configuración y mostrar el botón de TAP
+
+  // 1. Convertir el texto en un array de objetos
+  this.frases = this.letraBruta.split('\n')
+    .filter(linea => linea.trim() !== '')
+    .map(linea => ({ texto: linea.trim(), tiempo: 0 }));
+
+  // 2. Cambiar al paso 2
+  this.paso = 2;
+
+
+}
+
+comenzarTap() {
+  this.estaSincronizando = true;
+  this.indiceFrase = 0;
+
+  // 3. Reproducir el audio
+  if (this.audioElement) {
+    this.audioElement.play();
+    this.tiempoInicio = Date.now();
+  }
+}
+
+marcarTiempo() {
+  if (!this.estaSincronizando || this.indiceFrase >= this.frases.length) return;
+
+  // Guardar el segundo exacto donde hiciste TAP
+  const tiempoActual = this.audioElement ? this.audioElement.currentTime : 0;
+  this.frases[this.indiceFrase].tiempo = tiempoActual;
+
+  console.log(`Frase ${this.indiceFrase} sincronizada en: ${tiempoActual}s`);
+
+  this.indiceFrase++;
+
+  if (this.indiceFrase === this.frases.length) {
+    this.finalizarSincronizacion();
+  }
 }
 
 

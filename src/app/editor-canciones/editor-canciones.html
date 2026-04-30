@@ -31,4 +31,38 @@
       Siguiente: Comenzar TAP
     </button>
   </div>
+
+
+<!-- PANTALLA DE SINCRONIZACIÓN (PASO 2) -->
+<div class="editor-card sync-mode" *ngIf="paso === 2">
+  <div class="sync-header">
+    <h3>Sincronizando: {{ audioNombre }}</h3>
+    <progress [value]="indiceFrase" [max]="frases.length"></progress>
+  </div>
+
+  <div class="display-frase">
+    <p class="label">Frase actual:</p>
+    <h2 class="frase-texto">{{ frases[indiceFrase]?.texto || '¡Terminado!' }}</h2>
+    <p class="next-frase" *ngIf="frases[indiceFrase + 1]">
+      Próxima: {{ frases[indiceFrase + 1].texto }}
+    </p>
+  </div>
+
+  <!-- BOTÓN GIGANTE DE TAP -->
+  <div class="tap-container">
+    <button class="btn-tap-sync"
+            (mousedown)="marcarTiempo()"
+            *ngIf="estaSincronizando">
+      TAP
+    </button>
+
+    <button class="btn-primary-sync"
+            (click)="comenzarTap()"
+            *ngIf="!estaSincronizando">
+      ▶️ Iniciar Audio y TAP
+    </button>
+  </div>
+</div>
+
+
 </div>

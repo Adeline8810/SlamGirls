@@ -13,6 +13,7 @@ import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Chat } from './components/chat/chat';
 import { Cantar } from './components/cantar/cantar';
 import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
+import {  EditorCanciones } from './editor-canciones/editor-canciones';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -28,9 +29,8 @@ export const routes: Routes = [
   { path: 'perfil/:username', component: PerfilAjeno },
   { path: 'chat/:username', component: Chat },
   { path: 'cantar/:id', component: Cantar },
-
   { path: 'buscar-cancion', component: BuscarCancion },
-
-   { path: 'tienda', component: Tienda },
+  { path: 'editor-canciones', component: EditorCanciones },
+  { path: 'tienda', component: Tienda },
   { path: '**', redirectTo: '' }
 ];

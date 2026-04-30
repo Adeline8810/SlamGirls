@@ -8,7 +8,6 @@ import { Tienda } from './components/tienda/tienda';
 import { Profile } from './components/profile/profile';
 import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Cantar } from './components/cantar/cantar';
-
 import { EditorCanciones } from './editor-canciones/editor-canciones';
 
 const routes: Routes = [

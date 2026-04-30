@@ -27,7 +27,7 @@
     <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Page d'accueeil</button>
     <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
     <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">J'aime</button>
-        <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Couverture</button>
+    <button (click)="changeTab('videos')" [class.active]="selectedTab === 'couverture'">Couverture</button>
     <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Collab.</button>
   </div>
@@ -76,6 +76,20 @@
       }
     @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
+    @case ('couverture') {
+  <div class="video-grid">
+    <!-- Aquí podrías filtrar para mostrar solo covers si tuvieras un campo tipo -->
+    @for (v of videos; track v.id) {
+       @if (v.esCover) { <!-- Solo un ejemplo si tuvieras esta propiedad -->
+          <div class="video-card">
+            <img [src]="v.thumbnail" class="video-preview">
+            <button class="btn-cantar-overlay">🎤 Cantar</button>
+          </div>
+       }
+    }
+  </div>
+}
+
     @case ('videos') {
       <div class="video-grid">
         <div class="video-card upload-box" (click)="!cargandoVideo && videoInput.click()">
@@ -106,6 +120,9 @@
         }
       </div>
     }
+
+
+
 
     @case ('collab') { <div class="tab-content"><h3>🖼️ Álbum</h3></div> }
   }

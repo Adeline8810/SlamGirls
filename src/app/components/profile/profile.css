@@ -330,3 +330,22 @@ position: relative;
   text-align: right;
   font-weight: 400;
 }
+
+.card-audio-sm {
+  background: #fff0f3 !important; /* Fondo palo rosa clarito */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ff4d6d;
+}
+
+.mini-player {
+  width: 100%;
+  height: 30px;
+  filter: hue-rotate(320deg) brightness(1.2); /* Esto le da un tono rosado al reproductor */
+}
+
+.card-overlay {
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.8);
+}

@@ -27,7 +27,7 @@
     <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Page d'accueeil</button>
     <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
     <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">J'aime</button>
-    <button (click)="changeTab('videos')" [class.active]="selectedTab === 'couverture'">Couverture</button>
+    <button (click)="changeTab('couverture')" [class.active]="selectedTab === 'couverture'">Couverture</button>
     <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
     <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Collab.</button>
   </div>
@@ -76,16 +76,21 @@
       }
     @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
-    @case ('couverture') {
-  <div class="video-grid">
-    <!-- Aquí podrías filtrar para mostrar solo covers si tuvieras un campo tipo -->
-    @for (v of videos; track v.id) {
-       @if (v.esCover) { <!-- Solo un ejemplo si tuvieras esta propiedad -->
-          <div class="video-card">
-            <img [src]="v.thumbnail" class="video-preview">
-            <button class="btn-cantar-overlay">🎤 Cantar</button>
-          </div>
-       }
+  @case ('couverture') {
+  <div class="video-grid"> <!-- Usamos tu clase de grilla para que se vea igual -->
+    @for (canto of misCantos; track canto.id) {
+      <div class="video-card card-audio-sm">
+        <!-- Imagen por defecto de disco o música para covers -->
+        <img src="assets/img/disco_cover.png" class="video-preview">
+
+        <div class="card-overlay">
+          <p>Cover #{{canto.id}}</p>
+          <!-- Reproductor pequeño -->
+          <audio [src]="canto.urlAudio" controls class="mini-player"></audio>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">No hay grabaciones aún.</div>
     }
   </div>
 }

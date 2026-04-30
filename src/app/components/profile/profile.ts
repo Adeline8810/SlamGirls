@@ -1,6 +1,8 @@
 import { Component, OnInit , signal} from '@angular/core';
 import { RespuestaService } from '../../../services/respuesta.service'; // Ajusta la ruta a tu proyecto
 import { UsuarioService } from '../../../services/usuario.service';
+import { AudioKaraokeService  } from '../../../services/audio-karaoke.service';
+
 import { VideoDetail } from '../../components/video-detail/video-detail';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -22,6 +24,7 @@ export class Profile implements OnInit {
   selectedTab: string = 'videos'; // Por defecto en videos como pediste
   usuarioActual: any = {}; // ✅ Declarado para que el HTML no de error
   videos: any[] = []; // Aquí guardaremos los videos de la DB
+  misCantos: any[] = [];
   cargandoVideo: boolean = false;
   cargandoFoto: boolean = false;
 
@@ -33,7 +36,7 @@ export class Profile implements OnInit {
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
   videoSeleccionado = signal<any>(null);
 
-  constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,) {}
+  constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,private audioService: AudioKaraokeService) {}
 
  ngOnInit(): void {
   const u = localStorage.getItem('usuario');
@@ -63,6 +66,11 @@ export class Profile implements OnInit {
     this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
       this.videos = res;
     });
+
+   this.audioService.obtenerMisCantos(this.usuarioId).subscribe(res => {
+    this.misCantos = res;
+  });
+
   }
  if (this.usuarioActual.idPublico) {
     this.cargarDatosDelBackend(this.usuarioActual.idPublico);

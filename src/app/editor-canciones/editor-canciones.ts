@@ -101,10 +101,11 @@ export class EditorCanciones {
     // Aquí crearías un FormData
     const formData = new FormData();
     formData.append('audio', this.archivoSeleccionado!);
+    formData.append('letra_json', JSON.stringify(this.lineasParaSincronizar));
     formData.append('titulo', this.tituloCancion);
     formData.append('artista', this.artistaCancion);
     // Convertimos el array de letras a String JSON para que el servidor lo entienda
-    formData.append('letra_json', JSON.stringify(this.lineasParaSincronizar));
+
 
     // Ejemplo de envío a tu API en Render
     this.http.post('https://backend-ruth-slam.onrender.com/api/canciones/nueva', formData)

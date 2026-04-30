@@ -496,3 +496,84 @@ audio {
   transition: width 0.3s ease; /* Para que el avance sea fluido */
   box-shadow: 0 0 10px #ff2d55;
 }
+
+/* Contenedor principal estilo App */
+.karaoke-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #050505;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: sans-serif;
+}
+
+/* Cabecera */
+.karaoke-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.5);
+}
+
+/* AREA DE LETRAS (Scroll Automático) */
+.lyrics-viewport {
+  flex: 1;
+  overflow-y: hidden; /* Nosotros controlamos el scroll por código */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.lyric-line {
+  font-size: 1.5rem;
+  margin: 10px 0;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+}
+
+.lyric-line.active {
+  opacity: 1;
+  color: #ff2d55;
+  font-size: 2rem;
+  font-weight: bold;
+  transform: scale(1.1);
+}
+
+/* Panel de controles inferior */
+.bottom-controls {
+  padding: 20px;
+  background: linear-gradient(transparent, #111);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-action-pink {
+  background: #ff2d55;
+  border: none;
+  color: white;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  width: 80%;
+  max-width: 300px;
+}
+
+.btn-action-stop {
+  background: #333;
+  border: 2px solid #ff2d55;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 25px;
+}

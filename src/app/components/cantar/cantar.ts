@@ -52,6 +52,9 @@ export class Cantar implements OnInit, AfterViewInit {
     private http: HttpClient
   ) {}
 
+
+
+
   ngOnInit() {
     const idCancion = this.route.snapshot.paramMap.get('id');
     if (idCancion) {
@@ -61,6 +64,15 @@ export class Cantar implements OnInit, AfterViewInit {
     }
     this.cargarMisCovers();
   }
+
+  lineasLetra: any[] = [
+  { tiempo: 0, texto: "Prepárate..." },
+  { tiempo: 5, texto: "En la arena solo los ojos" },
+  { tiempo: 10, texto: "Bajo el sol de mediodía" },
+  { tiempo: 15, texto: "Buscando tu rastro" }
+];
+
+indiceActivo: number = 0;
 
   ngAfterViewInit() {
     // La carga inicial se maneja en obtenerDetalleCancion para asegurar que existan los datos
@@ -200,4 +212,32 @@ export class Cantar implements OnInit, AfterViewInit {
   manejarErrorImagen(event: any) {
     event.target.src = 'assets/img/default-cover.png';
   }
+
+
+  // Método que se llama cuando el audio avanza
+vincularProgresoAudio() {
+  const audio = this.pistaAudio.nativeElement;
+
+  audio.ontimeupdate = () => {
+    const tiempoActual = audio.currentTime;
+
+    // Buscar qué línea corresponde al tiempo actual
+    const encontrada = this.lineasLetra.findIndex((l, i) => {
+      const siguienteTiempo = this.lineasLetra[i+1]?.tiempo || 9999;
+      return tiempoActual >= l.tiempo && tiempoActual < siguienteTiempo;
+    });
+
+    if (encontrada !== -1 && encontrada !== this.indiceActivo) {
+      this.indiceActivo = encontrada;
+      this.scrollALineaActiva();
+    }
+  };
+}
+
+scrollALineaActiva() {
+  const activeEl = document.querySelector('.lyric-line.active');
+  if (activeEl) {
+    activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
 }

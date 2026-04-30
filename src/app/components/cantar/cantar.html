@@ -8,27 +8,34 @@
   </div>
 
   <!-- PASO 1: GRABACIÓN (Solo se ve si pasoActual es 1) -->
-  <div class="step-container" *ngIf="pasoActual === 1">
-    <div class="lyrics-container">
-      <p class="letra-actual">{{ letraActual }}</p>
-      <p class="letra-siguiente">{{ letraSiguiente }}</p>
+ <div class="karaoke-header">
+    <span (click)="irAtras()">✕</span>
+    <small>Error de servidor</small>
+  </div>
+
+  <!-- VISOR DE LETRAS -->
+  <div class="lyrics-viewport" *ngIf="pasoActual === 1">
+    <div *ngFor="let linea of lineasLetra; let i = index"
+         class="lyric-line"
+         [class.active]="i === indiceActivo">
+      {{ linea.texto }}
     </div>
+  </div>
 
-    <div class="bottom-controls">
-      <!-- Este texto desaparece cuando grabas gracias al *ngIf="!grabando" -->
-      <div class="mode-selector" *ngIf="!grabando">
-        <span class="active">Solo</span>
-        <span>Duo</span>
-      </div>
+  <!-- CONTROLES -->
+  <div class="bottom-controls" *ngIf="pasoActual === 1">
+    <button *ngIf="!grabando" class="btn-action-pink" (click)="iniciar()">
+      Appuyez pour commencer
+    </button>
 
-      <button *ngIf="!grabando" class="btn-action-pink" (click)="iniciar()">
-        Appuyez pour commencer
-      </button>
+    <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
+      ⏹ TERMINER
+    </button>
+  </div>
 
-      <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
-        ⏹️ TERMINER
-      </button>
-    </div>
+  <!-- PANTALLA DE CARGA (PROGRESO) -->
+  <div class="overlay-publicando" *ngIf="cargandoSubida">
+     <!-- Aquí va tu código de la barra de porcentaje -->
   </div>
 
   <!-- PASO 2: AJUSTES Y EFECTOS (Lo nuevo, basado en tu imagen) -->

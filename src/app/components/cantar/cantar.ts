@@ -90,18 +90,21 @@ indiceActivo: number = 0;
 async iniciar() {
   const audioEl = this.pistaAudio?.nativeElement;
 
-  // Si no hay src o el src está vacío, entonces sí damos el aviso
-  if (!audioEl || !audioEl.src || audioEl.src === window.location.href) {
-    alert("La pista de audio aún no está lista. Espera un segundo.");
+  // Verificamos si el audio tiene algo cargado
+  if (!audioEl || !audioEl.src || audioEl.src === "") {
+    alert("Todavía no se ha detectado el archivo pista.mp3 en assets.");
     return;
   }
 
   try {
     this.grabando = true;
+    this.pasoActual = 1;
+    // Iniciamos la grabación con el archivo local
     await this.audioService.iniciarGrabacionConPista(audioEl);
   } catch (error) {
     this.grabando = false;
-    alert("Error de micrófono: Asegúrate de dar permisos.");
+    console.error("Error al iniciar:", error);
+    alert("Revisa los permisos del micrófono.");
   }
 }
   async finalizarCanto() {
@@ -206,36 +209,26 @@ async iniciar() {
   }
 
 obtenerDetalleCancion(id: string) {
-  const url = `https://backend-ruth-slam.onrender.com/api/videos/detalle/${id}`;
-  this.despertandoServidor = true;
+  // Mantenemos esto para que la interfaz no se rompa
+  this.despertandoServidor = false;
   this.errorCarga = false;
 
-  this.http.get(url).subscribe({
-    next: (data: any) => {
-      this.cancionSeleccionada = data;
-      this.despertandoServidor = false;
+  // Forzamos los datos manualmente (Hardcoded)
+  this.cancionSeleccionada = {
+    titulo: 'Luz de Luna',
+    artista: 'Sailor Moon'
+  };
 
-      if (this.pistaAudio && data.url_musica) {
-        this.pistaAudio.nativeElement.src = data.url_musica;
-        this.pistaAudio.nativeElement.load();
-        this.vincularProgresoAudio();
-      }
-    },
-    error: (err) => {
-      this.despertandoServidor = false;
-      // PLAN B: Si el servidor falla (Error 404 con luz-de-luna), cargamos la pista local
-      console.warn("Servidor no encontrado o ID inválido. Cargando pista local de prueba...");
-
-      if (this.pistaAudio) {
-        this.pistaAudio.nativeElement.src = 'assets/pistas/pista.mp3'; // <--- Tu archivo
-        this.pistaAudio.nativeElement.load();
-        this.vincularProgresoAudio();
-      }
-
-      // Opcional: inventamos datos para que la pantalla no se vea vacía
-      this.cancionSeleccionada = { titulo: 'Luz de Luna (Modo Local)' };
+  // CRÍTICO: Cargamos directamente tu archivo local
+  // Asegúrate de que la ruta sea exactamente donde está tu pista.mp3
+  setTimeout(() => {
+    if (this.pistaAudio) {
+      this.pistaAudio.nativeElement.src = 'assets/pistas/pista.mp3';
+      this.pistaAudio.nativeElement.load();
+      this.vincularProgresoAudio();
+      console.log("Pista local cargada correctamente para pruebas");
     }
-  });
+  }, 500);
 }
 
   onPortadaSeleccionada(event: any) {

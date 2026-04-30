@@ -30,6 +30,8 @@ export class Cantar {
   imagenPortada: File | null = null;
   previewPortada: string | null = null;
 
+  @ViewChild('pistaAudio') pistaAudio!: ElementRef<HTMLAudioElement>;
+
 
   constructor(private audioService: AudioKaraokeService, private route: ActivatedRoute,
     private http: HttpClient ) {}
@@ -45,63 +47,93 @@ export class Cantar {
     this.cargarMisCovers();
   }
 
-async iniciar() {
-    try {
 
-      this.grabando = true;
-      // Llamamos al nuevo método que mezcla Voz + Eco + Música
-      await this.audioService.iniciarGrabacionConPista(this.pista.nativeElement);
-    } catch (error) {
-      console.error("Error al iniciar:", error);
-      this.grabando = false;
-      alert("No se pudo acceder al micrófono o a la pista de audio.");
-    }
+ngAfterViewInit() {
+  if (this.cancionSeleccionada) {
+    this.pistaAudio.nativeElement.src = this.cancionSeleccionada.url_pista;
+    this.pistaAudio.nativeElement.load();
   }
+}
+
+async iniciar() {
+  // 1. Validamos que el elemento existe con el nombre correcto (#pistaAudio)
+  const audioEl = this.pistaAudio?.nativeElement;
+
+  if (!audioEl) {
+    console.error("No se encontró el elemento audio en el HTML. Revisa que el ID sea #pistaAudio");
+    return;
+  }
+
+  try {
+    // 2. Cambiamos el estado visual ANTES de la promesa para evitar retrasos en la UI
+    this.grabando = true;
+    this.pasoActual = 1; // Nos aseguramos de estar en la pantalla de letras
+
+    // 3. Iniciamos la lógica del servicio
+    // Nota: Usamos audioEl que ya validamos arriba
+    await this.audioService.iniciarGrabacionConPista(audioEl);
+
+    console.log("Grabación iniciada correctamente");
+  } catch (error) {
+    console.error("Error al iniciar:", error);
+    this.grabando = false;
+    alert("No se pudo acceder al micrófono o a la pista de audio.");
+  }
+}
 
  // 4. FINALIZAR: Detenemos la música y el eco
   async finalizarCanto() {
-    this.cargandoSubida = true;
-    this.grabando = false; // Cambiamos el estado visual de inmediato
+  this.grabando = false;
 
-    // Detener la música físicamente
-    if (this.pista) {
-      this.pista.nativeElement.pause();
-      this.pista.nativeElement.currentTime = 0;
-    }
-
-    // Detener eco y micrófono
-    this.audioService.detenerFlujoAudio();
-
-    try {
-      const idUsuario = Number(localStorage.getItem('usuarioId'));
-      if (!idUsuario) {
-        alert("Inicia sesión de nuevo.");
-        this.cargandoSubida = false;
-        return;
-      }
-
-      const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
-
-      peticion.subscribe({
-        next: (res) => {
-          this.cargandoSubida = false;
-          alert("¡Tu cover se ha guardado con éxito! 🎤");
-          this.cargarMisCovers();
-        },
-        error: (err) => {
-          this.cargandoSubida = false;
-          console.error("Error al subir:", err);
-        }
-      });
-
-    this.grabando = false;
-    this.pasoActual = 2; // Saltamos a la pantalla de edición
-
-    } catch (error) {
-      this.cargandoSubida = false;
-      console.error("Error:", error);
-    }
+  // 1. Detener la música físicamente (usando tu referencia 'pista')
+  if (this.pista) {
+    this.pista.nativeElement.pause();
+    this.pista.nativeElement.currentTime = 0;
   }
+
+  // 2. Detener eco y micrófono
+  this.audioService.detenerFlujoAudio();
+
+  // 3. Cambiamos al paso de edición (Sliders de volumen y efectos)
+  // Aquí NO activamos cargandoSubida porque el usuario aún debe editar
+  this.pasoActual = 2;
+  console.log("Canto finalizado. Pasando a edición de volúmenes.");
+}
+
+
+async publicarTodo() {
+  this.cargandoSubida = true; // Aquí sí mostramos el spinner de carga
+
+  try {
+    const idUsuario = Number(localStorage.getItem('usuarioId'));
+    if (!idUsuario) {
+      alert("Inicia sesión de nuevo.");
+      this.cargandoSubida = false;
+      return;
+    }
+
+    // Usamos el método que ya tienes en tu servicio
+    const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+
+    peticion.subscribe({
+      next: (res) => {
+        this.cargandoSubida = false;
+        alert("¡Tu cover se ha publicado con éxito! 🎤");
+        this.cargarMisCovers();
+        this.pasoActual = 1; // Opcional: resetear al inicio o redirigir
+      },
+      error: (err) => {
+        this.cargandoSubida = false;
+        console.error("Error al subir:", err);
+        alert("Error al guardar en el servidor.");
+      }
+    });
+
+  } catch (error) {
+    this.cargandoSubida = false;
+    console.error("Error en la publicación:", error);
+  }
+}
 
 
 irAPublicar() {

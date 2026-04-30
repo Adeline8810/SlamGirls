@@ -76,29 +76,46 @@
   </div>
 
   <!-- PASO 3: PUBLICAR (Pantalla final) -->
-  <div class="step-container publish-screen" *ngIf="pasoActual === 3">
-    <div class="publish-card">
-      <div class="post-header">
+ <!-- PASO 3: PUBLICAR -->
+<div class="step-container publish-screen" *ngIf="pasoActual === 3">
+
+  <div class="publish-card">
+    <!-- Encabezado: Texto a la izquierda, Imagen a la derecha -->
+    <div class="post-header-grid">
+      <div class="text-area-container">
         <textarea [(ngModel)]="descripcionPost" placeholder="Qu'est-ce qui vous preocupe?"></textarea>
-        <div class="cover-upload" (click)="fotoInput.click()">
-          <img [src]="previewPortada || 'assets/img/placeholder.png'">
-          <div class="overlay">📷 Couverture</div>
-          <input #fotoInput type="file" hidden (change)="onPortadaSeleccionada($event)">
-        </div>
+        <div class="char-count">0/300</div>
       </div>
 
-      <!-- Opciones de compartir (decorativo) -->
-      <div class="share-options">
-         <p>Partager automatiquement sur</p>
-         <div class="icons-row"> 🌐 📘 🐦 ✉️ </div>
+      <div class="cover-upload-box" (click)="fotoInput.click()">
+        <img [src]="previewPortada || 'assets/img/placeholder.png'">
+        <div class="cover-label">
+          <i class="camera-icon">📷</i> Couverture
+        </div>
+        <input #fotoInput type="file" hidden (change)="onPortadaSeleccionada($event)">
       </div>
     </div>
 
-    <div class="final-buttons">
-      <button class="btn-save" (click)="guardarBorrador()">Sauvegarder</button>
-      <button class="btn-action-pink" (click)="publicarTodo()">Publier</button>
+    <hr class="divider">
+
+    <!-- Opciones de compartir -->
+    <div class="share-section">
+      <p class="share-title"><i class="share-icon">🔗</i> Partager automatiquement sur</p>
+      <div class="icons-row-fancy">
+        <div class="icon-circle">🌐</div>
+        <div class="icon-circle">📘</div>
+        <div class="icon-circle">🐦</div>
+        <div class="icon-circle">✉️</div>
+      </div>
     </div>
   </div>
+
+  <!-- Botones inferiores fijos -->
+  <div class="final-buttons-container">
+    <button class="btn-save-gray" (click)="guardarBorrador()">Sauvegarder</button>
+    <button class="btn-publish-pink" (click)="publicarTodo()">Publier</button>
+  </div>
+</div>
 
   <div class="overlay-publicando" *ngIf="cargandoSubida">
   <div class="loader-content">

@@ -22,9 +22,13 @@ export class Cantar {
   cancionSeleccionada: any = null;
   pasoActual: number = 1;
 
+  volumenVoz: number = 90;
+  volumenMusica: number = 60;
+ efectoSeleccionado: string = 'Ninguno';
+
   descripcionPost: string = '';
- imagenPortada: File | null = null;
- previewPortada: string | null = null;
+  imagenPortada: File | null = null;
+  previewPortada: string | null = null;
 
 
   constructor(private audioService: AudioKaraokeService, private route: ActivatedRoute,
@@ -89,11 +93,21 @@ async iniciar() {
           console.error("Error al subir:", err);
         }
       });
+
+    this.grabando = false;
+    this.pasoActual = 2; // Saltamos a la pantalla de edición
+
     } catch (error) {
       this.cargandoSubida = false;
       console.error("Error:", error);
     }
   }
+
+
+irAPublicar() {
+  this.pasoActual = 3; // Saltamos a la pantalla final
+}
+
 
 cargarMisCovers() {
     const idUsuario = Number(localStorage.getItem('usuarioId'));

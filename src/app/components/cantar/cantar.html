@@ -1,71 +1,89 @@
-<!-- LA PISTA VA AQUÍ (Invisible) -->
-<audio #pistaAudio src="assets/pistas/pista.mp3" preload="auto"></audio>
-
 <div class="karaoke-screen">
 
-  <!-- 1. Cabecera Minimalista (Icono X + Título) -->
+  <!-- CABECERA COMÚN -->
   <div class="karaoke-header">
     <button class="btn-icon-close" (click)="irAtras()">✕</button>
-  <div class="song-details">
-  <!-- Si cancionSeleccionada tiene portada la usa, si no, usa una por defecto -->
-  <img [src]="cancionSeleccionada?.url_portada || 'assets/img/default-cover.png'"
-       class="mini-portada-circular"
-       (error)="manejarErrorImagen($event)">
-
-  <div class="textos-header">
-    <span class="song-name">{{ cancionSeleccionada?.titulo || 'Cargando...' }}</span>
-    <small class="artist-name">{{ cancionSeleccionada?.artista || 'Desconocido' }}</small>
-  </div>
-</div>
-    <div class="header-spacer"></div>
+    <span class="song-name">{{ cancionSeleccionada?.titulo }}</span>
   </div>
 
-  <!-- 2. Área de Letras (Centrada y limpia) -->
-  <div class="lyrics-container">
-    <div class="lyrics-scroll">
-      <!-- Letra anterior (opcional, en gris suave) -->
+  <!-- PASO 1: GRABACIÓN (Solo se ve si pasoActual es 1) -->
+  <div class="step-container" *ngIf="pasoActual === 1">
+    <div class="lyrics-container">
       <p class="letra-actual">{{ letraActual }}</p>
       <p class="letra-siguiente">{{ letraSiguiente }}</p>
     </div>
-  </div>
 
-  <!-- 3. Panel de Control Inferior -->
-  <div class="bottom-controls">
+    <div class="bottom-controls">
+      <!-- Este texto desaparece cuando grabas gracias al *ngIf="!grabando" -->
+      <div class="mode-selector" *ngIf="!grabando">
+        <span class="active">Solo</span>
+        <span>Duo</span>
+      </div>
 
-    <!-- Selector de modo (Solo decorativo para igualar la imagen) -->
-    <div class="mode-selector" *ngIf="!grabando">
-      <span class="active">Solo</span>
-      <span>Duo</span>
-      <span>Groupe</span>
-    </div>
-
-    <!-- BOTÓN DINÁMICO -->
-    <div class="action-button-container">
       <button *ngIf="!grabando" class="btn-action-pink" (click)="iniciar()">
         Appuyez pour commencer
       </button>
 
       <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
-        ⏹️ Finalizar y Guardar
+        ⏹️ TERMINER
       </button>
     </div>
   </div>
 
-  <!-- 4. Overlay de carga -->
-  <div class="loading-overlay" *ngIf="cargandoSubida">
-    <div class="spinner-palo-rosa"></div>
-    <p>Subiendo tu obra de arte...</p>
-  </div>
+  <!-- PASO 2: AJUSTES Y EFECTOS (Lo nuevo, basado en tu imagen) -->
+  <div class="step-container edit-screen" *ngIf="pasoActual === 2">
+    <div class="preview-mini-video">
+       <img [src]="previewPortada || 'assets/img/default.png'">
+       <button class="btn-change-media">Sélectionner un Média</button>
+    </div>
 
-  <!-- 5. Galería de Covers (Se oculta al grabar para no estorbar) -->
-  <div class="covers-drawer" *ngIf="!grabando && listaDeCantos.length > 0">
-    <h3 class="gallery-title">🎙️ Mis Covers Guardados</h3>
-    <div class="grid-covers">
-      <div *ngFor="let canto of listaDeCantos" class="card-audio">
-        <audio controls class="mini-player">
-          <source [src]="canto.urlAudio" type="audio/wav">
-        </audio>
+    <div class="controls-card">
+      <div class="tabs-edit">
+        <span class="active">Modifier</span>
+        <span>Modèles</span>
       </div>
+
+      <div class="sliders-container">
+        <div class="slider-row">
+          <span>Voix</span>
+          <input type="range" [(ngModel)]="volumenVoz" min="0" max="100">
+          <span>{{volumenVoz}}</span>
+        </div>
+        <div class="slider-row">
+          <span>Musique</span>
+          <input type="range" [(ngModel)]="volumenMusica" min="0" max="100">
+          <span>{{volumenMusica}}</span>
+        </div>
+      </div>
+
+      <!-- BOTÓN PARA IR AL SIGUIENTE PASO -->
+      <button class="btn-action-pink" (click)="irAPublicar()">Suivant</button>
     </div>
   </div>
+
+  <!-- PASO 3: PUBLICAR (Pantalla final) -->
+  <div class="step-container publish-screen" *ngIf="pasoActual === 3">
+    <div class="publish-card">
+      <div class="post-header">
+        <textarea [(ngModel)]="descripcionPost" placeholder="Qu'est-ce qui vous preocupe?"></textarea>
+        <div class="cover-upload" (click)="fotoInput.click()">
+          <img [src]="previewPortada || 'assets/img/placeholder.png'">
+          <div class="overlay">📷 Couverture</div>
+          <input #fotoInput type="file" hidden (change)="onPortadaSeleccionada($event)">
+        </div>
+      </div>
+
+      <!-- Opciones de compartir (decorativo) -->
+      <div class="share-options">
+         <p>Partager automatiquement sur</p>
+         <div class="icons-row"> 🌐 📘 🐦 ✉️ </div>
+      </div>
+    </div>
+
+    <div class="final-buttons">
+      <button class="btn-save" (click)="guardarBorrador()">Sauvegarder</button>
+      <button class="btn-action-pink" (click)="publicarTodo()">Publier</button>
+    </div>
+  </div>
+
 </div>

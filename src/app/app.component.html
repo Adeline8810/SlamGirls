@@ -1,7 +1,7 @@
 <router-outlet></router-outlet>
 
 <!-- La barra debe estar aquí abajo, solita -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" *ngIf="mostrarMenu">
   <div class="nav-item" routerLink="/salle">
     <span>🏠</span>
     <p>Salle</p>

@@ -25,15 +25,22 @@ export class AppComponent implements OnInit { // Ahora sí reconoce el OnInit
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      // 1. Verificamos si existe usuario en el storage
-      const usuarioLogueado = localStorage.getItem('usuario');
+    // Obtenemos la ruta actual
+    const rutaActual = event.urlAfterRedirects;
 
-      // 2. Verificamos que NO estemos en el login o registro
-      const esRutaPublica = event.url === '/' || event.url === '/login' || event.url.includes('registro');
+    // 1. Páginas donde NO debe verse el menú (Añade aquí las de login/registro)
+    const esLoginORegistro = rutaActual === '/' ||
+                             rutaActual === '/login' ||
+                             rutaActual.includes('registro');
 
-      // Solo mostramos si hay usuario Y no estamos en el inicio
-      this.mostrarMenu = !!usuarioLogueado && !esRutaPublica;
-    });
+    // 2. Verificamos si realmente hay un ID de usuario en el storage
+    const tieneUsuario = !!localStorage.getItem('usuarioId');
+
+    // SOLO se muestra si NO es login/registro Y tiene usuario
+    this.mostrarMenu = tieneUsuario && !esLoginORegistro;
+
+    console.log('¿Mostrar menú?:', this.mostrarMenu, 'Ruta:', rutaActual);
+  });
   }
 
 

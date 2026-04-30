@@ -122,7 +122,18 @@ onFileSelected(event: any) {
   const file = event.target.files[0];
   if (file) {
     this.audioNombre = file.name;
-    // Aquí cargarías el audio al reproductor para el siguiente paso
+
+    // Crear el objeto de audio si no existe
+    if (!this.audioElement) {
+      this.audioElement = new Audio();
+    }
+
+    // Crear una URL temporal para el archivo seleccionado
+    const url = URL.createObjectURL(file);
+    this.audioElement.src = url;
+    this.audioElement.load();
+
+    console.log("Audio cargado y listo para sonar");
   }
 }
 
@@ -144,32 +155,41 @@ if (!this.letraBruta || !this.audioNombre) {
 }
 
 comenzarTap() {
+if (!this.audioElement) {
+    alert("Primero selecciona un archivo de audio");
+    return;
+  }
+
   this.estaSincronizando = true;
   this.indiceFrase = 0;
 
-  // 3. Reproducir el audio
-  if (this.audioElement) {
-    this.audioElement.play();
-    this.tiempoInicio = Date.now();
-  }
+  // Reiniciar el audio al principio y sonar
+  this.audioElement.currentTime = 0;
+  this.audioElement.play().catch(error => {
+    console.error("Error al reproducir audio:", error);
+    alert("Haz clic en la pantalla antes de iniciar para permitir el audio");
+  });
 }
 
 marcarTiempo() {
-  if (!this.estaSincronizando || this.indiceFrase >= this.frases.length) return;
+  if (!this.estaSincronizando || !this.audioElement) return;
 
-  // Guardar el segundo exacto donde hiciste TAP
-  const tiempoActual = this.audioElement ? this.audioElement.currentTime : 0;
-  this.frases[this.indiceFrase].tiempo = tiempoActual;
+  const tiempoActual = this.audioElement.currentTime;
 
-  console.log(`Frase ${this.indiceFrase} sincronizada en: ${tiempoActual}s`);
+  // Guardamos el tiempo en el array de frases
+  if (this.indiceFrase < this.frases.length) {
+    this.frases[this.indiceFrase].tiempo = tiempoActual;
+    console.log(`Marcado: ${this.frases[this.indiceFrase].texto} -> ${tiempoActual}s`);
+    this.indiceFrase++;
+  }
 
-  this.indiceFrase++;
-
-  if (this.indiceFrase === this.frases.length) {
-    this.finalizarSincronizacion();
+  // Si terminamos, detenemos el audio
+  if (this.indiceFrase >= this.frases.length) {
+    this.audioElement.pause();
+    this.estaSincronizando = false;
+    alert("¡Sincronización terminada! Ya puedes generar el JSON.");
   }
 }
-
 
 
 }

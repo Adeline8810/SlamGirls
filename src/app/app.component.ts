@@ -8,8 +8,27 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HttpClientModule,RouterModule,CommonModule], // Agrega HttpClientModule aquí
-  template: `<router-outlet></router-outlet>`,
-  styles: []
+  template: `
+    <router-outlet></router-outlet>
+
+    <nav class="bottom-nav">
+       <div class="nav-item" routerLink="/profile">Moi</div>
+       <div class="nav-item" routerLink="/buscar-cancion">Cantar</div>
+    </nav>
+  `,
+  styles: [`
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      height: 60px;
+      background: white;
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: space-around;
+      z-index: 9999;
+    }
+  `]
 })
 export class AppComponent implements OnInit { // Ahora sí reconoce el OnInit
    selectedTabNav: string = 'moi';

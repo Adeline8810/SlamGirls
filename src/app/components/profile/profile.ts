@@ -28,6 +28,7 @@ export class Profile implements OnInit {
   // VARIABLES REALES (Igual que en tu Slam)
   usuarioId!: number;
   nombreUsuario: string = '';
+  perfilInfo: any = null;
 
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
   videoSeleccionado = signal<any>(null);
@@ -63,6 +64,9 @@ export class Profile implements OnInit {
       this.videos = res;
     });
   }
+ if (this.usuarioActual.idPublico) {
+    this.cargarDatosDelBackend(this.usuarioActual.idPublico);
+}
 }
 
   verVideo(video: any) {
@@ -152,4 +156,17 @@ onVideoSeleccionado(event: any) {
   changeTab(tab: string) {
     this.selectedTab = tab;
   }
+
+cargarDatosDelBackend(idPub: string) {
+  this.usuarioService.obtenerPerfilCompleto(idPub).subscribe({
+    next: (data) => {
+      this.perfilInfo = data;
+      this.nombreUsuario = data.nombre;
+      console.log('Datos recibidos:', data);
+    },
+    error: (err) => console.error('Error al traer perfil:', err)
+  });
+}
+
+
 }

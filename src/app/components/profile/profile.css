@@ -1,9 +1,10 @@
 /* --- CONTENEDOR PRINCIPAL --- */
 .profile-container {
   position: relative;
-  background: #111;
+  background: #eccdde;
   min-height: 100vh;
   overflow-x: hidden;
+  color: #333;
 }
 /* --- HEADER Y AVATAR --- */
 .header {
@@ -297,4 +298,35 @@ position: relative;
 
 .btn-cantar-overlay:active {
     transform: scale(0.9);
+}
+.tab-content {
+  background: white;
+  padding: 10px 0;
+}
+
+.personal-info-header {
+  padding: 15px;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+  display: flex;
+  justify-content: space-between;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 15px;
+  font-size: 14px;
+  border-bottom: 1px solid #f8f0f1; /* Línea rosa muy tenue */
+}
+
+.info-label {
+  color: #999; /* Gris para la etiqueta izquierda */
+}
+
+.info-value {
+  color: #333;
+  text-align: right;
+  font-weight: 400;
 }

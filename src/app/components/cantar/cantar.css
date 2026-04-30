@@ -296,3 +296,36 @@
   border: 1px solid #333;
   animation: slideUp 0.4s ease-out;
 }
+
+.preview-mini-video {
+  display: flex;
+  flex-direction: column; /* Alinea los hijos (imagen y botón) verticalmente */
+  align-items: center;    /* Centra horizontalmente ambos elementos */
+  justify-content: center;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.main-preview-img {
+  width: 220px;          /* Ajusta según el tamaño de tu imagen circular */
+  height: 220px;
+  border-radius: 50%;    /* Mantiene la forma circular */
+  object-fit: cover;
+  margin-bottom: 15px;   /* Espacio entre la imagen y el botón */
+  border: 3px solid #ff0050; /* Opcional: un borde para que resalte */
+}
+
+.btn-change-media {
+  background: rgba(255, 255, 255, 0.2); /* Fondo semi-transparente */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-change-media:hover {
+  background: rgba(255, 255, 255, 0.3);
+}

@@ -1,23 +1,31 @@
 /* --- CONTENEDOR PRINCIPAL --- */
 .profile-container {
   position: relative;
-  background: #111;
+  background: #f8f9fa; /* Fondo claro para que resalten las cards */
   min-height: 100vh;
   overflow-x: hidden;
+  font-family: sans-serif;
 }
-/* --- HEADER Y AVATAR --- */
+
+/* --- HEADER Y AVATAR (ESTILO STARMAKER) --- */
 .header {
+  position: relative;
   background: white;
-  padding: 20px;
+  padding: 40px 20px 20px 20px;
   text-align: center;
+  /* El fondo difuminado que mencionaste */
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.7), white), url('/assets/img/default-bg.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .avatar-container {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   margin: 0 auto;
   cursor: pointer;
+  z-index: 10;
 }
 
 .avatar {
@@ -25,32 +33,33 @@
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ff4d6d;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.edit-overlay {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  font-size: 10px;
-  padding: 2px 0;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  opacity: 0;
-  transition: 0.3s;
+/* --- NUEVO: ESCUDOS Y LOGOS (Las bolitas de la imagen) --- */
+.escudos-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 15px 0;
 }
 
-.avatar-container:hover .edit-overlay {
-  opacity: 1;
+.escudo-mini {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 
 /* --- ESTADÍSTICAS --- */
 .stats {
   display: flex;
   justify-content: space-around;
-  margin-top: 15px;
+  margin: 20px 0;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
 }
 
 .stats div {
@@ -60,93 +69,166 @@
 .stats strong {
   display: block;
   font-size: 18px;
+  color: #222;
 }
 
-/* --- NAVEGACIÓN (TABS) --- */
+.stats span {
+  font-size: 12px;
+  color: #888;
+}
+
+/* --- NAVEGACIÓN (TABS ACTUALIZADO) --- */
 .tabs {
   display: flex;
   overflow-x: auto;
   background: white;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .tabs button {
   flex: 1;
-  padding: 12px;
+  padding: 15px 5px;
   border: none;
   background: transparent;
   cursor: pointer;
   outline: none;
+  color: #888;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .tabs button.active {
-  border-bottom: 3px solid #ff4d6d;
-  font-weight: bold;
-}
-
-/* --- CUADRÍCULA DE VIDEOS (LA CLAVE) --- */
-.video-grid {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important; /* 3 columnas */
-  gap: 10px;
-  padding: 20px;
-  min-height: 400px; /* Altura para asegurar visibilidad */
-  background: #f0f0f0;
-}
-
-/* --- BOTÓN DE SUBIDA --- */
-.upload-box {
-  border: 2px dashed #ca43a4 !important;
-  display: flex !important;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  background: #ffffff !important; /* Cambiado de rojo a blanco para que se vea profesional */
-  cursor: pointer;
-  border-radius: 10px;
-}
-
-.plus-circle {
-  font-size: 50px;
   color: #ff4d6d;
-  font-weight: bold;
+  border-bottom: 3px solid #ff4d6d;
 }
 
-/* --- TARJETAS DE VIDEO --- */
-.video-card {
+/* --- GRILLA DE CONTENIDO (ESTILO 3x3) --- */
+.video-grid, .grid-covers {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 2px; /* Espacio mínimo como en StarMaker */
+  padding: 2px;
+  background: #fff;
+}
+
+/* --- TARJETAS DE VIDEO Y COVERS --- */
+.video-card, .card-audio {
   width: 100%;
-  height: 200px;
-  background: #000; /* Fondo negro para los videos */
-  border-radius: 10px;
-  overflow: hidden;
+  aspect-ratio: 1 / 1; /* Cuadrados perfectos */
+  background: #000;
   position: relative;
+  overflow: hidden;
 }
 
-
+.thumb-wrapper {
+  width: 100%;
+  height: 100%;
+}
 
 .video-preview {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 10px;
 }
 
-.video-card p {
+/* Títulos sobre la imagen */
+.video-title, .video-card p {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: rgba(0,0,0,0.6);
+  background: linear-gradient(transparent, rgba(0,0,0,0.8));
   color: white;
   padding: 5px;
-  font-size: 12px;
+  font-size: 10px;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* --- OTROS --- */
-.plus-icon {
-  font-size: 40px;
+/* Botón Cantar sobre el video */
+.btn-cantar-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 99;
+  background-color: rgba(216, 167, 177, 0.9); /* Tu Palo Rosa */
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* --- BOTÓN DE SUBIDA (Integrado en la grilla) --- */
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9 !important;
+  border: 1px dashed #ddd !important;
+}
+
+.plus-circle {
+  font-size: 30px;
   color: #ff4d6d;
+}
+
+/* --- BOTÓN FLOTANTE (MICRÓFONO PRINCIPAL) --- */
+.btn-float-mic {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 55px;
+  height: 55px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 77, 109, 0.4);
+  z-index: 999;
+  border: none;
+  color: white;
+  font-size: 24px;
+}
+
+/* --- ESTADOS DE CARGA (TUS ESTILOS ORIGINALES) --- */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  z-index: 5;
+}
+
+.spinner {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #ff4081;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .timer-icon {
@@ -160,141 +242,7 @@
   to { transform: rotate(360deg); }
 }
 
-.upload-box {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.upload-box:hover {
-  background-color: #f0f0f0;
-}
-
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Fondo oscuro suave */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%; /* Para que sea redondo como el avatar */
-  z-index: 5;
-}
-
-/* El círculo animado */
-.spinner {
-  width: 30px;
-  height: 30px;
-  border: 3px solid #f3f3f3;
-  border-top: 3px solid #ff4081; /* Color rosa/fucsia para que resalte */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-.loading-text {
-  color: white;
-  font-size: 10px;
-  margin-top: 4px;
-  font-weight: bold;
-}
-
-/* Efecto borroso para la foto de fondo */
 .blur {
   filter: blur(3px);
   opacity: 0.7;
-}
-
-/* Animación de rotación */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Asegúrate que el avatar-container tenga position relative */
-.avatar-container {
-  position: relative;
-  cursor: pointer;
-  width: 100px; /* Ajusta al tamaño de tu diseño */
-  height: 100px;
-  margin: 0 auto;
-}
-
-.header-bg {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 300px;
-  z-index: 1; /* Fondo nivel 1 */
-  filter: blur(20px) brightness(0.5);
-  background-size: cover;
-}
-
-.profile-content {
-  position: relative;
-  z-index: 2; /* Contenido nivel 2 */
-  padding-top: 150px; /* Bajamos el contenido para que se vea el fondo */
-  text-align: center;
-}
-
-.tab-content-container {
-  position: relative;
-  z-index: 3; /* Videos nivel 3 para asegurar que reciban el clic */
-  width: 100%;
-  min-height: 500px;
-}
-
-.video-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none; /* El clic lo captura la video-card, no el video directamente */
-}
-
-.video-card {
-  cursor: pointer;
-  z-index: 10;
-}
-
-.btn-escenario {
-    background-color: #d8a7b1;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    margin-top: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-}
-
-.thumb-wrapper {
-position: relative;
-    width: 100%;
-    height: 150px; /* Ajusta según tu diseño */
-    overflow: hidden;
-    border-radius: 10px;
-    background: #000;
-}
-/* Fuerza al botón a salir arriba de todo con el color palo rosa */
-.btn-cantar-overlay {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    z-index: 99; /* Para que esté por encima del video */
-    background-color: #d8a7b1; /* Palo Rosa */
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-
-.btn-cantar-overlay:active {
-    transform: scale(0.9);
 }

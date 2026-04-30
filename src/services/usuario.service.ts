@@ -61,4 +61,25 @@ obtenerHistorial(emisorId: number, receptorId: number): Observable<any[]> {
   return this.http.get<any[]>(`${this.api}/chat/historial?emisorId=${emisorId}&receptorId=${receptorId}`);
 }
 
+
+obtenerPerfilCompleto(idPublico: string): Observable<any> {
+    return this.http.get<any>(`${this.api}/perfil-completo/${idPublico}`);
+  }
+
+  /**
+   * Actualiza los datos adicionales del perfil (Bio, Signo, Sexo, Cumpleaños)
+   */
+  completarPerfil(idInterno: number, datosExtra: any): Observable<any> {
+    return this.http.put(`${this.api}/completar-perfil/${idInterno}`, datosExtra, {
+      responseType: 'text'
+    });
+  }
+
+  /**
+   * Busca usuarios por nombre para la lista de búsqueda
+   */
+  buscarUsuarios(termino: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.api}/buscar-usuarios?nombre=${termino}`);
+  }
+
 }

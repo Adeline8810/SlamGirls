@@ -50,11 +50,16 @@ export class AudioKaraokeService {
     fuentePista.connect(this.audioContext.destination);
 
     // 6. Iniciar RecordRTC con la mezcla
-    this.mediaRecorder = new RecordRTC(destinoGrabacion.stream, {
+   /* this.mediaRecorder = new RecordRTC(destinoGrabacion.stream, {
       type: 'audio',
       mimeType: 'audio/wav',
       recorderType: RecordRTC.StereoAudioRecorder
-    });
+    });*/
+    this.mediaRecorder = new RecordRTC(destinoGrabacion.stream, {
+    type: 'audio',
+    mimeType: 'audio/webm', // Mucho más ligero que wav
+    numberOfAudioChannels: 1
+});
 
     this.mediaRecorder.startRecording();
     elementoAudio.play();

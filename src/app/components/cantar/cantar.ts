@@ -44,6 +44,7 @@ export class Cantar implements OnInit, AfterViewInit {
   porcentajeSubida: number = 0;
   tiempoPublicacion: number = 0;
   intervaloTimer: any;
+  publicadoConExito: boolean = false;
 
   constructor(
     private audioService: AudioKaraokeService,
@@ -145,7 +146,10 @@ indiceActivo: number = 0;
 
     } catch (error) {
       this.detenerCarga();
-      console.error("Error en la publicación:", error);
+      this.cargandoSubida = false;
+      clearInterval(this.intervaloTimer);
+      console.error("El servidor rechazó el archivo:", error);
+      alert("El archivo es muy pesado o la conexión es inestable.");
     }
   }
 
@@ -158,7 +162,10 @@ indiceActivo: number = 0;
     clearInterval(this.intervaloTimer);
     setTimeout(() => {
       this.cargandoSubida = false;
-      alert("¡Tu cover se ha publicado con éxito! 🎤");
+      setTimeout(() => {
+    this.cargandoSubida = false;
+    this.publicadoConExito = true;
+  }, 500);
       this.router.navigate(['/buscar']); // Asegúrate que esta ruta existe
     }, 1000);
   }

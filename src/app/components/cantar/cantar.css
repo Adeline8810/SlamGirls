@@ -577,3 +577,85 @@ audio {
   padding: 12px 30px;
   border-radius: 25px;
 }
+
+
+/* Contenedor que cubre toda la pantalla */
+.success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(5px);
+}
+
+.success-card {
+  background: #1a1a1a;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid #333;
+  width: 90%;
+  max-width: 400px;
+  animation: slideUp 0.4s ease-out;
+}
+
+.success-card h2 { color: #ff2d55; margin: 20px 0 10px; }
+.success-card p { color: #aaa; margin-bottom: 30px; }
+
+/* Botones profesionales */
+.success-actions { display: flex; flex-direction: column; gap: 10px; }
+
+.btn-primary {
+  background: #ff2d55;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: white;
+  border: 1px solid #444;
+  padding: 12px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+/* Animación del Checkmark */
+.checkmark-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 4px solid #4caf50;
+  position: relative;
+  margin: 0 auto;
+}
+
+.checkmark-draw:after {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 40px;
+  width: 20px;
+  height: 40px;
+  border: solid #4caf50;
+  border-width: 0 4px 4px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  animation: check 0.8s ease forwards;
+}
+
+@keyframes check {
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

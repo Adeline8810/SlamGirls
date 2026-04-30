@@ -443,3 +443,44 @@
   font-weight: bold;
   box-shadow: 0 4px 15px rgba(255, 45, 85, 0.3);
 }
+
+/* Arreglo para la pantalla de Publicando (Imagen que enviaste) */
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Esto da espacio vital entre cada elemento */
+  text-align: center;
+}
+
+.loader-content h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.porcentaje-texto {
+  font-size: 3rem;
+  font-weight: bold;
+  line-height: 1; /* Evita que el 100% empuje otros textos */
+  margin: 10px 0;
+}
+
+/* Arreglo para la pantalla de Éxito (Letras verdes) */
+.success-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 30px;
+}
+
+.success-card h2 {
+  color: #2ecc71; /* Verde éxito */
+  margin-bottom: 5px;
+}
+
+.success-card p {
+  margin: 0;
+  color: #ccc;
+}

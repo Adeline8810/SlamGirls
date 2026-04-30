@@ -12,6 +12,7 @@ import { Profile } from './components/profile/profile';
 import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Chat } from './components/chat/chat';
 import { Cantar } from './components/cantar/cantar';
+import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent },
@@ -27,5 +28,6 @@ export const routes: Routes = [
   { path: 'perfil/:username', component: PerfilAjeno },
   { path: 'chat/:username', component: Chat },
   { path: 'cantar', component: Cantar },
+  { path: 'buscar-cancion', component: BuscarCancion },
   { path: '**', redirectTo: '' }
 ];

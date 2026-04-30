@@ -10,7 +10,7 @@ import { UsuarioService } from '../../../services/usuario.service'; // Usaremos 
   standalone: true,
   imports: [CommonModule, RouterModule]
 })
-export class BuscarCancionComponent {
+export class BuscarCancion {
 
   resultados: any[] = [];
   buscando: boolean = false;

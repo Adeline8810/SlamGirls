@@ -1,17 +1,20 @@
 import { Component, OnInit } from '@angular/core'; // Te faltaba el OnInit aquí
-import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Importaciones necesarias
 import { Router } from '@angular/router';
+import { RouterOutlet, RouterModule } from '@angular/router'; // Importa RouterModule
+import { CommonModule } from '@angular/common'; // Importa CommonModule
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterModule, HttpClientModule], // Agrega HttpClientModule aquí
+  imports: [RouterOutlet, HttpClientModule,RouterModule,CommonModule], // Agrega HttpClientModule aquí
   template: `<router-outlet></router-outlet>`,
   styles: []
 })
 export class AppComponent implements OnInit { // Ahora sí reconoce el OnInit
    selectedTabNav: string = 'moi';
+   notificaciones = 5;
+
   constructor(private http: HttpClient,private router: Router) {}
 
   navegar(ruta: string) {

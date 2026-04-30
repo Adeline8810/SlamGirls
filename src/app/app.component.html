@@ -1,33 +1,29 @@
+<router-outlet></router-outlet>
+
+<!-- La barra debe estar aquí abajo, solita -->
 <nav class="bottom-nav">
-  <!-- MOI / YO (Lleva al Perfil) -->
-  <div class="nav-item" (click)="navegar('/profile')" [class.active]="selectedTabNav === 'moi'">
-    <i>👤</i>
-    <span>Moi</span>
+  <div class="nav-item" routerLink="/salle">
+    <span>🏠</span>
+    <p>Salle</p>
   </div>
 
-  <!-- DISCUSSION / CHAT -->
-  <div class="nav-item" (click)="navegar('/discussion')" [class.active]="selectedTabNav === 'chat'">
-    <div class="badge">99+</div>
-    <i>💬</i>
-    <span>Discussion</span>
+  <div class="nav-item" routerLink="/discussion">
+    <div class="badge">12</div>
+    <span>💬</span>
+    <p>Chat</p>
   </div>
 
-  <!-- BOTÓN CENTRAL: CHANTER (Cantar) -->
-  <div class="nav-item central" (click)="navegar('/buscar-cancion')">
-    <div class="mic-circle">
-      <span style="font-size: 25px;">🎤</span>
-    </div>
+  <div class="nav-item central" routerLink="/buscar-cancion">
+    <div class="mic-circle">🎤</div>
   </div>
 
-  <!-- MOMENT -->
-  <div class="nav-item" (click)="navegar('/moment')" [class.active]="selectedTabNav === 'moment'">
-    <i>🌎</i>
-    <span>Moment</span>
+  <div class="nav-item" routerLink="/moment">
+    <span>🌎</span>
+    <p>Moment</p>
   </div>
 
-  <!-- SALLE / SALA -->
-  <div class="nav-item" (click)="navegar('/salle')" [class.active]="selectedTabNav === 'salle'">
-    <i>🏠</i>
-    <span>Salle</span>
+  <div class="nav-item" routerLink="/profile">
+    <span>👤</span>
+    <p>Moi</p>
   </div>
 </nav>

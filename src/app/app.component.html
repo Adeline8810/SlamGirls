@@ -1,1 +1,35 @@
-<router-outlet></router-outlet>
+<!-- El contenido de la página cambia aquí arriba -->
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- BARRA FIJA ABAJO -->
+<nav class="bottom-nav">
+  <div class="nav-item" routerLink="/salle" routerLinkActive="active">
+    <i class="icon-salle"></i>
+    <span>Salle</span>
+  </div>
+
+  <div class="nav-item" routerLink="/moment" routerLinkActive="active">
+    <i class="icon-moment"></i>
+    <span>Moment</span>
+  </div>
+
+  <!-- Botón Central: CANTAR (Chanter) -->
+  <div class="nav-item central" routerLink="/buscar-cancion">
+    <div class="mic-circle">
+      <i class="icon-mic"></i>
+    </div>
+  </div>
+
+  <div class="nav-item" routerLink="/discussion" routerLinkActive="active">
+    <div class="badge" *ngIf="notificaciones > 0">{{notificaciones}}</div>
+    <i class="icon-chat"></i>
+    <span>Discussion</span>
+  </div>
+
+  <div class="nav-item" routerLink="/profile" routerLinkActive="active">
+    <i class="icon-moi"></i>
+    <span>Moi</span>
+  </div>
+</nav>

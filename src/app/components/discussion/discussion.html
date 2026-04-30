@@ -1,0 +1,20 @@
+<div class="chat-page">
+  <div class="chat-header">
+    <h3>Messages</h3>
+  </div>
+
+  <div class="chat-list">
+    <!-- Ejemplo de un chat -->
+    <div class="chat-item" *ngFor="let chat of chats">
+      <img [src]="chat.foto" class="chat-avatar">
+      <div class="chat-info">
+        <div class="chat-top">
+          <span class="chat-name">{{chat.nombre}}</span>
+          <span class="chat-date">{{chat.fecha}}</span>
+        </div>
+        <p class="chat-preview">{{chat.ultimoMensaje}}</p>
+      </div>
+      <div class="unread-dot" *ngIf="chat.noLeidos > 0">{{chat.noLeidos}}</div>
+    </div>
+  </div>
+</div>

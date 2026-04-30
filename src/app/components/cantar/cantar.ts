@@ -117,50 +117,63 @@ indiceActivo: number = 0;
     this.pasoActual = 2; // Ir a edición
   }
 
-  async publicarTodo() {
-    this.cargandoSubida = true;
-    this.porcentajeSubida = 0;
-    this.tiempoPublicacion = 0;
+ async publicarTodo() {
+  // 1. Verificación Crítica de Usuario
+  const idUsuarioStr = localStorage.getItem('usuarioId');
+  const idUsuario = idUsuarioStr ? Number(idUsuarioStr) : null;
 
-    this.intervaloTimer = setInterval(() => {
-      this.tiempoPublicacion++;
-    }, 1000);
-
-    try {
-      const idUsuario = Number(localStorage.getItem('usuarioId'));
-      if (!idUsuario) {
-        this.detenerCarga();
-        alert("Inicia sesión de nuevo.");
-        return;
-      }
-
-      const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
-
-      peticion.subscribe({
-        next: (event: any) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            this.porcentajeSubida = Math.round((100 * event.loaded) / event.total);
-          } else if (event.type === HttpEventType.Response) {
-            this.porcentajeSubida = 100;
-            this.finalizarProcesoExitoso();
-          }
-        },
-        error: (err) => {
-          this.detenerCarga();
-          console.error("Error al subir:", err);
-          alert("Error al guardar en el servidor.");
-        }
-      });
-
-    } catch (error) {
-      this.detenerCarga();
-      this.cargandoSubida = false;
-      clearInterval(this.intervaloTimer);
-      console.error("El servidor rechazó el archivo:", error);
-      alert("El archivo es muy pesado o la conexión es inestable.");
-    }
+  if (!idUsuario || isNaN(idUsuario)) {
+    this.detenerCarga();
+    alert("Sesión expirada. Por favor, inicia sesión nuevamente.");
+    this.router.navigate(['/login']); // Redirección controlada
+    return;
   }
 
+  // 2. Preparar Interfaz de Carga
+  this.cargandoSubida = true;
+  this.porcentajeSubida = 0;
+  this.tiempoPublicacion = 0;
+  this.errorCarga = false; // Limpiamos errores previos
+
+  this.intervaloTimer = setInterval(() => {
+    this.tiempoPublicacion++;
+  }, 1000);
+
+  try {
+    // 3. Llamada al Servicio (Asegúrate que retorne un Observable)
+    const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
+
+    peticion.subscribe({
+      next: (event: any) => {
+        if (event.type === HttpEventType.UploadProgress) {
+          // Actualización de barra de progreso
+          this.porcentajeSubida = Math.round((100 * event.loaded) / event.total);
+        } else if (event.type === HttpEventType.Response) {
+          // Éxito total
+          this.porcentajeSubida = 100;
+          this.finalizarProcesoExitoso();
+        }
+      },
+      error: (err) => {
+        this.detenerCarga();
+        console.error("Error en la subida:", err);
+
+        // Si el error es de autenticación (401 o 403), al login
+        if (err.status === 401 || err.status === 403) {
+          alert("Tu sesión ha caducado.");
+          this.router.navigate(['/login']);
+        } else {
+          alert("No se pudo guardar en el servidor. Revisa tu conexión.");
+        }
+      }
+    });
+
+  } catch (error) {
+    this.detenerCarga();
+    console.error("Fallo al procesar audio:", error);
+    alert("Hubo un problema al procesar el archivo de audio.");
+  }
+}
   private detenerCarga() {
     clearInterval(this.intervaloTimer);
     this.cargandoSubida = false;
@@ -168,6 +181,8 @@ indiceActivo: number = 0;
 
   finalizarProcesoExitoso() {
     clearInterval(this.intervaloTimer);
+    this.cargandoSubida = false;
+    this.publicadoConExito = true;
     setTimeout(() => {
       this.cargandoSubida = false;
       setTimeout(() => {
@@ -191,22 +206,24 @@ indiceActivo: number = 0;
     }
   }
 
-  obtenerDetalleCancion(id: string) {
-    const url = `https://backend-ruth-slam.onrender.com/api/videos/detalle/${id}`;
-    this.http.get(url).subscribe({
-      next: (data: any) => {
-        this.cancionSeleccionada = data;
-        if (this.pistaAudio) {
-          this.pistaAudio.nativeElement.src = data.url_pista;
-          this.pistaAudio.nativeElement.load();
-        }
-      },
-      error: (err) => {
-        this.cancionSeleccionada = { titulo: "Error de servidor", url_pista: "" };
-        alert("El servidor está despertando. Intenta de nuevo en unos segundos.");
-      }
-    });
-  }
+obtenerDetalleCancion(id: string) {
+  const url = `https://backend-ruth-slam.onrender.com/api/videos/detalle/${id}`;
+  this.despertandoServidor = true;
+  this.errorCarga = false;
+
+  this.http.get(url, { responseType: 'json' }).subscribe({
+    next: (data: any) => {
+      this.cancionSeleccionada = data;
+      this.despertandoServidor = false;
+      // ... resto de tu lógica
+    },
+    error: (err) => {
+      this.despertandoServidor = false;
+      this.errorCarga = true;
+      console.error("Servidor despertando o error de ruta");
+    }
+  });
+}
 
   onPortadaSeleccionada(event: any) {
     const file = event.target.files[0];

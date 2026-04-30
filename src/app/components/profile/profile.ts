@@ -1,114 +1,155 @@
-import { Component, OnInit, signal } from '@angular/core';
-import { RespuestaService } from '../../../services/respuesta.service';
+import { Component, OnInit , signal} from '@angular/core';
+import { RespuestaService } from '../../../services/respuesta.service'; // Ajusta la ruta a tu proyecto
 import { UsuarioService } from '../../../services/usuario.service';
 import { VideoDetail } from '../../components/video-detail/video-detail';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+interface Video {
+  id: number;
+  titulo: string;
+  urlVideo?: string;
+  thumbnail?: string;
+}
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.html',
   styleUrls: ['./profile.css'],
-  standalone: true,
-  imports: [VideoDetail, CommonModule, RouterModule]
+  standalone: true, // <--- ESTO ES IMPORTANTE EN ANGULAR 20
+  imports: [VideoDetail, CommonModule,RouterModule] // <--- Ahora ya no debería estar en rojo
 })
 export class Profile implements OnInit {
-  // --- SE MANTIENE TU LÓGICA ANTERIOR ---
-  selectedTab: string = 'covers'; // Cambiamos el default a 'covers' (estilo StarMaker)
-  usuarioActual: any = {};
-  videos: any[] = [];
+  selectedTab: string = 'videos'; // Por defecto en videos como pediste
+  usuarioActual: any = {}; // ✅ Declarado para que el HTML no de error
+  videos: any[] = []; // Aquí guardaremos los videos de la DB
   cargandoVideo: boolean = false;
   cargandoFoto: boolean = false;
+
+  // VARIABLES REALES (Igual que en tu Slam)
   usuarioId!: number;
-  fotoUrlServidor: string = 'assets/img/default.png';
+  nombreUsuario: string = '';
+
+  fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
   videoSeleccionado = signal<any>(null);
 
-  // --- NUEVAS VARIABLES PARA EL DISEÑO STARMAKER ---
-  perfilCompleto: any = {
-    idPublico: '',
-    insignias: [],
-    escudos: [],
-    bio: '',
-    signo: '',
-    fotoPortada: 'assets/img/default-portada.jpg',
-    totalFollowers: 0,
-    totalFollowing: 0
-  };
+  constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,) {}
 
-  constructor(
-    private respuestaService: RespuestaService,
-    private usuarioService: UsuarioService,
-  ) {}
+ ngOnInit(): void {
+  const u = localStorage.getItem('usuario');
+  if (u) {
+    this.usuarioActual = JSON.parse(u);
+    this.usuarioId = this.usuarioActual.id;
 
-  ngOnInit(): void {
-    const u = localStorage.getItem('usuario');
-    if (u) {
-      this.usuarioActual = JSON.parse(u);
-      this.usuarioId = this.usuarioActual.id;
+    // 1. CARGAR DATOS DEL USUARIO DESDE EL SERVIDOR ✅
+    // Esto recupera la fotoUrl que guardamos en la tabla 'usuarios'
+    this.usuarioService.getOne(this.usuarioId).subscribe({
+      next: (userServer) => {
+        this.usuarioActual = userServer;
 
-      // 1. CARGAR DATOS BASE (Se mantiene tu getOne)
-      this.usuarioService.getOne(this.usuarioId).subscribe({
-        next: (userServer) => {
-          this.usuarioActual = userServer;
-          if (userServer.fotoUrl) this.fotoUrlServidor = userServer.fotoUrl;
-
-          // 2. NUEVO: CARGAR PERFIL EXTENDIDO (Insignias, ID Público, etc.)
-          // Si el usuario ya tiene su ID público guardado, lo usamos
-          if (userServer.idPublico) {
-            this.cargarDatosExtra(userServer.idPublico);
-          }
+        // Si el usuario tiene foto en la DB, la usamos; si no, dejamos la de por defecto
+        if (userServer.fotoUrl) {
+          this.fotoUrlServidor = userServer.fotoUrl;
         }
-      });
 
-      // 3. MANTENEMOS TU LÓGICA DE VIDEOS/COVERS
-      this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
-        this.videos = res;
+        // Actualizamos el localStorage para que el resto de la app tenga la foto nueva
+        localStorage.setItem('usuario', JSON.stringify(userServer));
+        console.log("Datos del usuario actualizados desde el servidor");
+      },
+      error: (err) => console.error("Error al traer datos del usuario", err)
+    });
+
+    // 2. MANTENEMOS TU LÓGICA DE VIDEOS (Sin cambios) ✅
+    this.respuestaService.obtenerVideos(this.usuarioId).subscribe(res => {
+      this.videos = res;
+    });
+  }
+}
+
+  verVideo(video: any) {
+    this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar
+  }
+
+  onSubirMedia(event: any) {
+    const file = event.target.files[0];
+    if (file && this.usuarioId) {
+      // ✅ .toString() para arreglar el error de la imagen
+      this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
+        next: (nuevoVideo) => {
+          this.videos.unshift(nuevoVideo); // Lo añade a la vista inmediatamente
+          console.log("Video guardado en tabla 'videos'");
+        }
       });
     }
   }
 
-  // MÉTODO NUEVO PARA TRAER LO DE LA BASE DE DATOS NUEVA
-  cargarDatosExtra(idPublico: string) {
-    this.usuarioService.obtenerPerfilCompleto(idPublico).subscribe({
-      next: (data) => {
-        this.perfilCompleto = data;
-      },
-      error: (err) => console.error("Aún no hay datos extra para este perfil", err)
-    });
+
+  // MÉTODO EDITAR/SUBIR FOTO (Copiado de tu lógica de Slam)
+ onFotoSeleccionada(ev: any) {
+  const f: File = ev.target.files && ev.target.files[0];
+  if (!f) return;
+
+  // Verificamos el ID en la consola
+  console.log("Intentando subir foto para el usuario ID:", this.usuarioId);
+
+  if (!this.usuarioId) {
+    alert("Error: El ID del usuario no existe. Recarga la página.");
+    return;
   }
 
-  // --- TUS MÉTODOS DE SUBIDA (NO SE TOCAN, SIGUEN IGUAL) ---
-  verVideo(video: any) { this.videoSeleccionado.set(video); }
-
-  onFotoSeleccionada(ev: any) {
-    // ... Tu código original de subida de foto se queda EXACTAMENTE igual ...
-    const f: File = ev.target.files && ev.target.files[0];
-    if (!f || !this.usuarioId) return;
-    this.cargandoFoto = true;
-    this.usuarioService.subirFotoPerfil(f, this.usuarioId.toString()).subscribe({
-      next: (url) => {
-        this.fotoUrlServidor = url;
-        this.cargandoFoto = false;
-        alert("Foto actualizada.");
-      },
-      error: () => this.cargandoFoto = false
-    });
+  // Si funcionaba antes, vamos a bajar el límite a 2MB para asegurar éxito
+  if (f.size > 2 * 1024 * 1024) {
+    alert("Esta foto es muy grande. Para probar que el sistema aún funciona, elige una de menos de 2MB.");
+    return;
   }
 
-  onVideoSeleccionado(event: any) {
-    // ... Tu código original de subida de video se queda EXACTAMENTE igual ...
-    const file = event.target.files[0];
-    if (!file) return;
-    this.cargandoVideo = true;
-    this.respuestaService.subirVideo(file, this.usuarioId.toString()).subscribe({
-      next: (res) => {
-        this.videos.unshift(res);
-        this.cargandoVideo = false;
-        alert("¡Video subido!");
-      },
-      error: () => this.cargandoVideo = false
-    });
+  this.cargandoFoto = true;
+
+  this.usuarioService.subirFotoPerfil(f, this.usuarioId.toString()).subscribe({
+    next: (url) => {
+      console.log("Subida exitosa:", url);
+      this.fotoUrlServidor = url;
+      this.cargandoFoto = false;
+      alert("¡Sigue funcionando! Foto actualizada.");
+    },
+    error: (err) => {
+      this.cargandoFoto = false;
+      console.error("Error capturado:", err);
+      alert("El servidor de Render está tardando en responder. Intenta en 1 minuto.");
+    }
+  });
+}
+
+onVideoSeleccionado(event: any) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const pesoEnMB = file.size / 1024 / 1024;
+  if (pesoEnMB > 50) {
+    alert(`El video es muy pesado (${pesoEnMB.toFixed(2)}MB). Máximo permitido: 50MB`);
+    return;
   }
 
-  changeTab(tab: string) { this.selectedTab = tab; }
+  const idSeguro = this.usuarioId ? this.usuarioId.toString() : "1";
+
+  this.cargandoVideo = true; // <-- 2. Activar reloj
+  console.log("Subiendo video...");
+
+  this.respuestaService.subirVideo(file, idSeguro).subscribe({
+    next: (res) => {
+      // 3. Forzar refresco de URL para que el video abra siempre
+      res.urlVideo = res.urlVideo + '?t=' + Date.now();
+
+      this.videos.unshift(res);
+      this.cargandoVideo = false; // <-- 4. Desactivar reloj
+      alert("¡Video subido con éxito!");
+    },
+    error: (err) => {
+      this.cargandoVideo = false;
+      alert("Error en el servidor");
+    }
+  });
+}
+  changeTab(tab: string) {
+    this.selectedTab = tab;
+  }
 }

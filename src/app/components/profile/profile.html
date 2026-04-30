@@ -1,86 +1,78 @@
-<div class="starmaker-profile">
-  <!-- CABECERA (La parte visual que ya definimos) -->
-  <div class="header-section" [style.backgroundImage]="'url(' + perfilCompleto.fotoPortada + ')'">
-    <div class="header-overlay">
-      <div class="avatar-wrapper" (click)="!cargandoFoto && fileInput.click()">
-        <img [src]="fotoUrlServidor" [class.blur]="cargandoFoto" alt="Avatar">
-        <div class="level-badge">Lv.12</div>
-        <input #fileInput type="file" (change)="onFotoSeleccionada($event)" hidden accept="image/*">
-      </div>
+<div class="profile-container">
+  <div class="header">
+    <div class="avatar-container" (click)="!cargandoFoto && fileInput.click()">
 
-      <div class="user-meta">
-        <h2>{{ usuarioActual.nombre }}</h2>
-        <p class="public-id">ID: {{ perfilCompleto.idPublico || usuarioId }}</p>
-
-        <!-- Escudos y Tags (Lo nuevo) -->
-        <div class="escudos-container">
-           <img *ngFor="let esc of perfilCompleto.escudos" [src]="esc" class="escudo-mini">
+    @if (cargandoFoto) {
+        <div class="loading-overlay">
+          <div class="spinner"></div>
+          <span class="loading-text">Cargando...</span>
         </div>
-      </div>
+      }
+
+      <img class="avatar"
+           [src]="fotoUrlServidor"
+           [class.blur]="cargandoFoto"
+           alt="avatar">
+
+      <div class="edit-overlay" *ngIf="!cargandoFoto">Editar</div>
     </div>
+    <input #fileInput type="file" (change)="onFotoSeleccionada($event)" hidden accept="image/*">
+
+    <h2>{{ nombreUsuario }}</h2>
+    <p>ID: {{ usuarioId }}</p>
+    <div class="stats"></div>
   </div>
 
-  <!-- NAVEGACIÓN (Tabs estilo StarMaker) -->
-  <div class="content-tabs">
-    <span [class.active]="selectedTab === 'moment'" (click)="changeTab('moment')">Moment</span>
-    <span [class.active]="selectedTab === 'covers'" (click)="changeTab('covers')">Couverture</span>
-    <span [class.active]="selectedTab === 'videos'" (click)="changeTab('videos')">Vidéos</span>
+  <div class="tabs">
+    <button (click)="changeTab('homepage')" [class.active]="selectedTab === 'homepage'">Homepage</button>
+    <button (click)="changeTab('moment')" [class.active]="selectedTab === 'moment'">Moment</button>
+    <button (click)="changeTab('likes')" [class.active]="selectedTab === 'likes'">Likes</button>
+    <button (click)="changeTab('videos')" [class.active]="selectedTab === 'videos'">Videos</button>
+    <button (click)="changeTab('collab')" [class.active]="selectedTab === 'collab'">Album</button>
   </div>
 
-  <!-- CONTENIDO DINÁMICO -->
-  <div class="tab-body">
-    @switch (selectedTab) {
+  @switch (selectedTab) {
+    @case ('homepage') { <div class="tab-content"><h3>🏠 Homepage</h3></div> }
+    @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
-      <!-- PESTAÑA COVERS (Tus grabaciones de audio) -->
-      @case ('covers') {
-        <div class="mis-covers-seccion">
-          <div class="grid-covers-starmaker">
-            <div *ngFor="let canto of listaDeCantos" class="card-audio-sm">
-               <div class="cover-thumb">
-                 <img src="assets/img/mic-bg.png">
-                 <span class="score-rank">A++</span>
-               </div>
-               <audio controls class="mini-player">
-                 <source [src]="canto.urlAudio" type="audio/wav">
-               </audio>
-               <p class="canto-titulo">Grabación #{{canto.id}}</p>
-            </div>
+    @case ('videos') {
+      <div class="video-grid">
+        <div class="video-card upload-box" (click)="!cargandoVideo && videoInput.click()">
+          <div class="plus-circle">
+            @if (cargandoVideo) {
+              <span class="timer-icon">⏳</span> } @else {
+              <span>+</span> }
           </div>
+          <p>{{ cargandoVideo ? 'Subiendo...' : 'Subir nuevo video' }}</p>
+          <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
         </div>
-      }
 
-      <!-- PESTAÑA VIDEOS (Tu lógica de Cloudinary) -->
-      @case ('videos') {
-        <div class="video-grid">
-          <!-- Botón de subir que ya tenías -->
-          <div class="video-card upload-box" (click)="!cargandoVideo && videoInput.click()">
-            <div class="plus-circle">
-              {{ cargandoVideo ? '⏳' : '+' }}
+        @for (video of videos; track video.id) {
+          <div class="video-card" (click)="verVideo(video)">
+            <div class="thumb-wrapper">
+              <video [src]="video.urlVideo" class="video-preview" muted preload="auto"></video>
+              <!-- Botón mejorado -->
+    <button type="button" class="btn-cantar-overlay" [routerLink]="['/cantar']" (click)="$event.stopPropagation()">
+        🎤 Cantar
+    </button>
             </div>
-            <input #videoInput type="file" (change)="onVideoSeleccionado($event)" hidden accept="video/*">
+            <p class="video-title">{{ video.titulo }}</p>
           </div>
-
-          @for (video of videos; track video.id) {
-            <div class="video-card" (click)="verVideo(video)">
-              <video [src]="video.urlVideo" class="video-preview" muted></video>
-              <button class="btn-cantar-overlay" [routerLink]="['/buscar-cancion']">🎤 Cantar</button>
-              <p class="video-title">{{ video.titulo }}</p>
-            </div>
+        } @empty {
+          @if (!cargandoVideo) {
+            <p>Aún no has subido ningún video.</p>
           }
-        </div>
-      }
-
-      @case ('moment') { <div class="empty-state">📸 Momentos próximamente...</div> }
+        }
+      </div>
     }
-  </div>
 
-  <!-- BOTÓN FLOTANTE (Micrófono para ir a buscar canción) -->
-  <button class="btn-float-mic" [routerLink]="['/buscar-cancion']">
-    <img src="assets/icons/mic-white.png" alt="Cantar">
-  </button>
+    @case ('collab') { <div class="tab-content"><h3>🖼️ Álbum</h3></div> }
+  }
+
+  @if (videoSeleccionado()) {
+    <app-video-detail
+      [video]="videoSeleccionado()"
+      (close)="videoSeleccionado.set(null)">
+    </app-video-detail>
+  }
 </div>
-
-<!-- DETALLE DE VIDEO (Modal que ya tenías) -->
-@if (videoSeleccionado()) {
-  <app-video-detail [video]="videoSeleccionado()" (close)="videoSeleccionado.set(null)"></app-video-detail>
-}

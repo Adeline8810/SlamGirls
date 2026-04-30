@@ -3,32 +3,44 @@
   <div class="search-header">
     <button class="back-btn" (click)="irAtras()">←</button>
     <div class="search-input-wrapper">
-      <input type="text" placeholder="Buscar canciones o artistas..." (input)="buscar($event)">
-      <span class="clear-icon">×</span>
+      <input
+        type="text"
+        placeholder="Buscar canciones o artistas..."
+        [(ngModel)]="terminoBusqueda"
+        (input)="filtrar()">
+      <span class="clear-icon" *ngIf="terminoBusqueda" (click)="terminoBusqueda = ''; filtrar()">×</span>
     </div>
   </div>
 
-  <!-- Lista de resultados (Estilo StarMaker) -->
+  <!-- Lista de resultados Dinámica -->
   <div class="songs-list">
-    <!-- Canción principal destacada -->
-    <div class="song-item featured">
-      <img src="assets/img/portada-ejemplo.jpg" class="song-cover">
-      <div class="song-info">
-        <h4>Luz de Luna</h4>
-        <p>Sailor Moon • 22.0k grabaciones</p>
-        <span class="points-tag">Points</span>
-      </div>
-      <button class="btn-chanter" (click)="seleccionarCancion('luz-de-luna')">CHANTER</button>
-    </div>
 
-    <!-- Otras canciones -->
-    <div class="song-item">
-      <img src="assets/img/portada-2.jpg" class="song-cover-mini">
-      <div class="song-info">
-        <h4>Pedazo de Luna</h4>
-        <p>Andre Silvia</p>
+    <!-- Este bloque se repite por cada canción en tu base de datos -->
+    @for (cancion of cancionesFiltradas; track cancion.id) {
+      <div class="song-item" [class.featured]="$first">
+        <!-- Imagen desde Cloudinary o una por defecto -->
+        <img [src]="cancion.urlImagen || 'assets/img/disco_cover.png'" class="song-cover">
+
+        <div class="song-info">
+          <h4>{{ cancion.titulo }}</h4>
+          <p>{{ cancion.artista }} • {{ cancion.grabaciones || 0 }} grabaciones</p>
+          <span class="points-tag" *ngIf="cancion.tienePuntaje">Points</span>
+        </div>
+
+        <!-- Botón que lleva al Karaoke con la data real -->
+        <button
+          [class]=" $first ? 'btn-chanter' : 'btn-chanter-mini' "
+          (click)="irACantar(cancion)">
+          CHANTER
+        </button>
       </div>
-      <button class="btn-chanter-mini" (click)="seleccionarCancion('pedazo-luna')">CHANTER</button>
-    </div>
+    } @empty {
+      <!-- Si no hay resultados -->
+      <div class="empty-state">
+        <p>No se encontraron canciones.</p>
+        <button class="btn-primary" (click)="irAlEditor()">¡Sube una tú mismo!</button>
+      </div>
+    }
+
   </div>
-</div><p>buscar-cancion works!</p>
+</div>

@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { CancionService } from '../../services/cancion.service';
+import { Router } from '@angular/router';
 
 @Component({
 selector: 'app-editor-canciones',
@@ -46,7 +48,7 @@ export class EditorCanciones {
   errorEditor: string | null = null;
   cargandoServidor: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router: Router) {}
 
   // --- MÉTODOS LÓGICOS ---
 
@@ -105,7 +107,7 @@ export class EditorCanciones {
     formData.append('letra_json', JSON.stringify(this.lineasParaSincronizar));
 
     // Ejemplo de envío a tu API en Render
-    this.http.post('https://tu-backend.onrender.com/api/canciones/nueva', formData)
+    this.http.post('https://backend-ruth-slam.onrender.com/api/canciones/nueva', formData)
       .subscribe({
         next: (res) => {
           alert("¡Canción guardada con éxito!");
@@ -190,6 +192,76 @@ marcarTiempo() {
     alert("¡Sincronización terminada! Ya puedes generar el JSON.");
   }
 }
+
+
+generarJSON() {
+  // 1. Preparamos el objeto final (puedes añadir título o artista aquí)
+  const dataFinal = {
+    nombre: this.audioNombre,
+    letras: this.frases.map(f => ({
+      tiempo: f.tiempo,
+      texto: f.texto
+    }))
+  };
+
+  // 2. Lo convertimos a una cadena de texto JSON
+  const blob = new Blob([JSON.stringify(dataFinal, null, 2)], { type: 'application/json' });
+  const url = window.URL.createObjectURL(blob);
+
+  // 3. Creamos un link invisible para forzar la descarga
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${this.audioNombre.split('.')[0]}.json`; // Nombre del archivo igual al audio
+  a.click();
+
+  // 4. Limpiamos
+  window.URL.revokeObjectURL(url);
+
+  alert("Archivo JSON guardado. ¡Ya puedes usarlo en tu Karaoke!");
+}
+
+
+async publicarCancionNueva() {
+  this.cargandoServidor = true; // Usamos el nombre que declaraste arriba
+
+  // 1. Crear el objeto con la letra sincronizada
+  const infoLetra = {
+    nombre: this.audioNombre,
+    letras: this.frases
+  };
+
+  // 2. Preparar el FormData
+  const formData = new FormData();
+
+  // CORRECCIÓN: Usamos 'archivoSeleccionado' que es donde guardas el File en cargarArchivo()
+  if (this.archivoSeleccionado) {
+    formData.append('audio', this.archivoSeleccionado);
+  } else {
+    alert("No hay archivo de audio seleccionado");
+    this.cargandoServidor = false;
+    return;
+  }
+
+  formData.append('letra_json', JSON.stringify(infoLetra));
+  formData.append('titulo', this.audioNombre.replace('.mp3', '') || 'Nueva Canción');
+
+  // 3. Enviar a tu servidor real de Render
+  this.http.post('https://backend-ruth-slam.onrender.com/api/canciones/nueva', formData)
+    .subscribe({
+      next: (res) => {
+        alert("¡Canción publicada con éxito!");
+        this.cargandoServidor = false;
+        this.router.navigate(['/buscar-cancion']);
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Error al subir a la nube");
+        this.cargandoServidor = false;
+      }
+    });
+}
+
+
 
 
 }

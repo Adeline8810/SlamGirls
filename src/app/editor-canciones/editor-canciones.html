@@ -64,5 +64,15 @@
   </div>
 </div>
 
+<div class="result-screen" *ngIf="indiceFrase >= frases.length">
+  <button class="btn-download" (click)="generarJSON()">
+    💾 Descargar Archivo JSON
+  </button>
+
+  <div class="preview-json">
+    <pre>{{ frases | json }}</pre> <!-- Esto es para que veas los tiempos que marcaste -->
+  </div>
+</div>
+
 
 </div>

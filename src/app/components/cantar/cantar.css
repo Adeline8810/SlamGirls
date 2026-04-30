@@ -659,3 +659,33 @@ audio {
   from { transform: translateY(50px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+.karaoke-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  height: 60px;
+  background: rgba(0,0,0,0.8);
+  position: relative;
+  z-index: 10;
+}
+
+.song-info {
+  font-weight: bold;
+  color: #ff2d55;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #555; /* Gris si está offline */
+}
+
+.status-dot.online {
+  background: #00ff00; /* Verde si despertó */
+  box-shadow: 0 0 8px #00ff00;
+}

@@ -2,9 +2,16 @@
 <div class="karaoke-screen">
 
   <!-- CABECERA COMÚN -->
-  <div class="karaoke-header">
-    <button class="btn-icon-close" (click)="irAtras()">✕</button>
-    <span class="song-name">{{ cancionSeleccionada?.titulo }}</span>
+<div class="karaoke-header">
+    <div class="close-btn" (click)="irAtras()">✕</div>
+    <!-- Solo mostramos el título si la canción cargó, sino mostramos "Cargando..." -->
+    <div class="song-info">
+      {{ cancionSeleccionada ? cancionSeleccionada.titulo : 'Sincronizando...' }}
+    </div>
+    <div class="status-dot" [class.online]="!despertandoServidor"></div>
+  </div>
+  <div class="error-toast" *ngIf="errorCarga">
+    Inténtalo de nuevo, el estudio está ocupado.
   </div>
 
   <!-- PASO 1: GRABACIÓN (Solo se ve si pasoActual es 1) -->

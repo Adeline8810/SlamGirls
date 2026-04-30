@@ -46,6 +46,14 @@ export class Cantar implements OnInit, AfterViewInit {
   intervaloTimer: any;
   publicadoConExito: boolean = false;
 
+  // Esta controla el punto verde/gris
+despertandoServidor: boolean = false;
+
+// Esta controla si aparece el mensaje de error de abajo
+errorCarga: boolean = false;
+
+
+
   constructor(
     private audioService: AudioKaraokeService,
     private route: ActivatedRoute,

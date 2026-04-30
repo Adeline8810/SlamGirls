@@ -1,4 +1,4 @@
-<audio #pistaAudio preload="auto"></audio>
+<audio #pistaAudio preload="auto" (canplay)="errorCarga = false"></audio>
 <div class="karaoke-screen">
 
   <!-- CABECERA COMÚN -->
@@ -27,12 +27,15 @@
 
   <!-- CONTROLES -->
   <div class="bottom-controls" *ngIf="pasoActual === 1">
-    <button *ngIf="!grabando" class="btn-action-pink" (click)="iniciar()">
-      Appuyez pour commencer
+   <button *ngIf="!grabando"
+            class="btn-action-pink"
+            (click)="iniciar()"
+            [disabled]="despertandoServidor">
+      {{ despertandoServidor ? 'Sincronizando estudio...' : 'Appuyez pour commencer' }}
     </button>
 
     <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
-      ⏹ TERMINER
+      <span class="recording-dot"></span> ⏹ TERMINER
     </button>
   </div>
 

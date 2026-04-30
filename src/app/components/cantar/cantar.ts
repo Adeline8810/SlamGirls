@@ -87,23 +87,23 @@ indiceActivo: number = 0;
     // La carga inicial se maneja en obtenerDetalleCancion para asegurar que existan los datos
   }
 
-  async iniciar() {
-    const audioEl = this.pistaAudio?.nativeElement;
-    if (!audioEl) {
-      console.error("No se encontró el elemento audio");
-      return;
-    }
+async iniciar() {
+  const audioEl = this.pistaAudio?.nativeElement;
 
-    try {
-      this.grabando = true;
-      this.pasoActual = 1;
-      await this.audioService.iniciarGrabacionConPista(audioEl);
-    } catch (error) {
-      console.error("Error al iniciar:", error);
-      this.grabando = false;
-      alert("No se pudo acceder al micrófono o a la pista de audio.");
-    }
+  if (!audioEl || !audioEl.src || audioEl.src.includes('undefined')) {
+    alert("La pista de audio aún no está lista. Espera un segundo.");
+    return;
   }
+
+  try {
+    this.grabando = true;
+    // El servicio debe manejar el play del audio interno
+    await this.audioService.iniciarGrabacionConPista(audioEl);
+  } catch (error) {
+    this.grabando = false;
+    alert("Error de micrófono: Asegúrate de dar permisos en el navegador.");
+  }
+}
 
   async finalizarCanto() {
     this.grabando = false;
@@ -211,16 +211,22 @@ obtenerDetalleCancion(id: string) {
   this.despertandoServidor = true;
   this.errorCarga = false;
 
-  this.http.get(url, { responseType: 'json' }).subscribe({
+  this.http.get(url).subscribe({
     next: (data: any) => {
       this.cancionSeleccionada = data;
       this.despertandoServidor = false;
-      // ... resto de tu lógica
+
+      // CRÍTICO: Asignar la URL de la música al elemento audio
+      if (this.pistaAudio && data.url_musica) {
+        this.pistaAudio.nativeElement.src = data.url_musica;
+        this.pistaAudio.nativeElement.load();
+        this.vincularProgresoAudio(); // Activar el seguimiento de letra
+      }
     },
     error: (err) => {
       this.despertandoServidor = false;
       this.errorCarga = true;
-      console.error("Servidor despertando o error de ruta");
+      console.error("Error al cargar canción:", err);
     }
   });
 }

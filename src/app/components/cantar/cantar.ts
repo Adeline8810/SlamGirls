@@ -120,39 +120,38 @@ async iniciar() {
   }
 
  async publicarTodo() {
-  // 1. Verificación Crítica de Usuario
+  // 1. Verificación Crítica de Usuario (Se mantiene igual)
   const idUsuarioStr = localStorage.getItem('usuarioId');
   const idUsuario = idUsuarioStr ? Number(idUsuarioStr) : null;
 
   if (!idUsuario || isNaN(idUsuario)) {
     this.detenerCarga();
     alert("Sesión expirada. Por favor, inicia sesión nuevamente.");
-    this.router.navigate(['/login']); // Redirección controlada
+    this.router.navigate(['/login']);
     return;
   }
 
-  // 2. Preparar Interfaz de Carga
+  // 2. Preparar Interfaz de Carga (Se mantiene igual)
   this.cargandoSubida = true;
   this.porcentajeSubida = 0;
   this.tiempoPublicacion = 0;
-  this.errorCarga = false; // Limpiamos errores previos
+  this.errorCarga = false;
 
   this.intervaloTimer = setInterval(() => {
     this.tiempoPublicacion++;
   }, 1000);
 
   try {
-    // 3. Llamada al Servicio (Asegúrate que retorne un Observable)
     const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
 
     peticion.subscribe({
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
-          // Actualización de barra de progreso
           this.porcentajeSubida = Math.round((100 * event.loaded) / event.total);
         } else if (event.type === HttpEventType.Response) {
-          // Éxito total
           this.porcentajeSubida = 100;
+
+          // AQUÍ SE DISPARA EL ÉXITO
           this.finalizarProcesoExitoso();
         }
       },
@@ -160,7 +159,6 @@ async iniciar() {
         this.detenerCarga();
         console.error("Error en la subida:", err);
 
-        // Si el error es de autenticación (401 o 403), al login
         if (err.status === 401 || err.status === 403) {
           alert("Tu sesión ha caducado.");
           this.router.navigate(['/login']);
@@ -181,19 +179,33 @@ async iniciar() {
     this.cargandoSubida = false;
   }
 
-  finalizarProcesoExitoso() {
+ finalizarProcesoExitoso() {
+  // 1. Limpiamos el intervalo del cronómetro inmediatamente
+  if (this.intervaloTimer) {
     clearInterval(this.intervaloTimer);
-    this.cargandoSubida = false;
-    this.publicadoConExito = true;
-    setTimeout(() => {
-      this.cargandoSubida = false;
-      setTimeout(() => {
-    this.cargandoSubida = false;
-    this.publicadoConExito = true;
-  }, 500);
-      this.router.navigate(['/buscar']); // Asegúrate que esta ruta existe
-    }, 1000);
   }
+
+  // 2. Quitamos la pantalla de "Publicando" y activamos el Check de éxito
+  this.cargandoSubida = false;
+  this.publicadoConExito = true;
+
+  // 3. Esperamos un momento para que el usuario vea el aspa verde antes de irse
+  setTimeout(() => {
+    // Aseguramos que los estados de carga estén apagados
+    this.cargandoSubida = false;
+
+    // Redirigimos a la pantalla de buscar canciones
+    // Nota: Asegúrate de que en tu app-routing.module.ts la ruta sea exactamente 'buscar'
+    this.router.navigate(['/buscar']);
+
+    // Opcional: Reiniciamos el estado de éxito después de navegar
+    // para que no aparezca el modal la próxima vez que entre
+    setTimeout(() => {
+      this.publicadoConExito = false;
+    }, 500);
+
+  }, 2000); // Le damos 2 segundos para que disfrute su éxito
+}
 
   irAPublicar() {
     this.pasoActual = 3;

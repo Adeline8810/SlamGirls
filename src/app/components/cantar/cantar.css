@@ -538,3 +538,34 @@
   background: #2c2e3e;
   color: #ccc;
 }
+
+.step-container {
+  max-width: 450px;       /* Ancho ideal para que parezca una app en PC */
+  margin: 0 auto;        /* Centra el contenedor horizontalmente */
+  background: #000;      /* Fondo negro para el contenedor */
+  min-height: 100vh;     /* Que ocupe todo el alto */
+  position: relative;
+  box-shadow: 0 0 50px rgba(0,0,0,0.5); /* Sombra para dar profundidad en PC */
+}
+
+/* Opcional: Cambia el color de fondo de la página fuera del contenedor */
+body {
+  background-color: #1a1a1a; /* Un gris oscuro para que resalte la "app" central */
+  margin: 0;
+  padding: 0;
+}
+
+.main-preview-img {
+  width: 250px;          /* Tamaño fijo para que no se estire en PC */
+  height: 250px;
+  object-fit: cover;     /* Evita que se deforme la cara */
+  border-radius: 50%;
+  display: block;
+  margin: 20px auto;     /* Centra la imagen solita */
+}
+.btn-next {
+  width: 80%;            /* No el 100%, para que respire a los lados */
+  max-width: 300px;      /* Límite de ancho */
+  margin: 30px auto;     /* Centrado */
+  display: block;
+}

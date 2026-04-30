@@ -30,5 +30,7 @@ export const routes: Routes = [
   { path: 'cantar/:id', component: Cantar },
 
   { path: 'buscar-cancion', component: BuscarCancion },
+
+   { path: 'tienda', component: Tienda },
   { path: '**', redirectTo: '' }
 ];

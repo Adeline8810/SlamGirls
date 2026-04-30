@@ -9,7 +9,7 @@ import { Profile } from './components/profile/profile';
 import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Cantar } from './components/cantar/cantar';
 
-
+import { EditorCanciones } from './editor-canciones/editor-canciones';
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin', pathMatch: 'full' },
@@ -64,6 +64,8 @@ const routes: Routes = [
 { path: 'perfil/:username', component: PerfilAjeno },
 
 { path: 'cantar', component: Cantar },
+
+{ path: 'editor-canciones', component: EditorCanciones },
 
   { path: '**', redirectTo: '/admin' }
 

@@ -76,17 +76,25 @@
       }
     @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
-  @case ('couverture') {
-  <div class="video-grid"> <!-- Usamos tu clase de grilla para que se vea igual -->
+@case ('couverture') {
+  <div class="video-grid profile-scroll-container"> <!-- Añadimos clase para scroll -->
     @for (canto of misCantos; track canto.id) {
       <div class="video-card card-audio-sm">
-        <!-- Imagen por defecto de disco o música para covers -->
-        <img src="assets/img/disco_cover.png" class="video-preview">
+
+        <!-- Imagen de fondo con respaldo por si no carga -->
+        <img src="assets/img/disco_cover.png"
+             class="video-preview"
+             onerror="this.src='assets/img/placeholder.png'">
 
         <div class="card-overlay">
-          <p>Cover #{{canto.id}}</p>
-          <!-- Reproductor pequeño -->
-          <audio [src]="canto.urlAudio" controls class="mini-player"></audio>
+          <div class="info-top">
+             <p class="cover-id">Cover #{{canto.id}}</p>
+          </div>
+
+          <!-- Contenedor del reproductor -->
+          <div class="player-wrapper">
+             <audio [src]="canto.urlAudio" controls class="mini-player"></audio>
+          </div>
         </div>
       </div>
     } @empty {

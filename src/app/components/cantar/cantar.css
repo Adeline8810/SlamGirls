@@ -469,3 +469,30 @@ audio {
   border-radius: 25px;
   padding: 15px 30px;
 }
+
+
+.porcentaje-texto {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff2d55;
+  margin: 10px 0;
+}
+
+.progress-bar-container {
+  width: 100%;
+  max-width: 300px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  margin: 20px auto;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff2d55, #ff718b);
+  width: 0%; /* Se controla desde el TS */
+  transition: width 0.3s ease; /* Para que el avance sea fluido */
+  box-shadow: 0 0 10px #ff2d55;
+}

@@ -87,4 +87,18 @@
     </div>
   </div>
 
+  <div class="overlay-publicando" *ngIf="cargandoSubida">
+  <div class="loader-content">
+    <div class="spinner-karaoke"></div>
+    <h2>Publicando...</h2>
+    <div class="porcentaje-texto">{{ porcentajeSubida }}%</div>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" [style.width.%]="porcentajeSubida"></div>
+    </div>
+
+    <p>Subiendo audio y mezclando efectos</p>
+  </div>
+</div>
+
 </div>

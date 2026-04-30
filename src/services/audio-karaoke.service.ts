@@ -59,20 +59,28 @@ export class AudioKaraokeService {
     this.mediaRecorder.startRecording();
     elementoAudio.play();
   }
+async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
+  return new Promise((resolve) => {
+    if (!this.mediaRecorder || this.mediaRecorder.getState() === 'stopped') return;
 
-  async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
-    return new Promise((resolve) => {
-      if (!this.mediaRecorder || this.mediaRecorder.getState() === 'stopped') return;
+    this.mediaRecorder.stopRecording(() => {
+      const audioBlob = this.mediaRecorder.getBlob();
+      const formData = new FormData();
+      formData.append('archivo', audioBlob, 'grabacion.wav');
+      formData.append('usuarioId', usuarioId.toString());
 
-      this.mediaRecorder.stopRecording(() => {
-        const audioBlob = this.mediaRecorder.getBlob();
-        const formData = new FormData();
-        formData.append('archivo', audioBlob, 'grabacion.wav');
-        formData.append('usuarioId', usuarioId.toString());
-        resolve(this.http.post(`${this.api}/subir`, formData));
-      });
+      // --- CAMBIO AQUÍ ---
+      // Añadimos el objeto de configuración como tercer parámetro del post
+      resolve(
+        this.http.post(`${this.api}/subir`, formData, {
+          reportProgress: true,
+          observe: 'events'
+        })
+      );
+      // -------------------
     });
-  }
+  });
+}
 
   obtenerMisCantos(usuarioId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.api}/usuario/${usuarioId}`);

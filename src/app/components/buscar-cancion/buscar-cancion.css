@@ -18,3 +18,122 @@
   font-weight: bold;
   font-size: 0.8rem;
 }
+
+.search-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding: 10px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Barra de búsqueda */
+.search-header {
+  background: white;
+  border-radius: 20px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.search-header input {
+  border: none;
+  flex: 1;
+  margin: 0 10px;
+  outline: none;
+  font-size: 16px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 20px;
+  padding: 15px 5px;
+  color: #888;
+  overflow-x: auto;
+}
+
+.tabs .active {
+  color: #333;
+  font-weight: bold;
+  border-bottom: 2px solid #ff4d6d;
+}
+
+/* Sección de canciones */
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 5px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Tarjeta de canción */
+.song-card {
+  display: flex;
+  align-items: center;
+  padding: 12px 5px;
+  border-bottom: 1px solid #eee;
+  background: white;
+}
+
+.song-image img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.song-info {
+  flex: 1;
+  padding: 0 12px;
+}
+
+.song-info .title {
+  margin: 0;
+  font-size: 16px;
+  color: #222;
+}
+
+.badges {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 4px 0;
+}
+
+.badge-points {
+  border: 1px solid #ffba08;
+  color: #ffba08;
+  font-size: 10px;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+.artist-name {
+  color: #888;
+  font-size: 13px;
+}
+
+.stats {
+  font-size: 12px;
+  color: #bbb;
+}
+
+/* Botón Chanter */
+.btn-chanter {
+  background: white;
+  border: 1.5px solid #ff4d6d;
+  color: #ff4d6d;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-chanter:hover {
+  background: #ff4d6d;
+  color: white;
+}

@@ -19,6 +19,11 @@ export class BuscarCancion implements OnInit {
   cancionesFiltradas: any[] = [];
   terminoBusqueda: string = '';
   cargando: boolean = false;
+  filtro: string = '';
+  canciones: any[] = [];
+
+  criterioBusqueda: string = '';
+
 
   constructor(
     private cancionService: CancionService, // Inyectamos el servicio de canciones
@@ -30,20 +35,20 @@ export class BuscarCancion implements OnInit {
     this.cargarCanciones();
   }
 
-  cargarCanciones() {
-    this.cargando = true;
-    this.cancionService.obtenerTodas().subscribe({
-      next: (data) => {
-        this.cancionesOriginales = data;
-        this.cancionesFiltradas = data;
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error("Error cargando canciones:", err);
-        this.cargando = false;
-      }
-    });
-  }
+ cargarCanciones() {
+  this.cargando = true;
+  this.cancionService.obtenerTodas().subscribe({
+    next: (data) => {
+      this.cancionesOriginales = data;
+      this.cancionesFiltradas = data;
+      this.cargando = false;
+    },
+    error: (err) => {
+      console.error("Error cargando canciones:", err);
+      this.cargando = false;
+    }
+  });
+}
 
   // Filtra localmente mientras el usuario escribe
   filtrar() {

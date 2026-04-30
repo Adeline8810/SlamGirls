@@ -1,46 +1,51 @@
 <div class="search-container">
-  <!-- Barra de búsqueda superior -->
+  <!-- Barra de búsqueda -->
   <div class="search-header">
-    <button class="back-btn" (click)="irAtras()">←</button>
-    <div class="search-input-wrapper">
-      <input
-        type="text"
-        placeholder="Buscar canciones o artistas..."
-        [(ngModel)]="terminoBusqueda"
-        (input)="filtrar()">
-      <span class="clear-icon" *ngIf="terminoBusqueda" (click)="terminoBusqueda = ''; filtrar()">×</span>
-    </div>
+    <i class="fas fa-search"></i>
+    <!-- Conectamos con tu variable terminoBusqueda y tu método filtrar() -->
+    <input type="text"
+           [(ngModel)]="terminoBusqueda"
+           (input)="filtrar()"
+           placeholder="Luz De Luna">
+    <i class="fas fa-times" (click)="terminoBusqueda = ''; filtrar()"></i>
   </div>
 
-  <!-- Lista de resultados Dinámica -->
-  <div class="songs-list">
+  <div class="tabs">
+    <span class="active">Tous</span>
+    <span>Chansons</span>
+    <span>Artiste</span>
+  </div>
 
-    <!-- Este bloque se repite por cada canción en tu base de datos -->
-    @for (cancion of cancionesFiltradas; track cancion.id) {
-      <div class="song-item" [class.featured]="$first">
-        <!-- Imagen desde Cloudinary o una por defecto -->
-        <img [src]="cancion.urlImagen || 'assets/img/disco_cover.png'" class="song-cover">
+  <div class="results-section">
+    <div class="section-title">
+      <span>Chansons</span>
+      <small>TOUT VOIR ></small>
+    </div>
 
-        <div class="song-info">
-          <h4>{{ cancion.titulo }}</h4>
-          <p>{{ cancion.artista }} • {{ cancion.grabaciones || 0 }} grabaciones</p>
-          <span class="points-tag" *ngIf="cancion.tienePuntaje">Points</span>
+    <!-- Usamos cancionesFiltradas que es lo que maneja tu método filtrar() -->
+    <div class="song-card" *ngFor="let cancion of cancionesFiltradas">
+      <div class="song-image">
+        <!-- Si no tienes urlPortada, ponemos una de disco por defecto -->
+        <img [src]="cancion.urlPortada || 'assets/default-cover.jpg'" alt="Portada">
+      </div>
+
+      <div class="song-info">
+        <h4 class="title">{{ cancion.titulo }}</h4>
+        <div class="badges">
+          <span class="badge-points">Points</span>
+          <span class="artist-name">{{ cancion.artista }}</span>
         </div>
+        <div class="stats">
+          <i class="fas fa-microphone"></i> {{ cancion.id }}00 enregistrements
+        </div>
+      </div>
 
-        <!-- Botón que lleva al Karaoke con la data real -->
-        <button
-          [class]=" $first ? 'btn-chanter' : 'btn-chanter-mini' "
-          (click)="irACantar(cancion)">
+      <div class="song-action">
+        <!-- El botón para ir a cantar usando el ID de la tabla -->
+        <button [routerLink]="['/cantar', cancion.id]" class="btn-chanter">
           CHANTER
         </button>
       </div>
-    } @empty {
-      <!-- Si no hay resultados -->
-      <div class="empty-state">
-        <p>No se encontraron canciones.</p>
-        <button class="btn-primary" (click)="irAlEditor()">¡Sube una tú mismo!</button>
-      </div>
-    }
-
+    </div>
   </div>
 </div>

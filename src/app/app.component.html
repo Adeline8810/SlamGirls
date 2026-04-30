@@ -1,35 +1,33 @@
-<!-- El contenido de la página cambia aquí arriba -->
-<div class="main-content">
-  <router-outlet></router-outlet>
-</div>
-
-<!-- BARRA FIJA ABAJO -->
 <nav class="bottom-nav">
-  <div class="nav-item" routerLink="/salle" routerLinkActive="active">
-    <i class="icon-salle"></i>
-    <span>Salle</span>
+  <!-- MOI / YO (Lleva al Perfil) -->
+  <div class="nav-item" (click)="navegar('/profile')" [class.active]="selectedTabNav === 'moi'">
+    <i>👤</i>
+    <span>Moi</span>
   </div>
 
-  <div class="nav-item" routerLink="/moment" routerLinkActive="active">
-    <i class="icon-moment"></i>
-    <span>Moment</span>
-  </div>
-
-  <!-- Botón Central: CANTAR (Chanter) -->
-  <div class="nav-item central" routerLink="/buscar-cancion">
-    <div class="mic-circle">
-      <i class="icon-mic"></i>
-    </div>
-  </div>
-
-  <div class="nav-item" routerLink="/discussion" routerLinkActive="active">
-    <div class="badge" *ngIf="notificaciones > 0">{{notificaciones}}</div>
-    <i class="icon-chat"></i>
+  <!-- DISCUSSION / CHAT -->
+  <div class="nav-item" (click)="navegar('/discussion')" [class.active]="selectedTabNav === 'chat'">
+    <div class="badge">99+</div>
+    <i>💬</i>
     <span>Discussion</span>
   </div>
 
-  <div class="nav-item" routerLink="/profile" routerLinkActive="active">
-    <i class="icon-moi"></i>
-    <span>Moi</span>
+  <!-- BOTÓN CENTRAL: CHANTER (Cantar) -->
+  <div class="nav-item central" (click)="navegar('/buscar-cancion')">
+    <div class="mic-circle">
+      <span style="font-size: 25px;">🎤</span>
+    </div>
+  </div>
+
+  <!-- MOMENT -->
+  <div class="nav-item" (click)="navegar('/moment')" [class.active]="selectedTabNav === 'moment'">
+    <i>🌎</i>
+    <span>Moment</span>
+  </div>
+
+  <!-- SALLE / SALA -->
+  <div class="nav-item" (click)="navegar('/salle')" [class.active]="selectedTabNav === 'salle'">
+    <i>🏠</i>
+    <span>Salle</span>
   </div>
 </nav>

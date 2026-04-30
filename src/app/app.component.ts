@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'; // Te faltaba el OnInit aquí
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http'; // Importaciones necesarias
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,18 @@ import { HttpClient, HttpClientModule } from '@angular/common/http'; // Importac
   styles: []
 })
 export class AppComponent implements OnInit { // Ahora sí reconoce el OnInit
+   selectedTabNav: string = 'moi';
+  constructor(private http: HttpClient,private router: Router) {}
 
-  constructor(private http: HttpClient) {}
+  navegar(ruta: string) {
+  // Determinamos cuál está activo para el color rosa
+  if (ruta.includes('profile')) this.selectedTabNav = 'moi';
+  if (ruta.includes('discussion')) this.selectedTabNav = 'chat';
+  if (ruta.includes('moment')) this.selectedTabNav = 'moment';
+  if (ruta.includes('salle')) this.selectedTabNav = 'salle';
+
+  this.router.navigate([ruta]);
+}
 
   ngOnInit() {
     // Mandamos el "codazo" al servidor apenas carga la app

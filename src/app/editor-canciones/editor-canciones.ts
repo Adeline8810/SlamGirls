@@ -1,12 +1,23 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-editor-canciones',
+selector: 'app-editor-canciones',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule  // <--- Y REGÍSTRALO AQUÍ
+  ],
   templateUrl: './editor-canciones.html',
   styleUrls: ['./editor-canciones.css']
 })
 export class EditorCanciones {
+  letraBruta: string = '';
+  audioNombre: string = '';
+  paso: number = 1;
+
   @ViewChild('pistaAudio') pistaAudio!: ElementRef<HTMLAudioElement>;
 
   // --- VARIABLES DE CARGA INICIAL ---
@@ -117,4 +128,23 @@ export class EditorCanciones {
         }
       });
   }
+
+onFileSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.audioNombre = file.name;
+    // Aquí cargarías el audio al reproductor para el siguiente paso
+  }
+}
+
+irASincronizar() {
+  if(!this.letraBruta || !this.audioNombre) {
+    alert("Por favor, ingresa la letra y selecciona un audio.");
+    return;
+  }
+  this.paso = 2; // Esto debería ocultar la configuración y mostrar el botón de TAP
+}
+
+
+
 }

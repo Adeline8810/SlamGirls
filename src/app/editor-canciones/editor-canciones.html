@@ -1,22 +1,34 @@
-<div class="editor-container">
-  <h2>Sincronizador de Letras</h2>
+<div class="editor-main-container">
+  <header class="editor-header">
+    <h1>Sincronizador de Letras</h1>
+    <p>Paso 1: Configuración de la canción</p>
+  </header>
 
-  <!-- Solo se ve al principio -->
-  <div *ngIf="!musicaIniciada">
-    <textarea [(ngModel)]="letraPlana" placeholder="Pega la letra aquí... línea por línea"></textarea>
-    <input type="file" (change)="cargarArchivo($event)" accept="audio/*">
-    <button (click)="comenzarSincronizacion()">Comenzar</button>
-  </div>
-
-  <!-- Modo Sincronización -->
-  <div *ngIf="musicaIniciada">
-    <div class="frase-actual">
-      <p>Siguiente frase:</p>
-      <h3>{{ lineasParaSincronizar[indiceSincronizacion]?.texto }}</h3>
+  <div class="editor-card">
+    <!-- Área de la Letra -->
+    <div class="input-group">
+      <label>Letra de la canción</label>
+      <textarea
+        [(ngModel)]="letraBruta"
+        placeholder="Pega la letra aquí... (una frase por línea)"
+        class="lyric-input">
+      </textarea>
     </div>
 
-    <button class="btn-tap" (click)="marcarTiempo()">MARCAR AHORA (TAP)</button>
+    <!-- Área de Audio -->
+    <div class="audio-selection">
+      <div class="file-drop-zone">
+        <input type="file" (change)="onFileSelected($event)" accept="audio/*" id="audioFile">
+        <label for="audioFile">
+          <strong>Seleccionar Audio MP3</strong>
+          <span>o arrastra el archivo aquí</span>
+        </label>
+      </div>
+      <p *ngIf="audioNombre" class="file-ready">✅ {{ audioNombre }}</p>
+    </div>
 
-    <audio #pistaAudio [src]="audioUrl"></audio>
+    <button class="btn-primary-sync" (click)="irASincronizar()">
+      Siguiente: Comenzar TAP
+    </button>
   </div>
 </div>

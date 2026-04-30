@@ -235,12 +235,15 @@
 .overlay-publicando { background: rgba(0, 0, 0, 0.95); }
 .success-overlay { background: rgba(0, 0, 0, 0.9); }
 
-.loader-content, .success-card {
+.loader-content {
   text-align: center;
   padding: 30px;
   width: 90%;
   max-width: 400px;
 }
+
+
+
 
 .progress-bar-container {
   width: 100%;
@@ -268,11 +271,16 @@
 .checkmark-circle {
   width: 80px;
   height: 80px;
+  border: 4px solid #cf76ca;
   border-radius: 50%;
-  border: 4px solid #4caf50;
+  display: flex;         /* Activamos flex para centrar el aspa */
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;   /* Centra el círculo en la tarjeta */
   position: relative;
-  margin: 0 auto 20px;
 }
+
+
 
 .checkmark-draw:after {
   content: '';
@@ -482,5 +490,51 @@
 
 .success-card p {
   margin: 0;
+  color: #ccc;
+}
+
+.checkmark-draw {
+  width: 20px;
+  height: 40px;
+  border-right: 4px solid #2ecc71;
+  border-bottom: 4px solid #2ecc71;
+  transform: rotate(45deg);
+  margin-top: -5px; /* Ajuste fino para centrarla visualmente */
+}
+
+.success-card {
+ background: #1a1b2e;
+  padding: 40px;
+  border-radius: 24px;
+  text-align: center;
+  max-width: 320px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.success-actions {
+  display: flex;
+  flex-direction: column; /* Uno sobre otro para que no se pisen */
+  gap: 12px;
+  margin-top: 25px;
+  width: 100%;
+}
+
+.success-actions button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #ff2d55;
+  color: white;
+}
+
+.btn-secondary {
+  background: #2c2e3e;
   color: #ccc;
 }

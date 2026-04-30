@@ -135,19 +135,21 @@
 <!-- PANTALLA DE ÉXITO PROFESIONAL -->
 <div class="success-overlay" *ngIf="publicadoConExito">
   <div class="success-card">
-    <div class="checkmark-wrapper">
-      <div class="checkmark-circle">
-        <div class="checkmark-draw"></div>
-      </div>
+
+    <!-- Círculo con el aspa centrada -->
+    <div class="checkmark-circle">
+      <div class="checkmark-draw"></div>
     </div>
 
     <h2>¡Publicación Exitosa!</h2>
     <p>Tu cover ya está disponible para el mundo.</p>
 
+    <!-- Botones ordenados -->
     <div class="success-actions">
-      <button class="btn-primary" (click)="router.navigate(['/mis-covers'])">Ver mi cover</button>
-      <button class="btn-secondary" (click)="router.navigate(['/buscar'])">Cantar otra</button>
+      <button class="btn-primary" (click)="irAMisCovers()">Ver mi cover</button>
+      <button class="btn-secondary" (click)="irABuscar()">Cantar otra</button>
     </div>
+
   </div>
 </div>
 

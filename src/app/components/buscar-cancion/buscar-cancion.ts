@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+
 import { UsuarioService } from '../../../services/usuario.service'; // Usaremos el método buscarUsuarios que ya tienes
 
 @Component({
@@ -55,6 +56,7 @@ export class BuscarCancion {
     // Aquí es donde el flujo continúa hacia la sala de grabación (Paso 2)
     console.log("Iniciando grabación de:", cancionId);
     // Por ahora te lleva a la sala de grabación pasándole el ID
-    this.router.navigate(['/cantar', cancionId]);
+    this.router.navigate(['/cantar'], { queryParams: { id: cancionId } });
+    //this.router.navigate(['/cantar', cancionId]);
   }
 }

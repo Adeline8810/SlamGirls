@@ -28,6 +28,7 @@ export const routes: Routes = [
   { path: 'perfil/:username', component: PerfilAjeno },
   { path: 'chat/:username', component: Chat },
   { path: 'cantar', component: Cantar },
+
   { path: 'buscar-cancion', component: BuscarCancion },
   { path: '**', redirectTo: '' }
 ];

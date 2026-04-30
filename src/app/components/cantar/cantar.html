@@ -1,75 +1,71 @@
-
-<!-- LA PISTA VA AQUÍ (Invisible para el usuario) -->
+<!-- LA PISTA VA AQUÍ (Invisible) -->
 <audio #pistaAudio src="assets/pistas/pista.mp3" preload="auto"></audio>
 
-<div class="karaoke-container">
-  <!-- 1. Cabecera -->
-  <div class="cantar-header">
-    <h2>🎤 Sala de Grabación</h2>
-    ...
-<div class="karaoke-container">
+<div class="karaoke-screen">
 
-  <!-- 1. Cabecera con instrucciones o título -->
-  <div class="cantar-header">
-    <h2>🎤 Sala de Grabación</h2>
-    <p *ngIf="!grabando">Prepárate, ajusta tus audífonos y pulsa Comenzar.</p>
-    <p *ngIf="grabando" class="recording-status">🔴 Grabando con efecto Palo Rosa...</p>
+  <!-- 1. Cabecera Minimalista (Icono X + Título) -->
+  <div class="karaoke-header">
+    <button class="btn-icon-close" (click)="irAtras()">✕</button>
+  <div class="song-details">
+  <!-- Si cancionSeleccionada tiene portada la usa, si no, usa una por defecto -->
+  <img [src]="cancionSeleccionada?.url_portada || 'assets/img/default-cover.png'"
+       class="mini-portada-circular"
+       (error)="manejarErrorImagen($event)">
+
+  <div class="textos-header">
+    <span class="song-name">{{ cancionSeleccionada?.titulo || 'Cargando...' }}</span>
+    <small class="artist-name">{{ cancionSeleccionada?.artista || 'Desconocido' }}</small>
+  </div>
+</div>
+    <div class="header-spacer"></div>
   </div>
 
-  <!-- 2. Área de Letras (Donde ocurre la magia visual) -->
-  <div class="letras-box">
-    <!-- Aquí va tu lógica de letras que ya tienes implementada -->
-    <p class="letra-actual">{{ letraActual }}</p>
-    <p class="letra-siguiente">{{ letraSiguiente }}</p>
+  <!-- 2. Área de Letras (Centrada y limpia) -->
+  <div class="lyrics-container">
+    <div class="lyrics-scroll">
+      <!-- Letra anterior (opcional, en gris suave) -->
+      <p class="letra-actual">{{ letraActual }}</p>
+      <p class="letra-siguiente">{{ letraSiguiente }}</p>
+    </div>
   </div>
 
-  <!-- 3. Panel de Control (Botones) -->
-<!-- 3. Panel de Control (Botones) -->
-  <div class="controles">
+  <!-- 3. Panel de Control Inferior -->
+  <div class="bottom-controls">
 
-    <!-- BOTÓN INICIAR: Solo aparece cuando NO estás grabando -->
-    <button *ngIf="!grabando"
-            class="btn-comenzar"
-            (click)="iniciar()">
-      ▶️ Comenzar a Cantar
-    </button>
+    <!-- Selector de modo (Solo decorativo para igualar la imagen) -->
+    <div class="mode-selector" *ngIf="!grabando">
+      <span class="active">Solo</span>
+      <span>Duo</span>
+      <span>Groupe</span>
+    </div>
 
-    <!-- BOTÓN FINALIZAR: Solo aparece cuando SÍ estás grabando -->
-    <button *ngIf="grabando"
-            class="btn-finalizar"
-            (click)="finalizarCanto()">
-      ⏹️ Finalizar y Guardar
-    </button>
+    <!-- BOTÓN DINÁMICO -->
+    <div class="action-button-container">
+      <button *ngIf="!grabando" class="btn-action-pink" (click)="iniciar()">
+        Appuyez pour commencer
+      </button>
 
+      <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
+        ⏹️ Finalizar y Guardar
+      </button>
+    </div>
   </div>
 
-  <!-- 4. Overlay de carga (Opcional pero recomendado) -->
-  <!-- Esto evita que el usuario toque cosas mientras el audio se sube a Cloudinary -->
+  <!-- 4. Overlay de carga -->
   <div class="loading-overlay" *ngIf="cargandoSubida">
-    <div class="spinner"></div>
-    <p>Subiendo tu obra de arte a la nube...</p>
+    <div class="spinner-palo-rosa"></div>
+    <p>Subiendo tu obra de arte...</p>
   </div>
 
-  <!-- ========================================== -->
-  <!-- NUEVA SECCIÓN: MIS GRABACIONES (AQUÍ VA)   -->
-  <!-- ========================================== -->
-  <hr class="divisor-palo-rosa" *ngIf="listaDeCantos.length > 0">
-
-  <div class="mis-covers-seccion" *ngIf="listaDeCantos.length > 0">
-    <h3 class="titulo-galeria">🎙️ Mis Covers Guardados</h3>
-
+  <!-- 5. Galería de Covers (Se oculta al grabar para no estorbar) -->
+  <div class="covers-drawer" *ngIf="!grabando && listaDeCantos.length > 0">
+    <h3 class="gallery-title">🎙️ Mis Covers Guardados</h3>
     <div class="grid-covers">
       <div *ngFor="let canto of listaDeCantos" class="card-audio">
-        <div class="card-info">
-          <span class="id-grabacion">#{{canto.id}}</span>
-          <small class="fecha-label">Reciente</small>
-        </div>
-
-        <audio controls class="reproductor-palo-rosa">
+        <audio controls class="mini-player">
           <source [src]="canto.urlAudio" type="audio/wav">
         </audio>
       </div>
     </div>
   </div>
-
 </div>

@@ -20,6 +20,11 @@ export class Cantar {
   letraSiguiente: string = '';
   listaDeCantos: any[] = [];
   cancionSeleccionada: any = null;
+  pasoActual: number = 1;
+
+  descripcionPost: string = '';
+ imagenPortada: File | null = null;
+ previewPortada: string | null = null;
 
 
   constructor(private audioService: AudioKaraokeService, private route: ActivatedRoute,
@@ -116,5 +121,26 @@ obtenerDetalleCancion(id: string) {
       alert("El servidor de Render está tardando en despertar. Intenta en 10 segundos.");
     }
   });
+}
+
+
+onPortadaSeleccionada(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.imagenPortada = file;
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewPortada = reader.result as string; // Esto genera la miniatura
+    };
+    reader.readAsDataURL(file);
+  }
+}
+irAtras() {
+  window.history.back();
+}
+
+manejarErrorImagen(event: any) {
+  // Si la imagen falla, ponemos una de reemplazo automáticamente
+  event.target.src = 'assets/img/default-cover.png';
 }
 }

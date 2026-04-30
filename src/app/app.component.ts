@@ -20,28 +20,29 @@ export class AppComponent implements OnInit { // Ahora sí reconoce el OnInit
    notificaciones = 5;
    mostrarMenu: boolean = false;
 
-  constructor(private http: HttpClient,private router: Router) {
-   // Escuchamos los cambios de ruta
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-    // Obtenemos la ruta actual
+  constructor(private http: HttpClient, private router: Router) {
+  this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd)
+  ).subscribe((event: any) => {
+    // 1. Obtenemos la ruta actual (DENTRO del subscribe)
     const rutaActual = event.urlAfterRedirects;
 
-    // 1. Páginas donde NO debe verse el menú (Añade aquí las de login/registro)
+    // 2. Definimos las reglas
     const esLoginORegistro = rutaActual === '/' ||
                              rutaActual === '/login' ||
                              rutaActual.includes('registro');
 
-    // 2. Verificamos si realmente hay un ID de usuario en el storage
+    const esPantallaGrabacion = rutaActual.includes('cantar');
+
+    // 3. Verificamos usuario
     const tieneUsuario = !!localStorage.getItem('usuarioId');
 
-    // SOLO se muestra si NO es login/registro Y tiene usuario
-    this.mostrarMenu = tieneUsuario && !esLoginORegistro;
+    // 4. Lógica final: Solo se muestra si tiene usuario Y NO es ninguna de las pantallas prohibidas
+    this.mostrarMenu = tieneUsuario && !esLoginORegistro && !esPantallaGrabacion;
 
     console.log('¿Mostrar menú?:', this.mostrarMenu, 'Ruta:', rutaActual);
   });
-  }
+}
 
 
   navegar(ruta: string) {

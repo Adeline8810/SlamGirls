@@ -182,3 +182,205 @@ audio {
   width: 100%;
   height: 35px;
 }
+
+
+.sala-karaoke {
+  background: linear-gradient(180deg, #1a1a2e 0%, #000000 100%);
+  height: 100vh;
+  color: white;
+  padding: 20px;
+}
+
+.header-cantar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 30px;
+}
+
+.btn-principal {
+  background: #ff4d6d;
+  border-radius: 25px;
+  padding: 15px 40px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Estilo de la portada cuadrada */
+.upload-portada {
+  width: 100px;
+  height: 100px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  border: 2px dashed #444;
+}
+
+.img-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* Contenedor Principal: Fondo oscuro total */
+.karaoke-screen {
+  background-color: #121212;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Cabecera */
+.karaoke-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(0,0,0,0.2);
+}
+
+.btn-icon-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.song-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.song-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Letras: Centradas y grandes */
+.lyrics-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 30px;
+}
+
+.letra-actual {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.letra-siguiente {
+  font-size: 1.2rem;
+  color: #888;
+  opacity: 0.7;
+}
+
+/* Controles inferiores */
+.bottom-controls {
+  padding: 20px;
+  padding-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.mode-selector {
+  display: flex;
+  gap: 20px;
+  color: #666;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.mode-selector .active {
+  color: white;
+  border-bottom: 2px solid white;
+  padding-bottom: 5px;
+}
+
+/* Botón Rosa tipo StarMaker */
+.btn-action-pink {
+  background-color: #ff2d55; /* Rosa vibrante */
+  color: white;
+  border: none;
+  padding: 16px 60px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  width: 90vw;
+  max-width: 400px;
+  transition: transform 0.2s;
+}
+
+.btn-action-pink:active {
+  transform: scale(0.95);
+}
+
+.btn-action-stop {
+  background-color: #444;
+  color: #ff2d55;
+  border: 2px solid #ff2d55;
+  padding: 16px 60px;
+  border-radius: 30px;
+  font-weight: bold;
+}
+
+/* Galería de grabaciones */
+.covers-drawer {
+  background: #1e1e1e;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+.gallery-title {
+  font-size: 0.9rem;
+  color: #ff2d55;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.mini-player {
+  width: 100%;
+  height: 35px;
+  filter: invert(1); /* Para que el reproductor gris se vea blanco */
+  opacity: 0.8;
+}
+
+.mini-portada-circular {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%; /* La hace circular */
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-right: 10px;
+}
+
+.textos-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-name {
+  color: #888;
+  font-size: 0.75rem;
+}

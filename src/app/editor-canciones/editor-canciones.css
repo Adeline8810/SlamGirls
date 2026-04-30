@@ -1,0 +1,97 @@
+/* Contenedor Principal */
+.editor-container {
+  background: #0f101e;
+  min-height: 100vh;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Estilo del Formulario Inicial */
+.setup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.setup-form textarea {
+  height: 200px;
+  background: #1a1b2e;
+  border: 1px solid #333;
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  font-family: sans-serif;
+}
+
+/* PANTALLA DE SINCRONIZACIÓN (EL MODO TAP) */
+.sync-screen {
+  text-align: center;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.frase-actual {
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  border: 1px dashed #ff2d55;
+  margin: 20px 0;
+}
+
+.frase-actual h3 {
+  font-size: 28px;
+  color: #ff2d55;
+  margin: 10px 0;
+}
+
+/* EL BOTÓN MÁGICO (TAP) */
+.btn-tap {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff2d55, #d91b42);
+  color: white;
+  border: 8px solid rgba(255, 255, 255, 0.1);
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 30px rgba(255, 45, 85, 0.4);
+  transition: transform 0.1s active;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-tap:active {
+  transform: scale(0.92); /* Efecto de pulsación física */
+  background: #ff2d55;
+  box-shadow: 0 0 50px rgba(255, 45, 85, 0.6);
+}
+
+/* Indicador de progreso */
+.progress-counter {
+  font-size: 18px;
+  color: #888;
+  margin-top: 10px;
+}
+
+/* Botón de publicar final */
+.btn-finish {
+  background: #2ecc71;
+  color: white;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 18px;
+  border: none;
+  font-weight: bold;
+  margin-top: 20px;
+}

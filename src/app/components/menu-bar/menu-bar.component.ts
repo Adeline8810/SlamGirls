@@ -58,6 +58,9 @@ irTienda() {
   this.router.navigate(['/tienda']); // Esto redirige a la nueva vista
 }
 
-
+irAlEditor() {
+  this.router.navigate(['/editor-canciones']);
+  // Asegúrate de tener esta ruta configurada en app-routing.module.ts
+}
 
 }

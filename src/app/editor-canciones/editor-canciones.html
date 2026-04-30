@@ -1,0 +1,22 @@
+<div class="editor-container">
+  <h2>Sincronizador de Letras</h2>
+
+  <!-- Solo se ve al principio -->
+  <div *ngIf="!musicaIniciada">
+    <textarea [(ngModel)]="letraPlana" placeholder="Pega la letra aquí... línea por línea"></textarea>
+    <input type="file" (change)="cargarArchivo($event)" accept="audio/*">
+    <button (click)="comenzarSincronizacion()">Comenzar</button>
+  </div>
+
+  <!-- Modo Sincronización -->
+  <div *ngIf="musicaIniciada">
+    <div class="frase-actual">
+      <p>Siguiente frase:</p>
+      <h3>{{ lineasParaSincronizar[indiceSincronizacion]?.texto }}</h3>
+    </div>
+
+    <button class="btn-tap" (click)="marcarTiempo()">MARCAR AHORA (TAP)</button>
+
+    <audio #pistaAudio [src]="audioUrl"></audio>
+  </div>
+</div>

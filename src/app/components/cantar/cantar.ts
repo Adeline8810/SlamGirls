@@ -200,7 +200,7 @@ async iniciar() {
 
     // Redirigimos a la pantalla de buscar canciones
     // Nota: Asegúrate de que en tu app-routing.module.ts la ruta sea exactamente 'buscar'
-    this.router.navigate(['/buscar']);
+    this.router.navigate(['/buscar-cancion']);
 
     // Opcional: Reiniciamos el estado de éxito después de navegar
     // para que no aparezca el modal la próxima vez que entre

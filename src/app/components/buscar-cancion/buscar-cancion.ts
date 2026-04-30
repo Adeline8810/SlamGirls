@@ -16,6 +16,8 @@ export class BuscarCancion {
   resultados: any[] = [];
   buscando: boolean = false;
 
+  grabando: boolean = false;
+
   constructor(
     private usuarioService: UsuarioService,
     private router: Router,
@@ -52,11 +54,20 @@ export class BuscarCancion {
   }
 
   // Al darle al botón rosa "CHANTER"
-  seleccionarCancion(cancionId: any) {
-    // Aquí es donde el flujo continúa hacia la sala de grabación (Paso 2)
-    console.log("Iniciando grabación de:", cancionId);
-    // Por ahora te lleva a la sala de grabación pasándole el ID
-    this.router.navigate(['/cantar'], { queryParams: { id: cancionId } });
-    //this.router.navigate(['/cantar', cancionId]);
-  }
+seleccionarCancion(slug: string) {
+  console.log('Intentando ir a cantar:', slug);
+
+  // Limpiamos cualquier error previo
+  this.grabando = false;
+
+  // Navegamos a la ruta específica
+  // IMPORTANTE: Asegúrate de que en app.routes.ts tengas { path: 'cantar/:id', ... }
+  this.router.navigate(['/cantar', slug]).then(nav => {
+    if(nav) {
+      console.log('Navegación exitosa a cantar');
+    } else {
+      console.error('La navegación falló. Revisa tus rutas en app.routes.ts');
+    }
+  });
+}
 }

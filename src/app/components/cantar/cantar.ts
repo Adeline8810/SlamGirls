@@ -1,6 +1,8 @@
 import { Component,ViewChild,ElementRef, OnInit } from '@angular/core';
 import { AudioKaraokeService } from '../../../services/audio-karaoke.service';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router'; // <--- Para leer el ID
+import { HttpClient } from '@angular/common/http'
 
 
 @Component({
@@ -17,11 +19,20 @@ export class Cantar {
   letraActual: string = 'Presiona comenzar para iniciar...';
   letraSiguiente: string = '';
   listaDeCantos: any[] = [];
+  cancionSeleccionada: any = null;
 
 
-  constructor(private audioService: AudioKaraokeService) {}
+  constructor(private audioService: AudioKaraokeService, private route: ActivatedRoute,
+    private http: HttpClient ) {}
 
   ngOnInit() {
+    const idCancion = this.route.snapshot.paramMap.get('id');
+
+    if (idCancion) {
+      this.obtenerDetalleCancion(idCancion);
+    } else {
+      this.letraActual = 'Selecciona una canción primero.';
+    }
     this.cargarMisCovers();
   }
 
@@ -87,4 +98,23 @@ cargarMisCovers() {
       });
     }
   }
+
+obtenerDetalleCancion(id: string) {
+  const url = `https://backend-ruth-slam.onrender.com/api/videos/detalle/${id}`;
+
+  this.http.get(url).subscribe({
+    next: (data) => {
+      this.cancionSeleccionada = data;
+    },
+    error: (err) => {
+      console.error("El servidor devolvió un error de texto:", err);
+      // Creamos un objeto temporal para que la página NO se rompa
+      this.cancionSeleccionada = {
+        titulo: "Error de servidor",
+        url_pista: ""
+      };
+      alert("El servidor de Render está tardando en despertar. Intenta en 10 segundos.");
+    }
+  });
+}
 }

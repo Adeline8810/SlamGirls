@@ -314,32 +314,31 @@ scrollALineaActiva() {
 
 
 actualizarTiempo() {
-  // 1. Usamos la referencia nativa de Angular (#pistaAudio) en lugar de document.querySelector
   if (!this.pistaAudio || !this.pistaAudio.nativeElement || this.frasesSincronizadas.length === 0) {
     return;
   }
 
-  // 2. Obtenemos el tiempo real.
-  // Tip: Si sientes que la letra va "atrás", puedes sumar un pequeño ajuste (ej: + 0.1)
-  const tiempoActual = this.pistaAudio.nativeElement.currentTime;
+  // Añadimos un pequeño "ajuste de anticipación" (0.1 o 0.2 segundos)
+  // para que el ojo humano sienta que la letra cambia justo a tiempo.
+  const tiempoActual = this.pistaAudio.nativeElement.currentTime + 0.1;
 
-  // 3. Buscamos el índice de la frase correspondiente
-  const index = this.frasesSincronizadas.findIndex((frase, i) => {
-    const siguienteFrase = this.frasesSincronizadas[i + 1];
+  // BUSQUEDA INVERSA: Encuentra la última frase que ya debería haber empezado
+  let indiceEncontrado = -1;
+  for (let i = 0; i < this.frasesSincronizadas.length; i++) {
+    if (tiempoActual >= this.frasesSincronizadas[i].tiempo) {
+      indiceEncontrado = i;
+    } else {
+      break; // Si el tiempo de la frase es mayor al actual, dejamos de buscar
+    }
+  }
 
-    // Comprobamos si el tiempo actual cae dentro del rango de esta frase
-    return tiempoActual >= frase.tiempo && (!siguienteFrase || tiempoActual < siguienteFrase.tiempo);
-  });
-
-  // 4. Solo actualizamos si el índice ha cambiado
-  if (index !== -1 && index !== this.indiceActivo) {
-    this.indiceActivo = index;
-
-    // Ejecutamos el scroll para que el usuario siempre vea la frase activa
+  // Solo actualizamos si el índice es válido y ha cambiado
+  if (indiceEncontrado !== -1 && indiceEncontrado !== this.indiceActivo) {
+    this.indiceActivo = indiceEncontrado;
     this.hacerScrollFocalizado();
 
-    // Log opcional para depuración en consola
-    console.log(`Frase activa: ${index} - ${this.frasesSincronizadas[index].texto}`);
+    // Log para que verifiques en consola si el tiempo coincide con lo que escuchas
+    console.log(`⏱️ Audio: ${tiempoActual.toFixed(2)}s -> Frase: ${this.frasesSincronizadas[indiceEncontrado].texto}`);
   }
 }
 

@@ -636,13 +636,7 @@ body {
     padding-bottom: 150px;
 }
 
-.letras-container {
-    overflow: visible !important; /* No permitas scroll interno aquí */
-    height: auto !important;     /* Que crezca según la letra */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+
 /* Espacio extra al final de la página para que el botón respire */
 .cantar-contenedor-principal {
     padding-bottom: 80px;
@@ -677,4 +671,28 @@ body {
     .contenedor-previa-letra {
         max-height: 30vh;
     }
+}
+
+/* Este es el truco para que el botón NO se vaya al fondo */
+.letras-container {
+    height: 50vh !important; /* Limitamos el alto a la mitad de la pantalla */
+    overflow-y: auto !important; /* Permitimos scroll interno */
+    margin-bottom: 20px;
+    mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
+}
+
+/* Forzamos que la pantalla de karaoke ocupe el alto total del celular */
+.karaoke-screen {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden; /* Evita scrolls dobles feos */
+}
+
+/* Los controles siempre abajo pero visibles */
+.bottom-controls {
+    padding: 20px;
+    background: #000; /* O el color de tu fondo */
+    z-index: 100;
 }

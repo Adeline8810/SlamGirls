@@ -144,25 +144,29 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
-  // 1. Apagamos el interruptor primero. Esto detiene actualizarTiempo() ipso facto.
+  // 1. Apagamos la lógica de actualización ANTES que nada
   this.grabando = false;
 
-  // 2. Silenciamos el audio
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
-    this.pistaAudio.nativeElement.pause();
-    this.pistaAudio.nativeElement.src = ""; // Liberamos el recurso
-    this.pistaAudio.nativeElement.load();
+    const audioEl = this.pistaAudio.nativeElement;
+    audioEl.pause();
+
+    // IMPORTANTE: Quitamos los "escuchadores" de eventos para que no
+    // intenten llamar a actualizarTiempo() mientras cambiamos de pantalla.
+    audioEl.ontimeupdate = null;
+    audioEl.src = "";
+    audioEl.load();
   }
 
   try {
-    // 3. Detenemos el micro
     await this.audioService.detenerFlujoAudio();
 
-    // 4. Esperamos un suspiro para que Angular limpie la pantalla negra
+    // 2. Usamos un tiempo un poco más largo para asegurar que el DOM se limpie
     setTimeout(() => {
       this.pasoActual = 2;
-      console.log("Cambiado a edición sin errores.");
-    }, 300); // 300ms es el tiempo de seguridad ideal
+      // Forzamos un scroll al inicio por si quedó movido
+      window.scrollTo(0, 0);
+    }, 400);
 
   } catch (error) {
     console.error("Error al finalizar:", error);

@@ -2,7 +2,7 @@
 <audio #pistaAudio
        [src]="pistaAudioUrl"
        crossOrigin="anonymous"
-       (timeupdate)="grabando ? actualizarTiempo() : null">
+       (timeupdate)="(pasoActual === 1 && grabando) ? actualizarTiempo() : null">
 </audio>
 
 

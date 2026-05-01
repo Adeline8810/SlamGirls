@@ -78,36 +78,36 @@ errorCarga: boolean = false;
 
 
   ngOnInit() {
+  // 1. CAPTURAMOS EL ID DE LA URL
+  this.idCancion = this.route.snapshot.paramMap.get('id');
+
   if (this.idCancion) {
+    this.despertandoServidor = true; // Mostramos que estamos cargando
+
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
           this.cancion = data;
-
-          // Asignamos la URL que viene de la base de datos (Cloudinary)
+          this.cancionSeleccionada = data; // Para que se vea el título en la cabecera
           this.pistaAudioUrl = data.urlAudio;
 
-          // Convertimos el JSON de la letra en un array de objetos para el karaoke
           if (data.letraJson) {
             this.frasesSincronizadas = typeof data.letraJson === 'string'
               ? JSON.parse(data.letraJson)
               : data.letraJson;
           }
 
-          console.log("Datos listos para cantar:", this.cancion);
+          this.despertandoServidor = false;
+          console.log("✅ Datos de la nube cargados:", data);
         },
-        error: (err) => console.error("Error al traer la canción", err)
+        error: (err) => {
+          this.errorCarga = true;
+          this.despertandoServidor = false;
+          console.error("❌ Error al traer la canción", err);
+        }
       });
   }
   }
-
-  lineasLetra: any[] = [
-  { tiempo: 0, texto: "Prepárate..." },
-  { tiempo: 5, texto: "En la arena solo los ojos" },
-  { tiempo: 10, texto: "Bajo el sol de mediodía" },
-  { tiempo: 15, texto: "Buscando tu rastro" }
-];
-
 
 
   ngAfterViewInit() {
@@ -117,16 +117,12 @@ errorCarga: boolean = false;
 async iniciar() {
   const audioEl = this.pistaAudio?.nativeElement;
 
-  // Verificamos si el audio tiene algo cargado
-  if (!audioEl || !audioEl.src || audioEl.src === "") {
-    alert("Todavía no se ha detectado el archivo pista.mp3 en assets.");
-    return;
-  }
-
+  // ELIMINAMOS el alert que pedía el archivo en assets
   try {
     this.grabando = true;
     this.pasoActual = 1;
-    // Iniciamos la grabación con el archivo local
+
+    // El service ahora recibirá la URL de Cloudinary que ya cargamos en el audioEl.src
     await this.audioService.iniciarGrabacionConPista(audioEl);
   } catch (error) {
     this.grabando = false;
@@ -251,28 +247,7 @@ async iniciar() {
     }
   }
 
-obtenerDetalleCancion(id: string) {
-  // Mantenemos esto para que la interfaz no se rompa
-  this.despertandoServidor = false;
-  this.errorCarga = false;
 
-  // Forzamos los datos manualmente (Hardcoded)
-  this.cancionSeleccionada = {
-    titulo: 'Luz de Luna',
-    artista: 'Sailor Moon'
-  };
-
-  // CRÍTICO: Cargamos directamente tu archivo local
-  // Asegúrate de que la ruta sea exactamente donde está tu pista.mp3
-  setTimeout(() => {
-    if (this.pistaAudio) {
-      this.pistaAudio.nativeElement.src = 'assets/pistas/pista.mp3';
-      this.pistaAudio.nativeElement.load();
-      this.vincularProgresoAudio();
-      console.log("Pista local cargada correctamente para pruebas");
-    }
-  }, 500);
-}
 
   onPortadaSeleccionada(event: any) {
     const file = event.target.files[0];
@@ -295,25 +270,7 @@ obtenerDetalleCancion(id: string) {
   }
 
 
-  // Método que se llama cuando el audio avanza
-vincularProgresoAudio() {
-  const audio = this.pistaAudio.nativeElement;
 
-  audio.ontimeupdate = () => {
-    const tiempoActual = audio.currentTime;
-
-    // Buscar qué línea corresponde al tiempo actual
-    const encontrada = this.lineasLetra.findIndex((l, i) => {
-      const siguienteTiempo = this.lineasLetra[i+1]?.tiempo || 9999;
-      return tiempoActual >= l.tiempo && tiempoActual < siguienteTiempo;
-    });
-
-    if (encontrada !== -1 && encontrada !== this.indiceActivo) {
-      this.indiceActivo = encontrada;
-      this.scrollALineaActiva();
-    }
-  };
-}
 
 scrollALineaActiva() {
   const activeEl = document.querySelector('.lyric-line.active');

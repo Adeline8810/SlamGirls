@@ -670,12 +670,7 @@ body {
 }
 
 /* Este es el truco para que el botón NO se vaya al fondo */
-.letras-container {
-    height: 50vh !important; /* Limitamos el alto a la mitad de la pantalla */
-    overflow-y: auto !important; /* Permitimos scroll interno */
-    margin-bottom: 20px;
-    mask-image: linear-gradient(transparent, black 15%, black 85%, transparent);
-}
+
 
 /* Forzamos que la pantalla de karaoke ocupe el alto total del celular */
 .karaoke-screen {
@@ -691,4 +686,57 @@ body {
     padding: 20px;
     background: #000; /* O el color de tu fondo */
     z-index: 100;
+}
+/* 1. Contenedor con el efecto de difuminado (Máscara) */
+.letras-container {
+    height: 50vh; /* O el alto que prefieras */
+    overflow-y: scroll;
+    position: relative;
+    padding: 20px 0;
+
+    /* Creamos el difuminado arriba y abajo */
+    -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 15%,
+        black 85%,
+        transparent 100%
+    );
+    mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 15%,
+        black 85%,
+        transparent 100%
+    );
+}
+
+/* 2. Ocultar la barra de scroll "fea" pero manteniendo la funcionalidad */
+
+/* Para Chrome, Safari y nuevas versiones de Edge */
+.letras-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Para Firefox */
+.letras-container {
+    scrollbar-width: none;
+    -ms-overflow-style: none; /* Para Internet Explorer/Edge antiguo */
+}
+
+.frase-karaoke {
+    transition: all 0.3s ease;
+    margin: 15px 0; /* Espacio para que el difuminado no corte las letras pegadas */
+    opacity: 0.4;   /* Las letras que no están activas se ven más apagadas */
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.frase-karaoke.activa {
+    opacity: 1;
+    transform: scale(1.1); /* Un pequeño aumento para la frase actual */
+    color: #ff0055; /* O tu color rosa/rojo */
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
 }

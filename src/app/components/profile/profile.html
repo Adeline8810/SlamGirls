@@ -81,21 +81,31 @@
     @for (canto of misCantos; track canto.id) {
       <div class="video-card card-audio-sm">
 
-        <!-- Imagen de fondo -->
-        <img src="assets/img/placeholder-music.jfif"
-             class="video-preview"
-             onerror="this.src='assets/img/placeholder-music.jfif'">
+        <!-- Si es VIDEO, mostramos el video de fondo, si es AUDIO, el placeholder -->
+        <ng-container *ngIf="canto.urlVideo; else esSoloAudio">
+          <video [src]="canto.urlVideo" class="video-preview" muted playsinline></video>
+        </ng-container>
+
+        <ng-template #esSoloAudio>
+          <img src="assets/img/placeholder-music.jfif" class="video-preview">
+        </ng-template>
 
         <div class="card-overlay">
           <div class="info-top">
              <p class="cover-id">Cover #{{canto.id}}</p>
           </div>
 
-          <!-- BOTÓN DE PLAY PROFESIONAL -->
           <div class="player-wrapper">
-             <button class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
+             <!-- Si es video, usamos verVideo() para abrir tu modal/reproductor grande -->
+             <button *ngIf="canto.urlVideo" class="btn-play-custom" (click)="verVideo(canto)">
+               <span class="icon">🎥</span>
+             </button>
+
+             <!-- Si es audio, usamos tu toggleAudio original -->
+             <button *ngIf="!canto.urlVideo" class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
                <span class="icon">▶</span>
              </button>
+
              <audio #audioPlayer [src]="canto.urlAudio" (play)="onPlay(audioPlayer)"></audio>
           </div>
 

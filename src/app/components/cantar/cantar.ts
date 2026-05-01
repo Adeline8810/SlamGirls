@@ -86,19 +86,29 @@ errorCarga: boolean = false;
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
-          // IMPORTANTE: Llenamos todas las variables que usa el HTML
-          this.cancion = data;
-          this.cancionSeleccionada = data;
-          this.pistaAudioUrl = data.urlAudio;
 
-          if (data.letraJson) {
-            this.frasesSincronizadas = typeof data.letraJson === 'string'
-              ? JSON.parse(data.letraJson)
-              : data.letraJson;
-          }
+        this.cancion = data;
+this.cancionSeleccionada = data;
+this.pistaAudioUrl = data.urlAudio;
 
-          this.despertandoServidor = false; // Esto desbloquea el botón
-          console.log("✅ Datos cargados correctamente");
+if (data.letraJson) {
+  try {
+    // Forzamos la conversión a objeto/array si viene como texto
+    const parseado = typeof data.letraJson === 'string'
+      ? JSON.parse(data.letraJson)
+      : data.letraJson;
+
+    // IMPORTANTE: Nos aseguramos de que termine siendo un array
+    this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
+
+    console.log("✅ Letras cargadas como Array:", this.frasesSincronizadas);
+  } catch (e) {
+    console.error("❌ Error parseando la letraJson:", e);
+    this.frasesSincronizadas = [];
+  }
+}
+
+this.despertandoServidor = false;
         },
         error: (err) => {
           this.errorCarga = true;

@@ -1,44 +1,37 @@
-<audio #miAudio
+<!-- REPRODUCTOR (Referencia corregida a #pistaAudio) -->
+<audio #pistaAudio
        [src]="pistaAudioUrl"
        (timeupdate)="actualizarTiempo()"
-       controls style="display: none;">
+       style="display: none;">
 </audio>
+
 <div class="karaoke-screen" *ngIf="pasoActual === 1">
 
-<div class="letras-container">
-  <div *ngFor="let frase of frasesSincronizadas; let i = index"
-       [class.activa]="i === indiceActivo"
-       class="frase-karaoke">
-    {{ frase.texto }}
-  </div>
-</div>
-  <!-- CABECERA COMÚN -->
-<div class="karaoke-header">
+  <!-- 1. CABECERA -->
+  <div class="karaoke-header">
     <div class="close-btn" (click)="irAtras()">✕</div>
-    <!-- Solo mostramos el título si la canción cargó, sino mostramos "Cargando..." -->
     <div class="song-info">
       {{ cancionSeleccionada ? cancionSeleccionada.titulo : 'Sincronizando...' }}
     </div>
     <div class="status-dot" [class.online]="!despertandoServidor"></div>
   </div>
+
   <div class="error-toast" *ngIf="errorCarga">
     Inténtalo de nuevo, el estudio está ocupado.
   </div>
 
-  <!-- PASO 1: GRABACIÓN (Solo se ve si pasoActual es 1) -->
-
-  <!-- VISOR DE LETRAS -->
-  <div class="lyrics-viewport" *ngIf="pasoActual === 1">
-    <div *ngFor="let linea of lineasLetra; let i = index"
-         class="lyric-line"
-         [class.active]="i === indiceActivo">
-      {{ linea.texto }}
+  <!-- 2. VISOR DE LETRAS (Sincronizado con la base de datos) -->
+  <div class="letras-container">
+    <div *ngFor="let frase of frasesSincronizadas; let i = index"
+         [class.activa]="i === indiceActivo"
+         class="frase-karaoke">
+      {{ frase.texto }}
     </div>
   </div>
 
-  <!-- CONTROLES -->
-  <div class="bottom-controls" *ngIf="pasoActual === 1">
-   <button *ngIf="!grabando"
+  <!-- 3. CONTROLES DE GRABACIÓN -->
+  <div class="bottom-controls">
+    <button *ngIf="!grabando"
             class="btn-action-pink"
             (click)="iniciar()"
             [disabled]="despertandoServidor">
@@ -49,119 +42,4 @@
       <span class="recording-dot"></span> ⏹ TERMINER
     </button>
   </div>
-
-  <!-- PANTALLA DE CARGA (PROGRESO) -->
-  <div class="overlay-publicando" *ngIf="cargandoSubida">
-     <!-- Aquí va tu código de la barra de porcentaje -->
-  </div>
-
-  <!-- PASO 2: AJUSTES Y EFECTOS (Lo nuevo, basado en tu imagen) -->
-  <div class="step-container edit-screen" *ngIf="pasoActual === 2">
-    <div class="preview-mini-video">
-       <img [src]="previewPortada || 'assets/img/default.png'" class="main-preview-img">
-       <button class="btn-change-media">Sélectionner un Média</button>
-    </div>
-
-    <div class="controls-card">
-      <div class="tabs-edit">
-        <span class="active">Modifier</span>
-        <span>Modèles</span>
-      </div>
-
-      <div class="sliders-container">
-        <div class="slider-row">
-          <span>Voix</span>
-          <input type="range" [(ngModel)]="volumenVoz" min="0" max="100">
-          <span>{{volumenVoz}}</span>
-        </div>
-        <div class="slider-row">
-          <span>Musique</span>
-          <input type="range" [(ngModel)]="volumenMusica" min="0" max="100">
-          <span>{{volumenMusica}}</span>
-        </div>
-      </div>
-
-      <!-- BOTÓN PARA IR AL SIGUIENTE PASO -->
-      <button class="btn-action-pink" (click)="irAPublicar()">Suivant</button>
-    </div>
-  </div>
-
-  <!-- PASO 3: PUBLICAR (Pantalla final) -->
- <!-- PASO 3: PUBLICAR -->
-<div class="step-container publish-screen" *ngIf="pasoActual === 3">
-
-  <div class="publish-card">
-    <!-- Encabezado: Texto a la izquierda, Imagen a la derecha -->
-    <div class="post-header-grid">
-      <div class="text-area-container">
-        <textarea [(ngModel)]="descripcionPost" placeholder="Qu'est-ce qui vous preocupe?"></textarea>
-        <div class="char-count">0/300</div>
-      </div>
-
-      <div class="cover-upload-box" (click)="fotoInput.click()">
-        <img [src]="previewPortada || 'assets/img/placeholder.png'">
-        <div class="cover-label">
-          <i class="camera-icon">📷</i> Couverture
-        </div>
-        <input #fotoInput type="file" hidden (change)="onPortadaSeleccionada($event)">
-      </div>
-    </div>
-
-    <hr class="divider">
-
-    <!-- Opciones de compartir -->
-    <div class="share-section">
-      <p class="share-title"><i class="share-icon">🔗</i> Partager automatiquement sur</p>
-      <div class="icons-row-fancy">
-        <div class="icon-circle">🌐</div>
-        <div class="icon-circle">📘</div>
-        <div class="icon-circle">🐦</div>
-        <div class="icon-circle">✉️</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Botones inferiores fijos -->
-  <div class="final-buttons-container">
-    <button class="btn-save-gray" (click)="guardarBorrador()">Sauvegarder</button>
-    <button class="btn-publish-pink" (click)="publicarTodo()">Publier</button>
-  </div>
-</div>
-
-  <div class="overlay-publicando" *ngIf="cargandoSubida">
-  <div class="loader-content">
-    <div class="spinner-karaoke"></div>
-    <h2>Publicando...</h2>
-    <div class="porcentaje-texto">{{ porcentajeSubida }}%</div>
-
-    <div class="progress-bar-container">
-      <div class="progress-bar-fill" [style.width.%]="porcentajeSubida"></div>
-    </div>
-
-    <p>Subiendo audio y mezclando efectos</p>
-  </div>
-</div>
-
-
-<!-- PANTALLA DE ÉXITO PROFESIONAL -->
-<div class="success-overlay" *ngIf="publicadoConExito">
-  <div class="success-card">
-
-    <!-- Círculo con el aspa centrada -->
-    <div class="checkmark-circle">
-      <div class="checkmark-draw"></div>
-    </div>
-
-    <h2>¡Publicación Exitosa!</h2>
-    <p>Tu cover ya está disponible para el mundo.</p>
-
-    <!-- Botones ordenados -->
-    <div class="success-actions">
-      <button class="btn-primary" (click)="irAMisCovers()">Ver mi cover</button>
-      <button class="btn-secondary" (click)="irABuscar()">Cantar otra</button>
-    </div>
-
-  </div>
-</div>
-
 </div>

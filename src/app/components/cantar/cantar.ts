@@ -78,17 +78,17 @@ errorCarga: boolean = false;
 
 
   ngOnInit() {
-  // 1. CAPTURAMOS EL ID DE LA URL
   this.idCancion = this.route.snapshot.paramMap.get('id');
 
   if (this.idCancion) {
-    this.despertandoServidor = true; // Mostramos que estamos cargando
+    this.despertandoServidor = true;
 
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
+          // IMPORTANTE: Llenamos todas las variables que usa el HTML
           this.cancion = data;
-          this.cancionSeleccionada = data; // Para que se vea el título en la cabecera
+          this.cancionSeleccionada = data;
           this.pistaAudioUrl = data.urlAudio;
 
           if (data.letraJson) {
@@ -97,13 +97,13 @@ errorCarga: boolean = false;
               : data.letraJson;
           }
 
-          this.despertandoServidor = false;
-          console.log("✅ Datos de la nube cargados:", data);
+          this.despertandoServidor = false; // Esto desbloquea el botón
+          console.log("✅ Datos cargados correctamente");
         },
         error: (err) => {
           this.errorCarga = true;
           this.despertandoServidor = false;
-          console.error("❌ Error al traer la canción", err);
+          console.error("❌ Error en la petición", err);
         }
       });
   }

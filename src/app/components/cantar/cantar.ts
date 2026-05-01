@@ -144,27 +144,29 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
-  // 1. Detenemos primero el proceso de actualización para que no choque con Angular
+  // 1. Apagamos el interruptor primero. Esto detiene actualizarTiempo() ipso facto.
   this.grabando = false;
 
-  // 2. Pausamos el audio
+  // 2. Silenciamos el audio
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
     this.pistaAudio.nativeElement.pause();
+    this.pistaAudio.nativeElement.src = ""; // Liberamos el recurso
+    this.pistaAudio.nativeElement.load();
   }
 
-  // 3. Detenemos el micrófono
   try {
+    // 3. Detenemos el micro
     await this.audioService.detenerFlujoAudio();
 
-    // 4. TRUCO FINAL: Usamos un pequeño delay para que Angular limpie la vista
-    // de canto antes de mostrar la de edición. Esto evita la pantalla negra.
+    // 4. Esperamos un suspiro para que Angular limpie la pantalla negra
     setTimeout(() => {
       this.pasoActual = 2;
-    }, 100);
+      console.log("Cambiado a edición sin errores.");
+    }, 300); // 300ms es el tiempo de seguridad ideal
 
   } catch (error) {
-    console.error("Error al cerrar audio:", error);
-    this.pasoActual = 2; // Forzamos el cambio aunque falle el cierre
+    console.error("Error al finalizar:", error);
+    this.pasoActual = 2;
   }
 }
 
@@ -309,7 +311,7 @@ scrollALineaActiva() {
 
 
 actualizarTiempo() {
-  if (!this.pistaAudio || !this.pistaAudio.nativeElement || this.frasesSincronizadas.length === 0) {
+if (!this.grabando || !this.pistaAudio || !this.pistaAudio.nativeElement || this.frasesSincronizadas.length === 0) {
     return;
   }
 

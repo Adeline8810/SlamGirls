@@ -651,3 +651,30 @@ body {
     overflow: visible !important;
     padding-bottom: 100px; /* Espacio para que el botón "Terminar" siempre se vea al final */
 }
+
+/* Ajustamos el contenedor de las letras para que no empuje todo hacia abajo */
+.contenedor-previa-letra {
+    max-height: 40vh; /* Que ocupe máximo el 40% de la pantalla */
+    overflow-y: auto; /* Que tenga su propio scroll si es muy larga */
+    border: 1px solid #333;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+}
+
+/* El botón de comenzar */
+.btn-comenzar {
+    display: block;
+    width: 90%;
+    margin: 20px auto;
+    padding: 15px;
+    position: relative; /* Asegura que no se oculte tras otros elementos */
+    z-index: 10;
+}
+
+/* Si usas un dispositivo móvil, esto asegura que el contenido quepa */
+@media (max-height: 700px) {
+    .contenedor-previa-letra {
+        max-height: 30vh;
+    }
+}

@@ -78,46 +78,63 @@ errorCarga: boolean = false;
 
 
   ngOnInit() {
+  // 1. Capturamos el ID de la URL
   this.idCancion = this.route.snapshot.paramMap.get('id');
 
   if (this.idCancion) {
-    this.despertandoServidor = true;
+    this.despertandoServidor = true; // Iniciamos estado de carga
+    this.errorCarga = false;
 
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
+          console.log("📦 Datos crudos recibidos del servidor:", data);
 
-        this.cancion = data;
-this.cancionSeleccionada = data;
-this.pistaAudioUrl = data.urlAudio;
+          // Asignamos la información básica
+          this.cancion = data;
+          this.cancionSeleccionada = data;
+          this.pistaAudioUrl = data.urlAudio;
 
-if (data.letraJson) {
-  try {
-    // Forzamos la conversión a objeto/array si viene como texto
-    const parseado = typeof data.letraJson === 'string'
-      ? JSON.parse(data.letraJson)
-      : data.letraJson;
+          // 2. PROCESAMIENTO SEGURO DE LA LETRA
+          if (data.letraJson) {
+            try {
+              // Intentamos convertir a objeto si viene como texto (string)
+              let parseado = typeof data.letraJson === 'string'
+                ? JSON.parse(data.letraJson)
+                : data.letraJson;
 
-    // IMPORTANTE: Nos aseguramos de que termine siendo un array
-    this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
+              // Forzamos que sea un Array. Si no lo es, ponemos una lista vacía.
+              this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
 
-    console.log("✅ Letras cargadas como Array:", this.frasesSincronizadas);
-  } catch (e) {
-    console.error("❌ Error parseando la letraJson:", e);
-    this.frasesSincronizadas = [];
-  }
-}
+              console.log("✅ Letras procesadas correctamente:", this.frasesSincronizadas);
 
-this.despertandoServidor = false;
+              if (this.frasesSincronizadas.length === 0) {
+                console.warn("⚠️ OJO: El array de letras llegó vacío []. Revisa tu base de datos.");
+              }
+            } catch (e) {
+              console.error("❌ Error crítico parseando letraJson. El formato en la DB es inválido:", e);
+              this.frasesSincronizadas = [];
+            }
+          } else {
+            console.warn("⚠️ La canción no tiene el campo 'letraJson' definido.");
+            this.frasesSincronizadas = [];
+          }
+
+          // Desactivamos el estado de carga para habilitar el botón rosa
+          this.despertandoServidor = false;
         },
         error: (err) => {
           this.errorCarga = true;
           this.despertandoServidor = false;
-          console.error("❌ Error en la petición", err);
+          console.error("❌ Error en la petición HTTP al servidor:", err);
         }
       });
+  } else {
+    console.error("❌ No se encontró un ID en la URL. Ejemplo de ruta correcta: /cantar/1");
   }
-  }
+}
+
+
 
 
   ngAfterViewInit() {

@@ -1,6 +1,7 @@
 <!-- REPRODUCTOR (Referencia corregida a #pistaAudio) -->
 <audio #pistaAudio
        [src]="pistaAudioUrl"
+       crossOrigin="anonymous"
        (timeupdate)="actualizarTiempo()"
        style="display: none;">
 </audio>

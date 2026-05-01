@@ -79,54 +79,30 @@
 @case ('couverture') {
   <div class="video-grid profile-scroll-container">
     @for (canto of misCantos; track canto.id) {
-      <div class="video-card card-audio-sm">
 
-        <!-- Lógica de fondo: Video vs Imagen -->
-        <div class="media-container">
-          <ng-container *ngIf="canto.urlVideo; else esSoloAudio">
-            <!-- Añadimos loop y preload para que se vea algo al cargar -->
-            <video [src]="canto.urlVideo"
-                   class="video-preview-element"
-                   muted
-                   loop
-                   playsinline
-                   preload="metadata">
-            </video>
-          </ng-container>
+  <div class="video-card card-audio-sm">
 
-          <ng-template #esSoloAudio>
-            <img src="assets/img/placeholder-music.jfif" class="video-preview">
-          </ng-template>
-        </div>
-
-        <!-- Capa de controles (Overlay) -->
-        <div class="card-overlay">
-          <div class="info-top">
-             <p class="cover-id">Cover #{{canto.id}}</p>
-          </div>
-
-          <div class="player-wrapper">
-             <!-- Botón para Video -->
-             <button *ngIf="canto.urlVideo" class="btn-play-custom video-btn" (click)="verVideo(canto)">
-               <span class="icon">🎥</span>
-             </button>
-
-             <!-- Botón para Audio -->
-             <button *ngIf="!canto.urlVideo" class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
-               <span class="icon">▶</span>
-             </button>
-
-             <audio #audioPlayer [src]="canto.urlAudio" (play)="onPlay(audioPlayer)"></audio>
-          </div>
-
-          <div class="info-bottom">
-            <p class="canto-titulo">{{canto.titulo || 'Sin título'}}</p>
-          </div>
-        </div>
-      </div>
-    } @empty {
-      <div class="empty-state">No hay grabaciones aún.</div>
+    <!-- ✅ SI ES VIDEO -->
+    @if (canto.urlVideo) {
+      <video class="video-preview" controls>
+        <source [src]="canto.urlVideo" type="video/mp4">
+      </video>
     }
+
+    <!-- ✅ SI ES AUDIO -->
+    @else {
+      <img src="assets/img/placeholder-music.jfif" class="video-preview">
+
+      <div class="player-wrapper">
+        <button class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
+          ▶
+        </button>
+        <audio #audioPlayer [src]="canto.urlAudio"></audio>
+      </div>
+    }
+
+  </div>
+}
   </div>
 }
 

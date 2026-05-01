@@ -502,3 +502,18 @@ audio {
     color: white;
     margin: 0;
 }
+
+
+/* Esto asegura que el video sea el protagonista y nada lo tape */
+.video-preview-element {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1; /* El video se queda atrás */
+}
+
+.card-overlay {
+    z-index: 2; /* Los textos y botones se quedan adelante */
+    background: rgba(0, 0, 0, 0.3); /* Un fondo muy suave para que el video brille */
+}

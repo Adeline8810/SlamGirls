@@ -150,6 +150,9 @@ onVideoSeleccionado(event: any) {
       res.urlVideo = res.urlVideo + '?t=' + Date.now();
 
       this.videos.unshift(res);
+      this.misCantos.unshift(res);
+
+
       this.cargandoVideo = false; // <-- 4. Desactivar reloj
       alert("¡Video subido con éxito!");
     },

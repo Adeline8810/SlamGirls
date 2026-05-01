@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class CancionService {
 
   // IMPORTANTE: Cambia esta URL por la de tu servidor real en Render o Localhost
-  private API_URL = 'https://backend-ruth-slam.onrender.com/api/canciones';
+  private API_URL = 'https://backend-ruth-slam.onrender.com/api/cancion';
 
   constructor(private http: HttpClient) { }
 

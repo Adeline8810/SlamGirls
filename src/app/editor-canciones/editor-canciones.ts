@@ -108,7 +108,7 @@ export class EditorCanciones {
 
 
     // Ejemplo de envío a tu API en Render
-    this.http.post('https://backend-ruth-slam.onrender.com/api/canciones/nueva', formData)
+    this.http.post('https://backend-ruth-slam.onrender.com/api/cancion/nueva', formData)
       .subscribe({
         next: (res) => {
           alert("¡Canción guardada con éxito!");
@@ -124,6 +124,7 @@ export class EditorCanciones {
 onFileSelected(event: any) {
   const file = event.target.files[0];
   if (file) {
+    this.archivoSeleccionado = file; // <--- ¡AÑADE ESTA LÍNEA! Es vital para el envío.
     this.audioNombre = file.name;
 
     // Crear el objeto de audio si no existe
@@ -131,12 +132,11 @@ onFileSelected(event: any) {
       this.audioElement = new Audio();
     }
 
-    // Crear una URL temporal para el archivo seleccionado
     const url = URL.createObjectURL(file);
     this.audioElement.src = url;
     this.audioElement.load();
 
-    console.log("Audio cargado y listo para sonar");
+    console.log("Audio físico guardado y listo para subir");
   }
 }
 
@@ -223,31 +223,31 @@ generarJSON() {
 
 
 async publicarCancionNueva() {
-  this.cargandoServidor = true; // Usamos el nombre que declaraste arriba
+  this.cargandoServidor = true;
 
-  // 1. Crear el objeto con la letra sincronizada
+  // 1. Preparar el objeto con la letra (asegúrate de que frases tenga los tiempos)
   const infoLetra = {
     nombre: this.audioNombre,
     letras: this.frases
   };
 
-  // 2. Preparar el FormData
+  // 2. Preparar el FormData con los nombres EXACTOS que espera Java
   const formData = new FormData();
 
-  // CORRECCIÓN: Usamos 'archivoSeleccionado' que es donde guardas el File en cargarArchivo()
   if (this.archivoSeleccionado) {
     formData.append('audio', this.archivoSeleccionado);
   } else {
-    alert("No hay archivo de audio seleccionado");
+    alert("Selecciona un archivo de audio primero");
     this.cargandoServidor = false;
     return;
   }
 
   formData.append('letra_json', JSON.stringify(infoLetra));
-  formData.append('titulo', this.audioNombre.replace('.mp3', '') || 'Nueva Canción');
+  formData.append('titulo', this.tituloCancion || this.audioNombre);
+  formData.append('artista', this.artistaCancion || 'Artista Desconocido'); // <--- ESTO FALTABA
 
-  // 3. Enviar a tu servidor real de Render
-  this.http.post('https://backend-ruth-slam.onrender.com/api/canciones/nueva', formData)
+  // 3. Enviar a la URL CORRECTA: terminada en /subir
+  this.http.post('https://backend-ruth-slam.onrender.com/api/cancion/subir', formData)
     .subscribe({
       next: (res) => {
         alert("¡Canción publicada con éxito!");
@@ -255,13 +255,12 @@ async publicarCancionNueva() {
         this.router.navigate(['/buscar-cancion']);
       },
       error: (err) => {
-        console.error(err);
-        alert("Error al subir a la nube");
+        console.error("Error detallado del servidor:", err);
+        alert("Error al subir: " + (err.error?.text || err.message));
         this.cargandoServidor = false;
       }
     });
 }
-
 
 
 

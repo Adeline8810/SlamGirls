@@ -157,14 +157,17 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
-  // 1. Detenemos la lógica de la letra de inmediato
+  // 1. Detenemos la lógica de la letra y la cámara de inmediato
   this.grabando = false;
+
+  // NUEVO: Apagamos la cámara apenas el usuario termina
+  this.apagarCamara();
 
   // 2. Matamos el audio para que no cause la pantalla negra
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
     const audioEl = this.pistaAudio.nativeElement;
     audioEl.pause();
-    audioEl.ontimeupdate = null; // Cortamos la conexión con la letra
+    audioEl.ontimeupdate = null;
     audioEl.src = "";
     audioEl.load();
   }
@@ -173,17 +176,18 @@ async finalizarCanto() {
     // 3. Detenemos el micrófono
     await this.audioService.detenerFlujoAudio();
 
-    // 4. GUARDADO AUTOMÁTICO: Llamamos a la función que sube a Cloudinary
-    // Esto es lo que antes hacías manualmente en el paso 3
+    // 4. GUARDADO AUTOMÁTICO
     console.log("Guardando en Cloudinary y finalizando...");
     await this.publicarTodo();
 
   } catch (error) {
     console.error("Error al finalizar:", error);
-    // Si algo falla, te mandamos a buscar igualmente para no trabar la app
     this.router.navigate(['/buscar-cancion']);
   }
 }
+
+
+
 
  async publicarTodo() {
   // 1. Verificación Crítica de Usuario (Se mantiene igual)
@@ -406,11 +410,24 @@ async encenderCamara() {
 /**
  * Detiene el flujo de la cámara para ahorrar batería
  */
-apagarCamara() {
+/*apagarCamara() {
   if (this.streamCamara) {
     this.streamCamara.getTracks().forEach(track => track.stop());
     this.streamCamara = null;
   }
+  if (this.previewVideo) {
+    this.previewVideo.nativeElement.srcObject = null;
+  }
+}*/
+
+
+apagarCamara() {
+  if (this.streamCamara) {
+    // Esto recorre cada canal (video y audio) y los "mata" físicamente
+    this.streamCamara.getTracks().forEach(track => track.stop());
+    this.streamCamara = null;
+  }
+  // Limpiamos el elemento de video en el HTML
   if (this.previewVideo) {
     this.previewVideo.nativeElement.srcObject = null;
   }

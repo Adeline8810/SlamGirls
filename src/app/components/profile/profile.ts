@@ -202,10 +202,18 @@ toggleAudio(player: HTMLAudioElement) {
   // --- FIN DE MÉTODOS NUEVOS ---
 
 
+verVideo(video: any) {
+  // Creamos una copia para no modificar el objeto original en la lista
+  const videoData = { ...video };
 
-    verVideo(video: any) {
-    this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar
+  // Si el objeto no tiene urlVideo pero sí tiene urlAudio (caso de los Covers),
+  // le asignamos urlAudio a urlVideo para que el modal lo reconozca.
+  if (!videoData.urlVideo && videoData.urlAudio) {
+    videoData.urlVideo = videoData.urlAudio;
   }
 
+  console.log("Datos enviados al modal:", videoData);
+  this.videoSeleccionado.set(videoData);
+}
 
 }

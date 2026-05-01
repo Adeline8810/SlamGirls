@@ -144,33 +144,30 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
-  // 1. Apagamos la lógica de actualización ANTES que nada
   this.grabando = false;
 
+  // 1. Detenemos el audio para evitar el error NG02020
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
     const audioEl = this.pistaAudio.nativeElement;
     audioEl.pause();
-
-    // IMPORTANTE: Quitamos los "escuchadores" de eventos para que no
-    // intenten llamar a actualizarTiempo() mientras cambiamos de pantalla.
     audioEl.ontimeupdate = null;
     audioEl.src = "";
-    audioEl.load();
   }
 
   try {
+    // 2. Cerramos el micrófono
     await this.audioService.detenerFlujoAudio();
 
-    // 2. Usamos un tiempo un poco más largo para asegurar que el DOM se limpie
-    setTimeout(() => {
-      this.pasoActual = 2;
-      // Forzamos un scroll al inicio por si quedó movido
-      window.scrollTo(0, 0);
-    }, 400);
+    // 3. ¡IMPORTANTE! Llamamos directamente a la publicación
+    // Esto es lo que hace que se suba a Cloudinary
+    await this.publicarTodo();
+
+    // Nota: La redirección a 'buscar-cancion' ya está programada
+    // dentro de tu función 'finalizarProcesoExitoso()'.
 
   } catch (error) {
-    console.error("Error al finalizar:", error);
-    this.pasoActual = 2;
+    console.error("Error al procesar el final:", error);
+    this.router.navigate(['/buscar-cancion']); // Redirigir incluso si hay error
   }
 }
 

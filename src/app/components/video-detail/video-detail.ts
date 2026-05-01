@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
 import confetti from 'canvas-confetti';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })
@@ -26,6 +28,7 @@ export class VideoDetail implements OnInit {
   contadorRegalo = signal(0);
   timerRegalo: any;
   tabActual: 'gift' | 'comments' = 'gift';
+  panelActivo = signal<'gift' | 'comments' | 'share' | null>(null);
 
   listaRegalos = [
     { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
@@ -93,42 +96,26 @@ export class VideoDetail implements OnInit {
   }
 
   lanzarRegalo() {
-    const regalo = this.regaloSeleccionado();
-    if (!regalo || this.misMonedas() < regalo.precio) {
-      alert("Monedas insuficientes");
-      return;
-    }
+  const regalo = this.regaloSeleccionado();
+  if (!regalo || this.misMonedas() < regalo.precio) {
+    alert("Monedas insuficientes");
+    return;
+  }
 
-    // 1. Activar animación visual (Ícono grande)
-    this.efectoActivo.set(regalo.icon);
+  this.efectoActivo.set(regalo.icon);
+  this.dispararEfectoEstrellas();
+  this.misMonedas.update(m => m - regalo.precio);
+  this.contadorRegalo.update(v => v + 1);
 
-    // 2. DISPARAR ESTRELLAS FUGACES 🌟
-    this.dispararEfectoEstrellas();
-
-    // 3. Restar monedas localmente
-    this.misMonedas.update(m => m - regalo.precio);
-
-    this.contadorRegalo.update(v => v + 1);
-
-  // Reiniciar el contador si pasan 3 segundos sin enviar nada
   if (this.timerRegalo) clearTimeout(this.timerRegalo);
   this.timerRegalo = setTimeout(() => {
     this.contadorRegalo.set(0);
     this.efectoActivo.set(null);
   }, 3000);
 
-  this.efectoActivo.set(regalo.icon);
-  this.dispararEfectoEstrellas();
-
-    // 4. API / DB
-    console.log(`Regalo ${regalo.nombre} enviado`);
-
-    // 5. Limpiar efectos
-    setTimeout(() => {
-      this.efectoActivo.set(null);
-      this.regaloSeleccionado.set(null);
-    }, 2000);
-  }
+  // Eliminamos el timeout que seteaba regaloSeleccionado a null
+  // para que el usuario pueda darle a "Envoyer" varias veces rápido.
+}
 
 
 

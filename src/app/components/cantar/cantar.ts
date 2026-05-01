@@ -35,6 +35,9 @@ export class Cantar implements OnInit, AfterViewInit {
   volumenMusica: number = 60;
   efectoSeleccionado: string = 'Ninguno';
 
+  idCancion: string | null = null;
+  cancion: any;
+
   // PUBLICACIÓN (Paso 3)
   descripcionPost: string = '';
   imagenPortada: File | null = null;
@@ -65,13 +68,18 @@ errorCarga: boolean = false;
 
 
   ngOnInit() {
-    const idCancion = this.route.snapshot.paramMap.get('id');
-    if (idCancion) {
-      this.obtenerDetalleCancion(idCancion);
-    } else {
-      this.letraActual = 'Selecciona una canción primero.';
+    if (this.idCancion) {
+      // 2. Buscamos los datos REALES en tu servidor de Render
+      this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
+        .subscribe({
+          next: (data: any) => {
+            this.cancion = data;
+            // Aquí ya tienes data.urlAudio y data.letraJson listos para el karaoke
+            console.log("Canción recibida de la DB:", data);
+          },
+          error: (err) => console.error("Error al traer la canción", err)
+        });
     }
-    this.cargarMisCovers();
   }
 
   lineasLetra: any[] = [

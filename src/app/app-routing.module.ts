@@ -62,7 +62,7 @@ const routes: Routes = [
 
 { path: 'perfil/:username', component: PerfilAjeno },
 
-{ path: 'cantar', component: Cantar },
+{ path: 'cantar/:id', component: Cantar },
 
 { path: 'editor-canciones', component: EditorCanciones },
 

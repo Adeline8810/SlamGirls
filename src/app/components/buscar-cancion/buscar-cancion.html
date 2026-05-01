@@ -1,51 +1,71 @@
 <div class="search-container">
-  <!-- Barra de búsqueda -->
+  <!-- 1. BARRA DE BÚSQUEDA (Búsqueda en tiempo real) -->
   <div class="search-header">
     <i class="fas fa-search"></i>
-    <!-- Conectamos con tu variable terminoBusqueda y tu método filtrar() -->
+    <!-- El evento (input) hace que busque mientras escribes "luna" -->
     <input type="text"
            [(ngModel)]="terminoBusqueda"
            (input)="filtrar()"
-           placeholder="Luz De Luna">
-    <i class="fas fa-times" (click)="terminoBusqueda = ''; filtrar()"></i>
+           placeholder="Escribe para buscar (ej: luna)...">
+
+    <!-- Botón para limpiar búsqueda -->
+    <i class="fas fa-times"
+       (click)="terminoBusqueda = ''; filtrar()"
+       *ngIf="terminoBusqueda"></i>
   </div>
 
+  <!-- 2. TABS ESTÉTICOS -->
   <div class="tabs">
-    <span class="active">Tous</span>
-    <span>Chansons</span>
+    <span [class.active]="terminoBusqueda === ''">Tous</span>
+    <span [class.active]="terminoBusqueda !== ''">Chansons</span>
     <span>Artiste</span>
   </div>
 
   <div class="results-section">
-    <div class="section-title">
-      <span>Chansons</span>
-      <small>TOUT VOIR ></small>
+    <!-- Título dinámico según la búsqueda -->
+    <div class="section-title" *ngIf="terminoBusqueda">
+      <span>Resultados para "{{ terminoBusqueda }}"</span>
     </div>
 
-    <!-- Usamos cancionesFiltradas que es lo que maneja tu método filtrar() -->
-    <div class="song-card" *ngFor="let cancion of cancionesFiltradas">
-      <div class="song-image">
-        <!-- Si no tienes urlPortada, ponemos una de disco por defecto -->
-        <img [src]="cancion.urlPortada || 'assets/default-cover.jpg'" alt="Portada">
+    <!-- 3. LISTA DINÁMICA (Solo muestra si hay texto en el buscador) -->
+    <div *ngIf="terminoBusqueda !== ''; else pantallaVacia">
+
+      <div class="song-card" *ngFor="let cancion of cancionesFiltradas">
+        <div class="song-image">
+          <img [src]="cancion.urlPortada || 'assets/default-cover.jpg'" alt="Portada">
+        </div>
+
+        <div class="song-info">
+          <h4 class="title">{{ cancion.titulo }}</h4>
+          <div class="badges">
+            <span class="badge-points">Points</span>
+            <span class="artist-name">{{ cancion.artista }}</span>
+          </div>
+          <div class="stats">
+            <i class="fas fa-microphone"></i> {{ cancion.id }}00 enregistrements
+          </div>
+        </div>
+
+        <div class="song-action">
+          <!-- 4. BOTÓN DINÁMICO: Redirige a la página de cantar usando el ID de la BD -->
+          <button [routerLink]="['/cantar', cancion.id]" class="btn-chanter">
+            CHANTER
+          </button>
+        </div>
       </div>
 
-      <div class="song-info">
-        <h4 class="title">{{ cancion.titulo }}</h4>
-        <div class="badges">
-          <span class="badge-points">Points</span>
-          <span class="artist-name">{{ cancion.artista }}</span>
-        </div>
-        <div class="stats">
-          <i class="fas fa-microphone"></i> {{ cancion.id }}00 enregistrements
-        </div>
-      </div>
-
-      <div class="song-action">
-        <!-- El botón para ir a cantar usando el ID de la tabla -->
-        <button [routerLink]="['/cantar', cancion.id]" class="btn-chanter">
-          CHANTER
-        </button>
+      <!-- Mensaje si no encuentra coincidencias -->
+      <div *ngIf="cancionesFiltradas.length === 0" class="no-results">
+        <p>No se encontraron canciones con "{{ terminoBusqueda }}"</p>
       </div>
     </div>
+
+    <!-- 5. PANTALLA INICIAL (Cuando el buscador está vacío) -->
+    <template #pantallaVacia>
+      <div class="empty-state">
+        <i class="fas fa-music"></i>
+        <p>Busca tu canción favorita para empezar a cantar</p>
+      </div>
+    </template>
   </div>
 </div>

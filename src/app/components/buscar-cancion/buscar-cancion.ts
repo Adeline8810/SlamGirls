@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Necesario para el [(ngModel)]
+import { HttpClient } from '@angular/common/http'
 
 // Importamos los servicios necesarios
 import { CancionService } from '../../../services/cancion.service';
@@ -22,13 +23,16 @@ export class BuscarCancion implements OnInit {
   filtro: string = '';
   canciones: any[] = [];
 
+  audioUrl: string = '';
+  frasesSincronizadas: any[] = [];
   criterioBusqueda: string = '';
 
 
   constructor(
     private cancionService: CancionService, // Inyectamos el servicio de canciones
     private router: Router,
-    private location: Location
+    private location: Location,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
@@ -51,19 +55,17 @@ export class BuscarCancion implements OnInit {
 }
 
   // Filtra localmente mientras el usuario escribe
-  filtrar() {
-    const termino = this.terminoBusqueda.toLowerCase().trim();
-
-    if (!termino) {
-      this.cancionesFiltradas = this.cancionesOriginales;
-      return;
-    }
-
-    this.cancionesFiltradas = this.cancionesOriginales.filter(c =>
-      c.titulo?.toLowerCase().includes(termino) ||
-      c.artista?.toLowerCase().includes(termino)
-    );
+ filtrar() {
+  if (!this.terminoBusqueda.trim()) {
+    this.cancionesFiltradas = [];
+    return;
   }
+
+  this.cancionesFiltradas = this.canciones.filter(cancion =>
+    cancion.titulo.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
+    cancion.artista.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
+  );
+}
 
   irAtras() {
     this.location.back();
@@ -79,4 +81,23 @@ export class BuscarCancion implements OnInit {
   irAlEditor() {
     this.router.navigate(['/editor-canciones']);
   }
+
+// En tu componente de reproductor/karaoke
+cargarCancionDesdeBD(id: number) {
+  this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${id}`)
+    .subscribe({
+      next: (cancion: any) => {
+        // 1. Cargamos el audio de Cloudinary
+        this.audioUrl = cancion.urlAudio;
+
+        // 2. Parseamos la letra (porque en la BD es un String)
+        // Importante: Si lo guardaste como JSON, hay que convertirlo a objeto
+        this.frasesSincronizadas = JSON.parse(cancion.letraJson);
+
+        console.log("Canción cargada lista para cantar:", cancion.titulo);
+      },
+      error: (err) => console.error("No se pudo cargar la canción", err)
+    });
+
+}
 }

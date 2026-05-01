@@ -1,40 +1,155 @@
-/* video-detail.component.css */
-
-/* Contenedor principal que oscurece el fondo de la app (Modal) */
+/* CONTENEDOR PRINCIPAL (MODAL) */
 .starmaker-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.9); /* Fondo negro intenso */
-  z-index: 999;
+  background-color: #000;
+  z-index: 9999;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-/* El contenido del modal (Simulando la pantalla de un celular) */
 .starmaker-content {
   position: relative;
-  width: 375px; /* Ancho estándar de celular (Ajusta según tu necesidad) */
-  height: 667px; /* Alto estándar de celular */
-  background-color: #000;
-  border-radius: 12px;
-  overflow: hidden;
+  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
 }
 
-/* BOTÓN VOLVER (Esquina superior izquierda) */
+/* BOTÓN VOLVER */
 .btn-back {
   position: absolute;
-  top: 20px;
-  left: 15px;
-  background: none;
+  top: 40px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.3);
   border: none;
-  color: #fff;
-  font-size: 24px;
-  z-index: 10; /* Por encima de todo */
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 20px;
+  z-index: 100;
   cursor: pointer;
+}
+
+/* COMPONENTES DE FONDO (VIDEO Y LETRAS) */
+app-starmaker-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+app-starmaker-lyrics {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  z-index: 2;
+  pointer-events: none; /* Para que no estorbe al hacer click en el video */
+}
+
+/* TOOLBAR (FIJO ABAJO) */
+app-starmaker-toolbar {
+  position: relative;
+  z-index: 3;
+  margin-top: auto; /* Empuja el toolbar al final */
+}
+
+/* --- PANELES DESLIZABLES (REGALOS / COMPARTIR) --- */
+.panel-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  animation: fadeIn 0.3s ease;
+}
+
+.contenido-regalos {
+  width: 100%;
+  background: #1a1a2e; /* Color oscuro como image_10.png */
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  color: white;
+  animation: slideUp 0.3s ease-out;
+  max-height: 70%;
+  overflow-y: auto;
+}
+
+.header-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 10px;
+}
+
+.grid-regalos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.regalo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.regalo-item img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.regalo-item span {
+  font-size: 12px;
+}
+
+.regalo-item small {
+  color: #ffcc00;
+  font-size: 10px;
+}
+
+.footer-panel {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-enviar {
+  background: #ff2d55;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 25px;
+  font-weight: bold;
+}
+
+/* ANIMACIONES */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

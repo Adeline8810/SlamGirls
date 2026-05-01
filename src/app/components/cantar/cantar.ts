@@ -104,8 +104,14 @@ errorCarga: boolean = false;
                 : data.letraJson;
 
               // Forzamos que sea un Array. Si no lo es, ponemos una lista vacía.
-              this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
-
+              //this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
+if (this.frasesSincronizadas.length === 0) {
+  this.frasesSincronizadas = [
+    { tiempo: 2, texto: "PRUEBA: La base de datos está vacía" },
+    { tiempo: 5, texto: "Pero el visor de letras funciona bien" },
+    { tiempo: 8, texto: "Revisa el campo letraJson en Render" }
+  ];
+}
               console.log("✅ Letras procesadas correctamente:", this.frasesSincronizadas);
 
               if (this.frasesSincronizadas.length === 0) {

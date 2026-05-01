@@ -5,14 +5,15 @@
 </audio>
 <div class="karaoke-screen" *ngIf="pasoActual === 1">
 
-<div class="letras-container">
-    <div *ngFor="let frase of frasesSincronizadas; let i = index"
-         [class.activa]="i === indiceActivo"
-         class="frase-karaoke">
-      {{ frase.texto }}
-    </div>
+  <div class="letras-container">
+  <!-- Usamos la clase 'activa' si el índice coincide con el tiempo del audio -->
+  <div *ngFor="let frase of frasesSincronizadas; let i = index"
+       [class.activa]="i === indiceActivo"
+       class="frase-karaoke">
+    {{ frase.texto }}
   </div>
 </div>
+
   <!-- CABECERA COMÚN -->
 <div class="karaoke-header">
     <div class="close-btn" (click)="irAtras()">✕</div>
@@ -165,4 +166,4 @@
   </div>
 </div>
 
-
+</div>

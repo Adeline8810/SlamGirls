@@ -3,23 +3,28 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85); /* Fondo oscuro translúcido */
   z-index: 9999;
   display: flex;
-  flex-direction: column;
-  overflow: hidden;
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center;     /* Centra verticalmente */
 }
-
 .starmaker-content {
   position: relative;
-  flex: 1;
   width: 100%;
+  max-width: 420px;       /* Ancho típico de un celular grande */
+  height: 90vh;           /* 90% de la altura de la pantalla del PC */
+  max-height: 850px;      /* Altura máxima para que no se corte */
+  background-color: #000;
+  border-radius: 30px;    /* Bordes redondeados como un iPhone */
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5); /* Sombra para que resalte */
+  border: 4px solid #333; /* Un pequeño borde para simular el marco del teléfono */
 }
-
 /* BOTÓN VOLVER */
 .btn-back {
   position: absolute;
@@ -58,9 +63,9 @@ app-starmaker-lyrics {
 
 /* TOOLBAR (FIJO ABAJO) */
 app-starmaker-toolbar {
-  position: relative;
+width: 100%;
   z-index: 3;
-  margin-top: auto; /* Empuja el toolbar al final */
+  margin-top: auto;
 }
 
 /* --- PANELES DESLIZABLES (REGALOS / COMPARTIR) --- */

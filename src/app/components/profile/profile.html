@@ -77,11 +77,11 @@
     @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
 @case ('couverture') {
-  <div class="video-grid profile-scroll-container"> <!-- Añadimos clase para scroll -->
+  <div class="video-grid profile-scroll-container">
     @for (canto of misCantos; track canto.id) {
       <div class="video-card card-audio-sm">
 
-        <!-- Imagen de fondo con respaldo por si no carga -->
+        <!-- Imagen de fondo -->
         <img src="assets/img/placeholder-music.jfif"
              class="video-preview"
              onerror="this.src='assets/img/placeholder-music.jfif'">
@@ -91,9 +91,16 @@
              <p class="cover-id">Cover #{{canto.id}}</p>
           </div>
 
-          <!-- Contenedor del reproductor -->
+          <!-- BOTÓN DE PLAY PROFESIONAL -->
           <div class="player-wrapper">
-             <audio [src]="canto.urlAudio" controls class="mini-player"></audio>
+             <button class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
+               <span class="icon">▶</span>
+             </button>
+             <audio #audioPlayer [src]="canto.urlAudio" (play)="onPlay(audioPlayer)"></audio>
+          </div>
+
+          <div class="info-bottom">
+            <p class="canto-titulo">{{canto.titulo || 'Sin título'}}</p>
           </div>
         </div>
       </div>

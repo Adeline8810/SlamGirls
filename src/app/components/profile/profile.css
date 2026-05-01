@@ -417,3 +417,88 @@ audio {
   justify-content: center;
   align-items: center;
 }
+
+/* Contenedor de la tarjeta */
+.card-audio-sm {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-audio-sm:hover {
+    transform: scale(1.03);
+}
+
+/* Imagen de fondo */
+.video-preview {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    filter: brightness(0.7); /* Oscurecemos un poco para que resalte el botón */
+}
+
+/* Capa superior */
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+}
+
+/* El botón de Play redondo */
+.player-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-play-custom {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #ff0055; /* Tu color rosa */
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-play-custom:hover {
+    transform: scale(1.1);
+    background: #ff2b73;
+}
+
+.btn-play-custom .icon {
+    margin-left: 4px; /* Ajuste visual para centrar el triángulo */
+}
+
+/* Ocultamos el reproductor original feo */
+.mini-player {
+    display: none;
+}
+
+.cover-id {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+    margin: 0;
+}
+
+.canto-titulo {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}

@@ -32,15 +32,31 @@
 
   <!-- 3. CONTROLES DE GRABACIÓN -->
   <div class="bottom-controls">
-    <button *ngIf="!grabando"
-            class="btn-action-pink"
-            (click)="iniciar()"
-            [disabled]="despertandoServidor">
-      {{ despertandoServidor ? 'Sincronizando estudio...' : 'Appuyez pour commencer' }}
-    </button>
+   <button *ngIf="!grabando && !cargandoSubida && !publicadoConExito"
+          class="btn-action-pink"
+          (click)="iniciar()"
+          [disabled]="despertandoServidor">
+    {{ despertandoServidor ? 'Sincronizando estudio...' : 'Appuyez pour commencer' }}
+  </button>
 
     <button *ngIf="grabando" class="btn-action-stop" (click)="finalizarCanto()">
-      <span class="recording-dot"></span> ⏹ TERMINER
-    </button>
+    <span class="recording-dot"></span> ⏹ TERMINER
+  </button>
   </div>
+
+<div *ngIf="cargandoSubida" class="upload-progress">
+    <p>Publicando cover... {{ porcentajeSubida }}%</p>
+    <div class="progress-bar-container" style="background: #444; height: 10px; width: 100%; border-radius: 5px;">
+      <div [style.width.%]="porcentajeSubida"
+           style="background: #ff0055; height: 100%; border-radius: 5px; transition: width 0.3s;">
+      </div>
+    </div>
+  </div>
+
+<!-- MENSAJE DE ÉXITO FINAL -->
+  <div *ngIf="publicadoConExito" class="success-message">
+    <p>✅ ¡Publicado con éxito! Redirigiendo...</p>
+  </div>
+
+
 </div>

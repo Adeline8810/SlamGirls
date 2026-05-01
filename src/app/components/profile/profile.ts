@@ -35,6 +35,7 @@ export class Profile implements OnInit {
 
   fotoUrlServidor: string = 'assets/img/default.png'; // Imagen por defecto inicial
   videoSeleccionado = signal<any>(null);
+  reproductorActual: HTMLAudioElement | null = null;
 
   constructor(private respuestaService: RespuestaService,private usuarioService: UsuarioService,private audioService: AudioKaraokeService) {}
 
@@ -77,9 +78,6 @@ export class Profile implements OnInit {
 }
 }
 
-  verVideo(video: any) {
-    this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar
-  }
 
   onSubirMedia(event: any) {
     const file = event.target.files[0];
@@ -175,6 +173,36 @@ cargarDatosDelBackend(idPub: string) {
     error: (err) => console.error('Error al traer perfil:', err)
   });
 }
+
+toggleAudio(player: HTMLAudioElement) {
+    // Si hay otro audio sonando, lo detenemos primero
+    if (this.reproductorActual && this.reproductorActual !== player) {
+      this.reproductorActual.pause();
+      this.reproductorActual.currentTime = 0;
+    }
+
+    if (player.paused) {
+      player.play().catch(err => console.error("Error al reproducir audio:", err));
+      this.reproductorActual = player;
+    } else {
+      player.pause();
+    }
+  }
+
+  /**
+   * Se ejecuta cuando un audio empieza a sonar para guardarlo como referencia
+   */
+  onPlay(player: HTMLAudioElement) {
+    this.reproductorActual = player;
+  }
+
+  // --- FIN DE MÉTODOS NUEVOS ---
+
+
+
+    verVideo(video: any) {
+    this.videoSeleccionado.set(video); // Esto le dice al Signal qué video mostrar
+  }
 
 
 }

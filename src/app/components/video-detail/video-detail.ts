@@ -1,4 +1,4 @@
-import { Component, input, output, signal, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
 import confetti from 'canvas-confetti';
@@ -13,116 +13,47 @@ import { RouterModule } from '@angular/router';
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })
-export class VideoDetail implements OnInit {
+export class VideoDetail   {
 
-  constructor(private router: Router) {}
+ // Recibimos el video desde el componente perfil
+  @Input() video: any;
+  @Input() canto: any; // Para la letra y otros datos
 
-  private recargarService = inject(RecargarService);
+  @Output() cerrar = new EventEmitter<void>();
 
-  video = input.required<any>();
-  close = output<void>();
+  // Variables para controlar lo que pasa en la pantalla
+  tiempoActualDelVideo: number = 0;
+  panelActivo: 'ninguno' | 'comentarios' | 'regalos' | 'compartir' = 'ninguno';
 
-  misMonedas = signal<number>(0);
-  regaloSeleccionado = signal<any>(null);
-  efectoActivo = signal<string | null>(null);
-  contadorRegalo = signal(0);
-  timerRegalo: any;
-  tabActual: 'gift' | 'comments' = 'gift';
-  panelActivo = signal<'gift' | 'comments' | 'share' | null>(null);
+  constructor() {}
 
-  listaRegalos = [
-    { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
-    { id: 2, nombre: 'Microphone', precio: 9, icon: 'assets/regalo2.png' },
-    { id: 3, nombre: 'Songful', precio: 18, icon: 'assets/regalo3.png' },
-    { id: 4, nombre: 'Glow sticks', precio: 48, icon: 'assets/regalo4.png' },
-    { id: 5, nombre: 'Music Box', precio: 60, icon: 'assets/regalo5.png' },
-    { id: 6, nombre: 'Ferrari', precio: 3000, icon: 'assets/regalo6.png' },
-    { id: 7, nombre: 'Pearl', precio: 200, icon: 'assets/regalo7.png' }
-  ];
-
-  ngOnInit() {
-    this.obtenerMonedas();
+  // Lógica para cerrar el modal
+  cerrarModal(event: any) {
+    this.cerrar.emit();
   }
 
-  obtenerMonedas() {
-    const userJson = localStorage.getItem('usuario');
-    if (userJson) {
-      const user = JSON.parse(userJson);
-      this.recargarService.obtenerDatosUsuario(user.username).subscribe({
-        next: (data) => {
-          this.misMonedas.set(data.monedas);
-        },
-        error: (err) => console.error('Error al jalar monedas', err)
-      });
-    }
+  // Funciones que llaman tus botones del Toolbar
+  mostrarComentarios() {
+    this.panelActivo = 'comentarios';
+    console.log("Abriendo comentarios...");
   }
 
-  seleccionarRegalo(regalo: any) {
-    this.regaloSeleccionado.set(regalo);
+  mostrarRegalos() {
+    this.panelActivo = 'regalos';
+    console.log("Abriendo panel de regalos");
   }
 
-  // --- NUEVO MÉTODO PARA EL EFECTO VISUAL ---
-  private dispararEfectoEstrellas() {
-    const duracion = 2 * 1000;
-    const fin = Date.now() + duracion;
-
-    const intervalo = setInterval(() => {
-      if (Date.now() > fin) {
-        return clearInterval(intervalo);
-      }
-
-      // Disparo desde la derecha (donde está el botón SEND)
-      confetti({
-        particleCount: 3,
-        angle: 120, // Hacia la izquierda y arriba
-        spread: 55,
-        origin: { x: 0.9, y: 0.9 }, // Esquina inferior derecha
-        colors: ['#FFE100', '#FFD700', '#FFFFFF'],
-        shapes: ['star'],
-        zIndex: 10000
-      });
-
-      // Disparo desde la izquierda para equilibrar
-      confetti({
-        particleCount: 3,
-        angle: 60, // Hacia la derecha y arriba
-        spread: 55,
-        origin: { x: 0.1, y: 0.9 }, // Esquina inferior izquierda
-        colors: ['#FFE100', '#FFD700', '#FFFFFF'],
-        shapes: ['star'],
-        zIndex: 10000
-      });
-    }, 100);
+  mostrarCompartir() {
+    this.panelActivo = 'compartir';
+    console.log("Abriendo opciones de compartir");
   }
 
-  lanzarRegalo() {
-  const regalo = this.regaloSeleccionado();
-  if (!regalo || this.misMonedas() < regalo.precio) {
-    alert("Monedas insuficientes");
-    return;
+  cerrarPaneles() {
+    this.panelActivo = 'ninguno';
   }
 
-  this.efectoActivo.set(regalo.icon);
-  this.dispararEfectoEstrellas();
-  this.misMonedas.update(m => m - regalo.precio);
-  this.contadorRegalo.update(v => v + 1);
-
-  if (this.timerRegalo) clearTimeout(this.timerRegalo);
-  this.timerRegalo = setTimeout(() => {
-    this.contadorRegalo.set(0);
-    this.efectoActivo.set(null);
-  }, 3000);
-
-  // Eliminamos el timeout que seteaba regaloSeleccionado a null
-  // para que el usuario pueda darle a "Envoyer" varias veces rápido.
-}
-
-
-
-  abrirPantallaRecarga() {
-  // 3. Esto te lleva a la ruta que tengas configurada para el componente Recargar
-  // Asegúrate de que en tu app.routes.ts la ruta sea 'recargar'
-  this.router.navigate(['/recargar']);
-}
-
+  onVideoEnd() {
+    console.log("El video ha terminado");
+    // Aquí podrías poner lógica para repetir o sugerir otro
+  }
 }

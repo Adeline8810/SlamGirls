@@ -1,102 +1,23 @@
-<div class="starmaker-container">
-  <!-- 1. CAPA DE VIDEO (Fondo) -->
-  <div class="video-main-section">
-    <video [src]="video().urlVideo" autoplay loop #vPlayer (click)="vPlayer.paused ? vPlayer.play() : vPlayer.pause()"></video>
-
-    <!-- Botón Volver -->
-    <button class="btn-back-float" (click)="close.emit()">❮</button>
-
-    <!-- EFECTO DE LANZAMIENTO (Tu lógica original) -->
-    <div *ngIf="efectoActivo()" class="lanzamiento-efecto">
-      <img [src]="efectoActivo()" alt="Regalo">
-      <span class="combo-text" *ngIf="contadorRegalo() > 1">x{{ contadorRegalo() }}</span>
+<!-- PANEL DE REGALOS DESLIZABLE (Overlay) -->
+<div class="panel-inferior" *ngIf="panelActivo === 'regalos'" (click)="cerrarPaneles()">
+  <div class="contenido-regalos" (click)="$event.stopPropagation()">
+    <div class="header-panel">
+      <span>Cadeau</span>
+      <button (click)="cerrarPaneles()">✕</button>
     </div>
 
-    <!-- BARRA LATERAL DERECHA (Overlay sobre video) -->
-    <div class="side-icons">
-      <div class="side-item" (click)="tabActual = 'gift'; panelActivo.set('gift')">
-        <div class="icon-circle-side gift-gold">
-          <img src="assets/regalo1.png" alt="gift">
-        </div>
+    <div class="grid-regalos">
+      <!-- Aquí irían los iconos de Rosa, Micrófono, etc. -->
+      <div class="regalo-item">
+        <img src="assets/img/rose.png" alt="Rosa">
+        <span>Rose</span>
+        <small>3 🪙</small>
       </div>
-      <button class="btn-details-small">Détails ❯</button>
+      <!-- Repetir para los demás... -->
+    </div>
+
+    <div class="footer-panel">
+      <button class="btn-enviar">Envoyer</button>
     </div>
   </div>
-
-  <!-- 2. BARRA DE ACCIONES INFERIOR (Blanca) -->
-  <div class="footer-actions">
-    <div class="user-info-row">
-      <div class="left-info">
-        <span class="badge-rank">A+</span>
-        <span class="song-name">🎵 {{ video().titulo || 'Sin título' }}</span>
-      </div>
-      <button class="btn-chanter-pink" [routerLink]="['/cantar']">Chanter</button>
-    </div>
-
-    <div class="main-buttons">
-      <!-- LIKE -->
-      <div class="action-btn">
-        <div class="circle-gray"><span class="icon">❤️</span></div>
-        <span class="label">209</span>
-      </div>
-      <!-- COMENTARIOS -->
-      <div class="action-btn" (click)="panelActivo.set('comments')">
-        <div class="circle-gray"><span class="icon">💬</span></div>
-        <span class="label">5</span>
-      </div>
-      <!-- REGALOS -->
-      <div class="action-btn" (click)="panelActivo.set('gift')">
-        <div class="circle-gray"><span class="icon">🎁</span></div>
-        <span class="label">122</span>
-      </div>
-      <!-- COMPARTIR -->
-      <div class="action-btn" (click)="panelActivo.set('share')">
-        <div class="circle-gray"><span class="icon">↪️</span></div>
-        <span class="label">4</span>
-      </div>
-      <!-- BOTON ROSA -->
-      <div class="action-btn pink-mode">
-        <div class="circle-pink"><span class="icon">🎤</span></div>
-        <span class="label-pink">Chanter</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. PANEL DESLIZABLE DE REGALOS (Tu lógica de regalos aquí dentro) -->
-  <div class="sliding-panel" [class.active]="panelActivo() === 'gift'">
-    <div class="panel-header">
-      <div class="drag-handle" (click)="panelActivo.set(null)"></div>
-      <div class="gift-tabs">
-        <span [class.active]="tabActual === 'gift'" (click)="tabActual = 'gift'">Cadeau</span>
-        <span>Activité</span>
-        <span>Spécial</span>
-      </div>
-    </div>
-
-    <div class="gift-grid-container">
-      @for (item of listaRegalos; track item.id) {
-        <div class="gift-card-sm"
-             [class.selected]="regaloSeleccionado()?.id === item.id"
-             (click)="seleccionarRegalo(item)">
-          <img [src]="item.icon">
-          <p class="g-name">{{ item.nombre }}</p>
-          <p class="g-price">🪙 {{ item.precio }}</p>
-        </div>
-      }
-    </div>
-
-    <div class="panel-footer">
-      <div class="coin-info" (click)="abrirPantallaRecarga()">
-        <span class="coin-gold">🟡</span>
-        <span class="coin-val">{{ misMonedas() }}</span>
-        <span class="coin-arrow">❯</span>
-      </div>
-      <button class="btn-send-starmaker" [disabled]="!regaloSeleccionado()" (click)="lanzarRegalo()">
-        Envoyer
-      </button>
-    </div>
-  </div>
-
-  <!-- Overlay para cerrar paneles al hacer clic fuera -->
-  <div class="panel-overlay" *ngIf="panelActivo()" (click)="panelActivo.set(null)"></div>
 </div>

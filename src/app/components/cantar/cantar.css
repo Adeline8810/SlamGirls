@@ -7,6 +7,11 @@
   padding: 0;
 }
 
+html, body {
+    overflow-x: hidden;
+    height: auto;
+}
+
 .karaoke-screen {
   position: fixed;
   inset: 0;
@@ -628,18 +633,21 @@ body {
     align-items: center;
     min-height: 100vh;
     overflow-y: scroll;
-    padding-bottom: 40px;
+    padding-bottom: 150px;
 }
 
-/* Esto evita que la lista de letras crezca infinito y tape el botón */
 .letras-container {
-    max-height: 55vh; /* Ocupa solo el 55% del alto de la pantalla */
-    overflow-y: auto; /* Permite scroll interno si la letra es larga */
-    margin-bottom: 20px;
-    padding-bottom: 20px;
+    overflow: visible !important; /* No permitas scroll interno aquí */
+    height: auto !important;     /* Que crezca según la letra */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
-
 /* Espacio extra al final de la página para que el botón respire */
 .cantar-contenedor-principal {
     padding-bottom: 80px;
+}
+.cantar-page {
+    overflow: visible !important;
+    padding-bottom: 100px; /* Espacio para que el botón "Terminar" siempre se vea al final */
 }

@@ -144,32 +144,27 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
-  // 1. Cambiamos el estado de grabación inmediatamente
+  // 1. Detenemos primero el proceso de actualización para que no choque con Angular
   this.grabando = false;
 
-  // 2. Detenemos el audio de fondo
+  // 2. Pausamos el audio
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
     this.pistaAudio.nativeElement.pause();
-    this.pistaAudio.nativeElement.currentTime = 0;
   }
 
+  // 3. Detenemos el micrófono
   try {
-    // 3. Detenemos el flujo de audio (RecordRTC / MediaStream)
-    // Usamos 'await' para asegurar que el servicio termine de cerrar los tracks
     await this.audioService.detenerFlujoAudio();
 
-    // 4. Salto al Paso 2 (Edición)
-    // Usamos setTimeout para "limpiar" la pila de ejecución.
-    // Esto evita el error NG02020 al darle tiempo a Angular de
-    // destruir el visualizador del paso 1 antes de pintar el paso 2.
+    // 4. TRUCO FINAL: Usamos un pequeño delay para que Angular limpie la vista
+    // de canto antes de mostrar la de edición. Esto evita la pantalla negra.
     setTimeout(() => {
       this.pasoActual = 2;
     }, 100);
 
   } catch (error) {
-    console.error("Error al finalizar el flujo de audio:", error);
-    // Aun con error, intentamos ir al paso 2 para no bloquear al usuario
-    this.pasoActual = 2;
+    console.error("Error al cerrar audio:", error);
+    this.pasoActual = 2; // Forzamos el cambio aunque falle el cierre
   }
 }
 
@@ -318,11 +313,12 @@ actualizarTiempo() {
     return;
   }
 
-  // CAMBIO AQUÍ: Subimos de 0.1 a 1.2 segundos.
-  // Esto compensa el tiempo que tardaste en hacer clic cuando grababas la letra.
-  const tiempoActual = this.pistaAudio.nativeElement.currentTime + 1.2;
+  // SUBIMOS EL AJUSTE: Probamos con +2.0 segundos.
+  // Si con esto la letra sale ANTES de que cantes, bájalo a +1.5.
+  // Si sigue saliendo DESPUÉS, súbelo a +2.5.
+  const tiempoActual = this.pistaAudio.nativeElement.currentTime + 2.0;
 
-  // BUSQUEDA INVERSA: Encuentra la última frase que ya debería haber empezado
+  // BUSQUEDA INVERSA: Tu lógica original para encontrar la frase
   let indiceEncontrado = -1;
   for (let i = 0; i < this.frasesSincronizadas.length; i++) {
     if (tiempoActual >= this.frasesSincronizadas[i].tiempo) {
@@ -332,16 +328,13 @@ actualizarTiempo() {
     }
   }
 
-  // Solo actualizamos si el índice es válido y ha cambiado
   if (indiceEncontrado !== -1 && indiceEncontrado !== this.indiceActivo) {
     this.indiceActivo = indiceEncontrado;
     this.hacerScrollFocalizado();
 
-    // El log ahora te mostrará el tiempo con el ajuste incluido
-    console.log(`⏱️ Audio (Ajustado): ${tiempoActual.toFixed(2)}s -> Frase: ${this.frasesSincronizadas[indiceEncontrado].texto}`);
+    console.log(`⏱️ Ajuste aplicado: ${tiempoActual.toFixed(2)}s -> Mostrando: ${this.frasesSincronizadas[indiceEncontrado].texto}`);
   }
 }
-
 hacerScrollFocalizado() {
   // Esperamos un milisegundo a que Angular actualice la clase .activa en el HTML
   setTimeout(() => {

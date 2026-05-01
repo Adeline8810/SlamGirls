@@ -179,7 +179,7 @@ async finalizarCanto() {
   console.log("🔍 REVISIÓN DE SESIÓN:");
   console.log("ID recuperado de localStorage:", idUsuarioStr);
   console.log("Tipo de dato:", typeof idUsuarioStr);
-
+console.log("✅ ¡ruthhhh 1111!");
   const idUsuario = idUsuarioStr ? Number(idUsuarioStr) : null;
 
   if (!idUsuario || isNaN(idUsuario)) {
@@ -188,7 +188,7 @@ async finalizarCanto() {
     this.router.navigate(['/login']);
     return;
   }
-
+console.log("✅ ¡ruthhhh 2!");
   // 2. Preparar Interfaz de Carga (Se mantiene igual)
   this.cargandoSubida = true;
   this.porcentajeSubida = 0;
@@ -201,7 +201,7 @@ async finalizarCanto() {
 
   try {
     const peticion = await this.audioService.detenerYEnviarAlServidor(idUsuario);
-
+ console.log("✅ ¡ruthhhh antes!");
     peticion.subscribe({
       next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress) {
@@ -236,7 +236,7 @@ async finalizarCanto() {
   }
 
  finalizarProcesoExitoso() {
-  console.log("✅ ¡LLEGAMOS A LA FUNCIÓN DE ÉXITO!");
+  console.log("✅ ¡LLEGAMOS A LA FUNCIÓN DE ÉXITOooo!");
   // 1. Limpiamos el intervalo del cronómetro inmediatamente
   if (this.intervaloTimer) {
     clearInterval(this.intervaloTimer);
@@ -253,6 +253,7 @@ async finalizarCanto() {
 
     // Redirigimos a la pantalla de buscar canciones
     // Nota: Asegúrate de que en tu app-routing.module.ts la ruta sea exactamente 'buscar'
+      console.log("✅ ¡ruthhhh!");
     this.router.navigate(['/buscar-cancion']);
 
     // Opcional: Reiniciamos el estado de éxito después de navegar

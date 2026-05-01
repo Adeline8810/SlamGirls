@@ -65,6 +65,13 @@ errorCarga: boolean = false;
   // Variable para controlar qué línea de la letra se debe resaltar
   indiceActivo: number = 0;
 
+ @ViewChild('previewVideo') previewVideo!: ElementRef<HTMLVideoElement>;
+
+// Estado de la interfaz
+modoGrabacion: 'audio' | 'video' = 'audio';
+
+// Referencia al flujo de datos de la cámara
+streamCamara: MediaStream | null = null;
 
 
   constructor(
@@ -130,17 +137,23 @@ errorCarga: boolean = false;
 async iniciar() {
   const audioEl = this.pistaAudio?.nativeElement;
 
-  // ELIMINAMOS el alert que pedía el archivo en assets
   try {
+    // 1. Si está en modo video, nos aseguramos de que la cámara esté encendida
+    if (this.modoGrabacion === 'video' && !this.streamCamara) {
+      await this.encenderCamara();
+    }
+
     this.grabando = true;
     this.pasoActual = 1;
 
-    // El service ahora recibirá la URL de Cloudinary que ya cargamos en el audioEl.src
-    await this.audioService.iniciarGrabacionConPista(audioEl);
+    // 2. Pasamos el modoGrabacion al service para que RecordRTC sepa si capturar video o solo audio
+    // El service ahora recibirá la URL de Cloudinary y el modo (audio o video)
+    await this.audioService.iniciarGrabacionConPista(audioEl, this.modoGrabacion, this.streamCamara);
+
   } catch (error) {
     this.grabando = false;
     console.error("Error al iniciar:", error);
-    alert("Revisa los permisos del micrófono.");
+    alert("Revisa los permisos del micrófono y/o cámara.");
   }
 }
 async finalizarCanto() {
@@ -354,4 +367,54 @@ hacerScrollFocalizado() {
     }
   }, 50);
 }
+
+
+async cambiarModo(modo: 'audio' | 'video') {
+  this.modoGrabacion = modo;
+
+  if (modo === 'video') {
+    await this.encenderCamara();
+  } else {
+    this.apagarCamara();
+  }
+}
+
+async encenderCamara() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "user", // Obliga a usar la cámara frontal (selfie)
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: true
+    });
+
+    // Asignamos el flujo al elemento <video> que pusimos en el HTML
+    if (this.previewVideo) {
+      this.previewVideo.nativeElement.srcObject = stream;
+      // Guardamos el stream para usarlo luego en la grabación real
+      this.streamCamara = stream;
+    }
+  } catch (err) {
+    console.error("Error al acceder a la cámara:", err);
+    alert("No se pudo activar la cámara. Asegúrate de dar permisos en el navegador.");
+    this.modoGrabacion = 'audio'; // Revertimos a audio si falla
+  }
+}
+
+/**
+ * Detiene el flujo de la cámara para ahorrar batería
+ */
+apagarCamara() {
+  if (this.streamCamara) {
+    this.streamCamara.getTracks().forEach(track => track.stop());
+    this.streamCamara = null;
+  }
+  if (this.previewVideo) {
+    this.previewVideo.nativeElement.srcObject = null;
+  }
+}
+
+
 }

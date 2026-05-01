@@ -8,6 +8,18 @@
 
 <div class="karaoke-screen" *ngIf="pasoActual === 1">
 
+
+  <!-- CAPA DE VIDEO/FONDO (Nuevo para modo video) -->
+<div class="karaoke-bg-layer">
+  <video #previewVideo
+         *ngIf="modoGrabacion === 'video'"
+         autoplay
+         muted
+         playsinline
+         class="camera-preview">
+  </video>
+</div>
+
   <!-- 1. CABECERA -->
   <div class="karaoke-header">
     <div class="close-btn" (click)="irAtras()">✕</div>
@@ -32,6 +44,17 @@
 
   <!-- 3. CONTROLES DE GRABACIÓN -->
   <div class="bottom-controls">
+    <div class="mode-selector-container" *ngIf="!grabando && !cargandoSubida && !publicadoConExito">
+  <div class="mode-switch">
+    <button [class.active]="modoGrabacion === 'audio'" (click)="cambiarModo('audio')">
+      <span class="icon-mic">🎤</span>
+    </button>
+    <button [class.active]="modoGrabacion === 'video'" (click)="cambiarModo('video')">
+      <span class="icon-video">📹</span>
+    </button>
+  </div>
+</div>
+
    <button *ngIf="!grabando && !cargandoSubida && !publicadoConExito"
           class="btn-action-pink"
           (click)="iniciar()"

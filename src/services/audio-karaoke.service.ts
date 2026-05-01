@@ -14,56 +14,68 @@ export class AudioKaraokeService {
   private api = 'https://backend-ruth-slam.onrender.com/api/cantos';
 
   // ACTUALIZACIÓN: Este método ahora hace TODO (Efecto + Pista + Grabación)
-  async iniciarGrabacionConPista(elementoAudio: HTMLAudioElement) {
-    // 1. Micrófono
-    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    this.audioContext = new AudioContext();
+  // Actualizamos la firma del método para recibir modo y stream de cámara
+async iniciarGrabacionConPista(
+  elementoAudio: HTMLAudioElement,
+  modo: string = 'audio',
+  streamCamara: MediaStream | null = null
+) {
+  // 1. Micrófono (Mantenemos tu lógica)
+  this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  this.audioContext = new AudioContext();
 
-    // 2. Nodos de entrada
-    const fuenteVoz = this.audioContext.createMediaStreamSource(this.stream);
-    const fuentePista = this.audioContext.createMediaElementSource(elementoAudio);
+  // 2. Nodos de entrada (Mantenemos tus nombres de variables)
+  const fuenteVoz = this.audioContext.createMediaStreamSource(this.stream);
+  const fuentePista = this.audioContext.createMediaElementSource(elementoAudio);
 
-    // 3. Efecto de REVERB (Eco suave para la voz)
-    const delay = this.audioContext.createDelay();
-    delay.delayTime.value = 0.1;
-    const feedback = this.audioContext.createGain();
-    feedback.gain.value = 0.3;
+  // 3. Efecto de REVERB (Mantenemos tu configuración de eco)
+  const delay = this.audioContext.createDelay();
+  delay.delayTime.value = 0.1;
+  const feedback = this.audioContext.createGain();
+  feedback.gain.value = 0.3;
 
-    // Conexión del eco (solo a la voz)
-    fuenteVoz.connect(delay);
-    delay.connect(feedback);
-    feedback.connect(delay);
+  fuenteVoz.connect(delay);
+  delay.connect(feedback);
+  feedback.connect(delay);
 
-    // 4. Mezclador (Destino final de grabación)
-    const destinoGrabacion = this.audioContext.createMediaStreamDestination();
+  // 4. Mezclador (Destino final de grabación)
+  const destinoGrabacion = this.audioContext.createMediaStreamDestination();
 
-    // Conectar Voz limpia + Voz con eco al grabador
-    fuenteVoz.connect(destinoGrabacion);
-    delay.connect(destinoGrabacion);
+  fuenteVoz.connect(destinoGrabacion);
+  delay.connect(destinoGrabacion);
+  fuentePista.connect(destinoGrabacion);
 
-    // Conectar Pista musical al grabador
-    fuentePista.connect(destinoGrabacion);
+  // 5. Monitoreo
+  fuenteVoz.connect(this.audioContext.destination);
+  delay.connect(this.audioContext.destination);
+  fuentePista.connect(this.audioContext.destination);
 
-    // 5. Monitoreo (Para que escuches todo en tus audífonos)
-    fuenteVoz.connect(this.audioContext.destination);
-    delay.connect(this.audioContext.destination);
-    fuentePista.connect(this.audioContext.destination);
+  // --- NUEVA LÓGICA DE UNIÓN AUDIO + VIDEO ---
 
-    // 6. Iniciar RecordRTC con la mezcla
-   /* this.mediaRecorder = new RecordRTC(destinoGrabacion.stream, {
-      type: 'audio',
-      mimeType: 'audio/wav',
-      recorderType: RecordRTC.StereoAudioRecorder
-    });*/
-    this.mediaRecorder = new RecordRTC(destinoGrabacion.stream, {
-    type: 'audio',
-    mimeType: 'audio/webm', // Mucho más ligero que wav
-    numberOfAudioChannels: 1
-});
+  let streamA_Grabar: MediaStream;
 
-    this.mediaRecorder.startRecording();
-    elementoAudio.play();
+  if (modo === 'video' && streamCamara) {
+    // Si es video, creamos un nuevo Stream que combine:
+    // La imagen de la cámara + El audio mezclado con Reverb
+    streamA_Grabar = new MediaStream([
+      ...streamCamara.getVideoTracks(),           // Captura la imagen
+      ...destinoGrabacion.stream.getAudioTracks() // Captura tu mezcla profesional
+    ]);
+  } else {
+    // Si es solo audio, usamos tu destinoGrabacion original
+    streamA_Grabar = destinoGrabacion.stream;
   }
+
+  // 6. Iniciar RecordRTC con la mezcla (Respetando tus parámetros)
+  this.mediaRecorder = new RecordRTC(streamA_Grabar, {
+    type: modo === 'video' ? 'video' : 'audio',
+    mimeType: modo === 'video' ? 'video/webm' : 'audio/webm',
+    numberOfAudioChannels: 1
+  });
+
+  this.mediaRecorder.startRecording();
+  elementoAudio.play();
+}
 async detenerYEnviarAlServidor(usuarioId: number): Promise<Observable<any>> {
   return new Promise((resolve) => {
     if (!this.mediaRecorder || this.mediaRecorder.getState() === 'stopped') return;

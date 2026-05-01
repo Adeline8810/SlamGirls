@@ -77,32 +77,57 @@
     @case ('moment') { <div class="tab-content"><h3>📸 Momentos</h3></div> }
 
 @case ('couverture') {
-  <div class="video-grid profile-scroll-container">
+ <div class="video-grid profile-scroll-container">
     @for (canto of misCantos; track canto.id) {
+      <div class="video-card card-audio-sm">
 
-  <div class="video-card card-audio-sm">
+        <!-- LÓGICA DE FONDO: Detecta si es video (.webm) o audio -->
+        <div class="media-container">
+          <!-- Si el archivo es webm, mostramos la cara del usuario -->
+          <video *ngIf="canto.urlAudio?.includes('.webm')"
+                 [src]="canto.urlAudio"
+                 class="video-preview-element"
+                 muted
+                 loop
+                 playsinline
+                 preload="metadata">
+          </video>
 
-    <!-- ✅ SI ES VIDEO -->
-    @if (canto.urlVideo) {
-      <video class="video-preview" controls>
-        <source [src]="canto.urlVideo" type="video/mp4">
-      </video>
-    }
+          <!-- Si es audio normal, mostramos la nota musical -->
+          <img *ngIf="!canto.urlAudio?.includes('.webm')"
+               src="assets/img/placeholder-music.jfif"
+               class="video-preview">
+        </div>
 
-    <!-- ✅ SI ES AUDIO -->
-    @else {
-      <img src="assets/img/placeholder-music.jfif" class="video-preview">
+        <div class="card-overlay">
+          <div class="info-top">
+            <p class="cover-id">Cover #{{canto.id}}</p>
+          </div>
 
-      <div class="player-wrapper">
-        <button class="btn-play-custom" (click)="toggleAudio(audioPlayer)">
-          ▶
-        </button>
-        <audio #audioPlayer [src]="canto.urlAudio"></audio>
+          <div class="player-wrapper">
+            <!-- Botón para Video: Llama a tu función de ver video -->
+            <button *ngIf="canto.urlAudio?.includes('.webm')"
+                    class="btn-play-custom"
+                    (click)="verVideo(canto)">
+              <span class="icon">🎥</span>
+            </button>
+
+            <!-- Botón para Audio: Usa tu lógica de toggleAudio -->
+            <button *ngIf="!canto.urlAudio?.includes('.webm')"
+                    class="btn-play-custom"
+                    (click)="toggleAudio(audioPlayer)">
+              <span class="icon">▶</span>
+            </button>
+
+            <audio #audioPlayer [src]="canto.urlAudio" (play)="onPlay(audioPlayer)"></audio>
+          </div>
+
+          <div class="info-bottom">
+            <p class="canto-titulo">{{canto.titulo || 'Sin título'}}</p>
+          </div>
+        </div>
       </div>
     }
-
-  </div>
-}
   </div>
 }
 

@@ -517,3 +517,35 @@ audio {
     z-index: 2; /* Los textos y botones se quedan adelante */
     background: rgba(0, 0, 0, 0.3); /* Un fondo muy suave para que el video brille */
 }
+
+/* Contenedor para que el video o la imagen ocupen todo el espacio */
+.media-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Fondo */
+  background-color: #000;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Estilo para que el video se vea como una miniatura de StarMaker */
+.video-preview-element {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta el video para que llene el cuadro sin deformarse */
+  display: block;
+}
+
+/* Asegura que los textos y botones estén POR ENCIMA del video */
+.card-overlay {
+  position: relative;
+  z-index: 2; /* Frente */
+  background: linear-gradient(transparent, rgba(0,0,0,0.7)); /* Gradiente para leer el texto */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

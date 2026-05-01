@@ -187,11 +187,12 @@ marcarTiempo() {
   }
 
   // Si terminamos, detenemos el audio
-  if (this.indiceFrase >= this.frases.length) {
+ if (this.indiceFrase >= this.frases.length) {
     this.audioElement.pause();
     this.estaSincronizando = false;
-    alert("¡Sincronización terminada! Ya puedes generar el JSON.");
-  }
+    this.paso = 3; // <--- Asegúrate de que esto cambie el paso para mostrar el botón de publicar
+    alert("¡Sincronización terminada! Ahora rellena los datos y publica.");
+}
 }
 
 

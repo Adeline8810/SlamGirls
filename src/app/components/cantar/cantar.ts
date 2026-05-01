@@ -318,9 +318,9 @@ actualizarTiempo() {
     return;
   }
 
-  // Añadimos un pequeño "ajuste de anticipación" (0.1 o 0.2 segundos)
-  // para que el ojo humano sienta que la letra cambia justo a tiempo.
-  const tiempoActual = this.pistaAudio.nativeElement.currentTime + 0.1;
+  // CAMBIO AQUÍ: Subimos de 0.1 a 1.2 segundos.
+  // Esto compensa el tiempo que tardaste en hacer clic cuando grababas la letra.
+  const tiempoActual = this.pistaAudio.nativeElement.currentTime + 1.2;
 
   // BUSQUEDA INVERSA: Encuentra la última frase que ya debería haber empezado
   let indiceEncontrado = -1;
@@ -328,7 +328,7 @@ actualizarTiempo() {
     if (tiempoActual >= this.frasesSincronizadas[i].tiempo) {
       indiceEncontrado = i;
     } else {
-      break; // Si el tiempo de la frase es mayor al actual, dejamos de buscar
+      break;
     }
   }
 
@@ -337,8 +337,8 @@ actualizarTiempo() {
     this.indiceActivo = indiceEncontrado;
     this.hacerScrollFocalizado();
 
-    // Log para que verifiques en consola si el tiempo coincide con lo que escuchas
-    console.log(`⏱️ Audio: ${tiempoActual.toFixed(2)}s -> Frase: ${this.frasesSincronizadas[indiceEncontrado].texto}`);
+    // El log ahora te mostrará el tiempo con el ajuste incluido
+    console.log(`⏱️ Audio (Ajustado): ${tiempoActual.toFixed(2)}s -> Frase: ${this.frasesSincronizadas[indiceEncontrado].texto}`);
   }
 }
 

@@ -618,3 +618,28 @@ body {
     display: block;
     width: 100%;
 }
+
+
+
+/* El contenedor de la página debe permitir scroll si el contenido es mucho */
+.cantar-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    overflow-y: scroll;
+    padding-bottom: 40px;
+}
+
+/* Esto evita que la lista de letras crezca infinito y tape el botón */
+.letras-container {
+    max-height: 55vh; /* Ocupa solo el 55% del alto de la pantalla */
+    overflow-y: auto; /* Permite scroll interno si la letra es larga */
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+/* Espacio extra al final de la página para que el botón respire */
+.cantar-contenedor-principal {
+    padding-bottom: 80px;
+}

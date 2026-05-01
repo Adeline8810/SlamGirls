@@ -4,6 +4,7 @@ import { RouterModule, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Necesario para el [(ngModel)]
 import { HttpClient } from '@angular/common/http'
 
+
 // Importamos los servicios necesarios
 import { CancionService } from '../../../services/cancion.service';
 
@@ -36,7 +37,11 @@ export class BuscarCancion implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.cargarCanciones();
+   this.http.get('https://backend-ruth-slam.onrender.com/api/cancion')
+    .subscribe((res: any) => {
+      console.log("Datos recibidos de la DB:", res); // SI ESTO SALE VACÍO [], NO HABRÁ RESULTADOS
+      this.canciones = res;
+    });
   }
 
  cargarCanciones() {
@@ -56,14 +61,16 @@ export class BuscarCancion implements OnInit {
 
   // Filtra localmente mientras el usuario escribe
  filtrar() {
-  if (!this.terminoBusqueda.trim()) {
+ const buscador = this.terminoBusqueda.toLowerCase().trim();
+
+  if (buscador === '') {
     this.cancionesFiltradas = [];
     return;
   }
 
-  this.cancionesFiltradas = this.canciones.filter(cancion =>
-    cancion.titulo.toLowerCase().includes(this.terminoBusqueda.toLowerCase()) ||
-    cancion.artista.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
+  this.cancionesFiltradas = this.canciones.filter(c =>
+    c.titulo.toLowerCase().includes(buscador) ||
+    c.artista.toLowerCase().includes(buscador)
   );
 }
 

@@ -1,4 +1,6 @@
 <!-- PANEL DE REGALOS DESLIZABLE (Overlay) -->
+ <div class="starmaker-content">
+  <div class="zoom-fix">
 <div class="panel-inferior" *ngIf="panelActivo === 'regalos'" (click)="cerrarPaneles()">
   <div class="contenido-regalos" (click)="$event.stopPropagation()">
     <div class="header-panel">
@@ -20,4 +22,6 @@
       <button class="btn-enviar">Envoyer</button>
     </div>
   </div>
+</div>
+</div>
 </div>

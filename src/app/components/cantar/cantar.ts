@@ -88,38 +88,32 @@ errorCarga: boolean = false;
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
-        this.cancion = data;
-this.cancionSeleccionada = data;
-this.pistaAudioUrl = data.urlAudio;
+  this.cancion = data;
+  this.cancionSeleccionada = data;
+  this.pistaAudioUrl = data.urlAudio;
 
-if (data.letra_json) { // Usamos el nombre exacto de tu columna en la DB
-  try {
-    const parseado = typeof data.letra_json === 'string'
-      ? JSON.parse(data.letra_json)
-      : data.letra_json;
+  // IMPORTANTE: Java te devolverá el campo como 'letraJson' (CamelCase)
+  if (data.letraJson) {
+    try {
+      const objetoCompleto = typeof data.letraJson === 'string'
+        ? JSON.parse(data.letraJson)
+        : data.letraJson;
 
-    // CAMBIO CLAVE: Accedemos a .letras porque ahí está el array real
-    if (parseado && parseado.letras) {
-      this.frasesSincronizadas = parseado.letras;
-      console.log("✅ Frases extraídas de .letras:", this.frasesSincronizadas);
-    } else if (Array.isArray(parseado)) {
-      this.frasesSincronizadas = parseado;
-    } else {
+      // Aquí está el truco: Entramos a la propiedad .letras
+      if (objetoCompleto && objetoCompleto.letras) {
+        this.frasesSincronizadas = objetoCompleto.letras;
+        console.log("✅ Frases cargadas con éxito:", this.frasesSincronizadas);
+      } else {
+        // Por si acaso el formato cambia, intentamos leerlo directo
+        this.frasesSincronizadas = Array.isArray(objetoCompleto) ? objetoCompleto : [];
+      }
+    } catch (e) {
+      console.error("Error al procesar el JSON:", e);
       this.frasesSincronizadas = [];
     }
-
-  } catch (e) {
-    console.error("❌ Error al parsear letra_json:", e);
-    this.frasesSincronizadas = [];
   }
+  this.despertandoServidor = false;
 }
-this.despertandoServidor = false;
-        },
-        error: (err) => {
-          this.errorCarga = true;
-          this.despertandoServidor = false;
-          console.error("❌ Error en la petición HTTP al servidor:", err);
-        }
       });
   } else {
     console.error("❌ No se encontró un ID en la URL. Ejemplo de ruta correcta: /cantar/1");

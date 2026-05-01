@@ -88,46 +88,32 @@ errorCarga: boolean = false;
     this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
       .subscribe({
         next: (data: any) => {
-          console.log("📦 Datos crudos recibidos del servidor:", data);
+        this.cancion = data;
+this.cancionSeleccionada = data;
+this.pistaAudioUrl = data.urlAudio;
 
-          // Asignamos la información básica
-          this.cancion = data;
-          this.cancionSeleccionada = data;
-          this.pistaAudioUrl = data.urlAudio;
+if (data.letra_json) { // Usamos el nombre exacto de tu columna en la DB
+  try {
+    const parseado = typeof data.letra_json === 'string'
+      ? JSON.parse(data.letra_json)
+      : data.letra_json;
 
-          // 2. PROCESAMIENTO SEGURO DE LA LETRA
-          if (data.letraJson) {
-            try {
-              // Intentamos convertir a objeto si viene como texto (string)
-              let parseado = typeof data.letraJson === 'string'
-                ? JSON.parse(data.letraJson)
-                : data.letraJson;
+    // CAMBIO CLAVE: Accedemos a .letras porque ahí está el array real
+    if (parseado && parseado.letras) {
+      this.frasesSincronizadas = parseado.letras;
+      console.log("✅ Frases extraídas de .letras:", this.frasesSincronizadas);
+    } else if (Array.isArray(parseado)) {
+      this.frasesSincronizadas = parseado;
+    } else {
+      this.frasesSincronizadas = [];
+    }
 
-              // Forzamos que sea un Array. Si no lo es, ponemos una lista vacía.
-              //this.frasesSincronizadas = Array.isArray(parseado) ? parseado : [];
-if (this.frasesSincronizadas.length === 0) {
-  this.frasesSincronizadas = [
-    { tiempo: 2, texto: "PRUEBA: La base de datos está vacía" },
-    { tiempo: 5, texto: "Pero el visor de letras funciona bien" },
-    { tiempo: 8, texto: "Revisa el campo letraJson en Render" }
-  ];
+  } catch (e) {
+    console.error("❌ Error al parsear letra_json:", e);
+    this.frasesSincronizadas = [];
+  }
 }
-              console.log("✅ Letras procesadas correctamente:", this.frasesSincronizadas);
-
-              if (this.frasesSincronizadas.length === 0) {
-                console.warn("⚠️ OJO: El array de letras llegó vacío []. Revisa tu base de datos.");
-              }
-            } catch (e) {
-              console.error("❌ Error crítico parseando letraJson. El formato en la DB es inválido:", e);
-              this.frasesSincronizadas = [];
-            }
-          } else {
-            console.warn("⚠️ La canción no tiene el campo 'letraJson' definido.");
-            this.frasesSincronizadas = [];
-          }
-
-          // Desactivamos el estado de carga para habilitar el botón rosa
-          this.despertandoServidor = false;
+this.despertandoServidor = false;
         },
         error: (err) => {
           this.errorCarga = true;

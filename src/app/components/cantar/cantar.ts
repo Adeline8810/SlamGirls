@@ -144,30 +144,31 @@ async iniciar() {
   }
 }
 async finalizarCanto() {
+  // 1. Detenemos la lógica de la letra de inmediato
   this.grabando = false;
 
-  // 1. Detenemos el audio para evitar el error NG02020
+  // 2. Matamos el audio para que no cause la pantalla negra
   if (this.pistaAudio && this.pistaAudio.nativeElement) {
     const audioEl = this.pistaAudio.nativeElement;
     audioEl.pause();
-    audioEl.ontimeupdate = null;
+    audioEl.ontimeupdate = null; // Cortamos la conexión con la letra
     audioEl.src = "";
+    audioEl.load();
   }
 
   try {
-    // 2. Cerramos el micrófono
+    // 3. Detenemos el micrófono
     await this.audioService.detenerFlujoAudio();
 
-    // 3. ¡IMPORTANTE! Llamamos directamente a la publicación
-    // Esto es lo que hace que se suba a Cloudinary
+    // 4. GUARDADO AUTOMÁTICO: Llamamos a la función que sube a Cloudinary
+    // Esto es lo que antes hacías manualmente en el paso 3
+    console.log("Guardando en Cloudinary y finalizando...");
     await this.publicarTodo();
 
-    // Nota: La redirección a 'buscar-cancion' ya está programada
-    // dentro de tu función 'finalizarProcesoExitoso()'.
-
   } catch (error) {
-    console.error("Error al procesar el final:", error);
-    this.router.navigate(['/buscar-cancion']); // Redirigir incluso si hay error
+    console.error("Error al finalizar:", error);
+    // Si algo falla, te mandamos a buscar igualmente para no trabar la app
+    this.router.navigate(['/buscar-cancion']);
   }
 }
 

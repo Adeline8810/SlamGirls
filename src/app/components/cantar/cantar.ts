@@ -143,17 +143,35 @@ async iniciar() {
     alert("Revisa los permisos del micrófono.");
   }
 }
-  async finalizarCanto() {
-    this.grabando = false;
+async finalizarCanto() {
+  // 1. Cambiamos el estado de grabación inmediatamente
+  this.grabando = false;
 
-    if (this.pistaAudio) {
-      this.pistaAudio.nativeElement.pause();
-      this.pistaAudio.nativeElement.currentTime = 0;
-    }
-
-    this.audioService.detenerFlujoAudio();
-    this.pasoActual = 2; // Ir a edición
+  // 2. Detenemos el audio de fondo
+  if (this.pistaAudio && this.pistaAudio.nativeElement) {
+    this.pistaAudio.nativeElement.pause();
+    this.pistaAudio.nativeElement.currentTime = 0;
   }
+
+  try {
+    // 3. Detenemos el flujo de audio (RecordRTC / MediaStream)
+    // Usamos 'await' para asegurar que el servicio termine de cerrar los tracks
+    await this.audioService.detenerFlujoAudio();
+
+    // 4. Salto al Paso 2 (Edición)
+    // Usamos setTimeout para "limpiar" la pila de ejecución.
+    // Esto evita el error NG02020 al darle tiempo a Angular de
+    // destruir el visualizador del paso 1 antes de pintar el paso 2.
+    setTimeout(() => {
+      this.pasoActual = 2;
+    }, 100);
+
+  } catch (error) {
+    console.error("Error al finalizar el flujo de audio:", error);
+    // Aun con error, intentamos ir al paso 2 para no bloquear al usuario
+    this.pasoActual = 2;
+  }
+}
 
  async publicarTodo() {
   // 1. Verificación Crítica de Usuario (Se mantiene igual)
@@ -296,23 +314,32 @@ scrollALineaActiva() {
 
 
 actualizarTiempo() {
-  const reproductor = document.querySelector('audio'); // Capturamos el reproductor
-  if (!reproductor || this.frasesSincronizadas.length === 0) return;
+  // 1. Usamos la referencia nativa de Angular (#pistaAudio) en lugar de document.querySelector
+  if (!this.pistaAudio || !this.pistaAudio.nativeElement || this.frasesSincronizadas.length === 0) {
+    return;
+  }
 
-  const tiempoActual = reproductor.currentTime;
+  // 2. Obtenemos el tiempo real.
+  // Tip: Si sientes que la letra va "atrás", puedes sumar un pequeño ajuste (ej: + 0.1)
+  const tiempoActual = this.pistaAudio.nativeElement.currentTime;
 
-  // Buscamos el índice de la frase que corresponde al tiempo actual
+  // 3. Buscamos el índice de la frase correspondiente
   const index = this.frasesSincronizadas.findIndex((frase, i) => {
     const siguienteFrase = this.frasesSincronizadas[i + 1];
-    // La frase está activa si el tiempo actual es mayor a su inicio
-    // y menor al inicio de la siguiente
+
+    // Comprobamos si el tiempo actual cae dentro del rango de esta frase
     return tiempoActual >= frase.tiempo && (!siguienteFrase || tiempoActual < siguienteFrase.tiempo);
   });
 
-  // Solo actualizamos si el índice cambió para ahorrar procesador
+  // 4. Solo actualizamos si el índice ha cambiado
   if (index !== -1 && index !== this.indiceActivo) {
     this.indiceActivo = index;
-    this.hacerScrollFocalizado(); // Opcional: para que la pantalla suba sola
+
+    // Ejecutamos el scroll para que el usuario siempre vea la frase activa
+    this.hacerScrollFocalizado();
+
+    // Log opcional para depuración en consola
+    console.log(`Frase activa: ${index} - ${this.frasesSincronizadas[index].texto}`);
   }
 }
 

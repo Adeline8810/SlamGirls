@@ -587,3 +587,18 @@ body {
   margin: 30px auto;     /* Centrado */
   display: block;
 }
+.frase-karaoke {
+  font-size: 1.8rem;
+  color: rgba(255, 255, 255, 0.4); /* Letra apagada por defecto */
+  transition: all 0.4s ease;
+  text-align: center;
+  margin: 15px 0;
+}
+
+.frase-karaoke.activa {
+  color: #ff0055;      /* Color resaltado (puedes usar el que quieras) */
+  font-size: 3rem;     /* ¡Se hace grande! */
+  font-weight: bold;
+  opacity: 1;
+  transform: scale(1.1);
+}

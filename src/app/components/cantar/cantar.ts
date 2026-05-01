@@ -56,6 +56,16 @@ despertandoServidor: boolean = false;
 errorCarga: boolean = false;
 
 
+  // Variable para la URL de Cloudinary que usará el reproductor de audio [src]
+  pistaAudioUrl: string = '';
+
+  // Variable para guardar el array de frases (la letra parseada)
+  frasesSincronizadas: any[] = [];
+
+  // Variable para controlar qué línea de la letra se debe resaltar
+  indiceActivo: number = 0;
+
+
 
   constructor(
     private audioService: AudioKaraokeService,
@@ -68,18 +78,27 @@ errorCarga: boolean = false;
 
 
   ngOnInit() {
-    if (this.idCancion) {
-      // 2. Buscamos los datos REALES en tu servidor de Render
-      this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
-        .subscribe({
-          next: (data: any) => {
-            this.cancion = data;
-            // Aquí ya tienes data.urlAudio y data.letraJson listos para el karaoke
-            console.log("Canción recibida de la DB:", data);
-          },
-          error: (err) => console.error("Error al traer la canción", err)
-        });
-    }
+  if (this.idCancion) {
+    this.http.get(`https://backend-ruth-slam.onrender.com/api/cancion/${this.idCancion}`)
+      .subscribe({
+        next: (data: any) => {
+          this.cancion = data;
+
+          // Asignamos la URL que viene de la base de datos (Cloudinary)
+          this.pistaAudioUrl = data.urlAudio;
+
+          // Convertimos el JSON de la letra en un array de objetos para el karaoke
+          if (data.letraJson) {
+            this.frasesSincronizadas = typeof data.letraJson === 'string'
+              ? JSON.parse(data.letraJson)
+              : data.letraJson;
+          }
+
+          console.log("Datos listos para cantar:", this.cancion);
+        },
+        error: (err) => console.error("Error al traer la canción", err)
+      });
+  }
   }
 
   lineasLetra: any[] = [
@@ -89,7 +108,7 @@ errorCarga: boolean = false;
   { tiempo: 15, texto: "Buscando tu rastro" }
 ];
 
-indiceActivo: number = 0;
+
 
   ngAfterViewInit() {
     // La carga inicial se maneja en obtenerDetalleCancion para asegurar que existan los datos
@@ -301,5 +320,44 @@ scrollALineaActiva() {
   if (activeEl) {
     activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
+}
+
+
+
+
+actualizarTiempo() {
+  const reproductor = document.querySelector('audio'); // Capturamos el reproductor
+  if (!reproductor || this.frasesSincronizadas.length === 0) return;
+
+  const tiempoActual = reproductor.currentTime;
+
+  // Buscamos el índice de la frase que corresponde al tiempo actual
+  const index = this.frasesSincronizadas.findIndex((frase, i) => {
+    const siguienteFrase = this.frasesSincronizadas[i + 1];
+    // La frase está activa si el tiempo actual es mayor a su inicio
+    // y menor al inicio de la siguiente
+    return tiempoActual >= frase.tiempo && (!siguienteFrase || tiempoActual < siguienteFrase.tiempo);
+  });
+
+  // Solo actualizamos si el índice cambió para ahorrar procesador
+  if (index !== -1 && index !== this.indiceActivo) {
+    this.indiceActivo = index;
+    this.hacerScrollFocalizado(); // Opcional: para que la pantalla suba sola
+  }
+}
+
+hacerScrollFocalizado() {
+  // Esperamos un milisegundo a que Angular actualice la clase .activa en el HTML
+  setTimeout(() => {
+    const elementoActivo = document.querySelector('.frase-karaoke.activa');
+
+    if (elementoActivo) {
+      // El método scrollIntoView desliza la pantalla suavemente
+      elementoActivo.scrollIntoView({
+        behavior: 'smooth',   // Movimiento suave, no de golpe
+        block: 'center'       // Pone la frase justo en el centro de la pantalla
+      });
+    }
+  }, 50);
 }
 }

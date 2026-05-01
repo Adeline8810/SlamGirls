@@ -1,5 +1,18 @@
-<audio #pistaAudio preload="auto" (canplay)="errorCarga = false"></audio>
+<audio #miAudio
+       [src]="pistaAudioUrl"
+       (timeupdate)="actualizarTiempo()"
+       controls>
+</audio>
 <div class="karaoke-screen">
+
+  <div class="letras-container">
+  <!-- Usamos la clase 'activa' si el índice coincide con el tiempo del audio -->
+  <div *ngFor="let frase of frasesSincronizadas; let i = index"
+       [class.activa]="i === indiceActivo"
+       class="frase-karaoke">
+    {{ frase.texto }}
+  </div>
+</div>
 
   <!-- CABECERA COMÚN -->
 <div class="karaoke-header">

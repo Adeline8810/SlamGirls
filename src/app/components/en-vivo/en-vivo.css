@@ -49,3 +49,13 @@
   50% { opacity: 0.5; }
   100% { opacity: 1; }
 }
+
+.live-container {
+  position: fixed; /* Cambia de relative a fixed */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999; /* Para que tape el menú de abajo mientras transmites */
+  background: black;
+}

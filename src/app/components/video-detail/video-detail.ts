@@ -172,10 +172,18 @@ console.log("Botón pulsado. Valor detectado:", this.textoComentario);
 cargarComentarios() {
   if (!this.video?.id) return;
 
-  this.comentarioService.obtenerComentariosPorVideo(this.video.id).subscribe({
+  // 1. Obtenemos el usuario del localStorage (igual que haces en otras partes)
+  const userJson = localStorage.getItem('usuario');
+  const usuarioLogueado = userJson ? JSON.parse(userJson) : null;
+
+  // 2. Si no hay usuario, mandamos 0 (para que el backend no explote y devuelva likes en gris)
+  const usuarioId = usuarioLogueado?.id || 0;
+
+  // 3. Pasamos AMBOS IDs al servicio
+  this.comentarioService.obtenerComentariosPorVideo(this.video.id, usuarioId).subscribe({
     next: (data) => {
       this.listaComentarios = data;
-      console.log("Comentarios cargados:", data);
+      console.log("Comentarios cargados con estado de likes:", data);
     },
     error: (err) => console.error("Error al obtener comentarios", err)
   });

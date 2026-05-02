@@ -24,9 +24,11 @@ export class ComentarioService {
    * Obtiene la lista de comentarios de un video específico
    * @param videoId ID del video
    */
-  obtenerComentariosPorVideo(videoId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.api}/video/${videoId}`);
-  }
+
+  obtenerComentariosPorVideo(videoId: number, usuarioId: number): Observable<any[]> {
+  // Le agregamos el ?usuarioLogueadoId= al final de la ruta
+  return this.http.get<any[]>(`${this.api}/video/${videoId}?usuarioLogueadoId=${usuarioId}`);
+}
 
   /**
    * Obtiene un comentario específico por su ID

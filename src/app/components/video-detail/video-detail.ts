@@ -120,6 +120,8 @@ export class VideoDetail implements OnInit {
   }
 
   publicarComentario() {
+
+    console.log("ffffff");
     if (!this.textoComentario.trim()) return;
 
     // Recuperamos el usuario logueado del localStorage (como sueles hacer)

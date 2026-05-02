@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
 
 @Injectable({ providedIn: 'root' })
 export class ComentarioService {
 
   // Usamos tu URL de Render y el endpoint que definimos en el Controller
   private api = 'https://backend-ruth-slam.onrender.com/api/comentarios';
+  private apiLikes = 'https://backend-ruth-slam.onrender.com/api/comentario-likes';
 
   constructor(private http: HttpClient) {}
 
@@ -43,7 +45,27 @@ export class ComentarioService {
   /**
    * Lógica para dar like a un comentario (opcional para el futuro)
    */
-  darLike(comentarioId: number, usuarioId: number): Observable<any> {
-    return this.http.post(`${this.api}/like`, { comentarioId, usuarioId });
+
+ toggleLike(comentarioId: number, usuarioId: number): Observable<string> {
+    const params = new HttpParams()
+      .set('comentarioId', comentarioId.toString())
+      .set('usuarioId', usuarioId.toString());
+
+    return this.http.post(`${this.apiLikes}/toggle`, {}, {
+      params,
+      responseType: 'text'
+    });
   }
+
+
+verificarLike(comentarioId: number, usuarioId: number): Observable<boolean> {
+    const params = new HttpParams()
+      .set('comentarioId', comentarioId.toString())
+      .set('usuarioId', usuarioId.toString());
+
+    return this.http.get<boolean>(`${this.apiLikes}/estado`, { params });
+  }
+
+
+
 }

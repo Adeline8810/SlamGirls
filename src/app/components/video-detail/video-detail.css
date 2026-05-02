@@ -378,3 +378,11 @@ width: 100%;
   from { transform: translateY(100%); }
   to { transform: translateY(0); }
 }
+
+.lista-comentarios-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.lista-comentarios-scroll::-webkit-scrollbar-thumb {
+  background: #ff2d55;
+  border-radius: 10px;
+}

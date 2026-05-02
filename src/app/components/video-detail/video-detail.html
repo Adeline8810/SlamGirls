@@ -66,6 +66,13 @@
               </p>
             </div>
           </div>
+
+          <!-- BOTÓN DE LIKE PARA EL COMENTARIO -->
+            <div style="text-align: center; cursor: pointer;" (click)="darLikeComentario(com)">
+              <div style="font-size: 16px;">❤️</div>
+              <div style="font-size: 10px; color: #999;">{{ com.likesCount || 0 }}</div>
+            </div>
+
         } @empty {
           <p style="text-align: center; color: #999; font-size: 13px;">Aún no hay comentarios. ¡Sé el primero!</p>
         }

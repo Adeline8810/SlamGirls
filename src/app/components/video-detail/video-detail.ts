@@ -180,4 +180,22 @@ cargarComentarios() {
     error: (err) => console.error("Error al obtener comentarios", err)
   });
 }
+
+darLikeComentario(comentario: any) {
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+    if (!usuarioLogueado.id) {
+        console.warn("Debes estar logueado para dar like");
+        return;
+    }
+
+    this.comentarioService.toggleLike(comentario.id, usuarioLogueado.id).subscribe({
+        next: (res) => {
+            console.log(res); // "Like agregado" o "Like quitado"
+            // Refrescamos los comentarios para que se actualice el número de likes
+            this.cargarComentarios();
+        },
+        error: (err) => console.error("Error al procesar like", err)
+    });
+}
 }

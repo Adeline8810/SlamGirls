@@ -1,66 +1,116 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output, signal, OnInit, inject } from '@angular/core'; // <--- ESTO DEBE SER @angular/core
 import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
 import confetti from 'canvas-confetti';
-import { Router } from '@angular/router';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { StarmakerPlayer } from '../starmaker-player/starmaker-player';
 import { StarmakerLyrics } from '../starmaker-lyrics/starmaker-lyrics';
-import { Tienda} from '../tienda/tienda'; // <--- AJUSTA ESTA RUTA A TU ARCHIVO REAL
-
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-  imports: [CommonModule,RouterModule,StarmakerPlayer, StarmakerLyrics,Tienda],
+  imports: [CommonModule, RouterModule, StarmakerPlayer, StarmakerLyrics],
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })
-export class VideoDetail   {
-
- // Recibimos el video desde el componente perfil
+export class VideoDetail implements OnInit {
+  // --- Entradas y Salidas ---
   @Input() video: any;
-  @Input() canto: any; // Para la letra y otros datos
-  mostrarRegalos: boolean = false;
-
-
-
+  @Input() canto: any;
   @Output() cerrar = new EventEmitter<void>();
 
-  // Variables para controlar lo que pasa en la pantalla
-  tiempoActualDelVideo: number = 0;
+  // --- Servicios ---
+  private router = inject(Router);
+  private recargarService = inject(RecargarService);
+
+  // --- Estado de la Interfaz ---
+  mostrarRegalos: boolean = false;
   panelActivo: 'ninguno' | 'comentarios' | 'regalos' | 'compartir' = 'ninguno';
+  tabActual: 'gift' | 'comments' = 'gift';
+
+  // --- Lógica de Monedas y Regalos (Signals) ---
+  misMonedas = signal<number>(0);
+  regaloSeleccionado = signal<any>(null);
+  efectoActivo = signal<string | null>(null);
+  contadorRegalo = signal(0);
+  timerRegalo: any;
+
+  // --- Tu Lista de Activos ---
+  listaRegalos = [
+    { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
+    { id: 2, nombre: 'Microphone', precio: 9, icon: 'assets/regalo2.png' },
+    { id: 3, nombre: 'Songful', precio: 18, icon: 'assets/regalo3.png' },
+    { id: 4, nombre: 'Glow sticks', precio: 48, icon: 'assets/regalo4.png' },
+    { id: 5, nombre: 'Music Box', precio: 60, icon: 'assets/regalo5.png' },
+    { id: 6, nombre: 'Ferrari', precio: 3000, icon: 'assets/regalo6.png' },
+    { id: 7, nombre: 'Pearl', precio: 200, icon: 'assets/regalo7.png' }
+  ];
 
   constructor() {}
 
-  // Lógica para cerrar el modal
-  cerrarModal(event: any) {
-    this.cerrar.emit();
+  ngOnInit() {
+    this.obtenerMonedas();
   }
 
+  // --- Gestión de Monedas ---
+  obtenerMonedas() {
+    const userJson = localStorage.getItem('usuario');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      this.recargarService.obtenerDatosUsuario(user.username).subscribe({
+        next: (data) => this.misMonedas.set(data.monedas),
+        error: (err) => console.error('Error al jalar monedas', err)
+      });
+    }
+  }
 
-   toggleRegalos() {
+  // --- Control de Paneles ---
+  toggleRegalos() {
     this.mostrarRegalos = !this.mostrarRegalos;
-  }
-
-  // Funciones que llaman tus botones del Toolbar
-  mostrarComentarios() {
-    this.panelActivo = 'comentarios';
-    console.log("Abriendo comentarios...");
-  }
-
-
-  mostrarCompartir() {
-    this.panelActivo = 'compartir';
-    console.log("Abriendo opciones de compartir");
+    this.panelActivo = this.mostrarRegalos ? 'regalos' : 'ninguno';
   }
 
   cerrarPaneles() {
+    this.mostrarRegalos = false;
     this.panelActivo = 'ninguno';
   }
 
-  onVideoEnd() {
-    console.log("El video ha terminado");
-    // Aquí podrías poner lógica para repetir o sugerir otro
+  // --- Lógica de Regalos ---
+  seleccionarRegalo(regalo: any) {
+    this.regaloSeleccionado.set(regalo);
+  }
+
+  lanzarRegalo() {
+    const regalo = this.regaloSeleccionado();
+    if (!regalo || this.misMonedas() < regalo.precio) {
+      alert("Monedas insuficientes, Ruth");
+      return;
+    }
+
+    // Aplicar lógica de cobro y efectos
+    this.efectoActivo.set(regalo.icon);
+    this.dispararEfectoEstrellas();
+    this.misMonedas.update(m => m - regalo.precio);
+    this.contadorRegalo.update(v => v + 1);
+
+    // Resetear el efecto tras 3 segundos
+    if (this.timerRegalo) clearTimeout(this.timerRegalo);
+    this.timerRegalo = setTimeout(() => {
+      this.contadorRegalo.set(0);
+      this.efectoActivo.set(null);
+    }, 3000);
+  }
+
+  private dispararEfectoEstrellas() {
+    const originLeft = { x: 0.1, y: 0.9 };
+    const originRight = { x: 0.9, y: 0.9 };
+    const config = { particleCount: 3, spread: 55, colors: ['#FFE100', '#FFD700', '#FFFFFF'], shapes: ['star' as const], zIndex: 10000 };
+
+    confetti({ ...config, angle: 60, origin: originLeft });
+    confetti({ ...config, angle: 120, origin: originRight });
+  }
+
+  abrirPantallaRecarga() {
+    this.router.navigate(['/recargar']);
   }
 }

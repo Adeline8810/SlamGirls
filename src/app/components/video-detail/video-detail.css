@@ -386,3 +386,137 @@ width: 100%;
   background: #ff2d55;
   border-radius: 10px;
 }
+
+/* Fondo semitransparente */
+.overlay-comentarios-white {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3);
+  display: flex; align-items: flex-end;
+  z-index: 1000;
+}
+
+/* Panel blanco redondeado */
+.panel-comentarios-social {
+  background: white;
+  width: 100%;
+  height: 70vh; /* Ocupa el 70% de la pantalla */
+  border-radius: 20px 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 20px;
+}
+
+.header-comentarios {
+  padding: 15px;
+  font-weight: bold;
+  text-align: left;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.lista-scroll-social {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.item-comentario {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.avatar-social {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.cuerpo-comentario {
+  flex: 1;
+}
+
+.fila-usuario {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nombre-usuario-social {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.texto-social {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #222;
+  line-height: 1.4;
+}
+
+.meta-social {
+  font-size: 12px;
+  color: #999;
+  display: flex;
+  gap: 15px;
+}
+
+.btn-repondre {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Corazón y contador */
+.like-container-social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon-heart {
+  font-size: 18px;
+}
+
+.count-social {
+  font-size: 10px;
+  color: #999;
+}
+
+/* Barra de texto inferior */
+.input-container-social {
+  padding: 10px 15px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input-container-social input {
+  flex: 1;
+  border: none;
+  background: #f5f5f5;
+  padding: 10px 15px;
+  border-radius: 20px;
+  outline: none;
+}
+
+.iconos-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #999;
+  font-size: 18px;
+}
+
+.btn-send-social {
+  background: #ff2d55;
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}

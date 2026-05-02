@@ -34,6 +34,7 @@ export class VideoDetail implements OnInit {
   efectoActivo = signal<string | null>(null);
   contadorRegalo = signal(0);
   timerRegalo: any;
+  mostrarComentarios: boolean = false;
 
   // --- Tu Lista de Activos ---
   listaRegalos = [

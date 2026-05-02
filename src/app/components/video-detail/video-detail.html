@@ -4,11 +4,11 @@
     <!-- Botón Volver -->
     <button class="btn-back-starmaker" (click)="cerrar.emit()"> < </button>
 
-    <!-- EFECTO DE REGALO LANZADO -->
+    <!-- EFECTO DE REGALO LANZADO (Añadí una clase para la animación) -->
     @if (efectoActivo()) {
-      <div class="lanzamiento-efecto" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; pointer-events: none;">
-        <img [src]="efectoActivo()" style="width: 80px;">
-        <span *ngIf="contadorRegalo() > 1" style="color: yellow; font-size: 24px; font-weight: bold; text-shadow: 2px 2px #000;">x{{ contadorRegalo() }}</span>
+      <div class="lanzamiento-efecto-animado" style="position: absolute; top: 30%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; pointer-events: none; text-align: center;">
+        <img [src]="efectoActivo()" style="width: 100px; filter: drop-shadow(0 0 10px gold);">
+        <div *ngIf="contadorRegalo() > 1" class="combo-animado">x{{ contadorRegalo() }}</div>
       </div>
     }
 
@@ -31,18 +31,36 @@
 
       <div style="display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee;">
         <span>❤️ 209</span>
-        <span>💬 5</span>
-        <!-- AQUÍ LLAMAMOS A TU FUNCIÓN toggleRegalos -->
+        <span (click)="mostrarComentarios = true" style="cursor: pointer;">💬 5</span>
         <span (click)="toggleRegalos()" style="cursor: pointer;">🎁 122</span>
         <button style="background: #ff2d55; color: white; border: none; border-radius: 20px; padding: 5px 15px;">Chanter</button>
       </div>
 
-      <div style="font-size: 13px; color: #555;">
-        <strong>Ramène.ta:</strong> Je n'ai jamais entendu cette chanson...
+      <!-- ESTO ES LO QUE SE VE EN LA IMAGEN: La barra de escribir abajo -->
+      <div class="fake-input-ruth" (click)="mostrarComentarios = true">
+        <span style="color: #999;">Veuillez saisir un commentaire</span>
+        <div style="color: #666; display: flex; gap: 10px;">
+           <span>@</span>
+           <span>🙂</span>
+        </div>
       </div>
     </div>
 
-    <!-- PANEL DE REGALOS (CORREGIDO PARA USAR mostrarRegalos) -->
+    <!-- PANEL PARA ESCRIBIR COMENTARIO (Se activa al cliquear la barra) -->
+    @if (mostrarComentarios) {
+      <div class="overlay-comentario-ruth" (click)="mostrarComentarios = false">
+        <div class="input-panel-ruth" (click)="$event.stopPropagation()">
+          <div style="display: flex; align-items: center; gap: 10px; background: #f0f0f0; border-radius: 25px; padding: 5px 15px;">
+            <input type="text" placeholder="Veuillez saisir un commentaire" style="border: none; background: transparent; flex: 1; outline: none; padding: 8px;" autofocus>
+            <span style="color: #666;">@</span>
+            <span style="color: #666;">🙂</span>
+            <button style="background: #ff2d55; border: none; color: white; border-radius: 50%; width: 30px; height: 30px;">➤</button>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- PANEL DE REGALOS -->
     @if (mostrarRegalos) {
       <div class="overlay-tienda-ruth" (click)="toggleRegalos()">
         <div class="contenedor-tienda-inferior" (click)="$event.stopPropagation()">
@@ -55,8 +73,6 @@
             <span style="opacity: 0.6; cursor: pointer;">Spécial</span>
           </div>
 
-          <!-- SI TIENES EL COMPONENTE APARTE, PUEDES USAR: <app-tienda></app-tienda> -->
-          <!-- O dejar tu grilla actual aquí abajo: -->
           <div class="gift-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 15px; height: 250px; overflow-y: auto;">
             @for (item of listaRegalos; track item.id) {
               <div class="gift-card"
@@ -71,7 +87,7 @@
             }
           </div>
 
-          <!-- FOOTER: MONEDAS Y BOTÓN SEND -->
+          <!-- FOOTER -->
           <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #11141d; border-radius: 0 0 20px 20px;">
             <div (click)="abrirPantallaRecarga()" style="cursor: pointer; color: white; display: flex; align-items: center; gap: 5px;">
               <span style="color: #ffcc00; font-size: 18px;">🟡</span>
@@ -88,5 +104,5 @@
       </div>
     }
 
-  </div> <!-- Fin celular-frame -->
-</div> <!-- Fin super-modal-overlay -->
+  </div>
+</div>

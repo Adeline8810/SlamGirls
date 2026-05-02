@@ -184,10 +184,7 @@ cargarComentarios() {
 darLikeComentario(comentario: any) {
     const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-    if (!usuarioLogueado.id) {
-        console.warn("Debes estar logueado para dar like");
-        return;
-    }
+    if (!usuarioLogueado.id) return;
 
     this.comentarioService.toggleLike(comentario.id, usuarioLogueado.id).subscribe({
         next: (res) => {

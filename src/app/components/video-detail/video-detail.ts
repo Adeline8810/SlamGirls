@@ -120,32 +120,40 @@ export class VideoDetail implements OnInit {
   }
 
   publicarComentario() {
+  console.log("ffffff");
+  if (!this.textoComentario.trim()) return;
 
-    console.log("ffffff");
-    if (!this.textoComentario.trim()) return;
+  const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-    // Recuperamos el usuario logueado del localStorage (como sueles hacer)
-    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
+  // LOG DE CONTROL: Mira si esto sale en la consola
+  console.log("ID Video:", this.video?.id);
+  console.log("ID Usuario Logueado:", usuarioLogueado?.id);
 
- console.log("usuarioLogueado-->"+usuarioLogueado);
-
-    const nuevoComentario = {
-      videoId: this.video.id,      // ID del video actual
-      usuarioId: usuarioLogueado.id, // ID de quien comenta
-      ownerId: this.video.usuarioId, // ID del dueño del video
-      contenido: this.textoComentario,
-      parentId: null               // Por ahora null, luego para respuestas usaremos el ID del padre
-    };
- console.log("ffffff 2");
-    this.comentarioService.guardarComentario(nuevoComentario).subscribe({
-      next: (res) => {
-        console.log('Comentario guardado!', res);
-         console.log("ffffff 2");
-        this.textoComentario = ''; // Limpiamos el input
-        this.mostrarComentarios = false; // Cerramos el panel
-        // Aquí podrías llamar a una función para refrescar la lista si la muestras en pantalla
-      },
-      error: (err) => console.error('Error al comentar', err)
-    });
+  // VALIDACIÓN DE SEGURIDAD
+  if (!this.video?.id || !usuarioLogueado?.id) {
+    console.error("Error: No se puede comentar porque falta el ID del video o del usuario.");
+    return;
   }
+
+  const nuevoComentario = {
+    videoId: this.video.id,
+    usuarioId: usuarioLogueado.id,
+    ownerId: this.video.usuarioId || 0, // Por si acaso
+    contenido: this.textoComentario,
+    parentId: null
+  };
+
+  console.log("Enviando comentario...", nuevoComentario);
+
+  this.comentarioService.guardarComentario(nuevoComentario).subscribe({
+    next: (res) => {
+      console.log('¡Guardado exitoso!', res);
+      this.textoComentario = '';
+      this.mostrarComentarios = false;
+    },
+    error: (err) => {
+      console.error('Error en la petición HTTP:', err);
+    }
+  });
+}
 }

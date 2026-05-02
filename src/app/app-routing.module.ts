@@ -10,14 +10,17 @@ import { PerfilAjeno } from './components/perfil-ajeno/perfil-ajeno';
 import { Cantar } from './components/cantar/cantar';
 import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 import { EditorCanciones } from './editor-canciones/editor-canciones';
+import { Inicio } from './components/inicio/inicio';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/admin', pathMatch: 'full' },
+{ path: '', component: Inicio, pathMatch: 'full' },
+
   {
     path: 'admin',
     loadComponent: () =>
       import('./pages/admin/admin.component').then(m => m.AdminComponent)
   },
+
   {
     path: 'administrar-preguntas',
     loadComponent: () =>

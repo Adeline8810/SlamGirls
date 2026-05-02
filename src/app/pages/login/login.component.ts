@@ -46,7 +46,8 @@ export class LoginComponent {
   if (u?.username === 'ruthadeline')
     this.router.navigate(['/admin']);
   else
-    this.router.navigate(['/slam']);
+    //this.router.navigate(['/slam']);
+  this.router.navigate(['/'])
 },
       error: () => {
         alert('Usuario o contraseña incorrectos');

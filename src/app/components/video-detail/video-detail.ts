@@ -134,10 +134,11 @@ export class VideoDetail implements OnInit {
       contenido: this.textoComentario,
       parentId: null               // Por ahora null, luego para respuestas usaremos el ID del padre
     };
-
+ console.log("ffffff 2");
     this.comentarioService.guardarComentario(nuevoComentario).subscribe({
       next: (res) => {
         console.log('Comentario guardado!', res);
+         console.log("ffffff 2");
         this.textoComentario = ''; // Limpiamos el input
         this.mostrarComentarios = false; // Cerramos el panel
         // Aquí podrías llamar a una función para refrescar la lista si la muestras en pantalla

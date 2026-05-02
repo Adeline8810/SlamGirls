@@ -5,11 +5,12 @@
     <button class="btn-back-starmaker" (click)="cerrar.emit()"> < </button>
 
     <!-- PARTE SUPERIOR: VIDEO Y LETRAS -->
-    <div class="video-section">
-      <app-starmaker-player [videoUrl]="video?.urlVideo"></app-starmaker-player>
-      <!-- Aquí irían las letras flotando sobre el video -->
-      <app-starmaker-lyrics></app-starmaker-lyrics>
-    </div>
+   <div class="video-section">
+  <!-- El nombre del atributo [videoUrl] debe coincidir con el @Input del TS -->
+  <app-starmaker-player [videoUrl]="video?.urlVideo"></app-starmaker-player>
+
+  <app-starmaker-lyrics></app-starmaker-lyrics>
+</div>
 
     <!-- PARTE INFERIOR: PERFIL, TÍTULO Y ACCIONES -->
     <div class="info-section">

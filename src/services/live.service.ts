@@ -18,13 +18,15 @@ export class LiveService {
   }
 
   // 2. Crear un nuevo live (Inicia la transmisión en la DB)
-  iniciarLive(usuarioId: number, titulo: string): Observable<any> {
-    // Usamos params porque en el Backend pusimos @RequestParam
-    return this.http.post<any>(`${this.api}/iniciar?usuarioId=${usuarioId}&titulo=${titulo}`, {});
-  }
+// 1. Para empezar el live
+iniciarLive(usuarioId: number, titulo: string): Observable<any> {
+  return this.http.post<any>(`${this.api}/iniciar?usuarioId=${usuarioId}&titulo=${titulo}`, {});
+}
 
-  // 3. Finalizar el live
-  finalizarLive(liveId: number): Observable<any> {
-    return this.http.post<any>(`${this.api}/finalizar/${liveId}`, {});
-  }
+// 2. Para terminar el live (usando el usuarioId como referencia)
+finalizarLive(usuarioId: number): Observable<any> {
+  // Nota: Si tu backend pide el ID del LIVE en lugar del usuario,
+  // asegúrate de que el endpoint sea el correcto.
+  return this.http.post<any>(`${this.api}/finalizar/por-usuario/${usuarioId}`, {});
+}
 }

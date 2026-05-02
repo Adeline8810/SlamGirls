@@ -11,6 +11,7 @@ import { Cantar } from './components/cantar/cantar';
 import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 import { EditorCanciones } from './editor-canciones/editor-canciones';
 import { Inicio } from './components/inicio/inicio';
+import { EnVivo } from './components/en-vivo/en-vivo';
 
 const routes: Routes = [
 { path: '', component: Inicio, pathMatch: 'full' },
@@ -75,6 +76,8 @@ const routes: Routes = [
 { path: 'cantar/:id', component: Cantar },
 
 { path: 'editor-canciones', component: EditorCanciones },
+
+{ path: 'en-vivo', component: EnVivo },
 
   { path: '**', redirectTo: '/admin' }
 

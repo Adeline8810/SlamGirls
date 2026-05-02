@@ -1,0 +1,12 @@
+<div class="live-container">
+  <div class="header">
+    <span class="badge-live">EN DIRECTO</span>
+    <span class="user-id">Transmitiendo como: {{ usuarioId }}</span>
+  </div>
+
+  <video #videoElement autoplay playsinline muted class="video-preview"></video>
+
+  <div class="footer">
+    <button class="btn-stop" (click)="ngOnDestroy()">FINALIZAR LIVE</button>
+  </div>
+</div>

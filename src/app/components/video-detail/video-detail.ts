@@ -40,6 +40,7 @@ export class VideoDetail implements OnInit {
   mostrarComentarios: boolean = false;
 
   textoComentario: string = '';
+  listaComentarios: any[] = [];
 
   // --- Tu Lista de Activos ---
   listaRegalos = [
@@ -56,6 +57,7 @@ export class VideoDetail implements OnInit {
 
   ngOnInit() {
     this.obtenerMonedas();
+    this.cargarComentarios();
   }
 
   // --- Gestión de Monedas ---
@@ -158,12 +160,24 @@ console.log("Botón pulsado. Valor detectado:", this.textoComentario);
     next: (res) => {
       console.log('¡Éxito!', res);
       this.textoComentario = '';
-      this.mostrarComentarios = false;
+      this.cargarComentarios();
       // Aquí podrías llamar a una función para recargar la lista
     },
     error: (err) => {
       console.error('Error HTTP al guardar:', err);
     }
+  });
+}
+
+cargarComentarios() {
+  if (!this.video?.id) return;
+
+  this.comentarioService.obtenerComentariosPorVideo(this.video.id).subscribe({
+    next: (data) => {
+      this.listaComentarios = data;
+      console.log("Comentarios cargados:", data);
+    },
+    error: (err) => console.error("Error al obtener comentarios", err)
   });
 }
 }

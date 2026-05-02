@@ -40,13 +40,15 @@
     </div>
 
   </div>
-  @if (mostrarRegalos) {
-  <div class="panel-regalos-ruth">
-    <!-- Aquí llamas a tu componente de tienda o lista de regalos -->
-    <app-tienda></app-tienda>
+@if (mostrarRegalos) {
+  <div class="overlay-tienda-ruth" (click)="toggleRegalos()">
+    <div class="contenedor-tienda-inferior" (click)="$event.stopPropagation()">
+      <!-- La barrita gris de arriba para "arrastrar" o cerrar -->
+      <div class="drag-handle"></div>
 
-    <!-- Botón para cerrar el panel -->
-    <button (click)="toggleRegalos()" class="btn-cerrar-tienda">Cerrar</button>
+      <!-- TU COMPONENTE REAL DE REGALOS -->
+      <app-tienda></app-tienda>
+    </div>
   </div>
 }
 </div>

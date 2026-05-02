@@ -285,3 +285,43 @@ width: 100%;
   color: white;
   font-weight: bold;
 }
+
+/* Fondo oscuro semitransparente detrás de la tienda */
+.overlay-tienda-ruth {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end; /* Alinea la tienda al fondo */
+}
+
+/* El contenedor que sube */
+.contenedor-tienda-inferior {
+  width: 100%;
+  height: 65%; /* Ocupa más de la mitad como en tu foto */
+  background: #1a1d29; /* El color azul oscuro de la imagen */
+  border-radius: 20px 20px 0 0;
+  padding: 10px;
+  position: relative;
+  animation: slideUp 0.3s ease-out;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.5);
+}
+
+/* Animación para que suba suavemente */
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Barrita decorativa superior */
+.drag-handle {
+  width: 40px;
+  height: 4px;
+  background: #555;
+  border-radius: 2px;
+  margin: 5px auto 15px auto;
+}

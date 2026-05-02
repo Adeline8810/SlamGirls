@@ -6,12 +6,13 @@ import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { StarmakerPlayer } from '../starmaker-player/starmaker-player';
 import { StarmakerLyrics } from '../starmaker-lyrics/starmaker-lyrics';
+import { Tienda} from '../tienda/tienda'; // <--- AJUSTA ESTA RUTA A TU ARCHIVO REAL
 
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-  imports: [CommonModule,RouterModule,StarmakerPlayer, StarmakerLyrics],
+  imports: [CommonModule,RouterModule,StarmakerPlayer, StarmakerLyrics,Tienda],
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })

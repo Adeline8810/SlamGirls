@@ -127,6 +127,8 @@ export class VideoDetail implements OnInit {
     // Recuperamos el usuario logueado del localStorage (como sueles hacer)
     const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
 
+ console.log("usuarioLogueado-->"+usuarioLogueado);
+
     const nuevoComentario = {
       videoId: this.video.id,      // ID del video actual
       usuarioId: usuarioLogueado.id, // ID de quien comenta

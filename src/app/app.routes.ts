@@ -14,9 +14,11 @@ import { Chat } from './components/chat/chat';
 import { Cantar } from './components/cantar/cantar';
 import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 import {  EditorCanciones } from './editor-canciones/editor-canciones';
+import { Inicio } from './components/inicio/inicio';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
+  { path: '', component: Inicio },
+  { path: 'bienvenida', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'slam', component: SlamComponent },

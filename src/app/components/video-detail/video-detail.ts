@@ -6,12 +6,13 @@ import { Router, RouterModule } from '@angular/router';
 import { StarmakerPlayer } from '../starmaker-player/starmaker-player';
 import { StarmakerLyrics } from '../starmaker-lyrics/starmaker-lyrics';
 import { ComentarioService } from '../../../services/comentario.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-video-detail',
 
   standalone: true,
-  imports: [CommonModule, RouterModule, StarmakerPlayer, StarmakerLyrics],
+  imports: [CommonModule, RouterModule, StarmakerPlayer, StarmakerLyrics,FormsModule],
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })

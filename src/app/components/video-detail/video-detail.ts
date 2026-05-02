@@ -120,39 +120,45 @@ export class VideoDetail implements OnInit {
   }
 
   publicarComentario() {
-  console.log("ffffff");
-  if (!this.textoComentario.trim()) return;
+  console.log("Intentando publicar...");
+
+  if (!this.textoComentario || !this.textoComentario.trim()) {
+    console.warn("Texto vacío");
+    return;
+  }
 
   const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
 
-  // LOG DE CONTROL: Mira si esto sale en la consola
-  console.log("ID Video:", this.video?.id);
-  console.log("ID Usuario Logueado:", usuarioLogueado?.id);
+  // LOGS PARA DEPURAR (Mira estos en la consola después de darle al botón)
+  console.log("Variable 'video':", this.video);
+  console.log("ID del video:", this.video?.id);
+  console.log("ID del usuario logueado:", usuarioLogueado?.id);
 
-  // VALIDACIÓN DE SEGURIDAD
+  // Verificamos que existan los datos necesarios
   if (!this.video?.id || !usuarioLogueado?.id) {
-    console.error("Error: No se puede comentar porque falta el ID del video o del usuario.");
+    console.error("Faltan datos: video.id o usuarioLogueado.id no existen.");
     return;
   }
 
   const nuevoComentario = {
     videoId: this.video.id,
     usuarioId: usuarioLogueado.id,
-    ownerId: this.video.usuarioId || 0, // Por si acaso
+    ownerId: this.video.usuarioId, // El dueño del video según tu consola es 'usuarioId'
     contenido: this.textoComentario,
     parentId: null
   };
 
-  console.log("Enviando comentario...", nuevoComentario);
+  console.log("Enviando al backend:", nuevoComentario);
 
   this.comentarioService.guardarComentario(nuevoComentario).subscribe({
     next: (res) => {
-      console.log('¡Guardado exitoso!', res);
+      console.log('¡Éxito!', res);
       this.textoComentario = '';
       this.mostrarComentarios = false;
+      // Aquí podrías llamar a una función para recargar la lista
     },
     error: (err) => {
-      console.error('Error en la petición HTTP:', err);
+      console.error('Error HTTP al guardar:', err);
     }
   });
 }

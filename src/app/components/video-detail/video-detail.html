@@ -54,11 +54,12 @@
 
             <!-- 1. Agregamos [(ngModel)] para capturar el texto -->
             <input type="text"
-                   [(ngModel)]="textoComentario"
-                   placeholder="Veuillez saisir un commentaire"
-                   style="border: none; background: transparent; flex: 1; outline: none; padding: 8px;"
-                   autofocus
-                   (keyup.enter)="publicarComentario()"> <!-- 2. Para enviar con el 'Enter' del teclado -->
+            name="textoComentario"
+            [(ngModel)]="textoComentario"
+            placeholder="Veuillez saisir un commentaire"
+            style="border: none; background: transparent; flex: 1; outline: none; padding: 8px;"
+            autofocus
+            (keyup.enter)="publicarComentario()"> <!-- 2. Para enviar con el 'Enter' del teclado -->
 
             <span style="color: #666;">@</span>
             <span style="color: #666;">🙂</span>

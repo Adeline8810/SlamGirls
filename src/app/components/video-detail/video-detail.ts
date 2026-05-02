@@ -120,12 +120,15 @@ export class VideoDetail implements OnInit {
   }
 
   publicarComentario() {
-  console.log("Intentando publicar...");
+console.log("Botón pulsado. Valor detectado:", this.textoComentario);
 
-  if (!this.textoComentario || !this.textoComentario.trim()) {
-    console.warn("Texto vacío");
-    return;
-  }
+    // Si el log de arriba sale vacío, vamos a forzar la lectura del input
+    if (!this.textoComentario || this.textoComentario.trim() === '') {
+        console.warn("La variable está vacía.");
+        return;
+    }
+
+
 
   const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
 

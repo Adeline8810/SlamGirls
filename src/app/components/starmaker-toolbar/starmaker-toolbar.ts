@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+
+import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+
 
 @Component({
   selector: 'app-starmaker-toolbar',

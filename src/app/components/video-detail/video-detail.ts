@@ -4,12 +4,14 @@ import { RecargarService } from '../../../services/recargar.service';
 import confetti from 'canvas-confetti';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { StarmakerPlayer } from '../starmaker-player/starmaker-player';
+import { StarmakerLyrics } from '../starmaker-lyrics/starmaker-lyrics';
 
 
 @Component({
   selector: 'app-video-detail',
   standalone: true,
-  imports: [CommonModule,RouterModule],
+  imports: [CommonModule,RouterModule,StarmakerPlayer, StarmakerLyrics],
   templateUrl: './video-detail.html',
   styleUrl: './video-detail.css'
 })
@@ -18,6 +20,8 @@ export class VideoDetail   {
  // Recibimos el video desde el componente perfil
   @Input() video: any;
   @Input() canto: any; // Para la letra y otros datos
+
+
 
   @Output() cerrar = new EventEmitter<void>();
 

@@ -1,27 +1,42 @@
-<!-- PANEL DE REGALOS DESLIZABLE (Overlay) -->
- <div class="starmaker-content">
-  <div class="zoom-fix">
-<div class="panel-inferior" *ngIf="panelActivo === 'regalos'" (click)="cerrarPaneles()">
-  <div class="contenido-regalos" (click)="$event.stopPropagation()">
-    <div class="header-panel">
-      <span>Cadeau</span>
-      <button (click)="cerrarPaneles()">✕</button>
+<div class="super-modal-overlay">
+  <div class="celular-frame">
+
+    <!-- Botón Volver (Flecha <) -->
+    <button class="btn-back-starmaker" (click)="cerrar.emit()"> < </button>
+
+    <!-- PARTE SUPERIOR: VIDEO Y LETRAS -->
+    <div class="video-section">
+      <app-starmaker-player [videoUrl]="video?.urlVideo"></app-starmaker-player>
+      <!-- Aquí irían las letras flotando sobre el video -->
+      <app-starmaker-lyrics></app-starmaker-lyrics>
     </div>
 
-    <div class="grid-regalos">
-      <!-- Aquí irían los iconos de Rosa, Micrófono, etc. -->
-      <div class="regalo-item">
-        <img src="assets/img/rose.png" alt="Rosa">
-        <span>Rose</span>
-        <small>3 🪙</small>
+    <!-- PARTE INFERIOR: PERFIL, TÍTULO Y ACCIONES -->
+    <div class="info-section">
+      <!-- Info del Usuario (Foto redonda y nombre) -->
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img [src]="video?.usuarioFoto || 'assets/img/default.png'" style="width: 40px; height: 40px; border-radius: 50%;">
+        <span style="font-weight: bold; color: #ff2d55;">{{ video?.nombreUsuario || 'Usuario' }}</span>
       </div>
-      <!-- Repetir para los demás... -->
+
+      <!-- Título del Video (Los hashtags azules de tus fotos) -->
+      <p style="color: #2b7bb9; font-size: 14px; margin: 5px 0;">
+        #{{ video?.titulo }} #StarMaker #Cover
+      </p>
+
+      <!-- Botones de Acción (Corazón, Comentario, Regalo) -->
+      <div style="display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee;">
+        <span>❤️ 209</span>
+        <span>💬 5</span>
+        <span>🎁 122</span>
+        <button style="background: #ff2d55; color: white; border: none; border-radius: 20px; padding: 5px 15px;">Chanter</button>
+      </div>
+
+      <!-- Comentarios (Simulación) -->
+      <div style="font-size: 13px; color: #555;">
+        <strong>Ramène.ta:</strong> Je n'ai jamais entendu cette chanson...
+      </div>
     </div>
 
-    <div class="footer-panel">
-      <button class="btn-enviar">Envoyer</button>
-    </div>
   </div>
-</div>
-</div>
 </div>

@@ -5,9 +5,11 @@ import confetti from 'canvas-confetti';
 import { Router, RouterModule } from '@angular/router';
 import { StarmakerPlayer } from '../starmaker-player/starmaker-player';
 import { StarmakerLyrics } from '../starmaker-lyrics/starmaker-lyrics';
+import { ComentarioService } from '../../../services/comentario.service';
 
 @Component({
   selector: 'app-video-detail',
+
   standalone: true,
   imports: [CommonModule, RouterModule, StarmakerPlayer, StarmakerLyrics],
   templateUrl: './video-detail.html',
@@ -36,6 +38,8 @@ export class VideoDetail implements OnInit {
   timerRegalo: any;
   mostrarComentarios: boolean = false;
 
+  textoComentario: string = '';
+
   // --- Tu Lista de Activos ---
   listaRegalos = [
     { id: 1, nombre: 'Rose', precio: 3, icon: 'assets/regalo1.png' },
@@ -47,7 +51,7 @@ export class VideoDetail implements OnInit {
     { id: 7, nombre: 'Pearl', precio: 200, icon: 'assets/regalo7.png' }
   ];
 
-  constructor() {}
+  constructor(private comentarioService: ComentarioService) {}
 
   ngOnInit() {
     this.obtenerMonedas();
@@ -113,5 +117,30 @@ export class VideoDetail implements OnInit {
 
   abrirPantallaRecarga() {
     this.router.navigate(['/recargar']);
+  }
+
+  publicarComentario() {
+    if (!this.textoComentario.trim()) return;
+
+    // Recuperamos el usuario logueado del localStorage (como sueles hacer)
+    const usuarioLogueado = JSON.parse(localStorage.getItem('usuario') || '{}');
+
+    const nuevoComentario = {
+      videoId: this.video.id,      // ID del video actual
+      usuarioId: usuarioLogueado.id, // ID de quien comenta
+      ownerId: this.video.usuarioId, // ID del dueño del video
+      contenido: this.textoComentario,
+      parentId: null               // Por ahora null, luego para respuestas usaremos el ID del padre
+    };
+
+    this.comentarioService.guardarComentario(nuevoComentario).subscribe({
+      next: (res) => {
+        console.log('Comentario guardado!', res);
+        this.textoComentario = ''; // Limpiamos el input
+        this.mostrarComentarios = false; // Cerramos el panel
+        // Aquí podrías llamar a una función para refrescar la lista si la muestras en pantalla
+      },
+      error: (err) => console.error('Error al comentar', err)
+    });
   }
 }

@@ -29,7 +29,7 @@
       <div style="display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee;">
         <span>❤️ 209</span>
         <span>💬 5</span>
-        <span>🎁 122</span>
+        <span (click)="toggleRegalos()" style="cursor: pointer;">🎁 122</span>
         <button style="background: #ff2d55; color: white; border: none; border-radius: 20px; padding: 5px 15px;">Chanter</button>
       </div>
 
@@ -40,4 +40,13 @@
     </div>
 
   </div>
+  @if (mostrarRegalos) {
+  <div class="panel-regalos-ruth">
+    <!-- Aquí llamas a tu componente de tienda o lista de regalos -->
+    <app-tienda></app-tienda>
+
+    <!-- Botón para cerrar el panel -->
+    <button (click)="toggleRegalos()" class="btn-cerrar-tienda">Cerrar</button>
+  </div>
+}
 </div>

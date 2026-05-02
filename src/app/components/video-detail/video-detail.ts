@@ -20,6 +20,7 @@ export class VideoDetail   {
  // Recibimos el video desde el componente perfil
   @Input() video: any;
   @Input() canto: any; // Para la letra y otros datos
+  mostrarRegalos: boolean = false;
 
 
 
@@ -36,16 +37,17 @@ export class VideoDetail   {
     this.cerrar.emit();
   }
 
+
+   toggleRegalos() {
+    this.mostrarRegalos = !this.mostrarRegalos;
+  }
+
   // Funciones que llaman tus botones del Toolbar
   mostrarComentarios() {
     this.panelActivo = 'comentarios';
     console.log("Abriendo comentarios...");
   }
 
-  mostrarRegalos() {
-    this.panelActivo = 'regalos';
-    console.log("Abriendo panel de regalos");
-  }
 
   mostrarCompartir() {
     this.panelActivo = 'compartir';

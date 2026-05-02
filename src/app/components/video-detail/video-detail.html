@@ -47,14 +47,27 @@
     </div>
 
     <!-- PANEL PARA ESCRIBIR COMENTARIO (Se activa al cliquear la barra) -->
-    @if (mostrarComentarios) {
+@if (mostrarComentarios) {
       <div class="overlay-comentario-ruth" (click)="mostrarComentarios = false">
         <div class="input-panel-ruth" (click)="$event.stopPropagation()">
           <div style="display: flex; align-items: center; gap: 10px; background: #f0f0f0; border-radius: 25px; padding: 5px 15px;">
-            <input type="text" placeholder="Veuillez saisir un commentaire" style="border: none; background: transparent; flex: 1; outline: none; padding: 8px;" autofocus>
+
+            <!-- 1. Agregamos [(ngModel)] para capturar el texto -->
+            <input type="text"
+                   [(ngModel)]="textoComentario"
+                   placeholder="Veuillez saisir un commentaire"
+                   style="border: none; background: transparent; flex: 1; outline: none; padding: 8px;"
+                   autofocus
+                   (keyup.enter)="publicarComentario()"> <!-- 2. Para enviar con el 'Enter' del teclado -->
+
             <span style="color: #666;">@</span>
             <span style="color: #666;">🙂</span>
-            <button style="background: #ff2d55; border: none; color: white; border-radius: 50%; width: 30px; height: 30px;">➤</button>
+
+            <!-- 3. Conectamos el click a la función del TS -->
+            <button (click)="publicarComentario()"
+                    style="background: #ff2d55; border: none; color: white; border-radius: 50%; width: 30px; height: 30px; cursor: pointer;">
+              ➤
+            </button>
           </div>
         </div>
       </div>

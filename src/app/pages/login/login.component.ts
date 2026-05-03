@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; // Añade Auth aquí
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -15,7 +16,8 @@ import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; 
 export class LoginComponent {
 
   form: any; // 👈 declaramos la variable
-  private auth: Auth = inject(Auth);
+  //private auth: Auth = inject(Auth);
+  private httpAuth: Auth = inject(Auth);
 
   constructor(
     private fb: FormBuilder,
@@ -63,8 +65,18 @@ export class LoginComponent {
   }
 
 
-  loginConGoogle() {
-  return signInWithPopup(this.auth, new GoogleAuthProvider());
+loginConGoogle() {
+  signInWithPopup(this.httpAuth, new GoogleAuthProvider())
+    .then((result) => {
+      const user = result.user;
+      localStorage.setItem('usuario', JSON.stringify({
+        username: user.displayName,
+        email: user.email,
+        id: user.uid
+      }));
+      this.router.navigate(['/inicio']);
+    })
+    .catch((error) => console.error(error));
 }
 
 

@@ -21,36 +21,41 @@ export class AppComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit() {
-    // 1. DESPERTAR AL SERVIDOR
-    // Esto se ejecuta una sola vez al cargar la app para que Render se encienda
-    this.http.get('https://backend-ruth-slam.onrender.com/api/usuarios/ping').subscribe({
-      next: () => console.log('Servidor despertando...'),
-      error: () => console.log('El servidor aún está durmiendo, pero ya recibió el aviso.')
-    });
+  // 1. DESPERTAR AL SERVIDOR (Fuego y olvido)
+  // Usamos un objeto observador completo para atrapar el error
+  // y evitar que rompa el inicio de la aplicación.
+  this.http.get('https://backend-ruth-slam.onrender.com/api/usuarios/ping').subscribe({
+    next: () => console.log('✅ Backend contactado con éxito'),
+    error: (err) => {
+      // Si el servidor está dormido, dará error de timeout o conexión,
+      // pero esto ya no detendrá tu pantalla blanca.
+      console.warn('⏳ El servidor está despertando... (NG0201 ignorado visualmente)');
+    }
+  });
 
-    // 2. LÓGICA DE RUTAS ÚNICA
-    // Centralizamos aquí todo para evitar conflictos
-    this.router.events.subscribe((event: any) => {
-      if (event instanceof NavigationEnd) {
-        const rutaActual = event.urlAfterRedirects;
+  // 2. LÓGICA DE RUTAS ÚNICA
+  // Se ejecuta inmediatamente y por separado del HTTP.
+  this.router.events.subscribe((event: any) => {
+    if (event instanceof NavigationEnd) {
+      const rutaActual = event.urlAfterRedirects;
 
-        // Reglas de pantallas donde NO se debe ver el menú
-        const esLoginORegistro = rutaActual === '/' ||
-                                 rutaActual === '/login' ||
-                                 rutaActual.includes('registro');
+      // Definimos rutas públicas
+      const esLoginORegistro = rutaActual === '/' ||
+                               rutaActual === '/login' ||
+                               rutaActual.includes('registro');
 
-        const esPantallaGrabacion = rutaActual.includes('cantar');
+      const esPantallaGrabacion = rutaActual.includes('cantar');
 
-        // Verificamos si hay sesión activa (puedes usar 'usuario' o 'usuarioId')
-        const tieneUsuario = !!localStorage.getItem('usuario');
+      // Verificamos sesión
+      const tieneUsuario = !!localStorage.getItem('usuario');
 
-        // Lógica final: Solo se muestra si hay usuario Y no es una ruta prohibida
-        this.mostrarMenu = tieneUsuario && !esLoginORegistro && !esPantallaGrabacion;
+      // Decidimos si mostrar el menú
+      this.mostrarMenu = tieneUsuario && !esLoginORegistro && !esPantallaGrabacion;
 
-        console.log('¿Mostrar menú?:', this.mostrarMenu, 'Ruta:', rutaActual);
-      }
-    });
-  }
+      console.log('📱 Estado del menú:', this.mostrarMenu, '| Ruta:', rutaActual);
+    }
+  });
+}
 
   navegar(ruta: string) {
     // Actualizamos el icono activo para el estilo visual

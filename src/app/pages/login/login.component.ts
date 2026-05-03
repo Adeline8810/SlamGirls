@@ -17,15 +17,16 @@ export class LoginComponent {
 
   form: any;
   // 1. La declaramos aquí arriba, limpia.
-  private httpAuth: Auth;
+
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
-    private router: Router
+    private router: Router,
+    private httpAuth: Auth
   ) {
     // 2. La inyectamos aquí adentro. Esto es lo más seguro.
-    this.httpAuth = inject(Auth);
+
 
     // 3. Inicializamos el formulario
     this.form = this.fb.group({

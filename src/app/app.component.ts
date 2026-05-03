@@ -20,21 +20,20 @@ export class AppComponent implements OnInit {
   // El constructor ahora solo inyecta las herramientas, no ejecuta lógica pesada
   constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit() {
-  // 1. DESPERTAR AL SERVIDOR (Fuego y olvido)
-  // Usamos un objeto observador completo para atrapar el error
-  // y evitar que rompa el inicio de la aplicación.
-  this.http.get('https://backend-ruth-slam.onrender.com/api/usuarios/ping').subscribe({
-    next: () => console.log('✅ Backend contactado con éxito'),
-    error: (err) => {
-      // Si el servidor está dormido, dará error de timeout o conexión,
-      // pero esto ya no detendrá tu pantalla blanca.
-      console.warn('⏳ El servidor está despertando... (NG0201 ignorado visualmente)');
-    }
-  });
+ ngOnInit() {
+  // 1. DESPERTAR AL SERVIDOR (Con retraso para evitar bloqueo inicial)
+  // Envolvemos el ping en un setTimeout de 2 segundos.
+  // Esto permite que el HTML cargue PRIMERO y el ping ocurra DESPUÉS.
+  setTimeout(() => {
+    this.http.get('https://backend-ruth-slam.onrender.com/api/usuarios/ping').subscribe({
+      next: () => console.log('✅ Backend contactado con éxito'),
+      error: (err) => {
+        console.warn('⏳ El servidor está despertando... (NG0201 evitado)');
+      }
+    });
+  }, 2000);
 
-  // 2. LÓGICA DE RUTAS ÚNICA
-  // Se ejecuta inmediatamente y por separado del HTTP.
+  // 2. LÓGICA DE RUTAS ÚNICA (Se mantiene intacta)
   this.router.events.subscribe((event: any) => {
     if (event instanceof NavigationEnd) {
       const rutaActual = event.urlAfterRedirects;

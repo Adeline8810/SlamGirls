@@ -21,7 +21,6 @@ import { VerLive } from './components/ver-live/ver-live';
 
 export const routes: Routes = [
   { path: '', component: LandingComponent }, // Esta es la que DEBE cargar al inicio
-  { path: 'bienvenida', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'inicio', component: Inicio },

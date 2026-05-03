@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   selectedTabNav: string = 'moi';
   notificaciones = 5;
   mostrarMenu: boolean = false;
-  private httpAuth: Auth = inject(Auth);
+
 
   // El constructor ahora solo inyecta las herramientas, no ejecuta lógica pesada
   constructor(private http: HttpClient, private router: Router) {}

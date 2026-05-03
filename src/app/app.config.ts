@@ -1,14 +1,23 @@
-import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withHashLocation } from '@angular/router'; // 👈 CAMBIADO A withHashLocation
+import { ApplicationConfig, importProvidersFrom } from '@angular/core'; // 👈 IMPORTADO importProvidersFrom
+import { provideRouter, withHashLocation } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 
+
+
+// IMPORTS DE FIREBASE
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from '../environment';
+
 export const appConfig: ApplicationConfig = {
   providers: [
-    // Ahora sí, esta es la función correcta para Angular 18
     provideRouter(routes, withHashLocation()),
     provideHttpClient(),
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    // Saca las funciones de Firebase fuera de importProvidersFrom
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth())
   ]
 };

@@ -2,12 +2,12 @@ export const environment = {
   production: false,
   appName: 'ÉtoileRose',
   firebase: {
-    apiKey: "AIzaSyBALXg9TVkvj04D60YoRanUpLSKdSC0wu0",
-    authDomain: "etoilerose-9ceed.firebaseapp.com",
-    projectId: "etoilerose-9ceed",
-    storageBucket: "etoilerose-9ceed.firebasestorage.app",
-    messagingSenderId: "227264927720",
-    appId: "1:227264927720:web:ad9f9a3306158a9654b65d",
-    measurementId: "G-R2ZZ9DETJR"
+  apiKey: "AIzaSyACS9ZiUGlI8LR4wrZSlVOrYd83NCoSXVs",
+  authDomain: "fir-bak.firebaseapp.com",
+  projectId: "fir-bak",
+  storageBucket: "fir-bak.firebasestorage.app",
+  messagingSenderId: "195333654752",
+  appId: "1:195333654752:web:4bc0f011285956a3d76885",
+  measurementId: "G-T5ZT12MEW8"
   }
 };

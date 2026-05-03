@@ -11,18 +11,27 @@ import { Cantar } from './components/cantar/cantar';
 import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 import { EditorCanciones } from './editor-canciones/editor-canciones';
 import { Inicio } from './components/inicio/inicio';
+import { LandingComponent } from './pages/landing/landing.component';
+import { LoginComponent } from './pages/login/login.component';
+import { RegisterComponent } from './pages/register/register.component';
 import { EnVivo } from './components/en-vivo/en-vivo';
-import { VerLive } from './components/ver-live/ver-live';
 
 const routes: Routes = [
-{ path: '', component: Inicio, pathMatch: 'full' },
+
+  { path: '', component: LandingComponent, pathMatch: 'full' },
+  { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent },
+  { path: 'inicio', component: Inicio },
+  { path: 'en-vivo', component: EnVivo },
+
+  //{ path: '', redirectTo: '/admin', pathMatch: 'full' },
+
 
   {
     path: 'admin',
     loadComponent: () =>
       import('./pages/admin/admin.component').then(m => m.AdminComponent)
   },
-
   {
     path: 'administrar-preguntas',
     loadComponent: () =>
@@ -78,11 +87,7 @@ const routes: Routes = [
 
 { path: 'editor-canciones', component: EditorCanciones },
 
-{ path: 'en-vivo', component: EnVivo },
-
-{ path: 'ver-live/:id', component: VerLive },
-
-  { path: '**', redirectTo: '/admin' }
+  { path: '**', redirectTo: '' }
 
 
 ,

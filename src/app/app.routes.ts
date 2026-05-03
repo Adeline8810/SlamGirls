@@ -20,7 +20,13 @@ import { VerLive } from './components/ver-live/ver-live';
 
 
 export const routes: Routes = [
-  { path: '', component: Inicio },
+  { path: '', component: LandingComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'inicio', component: Inicio },
+  { path: 'en-vivo', component: EnVivo },
+  { path: 'ver-live/:id', component: VerLive },
+
   { path: 'bienvenida', component: LandingComponent },
   { path: 'en-vivo', component: EnVivo },
   { path: 'login', component: LoginComponent },

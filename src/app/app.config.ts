@@ -1,6 +1,6 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core'; // 👈 IMPORTADO importProvidersFrom
 import { provideRouter, withHashLocation } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient,withFetch } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { routes } from './app.routes';
 
@@ -14,7 +14,7 @@ import { environment } from '../environment';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withHashLocation()), // Esto es lo más importante
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     provideAnimationsAsync(),
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth())

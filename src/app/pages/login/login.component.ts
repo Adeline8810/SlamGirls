@@ -15,17 +15,19 @@ import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; 
 })
 export class LoginComponent {
 
-  form: any; // 👈 declaramos la variable
-  //private auth: Auth = inject(Auth);
-  private httpAuth: Auth = inject(Auth);
+  form: any;
+  // 1. La declaramos aquí arriba, limpia.
+  private httpAuth: Auth;
 
   constructor(
     private fb: FormBuilder,
     private usuarioService: UsuarioService,
     private router: Router
   ) {
+    // 2. La inyectamos aquí adentro. Esto es lo más seguro.
+    this.httpAuth = inject(Auth);
 
-    // 👇 AHORA SÍ: inicializamos dentro del constructor
+    // 3. Inicializamos el formulario
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]

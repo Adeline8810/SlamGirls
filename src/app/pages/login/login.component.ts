@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Router } from '@angular/router';
 
-import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; // Añade Auth aquí
-
+// FIREBASE
+import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-login',
@@ -14,73 +14,76 @@ import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; 
   imports: [ReactiveFormsModule]
 })
 export class LoginComponent {
+  // 1. Inyectamos Auth de forma moderna para evitar el error NG0201
+  private httpAuth = inject(Auth);
+  private fb = inject(FormBuilder);
+  private usuarioService = inject(UsuarioService);
+  private router = inject(Router);
 
-  form: any;
-  // 1. La declaramos aquí arriba, limpia.
+  // Definimos el formulario con su tipo
+  form: FormGroup;
 
-
-  constructor(
-    private fb: FormBuilder,
-    private usuarioService: UsuarioService,
-    private router: Router,
-    private httpAuth: Auth
-  ) {
-    // 2. La inyectamos aquí adentro. Esto es lo más seguro.
-
-
-    // 3. Inicializamos el formulario
+  constructor() {
+    // 2. Inicializamos el formulario de forma limpia
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-
-
   submit() {
     if (this.form.invalid) return;
 
-    const username = this.form.value.username || '';
-    const password = this.form.value.password || '';
+    const { username, password } = this.form.value;
 
     this.usuarioService.login(username, password).subscribe({
       next: (u) => {
-        // 1. Guardamos la info del usuario
         localStorage.setItem('usuario', JSON.stringify(u));
 
-        // 2. Guardamos el ID (Super importante para el Live)
         if (u && u.id) {
           localStorage.setItem('usuarioId', u.id.toString());
         }
 
-        // 3. REVISAMOS A DÓNDE IR:
+        // Lógica de redirección
         if (u?.username === 'ruthadeline') {
           this.router.navigate(['/admin']);
         } else {
-          // CAMBIA ESTO: De '/' a '/inicio'
           this.router.navigate(['/inicio']);
         }
       },
-      error: () => {
+      error: (err) => {
+        console.error('Error en login manual:', err);
         alert('Usuario o contraseña incorrectos');
       }
     });
   }
 
+  loginConGoogle() {
+    const provider = new GoogleAuthProvider();
 
-loginConGoogle() {
-  signInWithPopup(this.httpAuth, new GoogleAuthProvider())
-    .then((result) => {
-      const user = result.user;
-      localStorage.setItem('usuario', JSON.stringify({
-        username: user.displayName,
-        email: user.email,
-        id: user.uid
-      }));
-      this.router.navigate(['/inicio']);
-    })
-    .catch((error) => console.error(error));
-}
+    // Forzamos la selección de cuenta para evitar bloqueos
+    provider.setCustomParameters({ prompt: 'select_account' });
 
+    signInWithPopup(this.httpAuth, provider)
+      .then((result) => {
+        const user = result.user;
 
+        localStorage.setItem('usuario', JSON.stringify({
+          username: user.displayName,
+          email: user.email,
+          id: user.uid
+        }));
+
+        console.log('✅ Login Google exitoso');
+        this.router.navigate(['/inicio']);
+      })
+      .catch((error) => {
+        console.error('❌ Error de Firebase Auth:', error);
+        if (error.code === 'auth/operation-not-allowed') {
+          alert('Error: Debes habilitar Google en la consola de Firebase -> Authentication.');
+        } else {
+          alert('Error al iniciar sesión con Google.');
+        }
+      });
+  }
 }

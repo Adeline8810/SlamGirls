@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class LiveService {
 
   // Cambia esta URL por la de tu backend en Render
-  private api = 'https://backend-ruth-slam.onrender.com//api/lives';
+  private api = 'https://backend-ruth-slam.onrender.com/api/lives';
 
   constructor(private http: HttpClient) { }
 

@@ -11,13 +11,13 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environment'; // 👈 CORREGIDO: Ruta estándar de Angular
 
 export const appConfig: ApplicationConfig = {
-providers: [
-    // 1. Inicializa Firebase primero
+  providers: [
+    // 1. FIREBASE PRIMERO (El cimiento)
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
 
-    // 2. Luego el resto de la app
+    // 2. EL RESTO DESPUÉS
     provideRouter(routes, withHashLocation()),
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),

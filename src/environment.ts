@@ -1,5 +1,5 @@
 export const environment = {
-  production: false,
+  production: true,
   appName: 'ÉtoileRose',
   firebase: {
   apiKey: "AIzaSyACS9ZiUGlI8LR4wrZSlVOrYd83NCoSXVs",

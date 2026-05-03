@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 export class VideoService {
 
   // Ajusta estas URLs a tu dominio de Render
-  private API_VIDEOS = 'https://tu-backend-adeline.onrender.com/api/videos';
-  private API_CANTOS = 'https://tu-backend-adeline.onrender.com/api/cantos';
+  private API_VIDEOS = 'https://backend-ruth-slam.onrender.com/api/videos';
+  private API_CANTOS = 'https://backend-ruth-slam.onrender.com/api/cantos';
 
   constructor(private http: HttpClient) { }
 

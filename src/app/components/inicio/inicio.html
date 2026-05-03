@@ -16,7 +16,7 @@
 
     <!-- Círculos de usuarios en Live -->
     @for (live of listaLives; track live.id) {
-      <div class="live-item">
+      <div class="live-item" [routerLink]="['/ver-live', live.usuarioId]">
         <div class="avatar-ring">
           <img [src]="live.thumbnailUrl || 'assets/img/default.png'">
           <div class="live-tag">DIRECT</div>

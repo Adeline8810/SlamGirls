@@ -26,7 +26,7 @@ iniciarLive(usuarioId: number, titulo: string): Observable<any> {
 
 // 2. Finalizar (Coincide con el nuevo método que pusimos arriba)
 finalizarLive(usuarioId: number): Observable<any> {
-  return this.http.post<any>(`${this.api}/finalizar/usuario/${usuarioId}`, {});
+  return this.http.post(`${this.api}/finalizar/usuario/${usuarioId}`, {}, { responseType: 'text' });
 }
 
 }

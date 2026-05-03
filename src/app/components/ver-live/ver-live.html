@@ -1,0 +1,28 @@
+<div class="live-viewer-container">
+  <!-- Cabecera con info del usuario -->
+  <div class="live-header">
+    <div class="user-info">
+      <div class="live-indicator">EN DIRECTO</div>
+      <span class="username">Viendo a: Usuario #{{ userId }}</span>
+    </div>
+    <button class="btn-close" routerLink="/">×</button>
+  </div>
+
+  <!-- Contenedor del Video -->
+  <div class="video-section">
+    <!-- Por ahora es un placeholder hasta que conectes el stream real -->
+    <div class="video-overlay">
+      <div class="loading-spinner"></div>
+      <p>Esperando señal de video...</p>
+    </div>
+
+    <!-- Aquí irá el video cuando uses WebRTC o un reproductor -->
+    <video #remoteVideo autoplay playsinline class="remote-video"></video>
+  </div>
+
+  <!-- Barra de interacción inferior -->
+  <div class="live-footer">
+    <input type="text" placeholder="Di algo lindo..." class="comment-input">
+    <button class="btn-heart">❤️</button>
+  </div>
+</div>

@@ -12,6 +12,7 @@ import { BuscarCancion } from './components/buscar-cancion/buscar-cancion';
 import { EditorCanciones } from './editor-canciones/editor-canciones';
 import { Inicio } from './components/inicio/inicio';
 import { EnVivo } from './components/en-vivo/en-vivo';
+import { VerLive } from './components/ver-live/ver-live';
 
 const routes: Routes = [
 { path: '', component: Inicio, pathMatch: 'full' },
@@ -78,6 +79,8 @@ const routes: Routes = [
 { path: 'editor-canciones', component: EditorCanciones },
 
 { path: 'en-vivo', component: EnVivo },
+
+{ path: 'ver-live/:id', component: VerLive },
 
   { path: '**', redirectTo: '/admin' }
 

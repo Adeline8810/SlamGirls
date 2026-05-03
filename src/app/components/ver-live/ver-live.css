@@ -1,0 +1,106 @@
+.live-viewer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+}
+
+.live-header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+  z-index: 10;
+}
+
+.live-indicator {
+  background: #ff0050;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+  display: inline-block;
+}
+
+.username {
+  color: white;
+  display: block;
+  font-weight: 500;
+}
+
+.btn-close {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 30px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.video-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.video-overlay {
+  text-align: center;
+  color: #666;
+}
+
+.loading-spinner {
+  border: 4px solid #333;
+  border-top: 4px solid #ff0050;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.live-footer {
+  padding: 20px;
+  display: flex;
+  gap: 10px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.comment-input {
+  flex: 1;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: white;
+  outline: none;
+}
+
+.btn-heart {
+  background: #ff0050;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

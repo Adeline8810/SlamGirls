@@ -24,14 +24,14 @@ export class AppComponent implements OnInit {
   // 1. DESPERTAR AL SERVIDOR (Con retraso para evitar bloqueo inicial)
   // Envolvemos el ping en un setTimeout de 2 segundos.
   // Esto permite que el HTML cargue PRIMERO y el ping ocurra DESPUÉS.
-  setTimeout(() => {
+  /*setTimeout(() => {
     this.http.get('https://backend-ruth-slam.onrender.com/api/usuarios/ping').subscribe({
       next: () => console.log('✅ Backend contactado con éxito'),
       error: (err) => {
         console.warn('⏳ El servidor está despertando... (NG0201 evitado)');
       }
     });
-  }, 2000);
+  }, 2000);*/
 
   // 2. LÓGICA DE RUTAS ÚNICA (Se mantiene intacta)
   this.router.events.subscribe((event: any) => {

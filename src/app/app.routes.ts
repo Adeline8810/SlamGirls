@@ -20,17 +20,13 @@ import { VerLive } from './components/ver-live/ver-live';
 
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
+  { path: '', component: LandingComponent }, // Esta es la que DEBE cargar al inicio
+  { path: 'bienvenida', component: LandingComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'inicio', component: Inicio },
   { path: 'en-vivo', component: EnVivo },
   { path: 'ver-live/:id', component: VerLive },
-
-  { path: 'bienvenida', component: LandingComponent },
-  { path: 'en-vivo', component: EnVivo },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'slam', component: SlamComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'buscar-amigo', component: BuscarAmigo },
@@ -43,10 +39,5 @@ export const routes: Routes = [
   { path: 'cantar/:id', component: Cantar },
   { path: 'buscar-cancion', component: BuscarCancion },
   { path: 'editor-canciones', component: EditorCanciones },
-  { path: 'tienda', component: Tienda },
-  { path: 'ver-live/:id',component: VerLive },
-
-
-
   { path: '**', redirectTo: '' }
 ];

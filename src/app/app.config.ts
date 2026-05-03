@@ -13,10 +13,9 @@ import { environment } from '../environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes, withHashLocation()),
+    provideRouter(routes, withHashLocation()), // Esto es lo más importante
     provideHttpClient(),
     provideAnimationsAsync(),
-    // Saca las funciones de Firebase fuera de importProvidersFrom
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth())
   ]

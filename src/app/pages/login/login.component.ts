@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { UsuarioService } from '../../../services/usuario.service';
 import { Router } from '@angular/router';
+
+import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth'; // Añade Auth aquí
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   form: any; // 👈 declaramos la variable
+  private auth: Auth = inject(Auth);
 
   constructor(
     private fb: FormBuilder,
@@ -26,6 +29,8 @@ export class LoginComponent {
       password: ['', Validators.required]
     });
   }
+
+
 
   submit() {
     if (this.form.invalid) return;
@@ -56,4 +61,11 @@ export class LoginComponent {
       }
     });
   }
+
+
+  loginConGoogle() {
+  return signInWithPopup(this.auth, new GoogleAuthProvider());
+}
+
+
 }

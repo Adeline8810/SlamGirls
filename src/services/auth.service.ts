@@ -1,13 +1,15 @@
-// auth.service.ts
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core'; // Añade inject aquí
 import jwt_decode from "jwt-decode";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+
   constructor() { }
+
 
   getUsuarioLogueado(): any {
     const token = localStorage.getItem('token');

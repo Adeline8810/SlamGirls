@@ -11,18 +11,15 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from '../environment'; // 👈 CORREGIDO: Ruta estándar de Angular
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes, withHashLocation()), // withHashLocation ayuda mucho en GitHub Pages
+providers: [
+    // 1. Inicializa Firebase primero
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
+
+    // 2. Luego el resto de la app
+    provideRouter(routes, withHashLocation()),
     provideHttpClient(withFetch()),
     provideAnimationsAsync(),
-
-    // Inicialización de Firebase
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-
-    // Auth es vital para que el LoginComponent no de error NG0201
-    provideAuth(() => getAuth()),
-
-    // Firestore para tus bases de datos
-    provideFirestore(() => getFirestore())
   ]
 };

@@ -1,8 +1,6 @@
 export const environment = {
-  production: true,
-  appName: 'ÉtoileRose',
   firebase: {
-  apiKey: "AIzaSyACS9ZiUGlI8LR4wrZSlVOrYd83NCoSXVs",
+ apiKey: "AIzaSyACS9ZiUGlI8LR4wrZSlVOrYd83NCoSXVs",
   authDomain: "fir-bak.firebaseapp.com",
   projectId: "fir-bak",
   storageBucket: "fir-bak.firebasestorage.app",

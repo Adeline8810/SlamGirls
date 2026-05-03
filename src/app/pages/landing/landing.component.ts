@@ -12,5 +12,8 @@ import { CommonModule } from '@angular/common';
 export class LandingComponent {
   constructor(private router: Router) {}
   goRegister() { this.router.navigate(['/register']); }
-  goLogin() { this.router.navigate(['/login']); }
+  goLogin() {
+    console.log("goLogin...");
+    this.router.navigate(['/login']);
+  }
 }

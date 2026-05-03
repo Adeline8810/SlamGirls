@@ -30,10 +30,11 @@ export class LoginComponent {
   }
 
   submit() {
+    console.log("entra");
     if (this.form.invalid) return;
 
     const { username, password } = this.form.value;
-
+console.log("entra 2");
     this.usuarioService.login(username, password).subscribe({
       next: (u) => {
         // Guardamos los datos esenciales en el storage

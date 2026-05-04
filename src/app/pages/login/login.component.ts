@@ -53,41 +53,32 @@ export class LoginComponent {
   }
 
 loginConGoogle() {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: 'select_account' });
 
-    signInWithPopup(this.auth, provider)
-      .then((result) => {
-        const user = result.user;
+  signInWithPopup(this.auth, provider)
+    .then((result) => {
+      const user = result.user;
+      const email = user.email || '';
 
-        // 1. Guardamos datos de Google por si acaso
-        localStorage.setItem('usuario', JSON.stringify({
-          username: user.displayName,
-          email: user.email,
-          id: user.uid
-        }));
+      // 🔄 BUSCAMOS AL USUARIO EN TU BASE DE DATOS DE RENDER
+      this.usuarioService.buscarPorEmail(email).subscribe({
+        next: (userBD: any) => {
+          // ✅ GUARDAMOS EL ID NUMÉRICO REAL (Ej: 10)
+          localStorage.setItem('usuario', JSON.stringify(userBD));
+          localStorage.setItem('usuarioId', userBD.id.toString());
 
-        // 2. Buscamos el ID numérico en tu base de datos
-        // Usamos (any) para evitar el error de la línea roja en u.id
-        this.usuarioService.login(user.email || '', '').subscribe({
-          next: (u: any) => {
-            if (u && u.id) {
-              // GUARDAMOS EL ID NUMÉRICO (Esto arregla tus videos)
-              localStorage.setItem('usuarioId', u.id.toString());
-              localStorage.setItem('usuario', JSON.stringify(u));
-            }
-            console.log('✅ Login sincronizado');
-            this.router.navigate(['/inicio']);
-          },
-          error: () => {
-            console.log('⚠️ No se encontró en BD, entrando solo con Google');
-            this.router.navigate(['/inicio']);
-          }
-        });
-      })
-      .catch((error) => {
-        console.error('❌ Error Auth:', error);
-        alert('Error al iniciar sesión con Google.');
+          console.log('✅ Sincronizado con ID numérico:', userBD.id);
+          this.router.navigate(['/inicio']);
+        },
+        error: (err) => {
+          console.error('❌ El email no existe en la base de datos de Render:', err);
+          alert('Tu cuenta de Google no está registrada. Por favor, regístrate primero.');
+        }
       });
-  }
+    })
+    .catch((error) => {
+      console.error('❌ Error Firebase:', error);
+    });
+}
 }

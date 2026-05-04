@@ -82,4 +82,9 @@ obtenerPerfilCompleto(idPublico: string): Observable<any> {
     return this.http.get<any[]>(`${this.api}/buscar-usuarios?nombre=${termino}`);
   }
 
+  // Agrega esto al final de tu UsuarioService
+buscarPorEmail(email: string): Observable<any> {
+  return this.http.get<any>(`${this.api}/buscar-por-email/${email}`);
+}
+
 }

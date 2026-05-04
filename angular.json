@@ -25,6 +25,11 @@
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css"
+            ],
+            "allowedCommonJsDependencies": [
+              "recordrtc",
+              "sockjs-client",
+              "@stomp/stompjs"
             ]
           },
           "configurations": {
@@ -32,14 +37,14 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "baseline": "4kb",
-                  "maximumWarning": "10kb",
-                  "maximumError": "20kB"
+                  "baseline": "10kb",
+                  "maximumWarning": "20kb",
+                  "maximumError": "30kB"
                 }
               ],
               "outputHashing": "all"

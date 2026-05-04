@@ -14,15 +14,16 @@ import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
   imports: [ReactiveFormsModule]
 })
 export class LoginComponent {
-  // Inyectamos servicios de forma moderna
-  private httpAuth = inject(Auth);
-  private fb = inject(FormBuilder);
+  // 1. INYECCIONES (Deben ir aquí arriba, no dentro de funciones)
   private usuarioService = inject(UsuarioService);
   private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private auth = inject(Auth);
 
   form: FormGroup;
 
   constructor() {
+    // 2. Inicializamos el formulario
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -30,23 +31,18 @@ export class LoginComponent {
   }
 
   submit() {
-    console.log("entra");
+    console.log("Intentando login manual...");
     if (this.form.invalid) return;
 
     const { username, password } = this.form.value;
-console.log("entra 2");
+
     this.usuarioService.login(username, password).subscribe({
       next: (u) => {
-        // Guardamos los datos esenciales en el storage
         localStorage.setItem('usuario', JSON.stringify(u));
-
         if (u && u.id) {
           localStorage.setItem('usuarioId', u.id.toString());
         }
-
         console.log('✅ Login manual exitoso');
-
-        // Redirección única para todos
         this.router.navigate(['/inicio']);
       },
       error: (err) => {
@@ -60,19 +56,16 @@ console.log("entra 2");
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
 
-    signInWithPopup(this.httpAuth, provider)
+    // Usamos 'this.auth' que inyectamos arriba
+    signInWithPopup(this.auth, provider)
       .then((result) => {
         const user = result.user;
-
         localStorage.setItem('usuario', JSON.stringify({
           username: user.displayName,
           email: user.email,
           id: user.uid
         }));
-
         console.log('✅ Login Google exitoso');
-
-        // Redirección única para todos
         this.router.navigate(['/inicio']);
       })
       .catch((error) => {

@@ -1,5 +1,6 @@
 export const environment = {
-  production: true, // 👈 ESTO ES LO QUE FALTA Y ES VITAL
+  production: true,
+  paypalClientId: 'AQ8ymPs2gmSYSviK2sUcCX5aGtk8bh-UM26azVln0Onz2y-F_tPMrE3JB6l8incqdhdc5IJ4gJq7LUtp',
   firebase: {
     apiKey: "AIzaSyACS9ZiUGlI8LR4wrZSlVOrYd83NCoSXVs",
     authDomain: "fir-bak.firebaseapp.com",

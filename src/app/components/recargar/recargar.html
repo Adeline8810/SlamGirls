@@ -1,45 +1,23 @@
 <div class="recharge-main">
-  <div class="recharge-header">
-    <button class="btn-back" (click)="irAtras()"> < </button>
-    <h1>Centre de Recharge</h1>
-  </div>
+  <!-- ... (Todo tu código anterior se queda igual) ... -->
 
-  <div class="balance-card">
-    <p class="label">Solde du compte</p>
-    <div class="amount-row">
-
-      <span class="coin-big">🟡</span>
-      <span class="number">{{ usuarioActual.monedas }}</span>
-      <span class="details-link" (click)="verDetalles()">Détails <span class="arrow-small">❯</span></span>
-    </div>
-  </div>
-
-  <p class="section-title">Payer par WhatsApp</p>
+  <p class="section-title">Payer avec PayPal</p>
 
   <div class="coins-grid">
-    <div class="coin-item" (click)="contactarWhatsApp(301, 3.99)">
+    <!-- Opción 1: 301 monedas -->
+    <div class="coin-item" (click)="prepararPago(301, 3.99)">
       <div class="badge">Get VIP</div>
-      <div class="coin-info">
-        <span class="coin-small">🟡</span> 301
-      </div>
+      <div class="coin-info"><span class="coin-small">🟡</span> 301</div>
       <div class="price">$ 3.99</div>
-      <div class="discount-tag">17.08% off</div>
     </div>
 
-    <div class="coin-item" (click)="contactarWhatsApp(762, 9.99)">
-      <div class="coin-info">
-        <span class="coin-small">🟡</span> 762
-      </div>
+    <!-- Opción 2: 762 monedas -->
+    <div class="coin-item" (click)="prepararPago(762, 9.99)">
+      <div class="coin-info"><span class="coin-small">🟡</span> 762</div>
       <div class="price">$ 9.99</div>
-      <div class="discount-tag">18.53% off</div>
-    </div>
-
-    <div class="coin-item" (click)="contactarWhatsApp(1538, 19.99)">
-      <div class="coin-info">
-        <span class="coin-small">🟡</span> 1538
-      </div>
-      <div class="price">$ 19.99</div>
-      <div class="discount-tag">19.66% off</div>
     </div>
   </div>
+
+  <!-- CONTENEDOR DEL BOTÓN DE PAYPAL (Aparece al seleccionar) -->
+  <div id="paypal-button-container" style="margin-top: 20px; padding: 10px;"></div>
 </div>

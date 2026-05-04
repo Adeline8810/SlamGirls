@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
+import { environment } from '../../../environment';
 
+declare var paypal: any;
 @Component({
   selector: 'app-recargar',
   standalone: true,
@@ -12,12 +14,46 @@ import { RecargarService } from '../../../services/recargar.service';
 export class Recargar implements OnInit {
   usuarioActual: any = { username: '', monedas: 0 };
   cargando: boolean = true;
+  //usuarioActual: any = { monedas: 0 };
+  montoSeleccionado: number = 0;
+  monedasAEntregar: number = 0;
 
   constructor(private recargarService: RecargarService) { }
 
   ngOnInit() {
     this.cargarDatos();
+    this.renderPaypalButton();
   }
+
+  prepararPago(monedas: number, precio: number) {
+    this.monedasAEntregar = monedas;
+    this.montoSeleccionado = precio;
+
+
+    alert(`Has seleccionado ${monedas} monedas por $${precio}. Usa el botón de PayPal abajo para pagar.`);
+  }
+
+  renderPaypalButton() {
+    paypal.Buttons({
+      createOrder: (data: any, actions: any) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: this.montoSeleccionado.toString() // Usa el precio seleccionado
+            }
+          }]
+        });
+      },
+      onApprove: (data: any, actions: any) => {
+        return actions.order.capture().then((details: any) => {
+          alert('¡Pago exitoso, ' + details.payer.name.given_name + '!');
+          // AQUÍ llamarías a tu servicio de Java para sumar las monedas
+          console.log('Entregar monedas:', this.monedasAEntregar);
+        });
+      }
+    }).render('#paypal-button-container');
+  }
+
 
 cargarDatos() {
     // 1. Obtenemos el nombre de usuario del localStorage

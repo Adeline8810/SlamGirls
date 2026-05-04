@@ -52,24 +52,41 @@ export class LoginComponent {
     });
   }
 
-  loginConGoogle() {
+loginConGoogle() {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
 
-    // Usamos 'this.auth' que inyectamos arriba
     signInWithPopup(this.auth, provider)
       .then((result) => {
         const user = result.user;
+
+        // 1. Guardamos datos de Google por si acaso
         localStorage.setItem('usuario', JSON.stringify({
           username: user.displayName,
           email: user.email,
           id: user.uid
         }));
-        console.log('✅ Login Google exitoso');
-        this.router.navigate(['/inicio']);
+
+        // 2. Buscamos el ID numérico en tu base de datos
+        // Usamos (any) para evitar el error de la línea roja en u.id
+        this.usuarioService.login(user.email || '', '').subscribe({
+          next: (u: any) => {
+            if (u && u.id) {
+              // GUARDAMOS EL ID NUMÉRICO (Esto arregla tus videos)
+              localStorage.setItem('usuarioId', u.id.toString());
+              localStorage.setItem('usuario', JSON.stringify(u));
+            }
+            console.log('✅ Login sincronizado');
+            this.router.navigate(['/inicio']);
+          },
+          error: () => {
+            console.log('⚠️ No se encontró en BD, entrando solo con Google');
+            this.router.navigate(['/inicio']);
+          }
+        });
       })
       .catch((error) => {
-        console.error('❌ Error de Firebase Auth:', error);
+        console.error('❌ Error Auth:', error);
         alert('Error al iniciar sesión con Google.');
       });
   }

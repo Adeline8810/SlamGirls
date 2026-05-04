@@ -52,44 +52,25 @@ export class LoginComponent {
     });
   }
 
-loginConGoogle() {
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: 'select_account' });
+  loginConGoogle() {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
 
-  signInWithPopup(this.auth, provider)
-    .then((result) => {
-      const user = result.user;
-      const email = user.email || '';
-
-      this.usuarioService.buscarPorEmail(email).subscribe({
-        next: (userBD: any) => {
-          // Si existe, entramos directo
-          localStorage.setItem('usuario', JSON.stringify(userBD));
-          localStorage.setItem('usuarioId', userBD.id.toString());
-          this.router.navigate(['/inicio']);
-        },
-        error: (err) => {
-          console.log('Usuario no encontrado, registrando...');
-          // SI NO EXISTE, LO CREAMOS EN ESE MOMENTO
-          const nuevoUsuario: any = {
-            username: user.displayName,
-            email: user.email,
-            password: 'google-auth-user', // Password genérica
-            fotoUrl: user.photoURL
-          };
-
-          this.usuarioService.register(nuevoUsuario).subscribe({
-            next: (creado: any) => {
-              localStorage.setItem('usuario', JSON.stringify(creado));
-              localStorage.setItem('usuarioId', creado.id.toString());
-              this.router.navigate(['/inicio']);
-            },
-            error: (errorReg) => {
-              alert('Error al crear tu cuenta automáticamente.');
-            }
-          });
-        }
+    // Usamos 'this.auth' que inyectamos arriba
+    signInWithPopup(this.auth, provider)
+      .then((result) => {
+        const user = result.user;
+        localStorage.setItem('usuario', JSON.stringify({
+          username: user.displayName,
+          email: user.email,
+          id: user.uid
+        }));
+        console.log('✅ Login Google exitoso');
+        this.router.navigate(['/inicio']);
+      })
+      .catch((error) => {
+        console.error('❌ Error de Firebase Auth:', error);
+        alert('Error al iniciar sesión con Google.');
       });
-    });
-}
+  }
 }

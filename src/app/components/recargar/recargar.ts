@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecargarService } from '../../../services/recargar.service';
 import { environment } from '../../../environment';
+import { provideHttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+
 
 declare var paypal: any;
 @Component({
@@ -18,7 +21,7 @@ export class Recargar implements OnInit {
   montoSeleccionado: number = 0;
   monedasAEntregar: number = 0;
 
-  constructor(private recargarService: RecargarService) { }
+  constructor(private recargarService: RecargarService,private http: HttpClient) { }
 
   ngOnInit() {
     this.cargarDatos();
@@ -46,13 +49,20 @@ prepararPago(monedas: number, precio: number) {
           }]
         });
       },
-      onApprove: (data: any, actions: any) => {
-        return actions.order.capture().then((details: any) => {
-          alert('¡Pago exitoso, ' + details.payer.name.given_name + '!');
-          // AQUÍ llamarías a tu servicio de Java para sumar las monedas
-          console.log('Entregar monedas:', this.monedasAEntregar);
-        });
-      }
+onApprove: (data: any, actions: any) => {
+  return actions.order.capture().then((details: any) => {
+    // LLAMADA AL BACKEND
+    this.http.post('https://backend-ruth-slam.onrender.com/api/usuarios/confirmar-pago', {
+      orderID: data.orderID,
+      usuarioId: this.usuarioActual.id, // Asegúrate de tener el ID del usuario
+      monedas: this.monedasAEntregar
+    }).subscribe((response: any) => {
+      alert('¡Pago exitoso! Tus monedas han sido cargadas.');
+      // Actualizar visualmente el saldo en la pantalla
+      this.usuarioActual.monedas += this.monedasAEntregar;
+    });
+  });
+}
     }).render('#paypal-button-container');
   }
 

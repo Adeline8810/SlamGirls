@@ -52,25 +52,31 @@ export class LoginComponent {
     });
   }
 
-  loginConGoogle() {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
+loginConGoogle() {
+  const provider = new GoogleAuthProvider();
 
-    // Usamos 'this.auth' que inyectamos arriba
-    signInWithPopup(this.auth, provider)
-      .then((result) => {
-        const user = result.user;
-        localStorage.setItem('usuario', JSON.stringify({
-          username: user.displayName,
-          email: user.email,
-          id: user.uid
-        }));
-        console.log('✅ Login Google exitoso');
+  signInWithPopup(this.auth, provider).then(async (result) => {
+    // 1. Obtenemos el Token de seguridad de Firebase
+    const token = await result.user.getIdToken();
+
+    // 2. Usamos usuarioService (que ya lo tienes inyectado) en lugar de this.http
+    this.usuarioService.loginFirebase(token).subscribe({
+      next: (usuarioBD: any) => {
+        // ✅ Ahora usuarioBD es el objeto que viene de tu Java + Supabase
+        // Contiene el ID numérico que evitará el error de "String to Long"
+        localStorage.setItem('usuario', JSON.stringify(usuarioBD));
+        localStorage.setItem('usuarioId', usuarioBD.id.toString());
+
+        console.log('✅ Usuario sincronizado en Supabase con ID:', usuarioBD.id);
         this.router.navigate(['/inicio']);
-      })
-      .catch((error) => {
-        console.error('❌ Error de Firebase Auth:', error);
-        alert('Error al iniciar sesión con Google.');
-      });
-  }
+      },
+      error: (err) => {
+        console.error('❌ Error al sincronizar con Render/Supabase:', err);
+        alert('Error al conectar con el servidor.');
+      }
+    });
+  }).catch(error => {
+    console.error('❌ Error de Firebase:', error);
+  });
+}
 }

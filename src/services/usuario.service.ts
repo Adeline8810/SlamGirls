@@ -87,4 +87,8 @@ buscarPorEmail(email: string): Observable<any> {
   return this.http.get<any>(`${this.api}/buscar-por-email/${email}`);
 }
 
+loginFirebase(token: string): Observable<any> {
+  return this.http.post(`${this.api}/auth/firebase`, { token });
+}
+
 }

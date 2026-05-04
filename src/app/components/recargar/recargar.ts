@@ -25,13 +25,15 @@ export class Recargar implements OnInit {
     this.renderPaypalButton();
   }
 
-  prepararPago(monedas: number, precio: number) {
-    this.monedasAEntregar = monedas;
-    this.montoSeleccionado = precio;
+prepararPago(monedas: number, precio: number) {
+  this.monedasAEntregar = monedas;
+  this.montoSeleccionado = precio;
 
-
-    alert(`Has seleccionado ${monedas} monedas por $${precio}. Usa el botón de PayPal abajo para pagar.`);
-  }
+  // Esperamos un milisegundo para que el div aparezca en el HTML y luego dibujamos el botón
+  setTimeout(() => {
+    this.renderPaypalButton();
+  }, 100);
+}
 
   renderPaypalButton() {
     paypal.Buttons({

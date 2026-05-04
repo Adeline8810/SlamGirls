@@ -143,3 +143,11 @@
   border: 1px solid #c5a000;
   display: inline-block;
 }
+
+
+#paypal-button-container {
+  min-height: 150px;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 500px; /* Para que no sea gigante en PC */
+}

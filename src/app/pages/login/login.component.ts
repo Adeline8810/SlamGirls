@@ -61,24 +61,35 @@ loginConGoogle() {
       const user = result.user;
       const email = user.email || '';
 
-      // 🔄 BUSCAMOS AL USUARIO EN TU BASE DE DATOS DE RENDER
       this.usuarioService.buscarPorEmail(email).subscribe({
         next: (userBD: any) => {
-          // ✅ GUARDAMOS EL ID NUMÉRICO REAL (Ej: 10)
+          // Si existe, entramos directo
           localStorage.setItem('usuario', JSON.stringify(userBD));
           localStorage.setItem('usuarioId', userBD.id.toString());
-
-          console.log('✅ Sincronizado con ID numérico:', userBD.id);
           this.router.navigate(['/inicio']);
         },
         error: (err) => {
-          console.error('❌ El email no existe en la base de datos de Render:', err);
-          alert('Tu cuenta de Google no está registrada. Por favor, regístrate primero.');
+          console.log('Usuario no encontrado, registrando...');
+          // SI NO EXISTE, LO CREAMOS EN ESE MOMENTO
+          const nuevoUsuario: any = {
+            username: user.displayName,
+            email: user.email,
+            password: 'google-auth-user', // Password genérica
+            fotoUrl: user.photoURL
+          };
+
+          this.usuarioService.register(nuevoUsuario).subscribe({
+            next: (creado: any) => {
+              localStorage.setItem('usuario', JSON.stringify(creado));
+              localStorage.setItem('usuarioId', creado.id.toString());
+              this.router.navigate(['/inicio']);
+            },
+            error: (errorReg) => {
+              alert('Error al crear tu cuenta automáticamente.');
+            }
+          });
         }
       });
-    })
-    .catch((error) => {
-      console.error('❌ Error Firebase:', error);
     });
 }
 }

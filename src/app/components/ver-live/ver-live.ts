@@ -70,6 +70,7 @@ export class VerLive implements OnInit, OnDestroy {
   console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
 
   const call = this.peer.call(this.userId, new MediaStream());
+console.log('call '  , call);
 
   call.on('stream', (remoteStream) => {
     // Usamos la función de apoyo que ya tienes escrita abajo

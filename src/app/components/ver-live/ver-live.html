@@ -1,13 +1,20 @@
 <div class="live-viewer-container">
   <!-- Cabecera con info del usuario -->
-  <div class="live-header">
-    <div class="user-info">
-      <div class="live-indicator">EN DIRECTO</div>
-      <span class="username">Viendo a: Usuario #{{ userId }}</span>
+<div class="live-header">
+  <div class="user-info">
+    <div class="avatar-container">
+      <img [src]="usuario?.fotoPerfil || usuario?.fotoUrl || 'assets/img/default-user.png'"
+           class="user-avatar">
     </div>
-    <button class="btn-close" routerLink="/">×</button>
-  </div>
 
+    <div class="text-info">
+      <div class="live-indicator">EN DIRECTO</div>
+      <span class="username">{{ usuario?.username || 'Cargando...' }}</span>
+      <small style="color: white; display: block;">ID: {{ userId }}</small>
+    </div>
+  </div>
+  <button class="btn-close" routerLink="/">×</button>
+</div>
   <!-- Contenedor del Video -->
   <div class="video-section">
     <!-- Por ahora es un placeholder hasta que conectes el stream real -->

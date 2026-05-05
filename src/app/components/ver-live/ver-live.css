@@ -104,3 +104,23 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%; /* Hace la foto circular */
+  border: 2px solid #ff0050; /* Un borde color "Live" */
+  object-fit: cover;
+}
+
+.username {
+  font-weight: bold;
+  color: white;
+}

@@ -98,21 +98,29 @@ llamarAlEmisor() {
 
   console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
 
-  // 1. Iniciamos la llamada (enviamos un stream vacío porque solo queremos recibir)
+  // 1. Ruth inicia la llamada
   const call = this.peer.call(this.userId, new MediaStream());
 
   if (call) {
     console.log('Llamada creada. Esperando que Adeline acepte...');
 
-    // 2. ESCUCHAMOS cuando Adeline nos envíe su video
+    // 2. Aquí es donde ponemos la lógica que te gustó:
     call.on('stream', (remoteStream) => {
-      console.log('¡Señal de video recibida correctamente!');
-      // Usamos el método que ya tienes definido abajo
-      this.procesarStreamEntrante(remoteStream);
+      console.log('¡RECIBIENDO VIDEO REAL!');
+
+      this.conectado = true; // Quitamos el mensaje de "Conectando..."
+
+      // ASIGNACIÓN CRÍTICA (Cambiamos .src por .srcObject)
+      const video = this.remoteVideo.nativeElement;
+      video.srcObject = remoteStream;
+
+      // Forzamos el play y el mute para que el navegador no lo bloquee
+      video.muted = true;
+      video.play().catch(e => console.error("Error al reproducir:", e));
     });
 
     call.on('error', (err) => {
-      console.error('Error en la llamada:', err);
+      console.error('Error al intentar conectar:', err);
       this.conectado = false;
     });
   }

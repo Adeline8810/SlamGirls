@@ -9,25 +9,31 @@ import { UsuarioService } from '../../../services/usuario.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   template: `
-    <div class="viewer-container">
-      <div class="live-header">
+  <div class="viewer-container">
+    <div class="live-header" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
+      <!-- USAMOS TUS CAMPOS fotoUrl o fotoPortada -->
+      <img [src]="usuario?.fotoUrl || usuario?.fotoPortada || 'assets/img/default-user.png'"
+           style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid red;">
+
+      <div>
         <span class="badge">EN VIVO</span>
-        <p>Viendo a: Usuario {{ userId }}</p>
+        <p style="margin: 0;">Viendo a: {{ usuario?.username || userId }}</p>
       </div>
-
-      <!-- 2. Agregamos el elemento de video real -->
-      <div class="video-container">
-        <video #remoteVideo autoplay playsinline class="video-player"></video>
-
-        <!-- Mensaje de espera mientras conecta -->
-        <div *ngIf="!conectado" class="loading-overlay">
-          <p>Conectando con la señal de video...</p>
-        </div>
-      </div>
-
-      <button class="btn-exit" routerLink="/">SALIR</button>
     </div>
-  `,
+
+    <div class="video-container">
+      <!-- Agregamos muted para asegurar que el navegador lo reproduzca -->
+      <video #remoteVideo autoplay playsinline [muted]="true" class="video-player"></video>
+
+      <div *ngIf="!conectado" class="loading-overlay">
+        <p>Conectando con la señal de video de {{ usuario?.username }}...</p>
+      </div>
+    </div>
+
+    <button class="btn-exit" routerLink="/">SALIR</button>
+  </div>
+`
+  ,
   styles: [`
     .viewer-container { height: 100vh; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
     .badge { background: red; padding: 5px 10px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; }
@@ -87,30 +93,29 @@ iniciarConexion() {
     this.llamarAlEmisor();
   });
 }
-
-  llamarAlEmisor() {
+llamarAlEmisor() {
   if (!this.peer || !this.userId) return;
 
   console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
 
+  // 1. Iniciamos la llamada (enviamos un stream vacío porque solo queremos recibir)
   const call = this.peer.call(this.userId, new MediaStream());
-  console.log('call '  , call);
+
   if (call) {
     console.log('Llamada creada. Esperando que Adeline acepte...');
+
+    // 2. ESCUCHAMOS cuando Adeline nos envíe su video
+    call.on('stream', (remoteStream) => {
+      console.log('¡Señal de video recibida correctamente!');
+      // Usamos el método que ya tienes definido abajo
+      this.procesarStreamEntrante(remoteStream);
+    });
+
+    call.on('error', (err) => {
+      console.error('Error en la llamada:', err);
+      this.conectado = false;
+    });
   }
-
-
-call.on('stream', (remoteStream) => {
-  console.log('¡Recibiendo señal de video real!');
-  const video = this.remoteVideo.nativeElement;
-  video.srcObject = remoteStream; // <--- ESTA ES LA LÍNEA CLAVE
-  video.play().catch(err => console.error("Error al reproducir:", err));
-});
-
-  call.on('error', (err) => {
-    console.error('Error al intentar conectar:', err);
-    this.conectado = false;
-  });
 }
 
 // Separamos la lógica del video para que el código sea más legible

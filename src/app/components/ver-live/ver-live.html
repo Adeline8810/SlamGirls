@@ -6,7 +6,8 @@
       <div class="avatar-wrapper">
         <pre style="color: white; font-size: 10px;">{{ usuario | json }}</pre>
         <img [src]="usuario?.fotoUrl || usuario?.fotoPortada || 'assets/img/default-user.png'"
-     class="user-avatar">
+     class="user-avatar"
+     style="width: 50px; height: 50px; border-radius: 50%;">
         <div class="live-tag">EN DIRECTO</div>
       </div>
 

@@ -47,7 +47,7 @@ export class VerLive implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = this.route.snapshot.paramMap.get('id');
-    console.log("Mi ID de Peer es: "+this.userId);
+   console.log("Estoy en la página de Ruth. Voy a buscar el video de ADELINE que es el ID: " + this.userId);
 
     if (this.userId) {
       this.iniciarConexion();
@@ -67,33 +67,24 @@ export class VerLive implements OnInit, OnDestroy {
   llamarAlEmisor() {
   if (!this.peer || !this.userId) return;
 
- console.log("Intentando conectar con el emisor ID: " + this.userId);
+  console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
 
-  // Llamamos enviando un MediaStream vacío para activar el protocolo de recepción
-// 1. Llamamos enviando un stream vacío
-const call = this.peer.call(this.userId, new MediaStream());
+  const call = this.peer.call(this.userId, new MediaStream());
 
-// 2. Al recibir el stream...
-call.on('stream', (remoteStream) => {
-  this.conectado = true;
-  if (this.remoteVideo) {
-    const video = this.remoteVideo.nativeElement;
-    video.srcObject = remoteStream;
-
-    // 3. ¡CRÍTICO PARA MÓVILES! Muteamos antes de dar play.
-    video.muted = true;
-    video.play().catch(e => console.error("Error Autoplay:", e));
-  }
-});
+  call.on('stream', (remoteStream) => {
+    // Usamos la función de apoyo que ya tienes escrita abajo
+    this.procesarStreamEntrante(remoteStream);
+  });
 
   call.on('error', (err) => {
-    console.error('Error en la llamada:', err);
+    console.error('Error al intentar conectar:', err);
     this.conectado = false;
   });
 }
 
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {
+  console.error('remoteStream:'+ remoteStream) ;
   console.log('¡Señal de video recibida!');
   this.conectado = true;
 

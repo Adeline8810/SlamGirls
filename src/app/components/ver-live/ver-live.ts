@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef, inject } from '@an
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import Peer from 'peerjs'; // 1. Importamos PeerJS
+import { UsuarioService } from '../../../services/usuario.service';
 
 @Component({
   selector: 'app-ver-live',
@@ -42,17 +43,34 @@ export class VerLive implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
 
   userId: string | null = '';
+  usuario: any;
   peer: Peer | null = null;
   conectado: boolean = false;
+  private usuarioService = inject(UsuarioService);
 
-  ngOnInit() {
-    this.userId = this.route.snapshot.paramMap.get('id');
-   console.log("Estoy en la página de Ruth. Voy a buscar el video de ADELINE que es el ID: " + this.userId);
+ngOnInit() {
+  const idDesdeUrl = this.route.snapshot.paramMap.get('id');
 
-    if (this.userId) {
-      this.iniciarConexion();
-    }
+  if (idDesdeUrl) {
+    this.userId = idDesdeUrl; // Guardamos el 27
+
+    // USAMOS TU MÉTODO getOne para traer a Adeline
+    this.usuarioService.getOne(Number(this.userId)).subscribe({
+      next: (datosAdeline) => {
+        this.usuario = datosAdeline;
+        console.log('✅ Adeline cargada:', this.usuario.username);
+
+        // RECIÉN AQUÍ iniciamos el video, ahora que sabemos que el ID es real
+        this.iniciarConexion();
+      },
+      error: (err) => {
+        console.error('❌ Error: No se encontró al usuario con ID ' + this.userId, err);
+      }
+    });
   }
+}
+
+
 iniciarConexion() {
   // Ruth no lleva ID en el primer paréntesis, pero SI lleva la configuración
   this.peer = new Peer({

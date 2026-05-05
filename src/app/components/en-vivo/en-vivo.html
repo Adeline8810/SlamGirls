@@ -6,7 +6,7 @@
 
 <video #videoElement autoplay playsinline [muted]="true" style="width: 100%; height: auto;"></video>
 
-  <button *ngIf="peer && !peer.destroyed" (click)="ngOnDestroy()">
+<button class="btn-finalizar" (click)="finalizarDirecto()">
   Finalizar Directo
 </button>
 </div>

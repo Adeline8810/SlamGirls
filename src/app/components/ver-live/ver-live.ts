@@ -84,7 +84,7 @@ export class VerLive implements OnInit, OnDestroy {
 
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {
-  console.error('remoteStream:'+ remoteStream) ;
+  console.error('remoteStream:', remoteStream) ;
   console.log('¡Señal de video recibida!');
   this.conectado = true;
 

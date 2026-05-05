@@ -70,14 +70,22 @@ export class VerLive implements OnInit, OnDestroy {
 
     // 4. Llamamos al emisor pasándole un stream vacío (porque solo queremos RECIBIR)
     // Creamos un stream falso porque peerjs requiere enviar algo para iniciar la conexión
-    const call = this.peer.call(this.userId, new MediaStream());
+   const call = this.peer.call(this.userId, new MediaStream());
 
     call.on('stream', (remoteStream) => {
-      console.log('¡Señal recibida!');
+      console.log('¡Señal recibida!', remoteStream);
       this.conectado = true;
 
       if (this.remoteVideo) {
-        this.remoteVideo.nativeElement.srcObject = remoteStream;
+        const video = this.remoteVideo.nativeElement;
+        video.srcObject = remoteStream;
+
+        // Forzamos al navegador a que arranque el video
+        video.play().catch(err => {
+            console.warn("El navegador bloqueó el autoplay, intentando sin sonido...", err);
+            video.muted = true; // Si falla, lo silenciamos para que deje reproducir
+            video.play();
+        });
       }
     });
 

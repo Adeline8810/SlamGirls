@@ -6,7 +6,7 @@
 
 <video #videoElement autoplay playsinline [muted]="true" style="width: 100%; height: auto;"></video>
 
-  <div class="footer">
-    <button class="btn-stop" (click)="ngOnDestroy()">FINALIZAR LIVE</button>
-  </div>
+  <button *ngIf="peer && !peer.destroyed" (click)="ngOnDestroy()">
+  Finalizar Directo
+</button>
 </div>

@@ -16,8 +16,14 @@
       <p>Esperando señal de video...</p>
     </div>
 
-    <!-- Aquí irá el video cuando uses WebRTC o un reproductor -->
-    <video #remoteVideo autoplay playsinline style="width: 100%; height: 100%;"></video>
+
+    <!-- Agrega [muted]="true" solo para probar. Si funciona, es que el navegador bloqueaba el audio -->
+<video #remoteVideo
+       autoplay
+       playsinline
+       [muted]="true"
+       style="width: 100%; height: 100%; object-fit: cover;">
+</video>
   </div>
 
   <!-- Barra de interacción inferior -->

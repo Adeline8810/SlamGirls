@@ -65,23 +65,27 @@ this.peer = new Peer({
 llamarAlEmisor() {
   if (!this.peer || !this.userId) return;
 
-  // Esperamos un poquito para que el HTML cargue el elemento #remoteVideo
-  setTimeout(() => {
-    console.log('Marcando al ID:', this.userId);
+  const ejecutarLlamada = () => {
+    console.log('Intentando conectar con Adeline (ID: 18)...');
     const call = this.peer!.call(this.userId!, new MediaStream());
 
     call.on('stream', (remoteStream) => {
+      console.log('¡CONEXIÓN EXITOSA!');
       this.conectado = true;
-
-      const video = this.remoteVideo.nativeElement;
-      video.srcObject = remoteStream;
-
-      // IMPORTANTE: Forzamos el play
-      video.onloadedmetadata = () => {
-        video.play().catch(e => console.error("Error al dar play:", e));
-      };
+      this.remoteVideo.nativeElement.srcObject = remoteStream;
+      this.remoteVideo.nativeElement.play();
     });
-  }, 500);
+
+    // Si después de 5 segundos no hay respuesta, Ruth vuelve a intentar solita
+    setTimeout(() => {
+      if (!this.conectado) {
+        console.warn('Reintentando llamada...');
+        ejecutarLlamada();
+      }
+    }, 5000);
+  };
+
+  ejecutarLlamada();
 }
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {

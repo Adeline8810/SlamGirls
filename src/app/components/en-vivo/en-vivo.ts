@@ -49,7 +49,7 @@ export class EnVivo implements OnInit, OnDestroy {
   configurarPeer() {
     // Creamos el Peer usando tu usuarioId como identificador único
     // Así los espectadores sabrán a quién "llamar"
-    this.peer = new Peer(this.usuarioId);
+    this.peer = new Peer(String(this.usuarioId));
 
     this.peer.on('open', (id) => {
       console.log('Mi ID de Peer es: ' + id);

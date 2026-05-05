@@ -69,11 +69,21 @@ export class VerLive implements OnInit, OnDestroy {
   console.log('Iniciando conexión con: ' + this.userId);
 
   // Llamamos enviando un MediaStream vacío para activar el protocolo de recepción
-  const call = this.peer.call(this.userId, new MediaStream());
+// 1. Llamamos enviando un stream vacío
+const call = this.peer.call(this.userId, new MediaStream());
 
-  call.on('stream', (remoteStream) => {
-    this.procesarStreamEntrante(remoteStream);
-  });
+// 2. Al recibir el stream...
+call.on('stream', (remoteStream) => {
+  this.conectado = true;
+  if (this.remoteVideo) {
+    const video = this.remoteVideo.nativeElement;
+    video.srcObject = remoteStream;
+
+    // 3. ¡CRÍTICO PARA MÓVILES! Muteamos antes de dar play.
+    video.muted = true;
+    video.play().catch(e => console.error("Error Autoplay:", e));
+  }
+});
 
   call.on('error', (err) => {
     console.error('Error en la llamada:', err);

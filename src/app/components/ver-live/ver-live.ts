@@ -24,17 +24,19 @@ export class VerLive implements OnInit, OnDestroy {
   private usuarioService = inject(UsuarioService);
 
 ngOnInit() {
+  // 1. Capturamos el ID de la URL (ej: /ver-live/18)
   const idDesdeUrl = this.route.snapshot.paramMap.get('id');
-  if (idDesdeUrl) {
-    this.userId = idDesdeUrl;
 
-    // 1. ARRANCAMOS EL VIDEO PRIMERO
+  if (idDesdeUrl) {
+    this.userId = idDesdeUrl; // <-- Aquí guardamos el "18"
+    console.log('Llamaremos al ID:', this.userId);
+
+    // 2. AHORA SÍ iniciamos PeerJS
     this.iniciarConexion();
 
-    // 2. LUEGO INTENTAMOS CARGAR LA FOTO (si falla no importa)
+    // 3. Traemos la foto (opcional)
     this.usuarioService.getOne(Number(this.userId)).subscribe({
-      next: (datos) => { this.usuario = datos; },
-      error: (err) => { console.error('Error de API, pero el video sigue...'); }
+      next: (u) => this.usuario = u
     });
   }
 }
@@ -61,31 +63,16 @@ this.peer = new Peer({
   });
 }
 llamarAlEmisor() {
-  // 1. Si no hay peer o id, nos salimos para evitar errores
   if (!this.peer || !this.userId) return;
 
-  // 2. Usamos el ! para quitar el error rojo de TypeScript
-  const call = this.peer!.call(this.userId!, new MediaStream());
+  // Forzamos que llame al número que sacamos de la URL
+  const call = this.peer.call(this.userId, new MediaStream());
 
-  if (call) {
-    call.on('stream', (remoteStream) => {
-      console.log('¡STREAM RECIBIDO!');
-      this.conectado = true; // Quita el mensaje de "Sincronizando..."
-
-      // ASIGNACIÓN AL VIDEO
-      const video = this.remoteVideo.nativeElement;
-      video.srcObject = remoteStream;
-
-      // Muted es OBLIGATORIO
-      video.muted = true;
-      video.play().catch(e => console.error("Error en play:", e));
-    });
-
-    call.on('error', (err) => {
-      console.error('Error en la llamada:', err);
-      this.conectado = false;
-    });
-  }
+  call.on('stream', (remoteStream) => {
+    this.conectado = true;
+    this.remoteVideo.nativeElement.srcObject = remoteStream;
+    this.remoteVideo.nativeElement.play();
+  });
 }
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {

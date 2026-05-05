@@ -99,10 +99,13 @@ iniciarConexion() {
     console.log('Llamada creada. Esperando que Adeline acepte...');
   }
 
-  call.on('stream', (remoteStream) => {
-    // Usamos la función de apoyo que ya tienes escrita abajo
-    this.procesarStreamEntrante(remoteStream);
-  });
+
+call.on('stream', (remoteStream) => {
+  console.log('¡Recibiendo señal de video real!');
+  const video = this.remoteVideo.nativeElement;
+  video.srcObject = remoteStream; // <--- ESTA ES LA LÍNEA CLAVE
+  video.play().catch(err => console.error("Error al reproducir:", err));
+});
 
   call.on('error', (err) => {
     console.error('Error al intentar conectar:', err);

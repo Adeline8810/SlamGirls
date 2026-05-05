@@ -5,8 +5,8 @@
       <!-- Foto de perfil dinámica -->
       <div class="avatar-wrapper">
         <pre style="color: white; font-size: 10px;">{{ usuario | json }}</pre>
-        <img [src]="usuario?.fotoPerfil || usuario?.fotoUrl || 'assets/img/default-user.png'"
-             class="user-avatar">
+        <img [src]="usuario?.fotoUrl || usuario?.fotoPortada || 'assets/img/default-user.png'"
+     class="user-avatar">
         <div class="live-tag">EN DIRECTO</div>
       </div>
 
@@ -29,12 +29,12 @@
     </div>
 
     <!-- Video de Ruth (Receptor) -->
-    <video #remoteVideo
-           autoplay
-           playsinline
-           [muted]="true"
-           class="video-player">
-    </video>
+  <video #remoteVideo
+       autoplay
+       playsinline
+       muted="true"
+       style="width: 100%; height: 100%; background: black;">
+</video>
   </div>
 
   <!-- Barra de interacción inferior -->

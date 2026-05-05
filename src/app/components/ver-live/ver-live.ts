@@ -25,22 +25,16 @@ export class VerLive implements OnInit, OnDestroy {
 
 ngOnInit() {
   const idDesdeUrl = this.route.snapshot.paramMap.get('id');
-
   if (idDesdeUrl) {
-    this.userId = idDesdeUrl; // Guardamos el 27
+    this.userId = idDesdeUrl;
 
-    // USAMOS TU MÉTODO getOne para traer a Adeline
+    // 1. ARRANCAMOS EL VIDEO PRIMERO
+    this.iniciarConexion();
+
+    // 2. LUEGO INTENTAMOS CARGAR LA FOTO (si falla no importa)
     this.usuarioService.getOne(Number(this.userId)).subscribe({
-      next: (datosAdeline) => {
-        this.usuario = datosAdeline;
-        console.log('✅ Adeline cargada:', this.usuario.username);
-
-        // RECIÉN AQUÍ iniciamos el video, ahora que sabemos que el ID es real
-        this.iniciarConexion();
-      },
-      error: (err) => {
-        console.error('❌ Error: No se encontró al usuario con ID ' + this.userId, err);
-      }
+      next: (datos) => { this.usuario = datos; },
+      error: (err) => { console.error('Error de API, pero el video sigue...'); }
     });
   }
 }
@@ -67,37 +61,32 @@ this.peer = new Peer({
   });
 }
 llamarAlEmisor() {
+  // 1. Si no hay peer o id, nos salimos para evitar errores
   if (!this.peer || !this.userId) return;
 
-  console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
-
-  // Ruth inicia la llamada enviando un stream vacío
-const streamVacio = new MediaStream();
-const call = this.peer.call(this.userId!, streamVacio);
+  // 2. Usamos el ! para quitar el error rojo de TypeScript
+  const call = this.peer!.call(this.userId!, new MediaStream());
 
   if (call) {
-    console.log('ENTRA AL IF CALL');
-    // ESTO ES LO QUE FALTA: Ruth debe estar lista para recibir
     call.on('stream', (remoteStream) => {
-  this.conectado = true; // Esto quita el fondo negro de carga
-  console.log('DESPUES DE this.conectado = true');
-  const video = this.remoteVideo.nativeElement;
-console.log('DESPUES  const video = this.remoteVideo.nativeElement;');
-  // ESTA ES LA LÍNEA QUE MUESTRA EL VIDEO. Si usas .src no funciona.
-  video.srcObject = remoteStream;
-console.log('DESPUES DE  video.srcObject = remoteStream;');
-  // Forzamos al navegador a mostrarlo
-  video.play();
-  console.log('DESPUES DE  video.play();');
-});
+      console.log('¡STREAM RECIBIDO!');
+      this.conectado = true; // Quita el mensaje de "Sincronizando..."
+
+      // ASIGNACIÓN AL VIDEO
+      const video = this.remoteVideo.nativeElement;
+      video.srcObject = remoteStream;
+
+      // Muted es OBLIGATORIO
+      video.muted = true;
+      video.play().catch(e => console.error("Error en play:", e));
+    });
 
     call.on('error', (err) => {
-      console.error('Error en la conexión:', err);
+      console.error('Error en la llamada:', err);
       this.conectado = false;
     });
   }
 }
-
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {
   console.error('remoteStream:', remoteStream) ;

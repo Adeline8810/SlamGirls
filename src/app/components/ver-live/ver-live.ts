@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import Peer from 'peerjs'; // 1. Importamos PeerJS
 import { UsuarioService } from '../../../services/usuario.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-ver-live',
@@ -22,6 +23,8 @@ export class VerLive implements OnInit, OnDestroy {
   peer: Peer | null = null;
   conectado: boolean = false;
   private usuarioService = inject(UsuarioService);
+
+   constructor(private cdr: ChangeDetectorRef) { }
 
 ngOnInit() {
   // 1. Capturamos el ID de la URL (ej: /ver-live/18)
@@ -70,11 +73,15 @@ llamarAlEmisor() {
     const call = this.peer!.call(this.userId!, new MediaStream());
 
     call.on('stream', (remoteStream) => {
-      console.log('¡CONEXIÓN EXITOSA!');
-      this.conectado = true;
-      this.remoteVideo.nativeElement.srcObject = remoteStream;
-      this.remoteVideo.nativeElement.play();
-    });
+      alert('¡EL VIDEO YA LLEGÓ A RUTH!');
+  console.log('¡RECIBIENDO STREAM EN RUTH!');
+  this.conectado = true;
+
+  const video = this.remoteVideo.nativeElement;
+  video.srcObject = remoteStream;
+
+  this.cdr.detectChanges(); // <--- ESTO obliga a Angular a quitar el círculo y mostrar el video
+});
 
     // Si después de 5 segundos no hay respuesta, Ruth vuelve a intentar solita
     setTimeout(() => {

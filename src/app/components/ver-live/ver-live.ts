@@ -65,14 +65,23 @@ this.peer = new Peer({
 llamarAlEmisor() {
   if (!this.peer || !this.userId) return;
 
-  // Forzamos que llame al número que sacamos de la URL
-  const call = this.peer.call(this.userId, new MediaStream());
+  // Esperamos un poquito para que el HTML cargue el elemento #remoteVideo
+  setTimeout(() => {
+    console.log('Marcando al ID:', this.userId);
+    const call = this.peer!.call(this.userId!, new MediaStream());
 
-  call.on('stream', (remoteStream) => {
-    this.conectado = true;
-    this.remoteVideo.nativeElement.srcObject = remoteStream;
-    this.remoteVideo.nativeElement.play();
-  });
+    call.on('stream', (remoteStream) => {
+      this.conectado = true;
+
+      const video = this.remoteVideo.nativeElement;
+      video.srcObject = remoteStream;
+
+      // IMPORTANTE: Forzamos el play
+      video.onloadedmetadata = () => {
+        video.play().catch(e => console.error("Error al dar play:", e));
+      };
+    });
+  }, 500);
 }
 // Separamos la lógica del video para que el código sea más legible
 private procesarStreamEntrante(remoteStream: MediaStream) {

@@ -48,17 +48,16 @@ export class EnVivo implements OnInit, OnDestroy {
 
  configurarPeer() {
   // 1. Configuración con servidores de Google para atravesar redes móviles/firewalls
-this.peer = new Peer(String(this.usuarioId), {
-  config: {
-    iceServers: [
-      { urls: 'stun:stun.l.google.com:19302' },
-      {
-        urls: 'turn:openrelay.metered.ca:80',
-        username: 'openrelayproject',
-        credential: 'openrelayproject'
-      }
-    ]
-  }
+  this.peer = new Peer(String(this.usuarioId), {
+    config: {
+      'iceServers': [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' }
+      ],
+      // Esto ayuda a que la conexión sea más rápida
+      'sdpSemantics': 'unified-plan'
+    }
   });
 
   // 2. Evento cuando Adeline se conecta con éxito al servidor de PeerJS

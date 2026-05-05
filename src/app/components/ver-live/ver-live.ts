@@ -79,14 +79,18 @@ ngOnInit() {
 
 iniciarConexion() {
   // Ruth no lleva ID en el primer paréntesis, pero SI lleva la configuración
-  this.peer = new Peer({
-    config: {
-      'iceServers': [
-        { urls: 'stun:stun.l.google.com:19302' },
-        { urls: 'stun:stun1.l.google.com:19302' }
-      ]
-    }
-  });
+this.peer = new Peer({
+  config: {
+    iceServers: [
+      { urls: 'stun:stun.l.google.com:19302' },
+      {
+        urls: 'turn:openrelay.metered.ca:80',
+        username: 'openrelayproject',
+        credential: 'openrelayproject'
+      }
+    ]
+  }
+});
 
   this.peer.on('open', (id) => {
     console.log('Mi ID de espectador es: ' + id);

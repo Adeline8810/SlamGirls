@@ -8,41 +8,10 @@ import { UsuarioService } from '../../../services/usuario.service';
   selector: 'app-ver-live',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  template: `
-  <div class="viewer-container">
-    <div class="live-header" style="display: flex; align-items: center; gap: 10px; padding: 10px;">
-      <!-- USAMOS TUS CAMPOS fotoUrl o fotoPortada -->
-      <img [src]="usuario?.fotoUrl || usuario?.fotoPortada || 'assets/img/default-user.png'"
-           style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid red;">
-
-      <div>
-        <span class="badge">EN VIVO</span>
-        <p style="margin: 0;">Viendo a: {{ usuario?.username || userId }}</p>
-      </div>
-    </div>
-
-    <div class="video-container">
-      <!-- Agregamos muted para asegurar que el navegador lo reproduzca -->
-      <video #remoteVideo autoplay playsinline [muted]="true" class="video-player"></video>
-
-      <div *ngIf="!conectado" class="loading-overlay">
-        <p>Conectando con la señal de video de {{ usuario?.username }}...</p>
-      </div>
-    </div>
-
-    <button class="btn-exit" routerLink="/">SALIR</button>
-  </div>
-`
-  ,
-  styles: [`
-    .viewer-container { height: 100vh; background: #000; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-    .badge { background: red; padding: 5px 10px; border-radius: 5px; font-weight: bold; margin-bottom: 10px; }
-    .video-container { width: 100%; height: 70%; position: relative; display: flex; justify-content: center; }
-    .video-player { width: 100%; height: 100%; object-fit: cover; background: #222; }
-    .loading-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); }
-    .btn-exit { margin-top: 20px; background: #333; color: white; border: none; padding: 10px 30px; border-radius: 20px; cursor: pointer; }
-  `]
+  templateUrl: './ver-live.html', // <--- Cambia 'template' por 'templateUrl'
+  styleUrls: ['./ver-live.css']    // <--- Lo mismo con los estilos
 })
+
 export class VerLive implements OnInit, OnDestroy {
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
 
@@ -107,17 +76,20 @@ const streamVacio = new MediaStream();
 const call = this.peer.call(this.userId!, streamVacio);
 
   if (call) {
+    console.log('ENTRA AL IF CALL');
     // ESTO ES LO QUE FALTA: Ruth debe estar lista para recibir
     call.on('stream', (remoteStream) => {
-      console.log('¡SEÑAL RECIBIDA! Procesando video...');
-      this.conectado = true; // Esto quita el mensaje "Conectando..."
-
-      const video = this.remoteVideo.nativeElement;
-      video.srcObject = remoteStream;
-      video.muted = true; // Importante para que el navegador no bloquee
-
-      video.play().catch(e => console.error("Error al dar play:", e));
-    });
+  this.conectado = true; // Esto quita el fondo negro de carga
+  console.log('DESPUES DE this.conectado = true');
+  const video = this.remoteVideo.nativeElement;
+console.log('DESPUES  const video = this.remoteVideo.nativeElement;');
+  // ESTA ES LA LÍNEA QUE MUESTRA EL VIDEO. Si usas .src no funciona.
+  video.srcObject = remoteStream;
+console.log('DESPUES DE  video.srcObject = remoteStream;');
+  // Forzamos al navegador a mostrarlo
+  video.play();
+  console.log('DESPUES DE  video.play();');
+});
 
     call.on('error', (err) => {
       console.error('Error en la conexión:', err);

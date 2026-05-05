@@ -47,6 +47,7 @@ export class VerLive implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userId = this.route.snapshot.paramMap.get('id');
+    console.log("Mi ID de Peer es: "+this.userId);
 
     if (this.userId) {
       this.iniciarConexion();
@@ -66,7 +67,7 @@ export class VerLive implements OnInit, OnDestroy {
   llamarAlEmisor() {
   if (!this.peer || !this.userId) return;
 
-  console.log('Iniciando conexión con: ' + this.userId);
+ console.log("Intentando conectar con el emisor ID: " + this.userId);
 
   // Llamamos enviando un MediaStream vacío para activar el protocolo de recepción
 // 1. Llamamos enviando un stream vacío

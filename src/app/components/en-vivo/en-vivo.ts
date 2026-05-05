@@ -46,30 +46,27 @@ export class EnVivo implements OnInit, OnDestroy {
     }
   }
 
-  configurarPeer() {
-    // Creamos el Peer usando tu usuarioId como identificador único
-    // Así los espectadores sabrán a quién "llamar"
-    this.peer = new Peer(String(this.usuarioId));
+ configurarPeer() {
+  this.peer = new Peer(String(this.usuarioId));
 
-    this.peer.on('open', (id) => {
-      console.log('Mi ID de Peer es: ' + id);
-      this.avisarAlServidor(true); // Ahora sí avisamos a la BD que estamos listos
-    });
+  this.peer.on('open', (id) => {
+    console.log('Mi ID de Peer es: ' + id);
+    this.avisarAlServidor(true);
+  });
 
-    // 4. ESCUCHAR LLAMADAS (Aquí es donde los fans se conectan)
-    this.peer.on('call', (call) => {
-      console.log('¡Alguien entró a ver el live!');
+  // ESTA ES LA PARTE QUE DEBE ESTAR SÍ O SÍ:
+  this.peer.on('call', (call) => {
+    console.log('¡Recibiendo llamada de un espectador!');
 
-      // Respondemos la llamada enviando nuestro stream de video
-      if (this.stream) {
-        call.answer(this.stream);
-      }
-    });
-
-    this.peer.on('error', (err) => {
-      console.error('Error en PeerJS:', err);
-    });
-  }
+    // El emisor RESPONDE enviando su stream de cámara
+    if (this.stream) {
+      call.answer(this.stream);
+      console.log('Respuesta enviada con éxito');
+    } else {
+      console.error('No hay stream de cámara para enviar');
+    }
+  });
+}
 
 avisarAlServidor(estado: boolean) {
   const idNumerico = Number(this.usuarioId);

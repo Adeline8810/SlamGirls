@@ -4,7 +4,7 @@
     <span class="user-id">Transmitiendo como: {{ usuarioId }}</span>
   </div>
 
-  <video #videoElement autoplay playsinline muted class="video-preview"></video>
+<video #videoElement autoplay playsinline [muted]="true" style="width: 100%; height: auto;"></video>
 
   <div class="footer">
     <button class="btn-stop" (click)="ngOnDestroy()">FINALIZAR LIVE</button>

@@ -64,36 +64,37 @@ export class VerLive implements OnInit, OnDestroy {
   }
 
   llamarAlEmisor() {
-    if (!this.peer || !this.userId) return;
+  if (!this.peer || !this.userId) return;
 
-    console.log('Llamando al usuario: ' + this.userId);
+  console.log('Iniciando conexión con: ' + this.userId);
 
-    // 4. Llamamos al emisor pasándole un stream vacío (porque solo queremos RECIBIR)
-    // Creamos un stream falso porque peerjs requiere enviar algo para iniciar la conexión
-   const call = this.peer.call(this.userId, new MediaStream());
+  // Llamamos enviando un MediaStream vacío para activar el protocolo de recepción
+  const call = this.peer.call(this.userId, new MediaStream());
 
-    call.on('stream', (remoteStream) => {
-      console.log('¡Señal recibida!', remoteStream);
-      this.conectado = true;
+  call.on('stream', (remoteStream) => {
+    this.procesarStreamEntrante(remoteStream);
+  });
 
-      if (this.remoteVideo) {
-        const video = this.remoteVideo.nativeElement;
-        video.srcObject = remoteStream;
+  call.on('error', (err) => {
+    console.error('Error en la llamada:', err);
+    this.conectado = false;
+  });
+}
 
-        // Forzamos al navegador a que arranque el video
-        video.play().catch(err => {
-            console.warn("El navegador bloqueó el autoplay, intentando sin sonido...", err);
-            video.muted = true; // Si falla, lo silenciamos para que deje reproducir
-            video.play();
-        });
-      }
-    });
+// Separamos la lógica del video para que el código sea más legible
+private procesarStreamEntrante(remoteStream: MediaStream) {
+  console.log('¡Señal de video recibida!');
+  this.conectado = true;
 
-    call.on('error', (err) => {
-      console.error('Error en la llamada:', err);
-      alert('No se pudo conectar con el Live. Es posible que haya terminado.');
-    });
+  if (this.remoteVideo) {
+    const video = this.remoteVideo.nativeElement;
+    video.srcObject = remoteStream;
+
+    // Obligatorio para móviles: silenciar para que el navegador permita el inicio automático
+    video.muted = true;
+    video.play().catch(e => console.error("Error al reproducir automáticamente:", e));
   }
+}
 
   ngOnDestroy() {
     // 5. Cerramos la conexión al salir

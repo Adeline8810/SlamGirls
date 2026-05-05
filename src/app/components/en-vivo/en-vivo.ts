@@ -47,18 +47,23 @@ export class EnVivo implements OnInit, OnDestroy {
   }
 
  configurarPeer() {
-  this.peer = new Peer(String(this.usuarioId));
+  // BORRAMOS la línea simple y dejamos solo esta con la configuración:
+  this.peer = new Peer(String(this.usuarioId), {
+    config: {
+      'iceServers': [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+      ]
+    }
+  });
 
   this.peer.on('open', (id) => {
     console.log('Mi ID de Peer es: ' + id);
     this.avisarAlServidor(true);
   });
 
-  // ESTA ES LA PARTE QUE DEBE ESTAR SÍ O SÍ:
   this.peer.on('call', (call) => {
     console.log('¡Recibiendo llamada de un espectador!');
-
-    // El emisor RESPONDE enviando su stream de cámara
     if (this.stream) {
       call.answer(this.stream);
       console.log('Respuesta enviada con éxito');

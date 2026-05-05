@@ -53,16 +53,22 @@ export class VerLive implements OnInit, OnDestroy {
       this.iniciarConexion();
     }
   }
+iniciarConexion() {
+  // Ruth no lleva ID en el primer paréntesis, pero SI lleva la configuración
+  this.peer = new Peer({
+    config: {
+      'iceServers': [
+        { urls: 'stun:stun.l.google.com:19302' },
+        { urls: 'stun:stun1.l.google.com:19302' }
+      ]
+    }
+  });
 
-  iniciarConexion() {
-    // 3. El espectador no necesita un ID fijo, PeerJS le dará uno aleatorio
-    this.peer = new Peer();
-
-    this.peer.on('open', (id) => {
-      console.log('Mi ID de espectador es: ' + id);
-      this.llamarAlEmisor();
-    });
-  }
+  this.peer.on('open', (id) => {
+    console.log('Mi ID de espectador es: ' + id);
+    this.llamarAlEmisor();
+  });
+}
 
   llamarAlEmisor() {
   if (!this.peer || !this.userId) return;

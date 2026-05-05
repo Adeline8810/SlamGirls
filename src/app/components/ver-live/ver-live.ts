@@ -103,7 +103,8 @@ llamarAlEmisor() {
   console.log('Llamando a Adeline (ID: ' + this.userId + ')...');
 
   // Ruth inicia la llamada enviando un stream vacío
- const call = this.peer.call(this.userId, undefined as any);
+const streamVacio = new MediaStream();
+const call = this.peer.call(this.userId!, streamVacio);
 
   if (call) {
     // ESTO ES LO QUE FALTA: Ruth debe estar lista para recibir

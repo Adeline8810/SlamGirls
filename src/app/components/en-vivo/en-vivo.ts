@@ -47,28 +47,56 @@ export class EnVivo implements OnInit, OnDestroy {
   }
 
  configurarPeer() {
-  // BORRAMOS la línea simple y dejamos solo esta con la configuración:
+  // 1. Configuración con servidores de Google para atravesar redes móviles/firewalls
   this.peer = new Peer(String(this.usuarioId), {
     config: {
       'iceServers': [
         { urls: 'stun:stun.l.google.com:19302' },
-        { urls: 'stun:stun1.l.google.com:19302' }
-      ]
+        { urls: 'stun:stun1.l.google.com:19302' },
+        { urls: 'stun:stun2.l.google.com:19302' }
+      ],
+      // Esto ayuda a que la conexión sea más rápida
+      'sdpSemantics': 'unified-plan'
     }
   });
 
+  // 2. Evento cuando Adeline se conecta con éxito al servidor de PeerJS
   this.peer.on('open', (id) => {
-    console.log('Mi ID de Peer es: ' + id);
+    console.log('✅ Mi ID de Peer está activo: ' + id);
     this.avisarAlServidor(true);
   });
 
+  // 3. Evento cuando UN ESPECTADOR (Ruth) llama para ver el video
   this.peer.on('call', (call) => {
-    console.log('¡Recibiendo llamada de un espectador!');
-    if (this.stream) {
-      call.answer(this.stream);
-      console.log('Respuesta enviada con éxito');
+    console.log('📞 ¡Recibiendo petición de video de un espectador!');
+
+    // Función interna para contestar
+    const intentarContestar = () => {
+      if (this.stream && this.stream.active) {
+        call.answer(this.stream);
+        console.log('✅ Respuesta enviada con éxito. El espectador debería ver el video ahora.');
+      } else {
+        console.error('❌ No hay stream activo para enviar. ¿Diste permisos a la cámara?');
+      }
+    };
+
+    // LÓGICA DE REINTENTO:
+    // Si la cámara aún no está lista (this.stream es null), esperamos 2 segundos
+    if (!this.stream) {
+      console.warn('⚠️ La cámara aún no está lista. Reintentando contestar en 2 segundos adelineeee...');
+      setTimeout(() => {
+        intentarContestar();
+      }, 2000);
     } else {
-      console.error('No hay stream de cámara para enviar');
+      intentarContestar();
+    }
+  });
+
+  // 4. Manejo de errores para saber si el ID ya está ocupado
+  this.peer.on('error', (err) => {
+    console.error('❌ Error en el sistema Peer ayy ruthhhh:', err.type);
+    if (err.type === 'unavailable-id') {
+      console.error('El ID ya está en uso. Asegúrate de no tener dos pestañas abiertas con el mismo usuario.');
     }
   });
 }

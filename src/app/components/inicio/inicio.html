@@ -1,5 +1,5 @@
 <div class="home-container">
-  <!-- HEADER: Fête / Direct -->
+  <!-- HEADER -->
   <div class="top-nav">
     <span class="active">Fête</span>
     <span>Direct</span>
@@ -8,17 +8,19 @@
 
   <!-- SECCIÓN 1: CIRCULITOS DE LIVES -->
   <div class="lives-bar">
-    <!-- Botón Crear -->
-    <div class="live-item" [routerLink]="['/en-vivo']">
+    <!-- BOTÓN CREAR: Ahora apunta a tu nueva sala para INICIAR el live -->
+    <div class="live-item" [routerLink]="['/videoSala']">
       <div class="circle-add">+</div>
       <span>Créer</span>
     </div>
 
-    <!-- Círculos de usuarios en Live -->
+    <!-- CÍRCULOS DE USUARIOS EN LIVE -->
     @for (live of listaLives; track live.id) {
-      <div class="live-item" [routerLink]="['/ver-live', live.usuarioId]">
+      <!-- Al hacer clic, entramos a ver el live de esa persona -->
+      <div class="live-item" [routerLink]="['/videoSala']" [queryParams]="{ room: live.id, user: 'espectador' }">
         <div class="avatar-ring">
           <img [src]="live.thumbnailUrl || 'assets/img/default.png'">
+          <!-- Este es el aro rojo que querías -->
           <div class="live-tag">DIRECT</div>
         </div>
         <span class="user-name">{{ live.titulo }}</span>
@@ -26,24 +28,25 @@
     }
   </div>
 
-  <!-- SECCIÓN 2: BOTONES DE CATEGORÍA (Chanter, Discuter...) -->
+  <!-- SECCIÓN 2: CATEGORÍAS (Sin cambios) -->
   <div class="category-buttons">
     <div class="cat-btn pink">🎤 Chanter</div>
     <div class="cat-btn orange">💬 Discuter</div>
     <div class="cat-btn blue">🎮 Jouer</div>
   </div>
 
-  <!-- SECCIÓN 3: RECOMMANDÉ (Cuadrícula de salas) -->
+  <!-- SECCIÓN 3: RECOMMANDÉ (Cuadrícula) -->
   <h3 class="section-title">Recommandé</h3>
   <div class="rooms-grid">
     @for (video of listaVideos; track video.id) {
-      <div class="room-card">
+      <!-- También puedes entrar al live desde la cuadrícula -->
+      <div class="room-card" [routerLink]="['/videoSala']" [queryParams]="{ room: video.id }">
         <div class="card-image" [style.backgroundImage]="'url(' + video.miniaturaUrl + ')'">
           <div class="room-info">
             <span class="room-title">{{ video.titulo }}</span>
             <div class="room-footer">
               <img [src]="video.usuarioFoto" class="mini-avatar">
-              <span class="viewers">👤 6</span>
+              <span class="viewers">👤 128</span>
             </div>
           </div>
         </div>

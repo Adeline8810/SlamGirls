@@ -1,16 +1,40 @@
-<div style="padding: 20px; text-align: center;">
-  <h2>Sala de Video</h2>
+<div style="padding: 20px; text-align: center; background-color: #1a1a1a; color: white; min-height: 100vh;">
+  <h2>Sala de Directo</h2>
 
+  <!-- SECCIÓN DE LOGIN (Antes de entrar) -->
   <div *ngIf="!isJoined">
-    <input [(ngModel)]="userName" placeholder="Tu nombre" style="margin: 5px;"><br>
-    <input [(ngModel)]="roomName" placeholder="Nombre de la sala" style="margin: 5px;"><br>
-    <button (click)="entrarALaClase()">Conectarse</button>
+    <input [(ngModel)]="userName" placeholder="Tu nombre" style="padding: 10px; margin: 5px; border-radius: 5px; border: none;">
+    <br>
+    <input [(ngModel)]="roomName" placeholder="Nombre de la sala" style="padding: 10px; margin: 5px; border-radius: 5px; border: none;">
+    <br>
+    <button (click)="entrarALaClase()" style="padding: 10px 20px; background-color: #ff0050; color: white; border: none; border-radius: 20px; cursor: pointer;">
+      Conectarse al Live
+    </button>
   </div>
 
-  <div *ngIf="isJoined">
-    <!-- El #localVideo es OBLIGATORIO -->
-    <video #localVideo autoplay playsinline style="width: 100%; max-width: 500px; background: black;"></video>
-    <br>
-    <button (click)="isJoined = false">Salir</button>
+  <!-- SECCIÓN DE VIDEO (Una vez dentro) -->
+  <div *ngIf="isJoined" style="position: relative; display: inline-block; width: 100%; max-width: 600px;">
+
+    <!-- Overlay de carga mientras espera la señal de video -->
+    <div *ngIf="!conectado" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
+      <div class="spinner"></div> <!-- Puedes añadir un CSS de spinner aquí -->
+      <p>Buscando señal de video...</p>
+    </div>
+
+    <!-- EL VIDEO: Cambiamos #localVideo por #remoteVideo -->
+    <video #remoteVideo
+           autoplay
+           playsinline
+           [muted]="true"
+           style="width: 100%; border-radius: 15px; background: black; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+    </video>
+
+    <div style="margin-top: 15px;">
+      <p>Estás en: <strong>{{ roomName }}</strong></p>
+      <button (click)="isJoined = false; conectado = false"
+              style="padding: 8px 15px; background-color: #444; color: white; border: none; border-radius: 5px;">
+        Finalizar
+      </button>
+    </div>
   </div>
 </div>

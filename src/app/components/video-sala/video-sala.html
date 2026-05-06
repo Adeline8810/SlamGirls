@@ -1,49 +1,32 @@
 <div class="live-container">
-
-  <!-- ESTADO: CARGANDO -->
+  <!-- Pantalla de carga -->
   <div *ngIf="!isJoined" class="loading-overlay">
-    <div class="spinner"></div>
-    <p>Entrando al directo de {{ roomName }}...</p>
+    <p>Conectando...</p>
   </div>
 
-<!-- PANTALLA DE VIDEO -->
   <div *ngIf="isJoined" class="video-wrapper">
-
-    <!-- Badge de "En Vivo" -->
-    <div class="live-badge">
-      <div class="dot"></div>
-      <span>EN DIRECTO: {{ roomName }}</span>
-    </div>
-
-    <!-- 1. VIDEO LOCAL (Streamer): Usamos [hidden] para que el ID siempre esté disponible en el DOM -->
+    <!-- VIDEO STREAMER -->
     <video
       id="miCamaraLocal"
       [hidden]="modo !== 'streamer'"
-      autoplay
-      playsinline
-      muted
-      style="width: 100%; height: 100%; object-fit: cover; background: black; display: block !important;">
+      autoplay playsinline muted
+      style="width: 100%; height: 100%; object-fit: cover; background: #000;">
     </video>
 
-    <!-- 2. VIDEO REMOTO (Viewer): Este sí puede usar *ngIf -->
+    <!-- VIDEO VIEWER -->
     <video
       *ngIf="modo === 'viewer'"
       #remoteVideo
-      autoplay
-      playsinline
-      muted
-      style="width: 100%; height: 100%; object-fit: cover;">
+      autoplay playsinline muted
+      style="width: 100%; height: 100%; object-fit: cover; background: #000;">
     </video>
 
-    <!-- Botones de Interacción -->
     <div class="controls-overlay">
-      <button (click)="salir()" class="btn-exit">Salir</button>
+      <button (click)='salir()' class="btn-exit">Salir</button>
     </div>
 
-    <!-- Mensaje si no hay señal aún -->
     <div *ngIf="!conectado && modo === 'viewer'" class="no-signal">
       <p>Esperando señal de la streamer...</p>
     </div>
   </div>
-
 </div>

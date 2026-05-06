@@ -1,0 +1,16 @@
+<div style="padding: 20px; text-align: center;">
+  <h2>Sala de Video</h2>
+
+  <div *ngIf="!isJoined">
+    <input [(ngModel)]="userName" placeholder="Tu nombre" style="margin: 5px;"><br>
+    <input [(ngModel)]="roomName" placeholder="Nombre de la sala" style="margin: 5px;"><br>
+    <button (click)="entrarALaClase()">Conectarse</button>
+  </div>
+
+  <div *ngIf="isJoined">
+    <!-- El #localVideo es OBLIGATORIO -->
+    <video #localVideo autoplay playsinline style="width: 100%; max-width: 500px; background: black;"></video>
+    <br>
+    <button (click)="isJoined = false">Salir</button>
+  </div>
+</div>

@@ -81,6 +81,8 @@ llamarAlEmisor() {
   video.srcObject = remoteStream;
 
   this.cdr.detectChanges(); // <--- ESTO obliga a Angular a quitar el círculo y mostrar el video
+  video.play();
+
 });
 
     // Si después de 5 segundos no hay respuesta, Ruth vuelve a intentar solita

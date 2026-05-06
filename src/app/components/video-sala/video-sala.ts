@@ -47,70 +47,64 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
     next: async (res) => {
       try {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
-        this.isJoined = true;
+        this.isJoined = true; // Aquí se activa el *ngIf del video
+        console.log("✅ Conectado a la sala");
 
         // --- LÓGICA PARA EL STREAMER ---
         if (this.modo === 'streamer') {
-          room.localParticipant.on('trackPublished', (publication) => {
-            if (publication.kind === 'video') {
-              const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
-              publication.track?.attach(element);
+          const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+          room.localParticipant.on('trackPublished', (pub) => {
+            if (pub.kind === 'video' && pub.track) {
+              pub.track.attach(element);
               this.conectado = true;
             }
           });
-
-          // Fallback para el streamer
+          // Fallback streamer
           setTimeout(() => {
             const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
-            const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
             if (videoPub?.track && element) {
               videoPub.track.attach(element);
               this.conectado = true;
             }
-          }, 2000);
+          }, 1000);
         }
 
         // --- LÓGICA PARA EL VIEWER (ESPECTADOR) ---
         if (this.modo === 'viewer') {
-          // 1. REVISAR SI YA HAY ALGUIEN TRANSMITIENDO (Para los que entran tarde)
-          room.remoteParticipants.forEach((participant) => {
-            participant.trackPublications.forEach((publication) => {
-              if (publication.kind === 'video' && publication.track) {
-                // Usamos nativeElement porque aquí usas @ViewChild('remoteVideo')
-                publication.track.attach(this.videoElement.nativeElement);
-                this.conectado = true;
-                console.log("📺 Video remoto recuperado al entrar");
-              }
-            });
-          });
-
-          // 2. ESCUCHAR NUEVAS TRANSMISIONES (Tu código original)
-          if (this.modo === 'viewer') {
-          room.remoteParticipants.forEach((participant) => {
-            participant.trackPublications.forEach((publication) => {
-              if (publication.track && publication.kind === 'video') {
-                // Si ya hay video, lo pegamos de una vez
-                publication.track.attach(this.videoElement.nativeElement);
-                this.conectado = true; // Esto quita el mensaje "Esperando señal"
-                console.log("📺 Video recuperado: Ya estaba emitiendo");
-              }
-            });
-          });
-        }
-          room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
-            if (track.kind === Track.Kind.Video && this.videoElement) {
-              track.attach(this.videoElement.nativeElement);
-              this.conectado = true;
-              console.log("📺 Nueva señal de video recibida");
+          // 1. ESPERAMOS A QUE EL *ngIf DIBUJE EL VIDEO EN EL HTML
+          setTimeout(() => {
+            if (!this.videoElement) {
+              console.error("❌ Error: No se encontró #remoteVideo. ¿Está el *ngIf funcionando?");
+              return;
             }
-          });
+
+            // A. Revisar si la streamer ya está transmitiendo
+            room.remoteParticipants.forEach((participant) => {
+              participant.trackPublications.forEach((publication) => {
+                if (publication.kind === 'video' && publication.track) {
+                  publication.track.attach(this.videoElement.nativeElement);
+                  this.conectado = true; // Quita el mensaje de espera
+                  console.log("📺 Video detectado al entrar");
+                }
+              });
+            });
+
+            // B. Escuchar si empieza a transmitir después
+            room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
+              if (track.kind === Track.Kind.Video) {
+                track.attach(this.videoElement.nativeElement);
+                this.conectado = true;
+                console.log("📺 Nueva señal recibida");
+              }
+            });
+          }, 500); // 500ms es suficiente para que Angular renderice el *ngIf
         }
 
       } catch (err) {
-        console.error("Error al conectar a la sala:", err);
+        console.error("❌ Error al entrar:", err);
       }
     },
-    error: (err) => console.error("Error al obtener el token:", err)
+    error: (err) => console.error("❌ Error token:", err)
   });
 }
 

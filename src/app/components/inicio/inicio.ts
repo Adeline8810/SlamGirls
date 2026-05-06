@@ -28,7 +28,7 @@ export class Inicio implements OnInit {
 
   ngOnInit() {
     // Cargar lives activos para los círculos
-    this.liveService.getLivesActivos().subscribe(data => {
+    this.livekitService.getLivesActivos().subscribe(data => {
       this.listaLives = data;
     });
 

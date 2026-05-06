@@ -53,23 +53,22 @@ export class LivekitService {
    * @param token El token generado por Spring
    * @param esStreamer Si es true, activa cámara automáticamente
    */
-  async joinRoom(token: string, esStreamer: boolean = false): Promise<Room> {
-    try {
-      // Usamos la URL real: wss://slam-z3pekaoc.livekit.cloud
-      await this.room.connect(this.livekitUrl, token);
-      console.log('✅ Conectado exitosamente a LiveKit Cloud');
+async joinRoom(token: string, esStreamer: boolean = false): Promise<Room> {
+  try {
+    await this.room.connect(this.livekitUrl, token);
 
-      if (esStreamer) {
-        await this.room.localParticipant.enableCameraAndMicrophone();
-      }
-
-      return this.room;
-    } catch (error) {
-      console.error('❌ Error de conexión:', error);
-      throw error;
+    if (esStreamer) {
+      // Forzamos la activación de cámara y micro
+      await this.room.localParticipant.setCameraEnabled(true);
+      await this.room.localParticipant.setMicrophoneEnabled(true);
+      console.log("✅ Hardware de cámara activado (Luz encendida)");
     }
+    return this.room;
+  } catch (error) {
+    console.error("Error al conectar:", error);
+    throw error;
   }
-
+}
   async leaveRoom() {
     if (this.room) {
       await this.room.disconnect();

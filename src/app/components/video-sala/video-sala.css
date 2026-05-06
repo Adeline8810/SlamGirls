@@ -103,3 +103,28 @@ video {
   display: block;
   background: #222; /* Si ves gris, es que el tag existe pero no hay imagen */
 }
+
+/* Asegura que el contenedor tenga tamaño */
+.video-wrapper {
+    width: 100%;
+    height: 100vh;
+    background-color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fuerza al video a ocupar espacio y ser visible */
+video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover; /* Esto hace que se vea como en TikTok/Instagram */
+    display: block !important;
+    min-height: 300px;
+}
+
+/* Si usas local-video y remote-video en el HTML, aplica a ambos */
+#localVideo, #remoteVideo {
+    width: 100%;
+    height: 100%;
+}

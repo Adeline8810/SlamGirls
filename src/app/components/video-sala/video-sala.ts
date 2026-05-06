@@ -46,24 +46,24 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
         this.isJoined = true;
 
-   if (this.modo === 'streamer') {
-    // 1. Esperamos un segundo para asegurar que LiveKit encendió la cámara
-    setTimeout(() => {
+ if (this.modo === 'streamer') {
+    // Usamos un intervalo corto para verificar hasta que el track esté disponible
+    const checkTrack = setInterval(() => {
         const localP = room.localParticipant;
-        // Buscamos específicamente el track de video
-        const videoPub = Array.from(localP.videoTrackPublications.values())
-                              .find(p => p.kind === 'video');
+        // Obtenemos la publicación de video
+        const videoPub = Array.from(localP.videoTrackPublications.values()).find(p => p.kind === 'video');
 
-        const localVideoTrack = videoPub?.videoTrack;
-
-        if (localVideoTrack && this.localVideoElement) {
-            console.log("🎥 Intentando pegar cámara al HTML...");
-            localVideoTrack.attach(this.localVideoElement.nativeElement);
+        // Verificamos si ya existe el track físico
+        if (videoPub && videoPub.track && this.localVideoElement) {
+            console.log("🎥 ¡Track encontrado! Pegando a la pantalla...");
+            videoPub.track.attach(this.localVideoElement.nativeElement);
             this.conectado = true;
-        } else {
-            console.error("❌ No se encontró el track de video local tras esperar.");
+            clearInterval(checkTrack); // Detenemos la búsqueda
         }
-    }, 1500); // 1.5 segundos de espera
+    }, 500); // Revisa cada medio segundo
+
+    // Por seguridad, detenemos la búsqueda tras 10 segundos si no hay nada
+    setTimeout(() => clearInterval(checkTrack), 10000);
 }
 
         room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {

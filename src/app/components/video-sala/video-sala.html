@@ -16,7 +16,7 @@
     </div>
 
     <!-- 1. VIDEO LOCAL: Solo aparece si tú eres la que transmite (Modo Streamer) -->
-    <video *ngIf="modo === 'streamer'" #localVideo autoplay playsinline muted></video>
+   <video #localVideo autoplay playsinline muted style="width: 100%; height: 100%; border: 2px solid red;"></video>
 
     <!-- 2. VIDEO REMOTO: Solo aparece si eres espectador (Modo Viewer) -->
     <video *ngIf="modo === 'viewer'" #remoteVideo autoplay playsinline></video>

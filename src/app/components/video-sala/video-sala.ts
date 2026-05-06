@@ -1,27 +1,24 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router,RouterModule } from '@angular/router';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { LivekitService } from '../../../services/livekit.service';
-import { Room, RoomEvent, RemoteTrack, RemoteTrackPublication, RemoteParticipant,Track } from 'livekit-client';
+import { Room, RoomEvent, RemoteTrack, Track } from 'livekit-client';
 import { CommonModule } from '@angular/common';
-
-
 
 @Component({
   selector: 'app-video-sala',
-  standalone: true, // Asegúrate de que diga true si es standalone
-  imports: [CommonModule, RouterModule], // <--- 2. Agrégalo aquí
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './video-sala.html',
   styleUrls: ['./video-sala.css']
 })
-export class VideoSalaComponent implements OnInit, OnDestroy {
+export class VideoSalaComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('remoteVideo') videoElement!: ElementRef<HTMLVideoElement>;
 
   roomName: string = '';
   userName: string = '';
-  modo: string = ''; // 'streamer' o 'viewer'
+  modo: string = '';
   isJoined: boolean = false;
   conectado: boolean = false;
-  liveIdEnDB: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,89 +26,84 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
     private livekitService: LivekitService
   ) {}
 
-  async ngOnInit() {
-    // 1. Capturar datos de la URL automáticamente
+  ngOnInit() {
     this.roomName = this.route.snapshot.queryParamMap.get('sala') || '';
-    this.userName = this.route.snapshot.queryParamMap.get('usuario') || 'Invitado';
+    // Forzamos nombre único siempre para evitar expulsiones
+    const randomId = Math.floor(Math.random() * 1000);
+    const userBase = this.route.snapshot.queryParamMap.get('usuario') || 'Invitado';
+    this.userName = `${userBase}_${randomId}`;
     this.modo = this.route.snapshot.queryParamMap.get('modo') || 'viewer';
+  }
 
-    // 2. Si tenemos sala, conectamos de inmediato
+  // ESTO ES CLAVE: Esperamos a que la vista esté lista
+  async ngAfterViewInit() {
     if (this.roomName) {
       await this.entrarALaClase();
     }
   }
-@ViewChild('localVideo') localVideoElement!: ElementRef<HTMLVideoElement>;
 
- async entrarALaClase() {
-  // 1. Forzamos nombre único para evitar que la segunda pestaña expulse a la primera
-  if (this.userName === 'Invitado') {
-    this.userName = 'Invitado_' + Math.floor(Math.random() * 1000);
-  }
+  async entrarALaClase() {
+    this.livekitService.getToken(this.roomName, this.userName).subscribe({
+      next: async (res) => {
+        try {
+          const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
+          this.isJoined = true;
+          console.log("✅ Conectado como:", this.modo);
 
-  this.livekitService.getToken(this.roomName, this.userName).subscribe({
-    next: async (res) => {
-      try {
-        const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
-        this.isJoined = true;
-        console.log("✅ Unido a la sala como:", this.modo);
+          if (this.modo === 'streamer') {
+            // Buscamos el elemento local por ID
+            const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
 
-        if (this.modo === 'streamer') {
-          const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+            // Escuchamos cuando nuestra propia cámara esté lista
+            room.localParticipant.on('trackPublished', (pub) => {
+              if (pub.kind === 'video' && pub.track && element) {
+                pub.track.attach(element);
+                this.conectado = true;
+                console.log("🎥 Streamer: Video local vinculado");
+              }
+            });
 
-          room.localParticipant.on('trackPublished', (pub) => {
-            if (pub.kind === 'video' && pub.track) {
-              pub.track.attach(element);
-              this.conectado = true;
-            }
-          });
+            // Pequeño delay de seguridad para el elemento local
+            setTimeout(() => {
+              const localTrack = Array.from(room.localParticipant.videoTrackPublications.values())
+                .find(p => p.kind === 'video')?.videoTrack;
+              if (localTrack && element) {
+                localTrack.attach(element);
+                this.conectado = true;
+              }
+            }, 1000);
+          }
 
-          setTimeout(() => {
-            const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
-            if (videoPub?.track && element) {
-              videoPub.track.attach(element);
-              this.conectado = true;
-            }
-          }, 1500);
-        }
-
-        if (this.modo === 'viewer') {
-          // El secreto para el Viewer con *ngIf es este delay
-          setTimeout(() => {
-            // A. REVISAR PARTICIPANTES EXISTENTES
-            room.remoteParticipants.forEach((participant) => {
-              participant.trackPublications.forEach((pub) => {
-                // CAMBIO CLAVE: Usamos videoTrack (propiedad específica de suscripción)
+          if (this.modo === 'viewer') {
+            // 1. Ver si la streamer ya está emitiendo
+            room.remoteParticipants.forEach((p) => {
+              p.trackPublications.forEach((pub) => {
                 if (pub.kind === 'video' && pub.videoTrack && this.videoElement) {
                   pub.videoTrack.attach(this.videoElement.nativeElement);
                   this.conectado = true;
-                  console.log("📺 Video detectado al entrar");
                 }
               });
             });
 
-            // B. ESCUCHAR NUEVAS SEÑALES
+            // 2. Escuchar nuevas señales
             room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
               if (track.kind === Track.Kind.Video && this.videoElement) {
                 track.attach(this.videoElement.nativeElement);
                 this.conectado = true;
-                console.log("📺 Nueva señal recibida y pegada");
+                console.log("📺 Viewer: Video remoto recibido");
               }
             });
-          }, 1500); // Aumentamos a 1.5s para dar tiempo al *ngIf
+          }
+        } catch (err) {
+          console.error("❌ Error al unirse:", err);
         }
-
-      } catch (err) {
-        console.error("❌ Error en joinRoom:", err);
-      }
-    },
-    error: (err) => console.error("❌ Error en Token:", err)
-  });
-}
+      },
+      error: (err) => console.error("❌ Error de token:", err)
+    });
+  }
 
   async salir() {
     await this.livekitService.leaveRoom();
-    this.isJoined = false;
-    this.conectado = false;
     this.router.navigate(['/inicio']);
   }
 

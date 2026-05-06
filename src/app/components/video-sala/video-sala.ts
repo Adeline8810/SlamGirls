@@ -85,6 +85,18 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
           });
 
           // 2. ESCUCHAR NUEVAS TRANSMISIONES (Tu código original)
+          if (this.modo === 'viewer') {
+          room.remoteParticipants.forEach((participant) => {
+            participant.trackPublications.forEach((publication) => {
+              if (publication.track && publication.kind === 'video') {
+                // Si ya hay video, lo pegamos de una vez
+                publication.track.attach(this.videoElement.nativeElement);
+                this.conectado = true; // Esto quita el mensaje "Esperando señal"
+                console.log("📺 Video recuperado: Ya estaba emitiendo");
+              }
+            });
+          });
+        }
           room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
             if (track.kind === Track.Kind.Video && this.videoElement) {
               track.attach(this.videoElement.nativeElement);

@@ -1,60 +1,32 @@
-<div style="padding: 20px; text-align: center; background-color: #1a1a1a; color: white; min-height: 100vh; font-family: sans-serif;">
+<div class="live-container">
 
-  <!-- 1. LOGIN MANUAL: Solo se muestra si NO venimos de un enlace directo (sin sala en URL) -->
-  <div *ngIf="!isJoined && !roomName">
-    <h2 style="color: #ff0050;">Entrar a un Directo</h2>
-    <p style="color: #ccc;">Escribe los datos para conectar</p>
-
-    <input [(ngModel)]="userName" placeholder="Tu nombre"
-           style="padding: 12px; margin: 10px; border-radius: 8px; border: none; width: 80%; max-width: 300px;">
-    <br>
-    <input [(ngModel)]="roomName" placeholder="ID de la sala (ej: ruth_live)"
-           style="padding: 12px; margin: 10px; border-radius: 8px; border: none; width: 80%; max-width: 300px;">
-    <br>
-    <button (click)="entrarALaClase()"
-            style="padding: 12px 30px; background-color: #ff0050; color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 10px;">
-      Conectarse ahora
-    </button>
+  <!-- ESTADO: CARGANDO -->
+  <div *ngIf="!isJoined" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Entrando al directo de {{ roomName }}...</p>
   </div>
 
-  <!-- 2. PANTALLA DE CARGA: Se activa cuando hacemos clic en un círculo de la Home -->
-  <div *ngIf="!isJoined && roomName" style="margin-top: 50px;">
-    <div class="loader-container">
-      <div class="spinner"></div> <!-- Asegúrate de tener este CSS en tu archivo .css -->
-      <h3 style="margin-top: 20px;">Sincronizando con el Live...</h3>
-      <p style="color: #aaa;">Conectando a la sala: <strong>{{ roomName }}</strong></p>
+  <!-- PANTALLA DE VIDEO -->
+  <div *ngIf="isJoined" class="video-wrapper">
+
+    <!-- Badge de "En Vivo" -->
+    <div class="live-badge">
+      <div class="dot"></div>
+      <span>EN DIRECTO: {{ roomName }}</span>
+    </div>
+
+    <!-- Video Remoto (El que ve el Usuario 2) -->
+    <video #remoteVideo autoplay playsinline [muted]="modo === 'streamer'"></video>
+
+    <!-- Botones de Interacción -->
+    <div class="controls-overlay">
+      <button (click)="salir()" class="btn-exit">Salir</button>
+    </div>
+
+    <!-- Mensaje si no hay señal aún -->
+    <div *ngIf="!conectado && modo === 'viewer'" class="no-signal">
+      <p>Esperando señal de la streamer...</p>
     </div>
   </div>
 
-  <!-- 3. SALA DE VIDEO ACTIVA: Lo que ves cuando la conexión es exitosa -->
-  <div *ngIf="isJoined" style="position: relative; width: 100%; max-width: 500px; margin: 0 auto; height: 80vh; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
-
-    <!-- Info del Streamer (Overlay) -->
-    <div style="position: absolute; top: 20px; left: 20px; z-index: 20; display: flex; align-items: center; background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 30px; backdrop-filter: blur(5px);">
-      <div style="width: 10px; height: 10px; background: #ff0050; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #ff0050;"></div>
-      <span style="font-weight: bold; font-size: 14px;">EN DIRECTO: {{ roomName }}</span>
-    </div>
-
-    <!-- EL VIDEO REMOTO -->
-    <video #remoteVideo
-           autoplay
-           playsinline
-           [muted]="true"
-           style="width: 100%; height: 100%; object-fit: cover; background: black;">
-    </video>
-
-    <!-- Botón de Salir (Overlay inferior) -->
-    <div style="position: absolute; bottom: 30px; left: 0; right: 0; z-index: 20;">
-      <button (click)="isJoined = false; roomName = ''"
-              style="padding: 10px 25px; background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px);">
-        Salir del Live
-      </button>
-    </div>
-
-    <!-- Mensaje si el video se corta -->
-    <div *ngIf="!conectado" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 15;">
-      <p>Esperando señal de video...</p>
-    </div>
-
-  </div>
 </div>

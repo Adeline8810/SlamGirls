@@ -8,24 +8,23 @@
 
   <!-- SECCIÓN 1: CIRCULITOS DE LIVES -->
   <div class="lives-bar">
-    <!-- BOTÓN CREAR: Ahora apunta a tu nueva sala para INICIAR el live -->
-    <div class="live-item" [routerLink]="['/videoSala']">
-      <div class="circle-add">+</div>
-      <span>Créer</span>
-    </div>
+   <div class="live-item" (click)="iniciarMiLive()">
+  <div class="circle-add">+</div>
+  <span>Créer</span>
+</div>
 
-    <!-- CÍRCULOS DE USUARIOS EN LIVE -->
-      @for (live of listaLives; track live.id) {
-        <div class="live-item"
-            [routerLink]="['/videoSala']"
-            [queryParams]="{ sala: live.id, usuario: usuarioActual.nombre }">
-          <div class="avatar-ring">
-            <img [src]="live.thumbnailUrl || 'assets/img/default.png'">
-            <div class="live-tag">DIRECT</div>
-          </div>
-          <span class="user-name">{{ live.titulo }}</span>
-        </div>
-      }
+<!-- Círculos para ver (Usuario 2) -->
+@for (live of listaLives; track live.id) {
+  <div class="live-item"
+       [routerLink]="['/videoSala']"
+       [queryParams]="{ sala: live.streamKey, usuario: usuarioNombre, modo: 'viewer' }">
+    <div class="avatar-ring">
+      <img [src]="live.thumbnailUrl || 'assets/default.png'">
+      <div class="live-tag">DIRECT</div>
+    </div>
+    <span>{{ live.titulo }}</span>
+  </div>
+}
   </div>
 
   <!-- SECCIÓN 2: CATEGORÍAS (Sin cambios) -->

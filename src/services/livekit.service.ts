@@ -1,19 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Room, RoomEvent, RemoteParticipant, RemoteTrack, RemoteTrackPublication } from 'livekit-client';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Room } from 'livekit-client';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LivekitService {
 
-  // Tu URL de Render
-  private apiUrl = 'https://backend-ruth-slam.onrender.com/api/livekit/token';
+  // URL de tu backend en Render
+  private baseUrl = 'https://backend-ruth-slam.onrender.com/api/livekit';
 
-  // URL de tu servidor LiveKit (el que corre en Docker o la nube)
-  // Ejemplo: 'ws://localhost:7800' o 'wss://tu-servidor.livekit.cloud'
-  private livekitUrl = 'wss://tu-proyecto-livekit.livekit.cloud';
+  // URL REAL de tu proyecto LiveKit (sacada de tu imagen)
+  private livekitUrl = 'wss://slam-z3pekaoc.livekit.cloud';
 
   private room: Room;
 
@@ -22,42 +21,61 @@ export class LivekitService {
   }
 
   /**
-   * 1. Pide el token a tu Backend en Render
+   * 1. Pide el token de acceso al backend
    */
   getToken(roomName: string, participantName: string): Observable<{token: string}> {
-    return this.http.get<{token: string}>(`${this.apiUrl}?room=${roomName}&identity=${participantName}`);
+    return this.http.get<{token: string}>(`${this.baseUrl}/token?room=${roomName}&identity=${participantName}`);
   }
 
   /**
-   * 2. Conecta a la sala de video usando el token obtenido
+   * 2. USUARIO 1: Crea el registro del Live en la DB (Spring Boot)
    */
-  async joinRoom(token: string): Promise<Room> {
-    try {
-      await this.room.connect(this.livekitUrl, token);
-      console.log('Conectado a la sala:', this.room.name);
+  iniciarLiveEnDB(payload: { usuarioId: number, titulo: string }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/iniciar`, payload);
+  }
 
-      // Publicar automáticamente mi cámara y micrófono
-      await this.room.localParticipant.enableCameraAndMicrophone();
+  /**
+   * 3. USUARIO 2: Obtiene los lives que están 'EN_VIVO'
+   */
+  getLivesActivos(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/activos`);
+  }
+
+  /**
+   * 4. FINALIZAR: Cambia estado a 'FINALIZADO' al terminar
+   */
+  finalizarLiveEnDB(id: number): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/finalizar/${id}`, {});
+  }
+
+  /**
+   * 5. CONEXIÓN AL SERVIDOR DE VIDEO
+   * @param token El token generado por Spring
+   * @param esStreamer Si es true, activa cámara automáticamente
+   */
+  async joinRoom(token: string, esStreamer: boolean = false): Promise<Room> {
+    try {
+      // Usamos la URL real: wss://slam-z3pekaoc.livekit.cloud
+      await this.room.connect(this.livekitUrl, token);
+      console.log('✅ Conectado exitosamente a LiveKit Cloud');
+
+      if (esStreamer) {
+        await this.room.localParticipant.enableCameraAndMicrophone();
+      }
 
       return this.room;
     } catch (error) {
-      console.error('Error al conectar con LiveKit:', error);
+      console.error('❌ Error de conexión:', error);
       throw error;
     }
   }
 
-  /**
-   * 3. Salir de la sala y limpiar recursos
-   */
   async leaveRoom() {
     if (this.room) {
       await this.room.disconnect();
     }
   }
 
-  /**
-   * Acceso a la instancia de la sala para escuchar eventos (quién entra, quién sale)
-   */
   getRoom() {
     return this.room;
   }

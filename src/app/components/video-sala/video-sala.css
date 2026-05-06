@@ -96,3 +96,10 @@ video {
   height: 100%;
   object-fit: cover;
 }
+
+video {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  background: #222; /* Si ves gris, es que el tag existe pero no hay imagen */
+}

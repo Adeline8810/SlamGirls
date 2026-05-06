@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 // Verifica que el archivo se llame exactamente video.service.ts
 import { LivekitService } from '../../../services/livekit.service';
 import { Track } from 'livekit-client';
-
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -22,7 +22,24 @@ export class VideoSalaComponent {
   userName: string = '';
   isJoined: boolean = false;
 
-  constructor(private livekitService: LivekitService) {}
+ constructor(
+  private route: ActivatedRoute,
+  private livekitService: LivekitService
+) {}
+
+async ngOnInit() {
+  // Capturamos los datos de la URL automáticamente
+  const sala = this.route.snapshot.queryParamMap.get('sala');
+  const user = this.route.snapshot.queryParamMap.get('usuario');
+
+  if (sala && user) {
+    this.roomName = sala;
+    this.userName = user;
+
+    // Ejecutamos la conexión sin que el usuario toque nada
+    await this.entrarALaClase();
+  }
+}
 
   async entrarALaClase() {
     if (!this.roomName || !this.userName) return alert('Pon tu nombre y sala');

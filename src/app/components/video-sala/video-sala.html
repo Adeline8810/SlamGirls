@@ -1,40 +1,60 @@
-<div style="padding: 20px; text-align: center; background-color: #1a1a1a; color: white; min-height: 100vh;">
-  <h2>Sala de Directo</h2>
+<div style="padding: 20px; text-align: center; background-color: #1a1a1a; color: white; min-height: 100vh; font-family: sans-serif;">
 
-  <!-- SECCIÓN DE LOGIN (Antes de entrar) -->
-  <div *ngIf="!isJoined">
-    <input [(ngModel)]="userName" placeholder="Tu nombre" style="padding: 10px; margin: 5px; border-radius: 5px; border: none;">
+  <!-- 1. LOGIN MANUAL: Solo se muestra si NO venimos de un enlace directo (sin sala en URL) -->
+  <div *ngIf="!isJoined && !roomName">
+    <h2 style="color: #ff0050;">Entrar a un Directo</h2>
+    <p style="color: #ccc;">Escribe los datos para conectar</p>
+
+    <input [(ngModel)]="userName" placeholder="Tu nombre"
+           style="padding: 12px; margin: 10px; border-radius: 8px; border: none; width: 80%; max-width: 300px;">
     <br>
-    <input [(ngModel)]="roomName" placeholder="Nombre de la sala" style="padding: 10px; margin: 5px; border-radius: 5px; border: none;">
+    <input [(ngModel)]="roomName" placeholder="ID de la sala (ej: ruth_live)"
+           style="padding: 12px; margin: 10px; border-radius: 8px; border: none; width: 80%; max-width: 300px;">
     <br>
-    <button (click)="entrarALaClase()" style="padding: 10px 20px; background-color: #ff0050; color: white; border: none; border-radius: 20px; cursor: pointer;">
-      Conectarse al Live
+    <button (click)="entrarALaClase()"
+            style="padding: 12px 30px; background-color: #ff0050; color: white; border: none; border-radius: 25px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+      Conectarse ahora
     </button>
   </div>
 
-  <!-- SECCIÓN DE VIDEO (Una vez dentro) -->
-  <div *ngIf="isJoined" style="position: relative; display: inline-block; width: 100%; max-width: 600px;">
+  <!-- 2. PANTALLA DE CARGA: Se activa cuando hacemos clic en un círculo de la Home -->
+  <div *ngIf="!isJoined && roomName" style="margin-top: 50px;">
+    <div class="loader-container">
+      <div class="spinner"></div> <!-- Asegúrate de tener este CSS en tu archivo .css -->
+      <h3 style="margin-top: 20px;">Sincronizando con el Live...</h3>
+      <p style="color: #aaa;">Conectando a la sala: <strong>{{ roomName }}</strong></p>
+    </div>
+  </div>
 
-    <!-- Overlay de carga mientras espera la señal de video -->
-    <div *ngIf="!conectado" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 10;">
-      <div class="spinner"></div> <!-- Puedes añadir un CSS de spinner aquí -->
-      <p>Buscando señal de video...</p>
+  <!-- 3. SALA DE VIDEO ACTIVA: Lo que ves cuando la conexión es exitosa -->
+  <div *ngIf="isJoined" style="position: relative; width: 100%; max-width: 500px; margin: 0 auto; height: 80vh; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+
+    <!-- Info del Streamer (Overlay) -->
+    <div style="position: absolute; top: 20px; left: 20px; z-index: 20; display: flex; align-items: center; background: rgba(0,0,0,0.4); padding: 5px 15px; border-radius: 30px; backdrop-filter: blur(5px);">
+      <div style="width: 10px; height: 10px; background: #ff0050; border-radius: 50%; margin-right: 8px; box-shadow: 0 0 10px #ff0050;"></div>
+      <span style="font-weight: bold; font-size: 14px;">EN DIRECTO: {{ roomName }}</span>
     </div>
 
-    <!-- EL VIDEO: Cambiamos #localVideo por #remoteVideo -->
+    <!-- EL VIDEO REMOTO -->
     <video #remoteVideo
            autoplay
            playsinline
            [muted]="true"
-           style="width: 100%; border-radius: 15px; background: black; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+           style="width: 100%; height: 100%; object-fit: cover; background: black;">
     </video>
 
-    <div style="margin-top: 15px;">
-      <p>Estás en: <strong>{{ roomName }}</strong></p>
-      <button (click)="isJoined = false; conectado = false"
-              style="padding: 8px 15px; background-color: #444; color: white; border: none; border-radius: 5px;">
-        Finalizar
+    <!-- Botón de Salir (Overlay inferior) -->
+    <div style="position: absolute; bottom: 30px; left: 0; right: 0; z-index: 20;">
+      <button (click)="isJoined = false; roomName = ''"
+              style="padding: 10px 25px; background-color: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.5); border-radius: 20px; cursor: pointer; backdrop-filter: blur(10px);">
+        Salir del Live
       </button>
     </div>
+
+    <!-- Mensaje si el video se corta -->
+    <div *ngIf="!conectado" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 15;">
+      <p>Esperando señal de video...</p>
+    </div>
+
   </div>
 </div>

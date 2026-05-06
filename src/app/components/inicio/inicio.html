@@ -15,17 +15,17 @@
     </div>
 
     <!-- CÍRCULOS DE USUARIOS EN LIVE -->
-    @for (live of listaLives; track live.id) {
-      <!-- Al hacer clic, entramos a ver el live de esa persona -->
-      <div class="live-item" [routerLink]="['/videoSala']" [queryParams]="{ room: live.id, user: 'espectador' }">
-        <div class="avatar-ring">
-          <img [src]="live.thumbnailUrl || 'assets/img/default.png'">
-          <!-- Este es el aro rojo que querías -->
-          <div class="live-tag">DIRECT</div>
+      @for (live of listaLives; track live.id) {
+        <div class="live-item"
+            [routerLink]="['/videoSala']"
+            [queryParams]="{ sala: live.id, usuario: usuarioActual.nombre }">
+          <div class="avatar-ring">
+            <img [src]="live.thumbnailUrl || 'assets/img/default.png'">
+            <div class="live-tag">DIRECT</div>
+          </div>
+          <span class="user-name">{{ live.titulo }}</span>
         </div>
-        <span class="user-name">{{ live.titulo }}</span>
-      </div>
-    }
+      }
   </div>
 
   <!-- SECCIÓN 2: CATEGORÍAS (Sin cambios) -->

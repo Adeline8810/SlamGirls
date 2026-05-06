@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LivekitService } from '../../../services/livekit.service';
-import { Room, RoomEvent, RemoteTrack, RemoteTrackPublication, RemoteParticipant } from 'livekit-client';
+import { Room, RoomEvent, RemoteTrack, RemoteTrackPublication, RemoteParticipant,Track } from 'livekit-client';
+
+
 
 @Component({
   selector: 'app-video-sala',
@@ -35,28 +37,41 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
       await this.entrarALaClase();
     }
   }
+@ViewChild('localVideo') localVideoElement!: ElementRef<HTMLVideoElement>;
 
-  async entrarALaClase() {
-    try {
-      // Pedir token a Spring Boot
-      this.livekitService.getToken(this.roomName, this.userName).subscribe(async (res) => {
-
-        // Conectar a LiveKit Cloud
+ async entrarALaClase() {
+  this.livekitService.getToken(this.roomName, this.userName).subscribe({
+    next: async (res) => {
+      try {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
         this.isJoined = true;
 
-        // Escuchar cuando alguien publica su video (para el espectador)
+      if (this.modo === 'streamer') {
+    // 1. Buscamos todas las publicaciones de video del participante
+    const videoPublication = room.localParticipant.videoTrackPublications.values().next().value;
+
+    // 2. Extraemos el track de esa publicación
+    const localVideoTrack = videoPublication?.videoTrack;
+
+    if (localVideoTrack && this.localVideoElement) {
+        localVideoTrack.attach(this.localVideoElement.nativeElement);
+        this.conectado = true;
+    }
+}
+
         room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
-          if (track.kind === 'video' && this.videoElement) {
+          if (track.kind === Track.Kind.Video && this.videoElement) {
             track.attach(this.videoElement.nativeElement);
             this.conectado = true;
           }
         });
-      });
-    } catch (error) {
-      console.error("Error al entrar:", error);
-    }
-  }
+      } catch (err) {
+        console.error("Error al conectar a la sala:", err);
+      }
+    },
+    error: (err) => console.error("Error al obtener el token:", err)
+  });
+}
 
   async salir() {
     await this.livekitService.leaveRoom();

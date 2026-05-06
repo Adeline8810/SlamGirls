@@ -15,8 +15,11 @@
       <span>EN DIRECTO: {{ roomName }}</span>
     </div>
 
-    <!-- Video Remoto (El que ve el Usuario 2) -->
-    <video #remoteVideo autoplay playsinline [muted]="modo === 'streamer'"></video>
+    <!-- 1. VIDEO LOCAL: Solo aparece si tú eres la que transmite (Modo Streamer) -->
+    <video *ngIf="modo === 'streamer'" #localVideo autoplay playsinline muted></video>
+
+    <!-- 2. VIDEO REMOTO: Solo aparece si eres espectador (Modo Viewer) -->
+    <video *ngIf="modo === 'viewer'" #remoteVideo autoplay playsinline></video>
 
     <!-- Botones de Interacción -->
     <div class="controls-overlay">

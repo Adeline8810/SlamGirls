@@ -43,68 +43,69 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
 @ViewChild('localVideo') localVideoElement!: ElementRef<HTMLVideoElement>;
 
  async entrarALaClase() {
+  // 1. Usar un nombre único para evitar que LiveKit nos expulse por duplicados
+  if (this.userName === 'Invitado') {
+    this.userName = 'Invitado_' + Math.floor(Math.random() * 1000);
+  }
+
   this.livekitService.getToken(this.roomName, this.userName).subscribe({
     next: async (res) => {
       try {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
-        this.isJoined = true; // Aquí se activa el *ngIf del video
-        console.log("✅ Conectado a la sala");
+        this.isJoined = true;
+        console.log("✅ Unido a la sala como:", this.modo);
 
-        // --- LÓGICA PARA EL STREAMER ---
         if (this.modo === 'streamer') {
+          // Lógica Streamer: Usamos el ID del HTML
           const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+
           room.localParticipant.on('trackPublished', (pub) => {
-            if (pub.kind === 'video' && pub.track) {
-              pub.track.attach(element);
+            if (pub.kind === 'video') {
+              pub.track?.attach(element);
               this.conectado = true;
             }
           });
-          // Fallback streamer
+
+          // Fallback por si ya está publicado
           setTimeout(() => {
             const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
             if (videoPub?.track && element) {
               videoPub.track.attach(element);
               this.conectado = true;
             }
-          }, 1000);
+          }, 1500);
         }
 
-        // --- LÓGICA PARA EL VIEWER (ESPECTADOR) ---
         if (this.modo === 'viewer') {
-          // 1. ESPERAMOS A QUE EL *ngIf DIBUJE EL VIDEO EN EL HTML
+          // Lógica Viewer: Esperamos un momento a que el *ngIf dibuje el video
           setTimeout(() => {
-            if (!this.videoElement) {
-              console.error("❌ Error: No se encontró #remoteVideo. ¿Está el *ngIf funcionando?");
-              return;
-            }
-
-            // A. Revisar si la streamer ya está transmitiendo
+            // A. Revisar si la streamer ya está emitiendo
             room.remoteParticipants.forEach((participant) => {
-              participant.trackPublications.forEach((publication) => {
-                if (publication.kind === 'video' && publication.track) {
-                  publication.track.attach(this.videoElement.nativeElement);
-                  this.conectado = true; // Quita el mensaje de espera
-                  console.log("📺 Video detectado al entrar");
+              participant.trackPublications.forEach((pub) => {
+                if (pub.kind === 'video' && pub.track && this.videoElement) {
+                  pub.track.attach(this.videoElement.nativeElement);
+                  this.conectado = true;
+                  console.log("📺 Video de streamer encontrado");
                 }
               });
             });
 
-            // B. Escuchar si empieza a transmitir después
+            // B. Escuchar si empieza después
             room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
-              if (track.kind === Track.Kind.Video) {
+              if (track.kind === Track.Kind.Video && this.videoElement) {
                 track.attach(this.videoElement.nativeElement);
                 this.conectado = true;
                 console.log("📺 Nueva señal recibida");
               }
             });
-          }, 500); // 500ms es suficiente para que Angular renderice el *ngIf
+          }, 1000);
         }
 
       } catch (err) {
-        console.error("❌ Error al entrar:", err);
+        console.error("❌ Error en joinRoom:", err);
       }
     },
-    error: (err) => console.error("❌ Error token:", err)
+    error: (err) => console.error("❌ Error en Token:", err)
   });
 }
 

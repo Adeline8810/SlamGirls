@@ -46,24 +46,32 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
         this.isJoined = true;
 
- if (this.modo === 'streamer') {
-    // Usamos un intervalo corto para verificar hasta que el track esté disponible
-    const checkTrack = setInterval(() => {
-        const localP = room.localParticipant;
-        // Obtenemos la publicación de video
-        const videoPub = Array.from(localP.videoTrackPublications.values()).find(p => p.kind === 'video');
+if (this.modo === 'streamer') {
+    // Escuchamos el evento de cuando el track local esté listo para usarse
+    room.localParticipant.on('trackPublished', (publication) => {
+        if (publication.kind === 'video') {
+            const track = publication.track;
+            const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
 
-        // Verificamos si ya existe el track físico
-        if (videoPub && videoPub.track && this.localVideoElement) {
-            console.log("🎥 ¡Track encontrado! Pegando a la pantalla...");
-            videoPub.track.attach(this.localVideoElement.nativeElement);
-            this.conectado = true;
-            clearInterval(checkTrack); // Detenemos la búsqueda
+            if (track && element) {
+                console.log("🚀 Pegando video al elemento ID: miCamaraLocal");
+                track.attach(element);
+                this.conectado = true;
+            }
         }
-    }, 500); // Revisa cada medio segundo
+    });
 
-    // Por seguridad, detenemos la búsqueda tras 10 segundos si no hay nada
-    setTimeout(() => clearInterval(checkTrack), 10000);
+    // Por si ya se publicó antes de que el código llegara aquí
+    setTimeout(() => {
+        const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
+        const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+
+        if (videoPub?.track && element) {
+            console.log("🚀 Pegando video (Fallback)");
+            videoPub.track.attach(element);
+            this.conectado = true;
+        }
+    }, 2000);
 }
 
         room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {

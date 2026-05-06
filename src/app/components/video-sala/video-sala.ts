@@ -1,12 +1,15 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router,RouterModule } from '@angular/router';
 import { LivekitService } from '../../../services/livekit.service';
 import { Room, RoomEvent, RemoteTrack, RemoteTrackPublication, RemoteParticipant,Track } from 'livekit-client';
+import { CommonModule } from '@angular/common';
 
 
 
 @Component({
   selector: 'app-video-sala',
+  standalone: true, // Asegúrate de que diga true si es standalone
+  imports: [CommonModule, RouterModule], // <--- 2. Agrégalo aquí
   templateUrl: './video-sala.html',
   styleUrls: ['./video-sala.css']
 })

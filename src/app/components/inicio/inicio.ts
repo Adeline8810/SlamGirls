@@ -21,7 +21,7 @@ export class Inicio implements OnInit {
   usuarioId: string = localStorage.getItem('usuarioId') || '0';
   usuarioNombre: string = localStorage.getItem('usuarioNombre') || 'Invitado';
 
-  private liveService = inject(LiveService);
+  //private liveService = inject(LiveService);
   private videoService = inject(VideoService);
   private livekitService = inject(LivekitService); // Inyectamos tu nuevo servicio
   private router = inject(Router); // Para navegar programáticamente

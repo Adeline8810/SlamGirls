@@ -49,40 +49,51 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
         const room = await this.livekitService.joinRoom(res.token, this.modo === 'streamer');
         this.isJoined = true;
 
-if (this.modo === 'streamer') {
-    // Escuchamos el evento de cuando el track local esté listo para usarse
-    room.localParticipant.on('trackPublished', (publication) => {
-        if (publication.kind === 'video') {
-            const track = publication.track;
-            const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
-
-            if (track && element) {
-                console.log("🚀 Pegando video al elemento ID: miCamaraLocal");
-                track.attach(element);
-                this.conectado = true;
+        // --- LÓGICA PARA EL STREAMER ---
+        if (this.modo === 'streamer') {
+          room.localParticipant.on('trackPublished', (publication) => {
+            if (publication.kind === 'video') {
+              const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+              publication.track?.attach(element);
+              this.conectado = true;
             }
+          });
+
+          // Fallback para el streamer
+          setTimeout(() => {
+            const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
+            const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+            if (videoPub?.track && element) {
+              videoPub.track.attach(element);
+              this.conectado = true;
+            }
+          }, 2000);
         }
-    });
 
-    // Por si ya se publicó antes de que el código llegara aquí
-    setTimeout(() => {
-        const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
-        const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
+        // --- LÓGICA PARA EL VIEWER (ESPECTADOR) ---
+        if (this.modo === 'viewer') {
+          // 1. REVISAR SI YA HAY ALGUIEN TRANSMITIENDO (Para los que entran tarde)
+          room.remoteParticipants.forEach((participant) => {
+            participant.trackPublications.forEach((publication) => {
+              if (publication.kind === 'video' && publication.track) {
+                // Usamos nativeElement porque aquí usas @ViewChild('remoteVideo')
+                publication.track.attach(this.videoElement.nativeElement);
+                this.conectado = true;
+                console.log("📺 Video remoto recuperado al entrar");
+              }
+            });
+          });
 
-        if (videoPub?.track && element) {
-            console.log("🚀 Pegando video (Fallback)");
-            videoPub.track.attach(element);
-            this.conectado = true;
+          // 2. ESCUCHAR NUEVAS TRANSMISIONES (Tu código original)
+          room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
+            if (track.kind === Track.Kind.Video && this.videoElement) {
+              track.attach(this.videoElement.nativeElement);
+              this.conectado = true;
+              console.log("📺 Nueva señal de video recibida");
+            }
+          });
         }
-    }, 2000);
-}
 
-        room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
-          if (track.kind === Track.Kind.Video && this.videoElement) {
-            track.attach(this.videoElement.nativeElement);
-            this.conectado = true;
-          }
-        });
       } catch (err) {
         console.error("Error al conectar a la sala:", err);
       }

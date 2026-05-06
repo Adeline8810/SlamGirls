@@ -43,7 +43,7 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
 @ViewChild('localVideo') localVideoElement!: ElementRef<HTMLVideoElement>;
 
  async entrarALaClase() {
-  // 1. Usar un nombre único para evitar que LiveKit nos expulse por duplicados
+  // 1. Forzamos nombre único para evitar que la segunda pestaña expulse a la primera
   if (this.userName === 'Invitado') {
     this.userName = 'Invitado_' + Math.floor(Math.random() * 1000);
   }
@@ -56,17 +56,15 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
         console.log("✅ Unido a la sala como:", this.modo);
 
         if (this.modo === 'streamer') {
-          // Lógica Streamer: Usamos el ID del HTML
           const element = document.getElementById('miCamaraLocal') as HTMLVideoElement;
 
           room.localParticipant.on('trackPublished', (pub) => {
-            if (pub.kind === 'video') {
-              pub.track?.attach(element);
+            if (pub.kind === 'video' && pub.track) {
+              pub.track.attach(element);
               this.conectado = true;
             }
           });
 
-          // Fallback por si ya está publicado
           setTimeout(() => {
             const videoPub = Array.from(room.localParticipant.videoTrackPublications.values()).find(p => p.kind === 'video');
             if (videoPub?.track && element) {
@@ -77,28 +75,29 @@ export class VideoSalaComponent implements OnInit, OnDestroy {
         }
 
         if (this.modo === 'viewer') {
-          // Lógica Viewer: Esperamos un momento a que el *ngIf dibuje el video
+          // El secreto para el Viewer con *ngIf es este delay
           setTimeout(() => {
-            // A. Revisar si la streamer ya está emitiendo
+            // A. REVISAR PARTICIPANTES EXISTENTES
             room.remoteParticipants.forEach((participant) => {
               participant.trackPublications.forEach((pub) => {
-                if (pub.kind === 'video' && pub.track && this.videoElement) {
-                  pub.track.attach(this.videoElement.nativeElement);
+                // CAMBIO CLAVE: Usamos videoTrack (propiedad específica de suscripción)
+                if (pub.kind === 'video' && pub.videoTrack && this.videoElement) {
+                  pub.videoTrack.attach(this.videoElement.nativeElement);
                   this.conectado = true;
-                  console.log("📺 Video de streamer encontrado");
+                  console.log("📺 Video detectado al entrar");
                 }
               });
             });
 
-            // B. Escuchar si empieza después
+            // B. ESCUCHAR NUEVAS SEÑALES
             room.on(RoomEvent.TrackSubscribed, (track: RemoteTrack) => {
               if (track.kind === Track.Kind.Video && this.videoElement) {
                 track.attach(this.videoElement.nativeElement);
                 this.conectado = true;
-                console.log("📺 Nueva señal recibida");
+                console.log("📺 Nueva señal recibida y pegada");
               }
             });
-          }, 1000);
+          }, 1500); // Aumentamos a 1.5s para dar tiempo al *ngIf
         }
 
       } catch (err) {
